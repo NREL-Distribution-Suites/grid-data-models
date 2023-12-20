@@ -1,0 +1,26 @@
+{
+    "name": null,
+    "uuid": "e6240aa7-c0d3-4aec-829f-318cc41e036e",
+    "data_format_version": null,
+    "components": [
+        {
+            "uuid": "80e158fa-030c-4f1d-ab5c-5c0a3cd63ffd",
+            "name": "voltage1",
+            "system_uuid": "e6240aa7-c0d3-4aec-829f-318cc41e036e",
+            "time_series_metadata": [],
+            "phases": [],
+            "nominal_voltage": {
+                "value": 3,
+                "units": "volt",
+                "__type_info__": {
+                    "module": "powersystem_data_models.units",
+                    "type": "Voltage"
+                }
+            },
+            "__type_info__": {
+                "module": "powersystem_data_models.node",
+                "type": "Node"
+            }
+        }
+    ]
+}
