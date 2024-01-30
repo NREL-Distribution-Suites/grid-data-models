@@ -1,16 +1,16 @@
 """This module contains interface for distribution substation."""
 from typing import Annotated
 
-from infrasys.component_models import Component
+from infrasys.component_models import ComponentWithQuantities
 from infrasys.quantities import Angle, Resistance, Voltage
-from pydantic import BaseModel, Field
+from pydantic import Field
 
 from gdm.quantities import Reactance, PositiveVoltage
 from gdm.distribution.distribution_bus import DistributionBus
 from gdm.distribution.distribution_enum import Phase
 
 
-class PhaseVoltageSource(Component):
+class PhaseVoltageSource(ComponentWithQuantities):
     phase: Annotated[Phase, Field(..., description="Phase to which this is connected to.")]
     r0: Annotated[Resistance, Field(..., description="Zero sequence resistance.")]
     r1: Annotated[Resistance, Field(..., description="Positive sequence resistance.")]
@@ -22,6 +22,7 @@ class PhaseVoltageSource(Component):
     @classmethod
     def example(cls) -> "PhaseVoltageSource":
         return PhaseVoltageSource(
+            name="phase-source-1",
             phase=Phase.A,
             r0=Resistance(0.001, "ohm"),
             r1=Resistance(0.001, "ohm"),
@@ -32,7 +33,7 @@ class PhaseVoltageSource(Component):
         )
 
 
-class DistributionVoltageSource(BaseModel):
+class DistributionVoltageSource(ComponentWithQuantities):
     """Interface for distribution substation."""
 
     bus: Annotated[

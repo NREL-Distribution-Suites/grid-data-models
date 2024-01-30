@@ -1,13 +1,13 @@
 """ This module contains interface for Distribution Bus."""
 from infrasys.location import Location
-from typing import Annotated, Literal, Optional
+from typing import Annotated, Optional
 
 from gdm.quantities import PositiveVoltage
 from pydantic import Field
 
 from gdm.distribution.distribution_component import DistributionComponent
+from gdm.distribution.distribution_enum import Phase, VoltageTypes
 from gdm.distribution.limitset import VoltageLimitSet
-from gdm.distribution.distribution_enum import Phase
 from gdm.bus import PowerSystemBus
 
 
@@ -19,7 +19,7 @@ class DistributionBus(PowerSystemBus):
         >>> DistributionBus.example()
     """
 
-    voltage_type: Literal["line-to-line", "line-to-ground"]
+    voltage_type: VoltageTypes
     belongs_to: Annotated[
         Optional[DistributionComponent],
         Field(

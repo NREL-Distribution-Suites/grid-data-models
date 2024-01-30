@@ -25,8 +25,10 @@ from gdm.distribution.distribution_transformer import (
     DistributionTransformer,
     PhaseWinding,
 )
+
+
 from gdm.distribution.limitset import ThermalLimitSet, VoltageLimitSet
-from gdm.distribution.distribution_enum import Phase, ConnectionType
+from gdm.distribution.distribution_enum import Phase, ConnectionType, VoltageTypes
 from gdm.distribution.distribution_model import DistributionModel
 from gdm.distribution.distribution_graph import DistributionGraph
 

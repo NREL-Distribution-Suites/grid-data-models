@@ -5,8 +5,8 @@ from infrasys.component_models import Component, ComponentWithQuantities
 from pydantic import Field, PositiveInt, model_validator
 
 from gdm.distribution.distribution_component import DistributionComponent
-from gdm.distribution.distribution_bus import DistributionBus
 from gdm.distribution.distribution_enum import Phase, ConnectionType
+from gdm.distribution.distribution_bus import DistributionBus
 from gdm.quantities import (
     PositiveApparentPower,
     PositiveVoltage,

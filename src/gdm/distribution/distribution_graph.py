@@ -39,7 +39,7 @@ class DistributionGraph:
             )
 
     def _parse_branches(self):
-        """Method parses the brach models."""
+        """Method parses the branch models."""
         models = [
             self.dist_model.ac_lines,
             self.dist_model.switches,

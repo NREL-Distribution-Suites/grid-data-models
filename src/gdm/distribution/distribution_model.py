@@ -199,7 +199,7 @@ class DistributionSubstation(ComponentWithQuantities):
     lv_breaker_arrangement: BreakerArrangment
     transformer: DistributionTransformer
     feeders: list[DistributionModel] = []
-    voltage_sources: [DistributionVoltageSource]
+    voltage_sources: list[DistributionVoltageSource]
 
     @classmethod
     def example(cls) -> "DistributionSubstation":

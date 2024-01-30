@@ -21,3 +21,8 @@ class ConnectionType(str, Enum):
     OPEN_DELTA = "OPEN_DELTA"
     OPEN_STAR = "OPEN_STAR"
     ZIG_ZAG = "ZIG_ZAG"
+
+
+class VoltageTypes(str, Enum):
+    LINE_TO_LINE = "line-to-line"
+    LINE_TO_GROUND = "line-to-ground"

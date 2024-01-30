@@ -6,6 +6,7 @@ __pycache__/
 # C extensions
 *.so
 *.code-workspace
+*.sqlite
 
 # Distribution / packaging
 .Python
