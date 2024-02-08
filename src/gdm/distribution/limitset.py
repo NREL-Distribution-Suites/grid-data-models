@@ -1,28 +1,30 @@
 """ This module contains interface for operation limit sets. """
-from typing import Literal
 
 from infrasys.component_models import Component
 
 from gdm.quantities import PositiveCurrent, PositiveVoltage
+from gdm.distribution.distribution_enum import LimitType
 
 
 class VoltageLimitSet(Component):
     """Interface for voltage limit set."""
 
-    limit_type: Literal["min", "max"]
+    limit_type: LimitType
     value: PositiveVoltage
 
     @classmethod
     def example(cls) -> "VoltageLimitSet":
-        return VoltageLimitSet(limit_type="min", value=PositiveVoltage(400 * 0.9, "volt"))
+        """Example for voltage limit set."""
+        return VoltageLimitSet(limit_type=LimitType.MIN, value=PositiveVoltage(400 * 0.9, "volt"))
 
 
 class ThermalLimitSet(Component):
     """Interface for voltage limit set."""
 
-    limit_type: Literal["max"]
+    limit_type: LimitType
     value: PositiveCurrent
 
     @classmethod
     def example(cls) -> "ThermalLimitSet":
-        return ThermalLimitSet(limit_type="max", value=PositiveCurrent(110, "ampere"))
+        """Example for thermal limit set."""
+        return ThermalLimitSet(limit_type=LimitType.MAX, value=PositiveCurrent(110, "ampere"))

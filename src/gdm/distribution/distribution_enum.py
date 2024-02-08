@@ -1,4 +1,5 @@
 """ This module contains phase enums. """
+
 from enum import Enum
 
 
@@ -24,5 +25,14 @@ class ConnectionType(str, Enum):
 
 
 class VoltageTypes(str, Enum):
+    """Interface for voltage types."""
+
     LINE_TO_LINE = "line-to-line"
     LINE_TO_GROUND = "line-to-ground"
+
+
+class LimitType(str, Enum):
+    """Interface for operational limit types."""
+
+    MIN = "min"
+    MAX = "max"

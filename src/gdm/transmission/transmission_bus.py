@@ -1,3 +1,5 @@
+"""This class contains interface for transmission bus."""
+
 from gdm.bus import PowerSystemBus
 from gdm.transmission.transmission_component import TransmissionComponent
 

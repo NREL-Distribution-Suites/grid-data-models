@@ -1,4 +1,5 @@
 """ Interface for power system bus."""
+
 from typing import Annotated, Optional
 
 from infrasys.component_models import ComponentWithQuantities

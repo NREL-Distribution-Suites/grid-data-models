@@ -1,3 +1,5 @@
+"""This class contains interface for transmission capacitor."""
+
 from gdm.capacitor import PowerSystemCapacitor
 from gdm.transmission.transmission_bus import TransmissionBus
 from gdm.transmission.transmission_component import TransmissionComponent

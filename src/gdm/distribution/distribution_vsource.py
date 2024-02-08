@@ -1,17 +1,20 @@
 """This module contains interface for distribution substation."""
+
 from typing import Annotated
 
-from infrasys.component_models import ComponentWithQuantities
+from infrasys.component_models import ComponentWithQuantities, Component
 from infrasys.quantities import Angle, Resistance, Voltage
 from pydantic import Field
 
-from gdm.quantities import Reactance, PositiveVoltage
+from gdm.distribution.distribution_common import BELONG_TO_TYPE
 from gdm.distribution.distribution_bus import DistributionBus
+from gdm.quantities import Reactance, PositiveVoltage
 from gdm.distribution.distribution_enum import Phase
 
 
-class PhaseVoltageSource(ComponentWithQuantities):
-    phase: Annotated[Phase, Field(..., description="Phase to which this is connected to.")]
+class PhaseVoltageSourceEquipment(ComponentWithQuantities):
+    """Interface for phase voltage source."""
+
     r0: Annotated[Resistance, Field(..., description="Zero sequence resistance.")]
     r1: Annotated[Resistance, Field(..., description="Positive sequence resistance.")]
     x0: Annotated[Reactance, Field(..., description="Zero sequence reactance.")]
@@ -20,10 +23,10 @@ class PhaseVoltageSource(ComponentWithQuantities):
     angle: Annotated[Angle, Field(..., description="Angle for the voltage")]
 
     @classmethod
-    def example(cls) -> "PhaseVoltageSource":
-        return PhaseVoltageSource(
+    def example(cls) -> "PhaseVoltageSourceEquipment":
+        """Example for phase voltage source."""
+        return PhaseVoltageSourceEquipment(
             name="phase-source-1",
-            phase=Phase.A,
             r0=Resistance(0.001, "ohm"),
             r1=Resistance(0.001, "ohm"),
             x0=Reactance(0.001, "ohm"),
@@ -33,18 +36,11 @@ class PhaseVoltageSource(ComponentWithQuantities):
         )
 
 
-class DistributionVoltageSource(ComponentWithQuantities):
-    """Interface for distribution substation."""
+class VoltageSourceEquipment(Component):
+    """Interface for voltage source model."""
 
-    bus: Annotated[
-        DistributionBus,
-        Field(
-            ...,
-            description="Distribution bus to which this voltage source is connected to.",
-        ),
-    ]
-    phase_voltage_sources: Annotated[
-        list[PhaseVoltageSource],
+    sources: Annotated[
+        list[PhaseVoltageSourceEquipment],
         Field(
             ...,
             description="list of single phase voltage sources",
@@ -52,9 +48,31 @@ class DistributionVoltageSource(ComponentWithQuantities):
     ]
 
     @classmethod
+    def example(cls) -> "VoltageSourceEquipment":
+        """Example for voltage source model."""
+        return VoltageSourceEquipment(sources=[PhaseVoltageSourceEquipment.example()] * 3)
+
+
+class DistributionVoltageSource(ComponentWithQuantities):
+    """Interface for distribution substation."""
+
+    belongs_to: BELONG_TO_TYPE
+    bus: Annotated[
+        DistributionBus,
+        Field(
+            ...,
+            description="Distribution bus to which this voltage source is connected to.",
+        ),
+    ]
+    phases: Annotated[list[Phase], Field(..., description="Phase to which this is connected to.")]
+    equipment: Annotated[VoltageSourceEquipment, Field(..., description="Voltage source model.")]
+
+    @classmethod
     def example(cls) -> "DistributionVoltageSource":
+        """Example for distribution voltage source."""
         return DistributionVoltageSource(
             name="DistributionVoltageSource1",
             bus=DistributionBus.example(),
-            phase_voltage_sources=[PhaseVoltageSource.example()],
+            phases=[Phase.A, Phase.B, Phase.C],
+            equipment=VoltageSourceEquipment.example(),
         )

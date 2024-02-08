@@ -1,15 +1,15 @@
+"""This module contains sqlite interface for pydantic models."""
+
 import importlib
 import typing
 import sqlite3
 from types import NoneType
-from typing import get_origin, get_args
+from typing import Optional, get_origin, get_args
 import datetime
 from enum import Enum
 
 from loguru import logger
 from infrasys.base_quantity import BaseQuantity
-
-from gdm.cost.cost_models import BaseCost
 from pydantic import BaseModel
 
 
@@ -23,6 +23,8 @@ ANNOTATION_TO_SQLITE_MAPPING = {
 
 
 class QuantityModel(BaseModel):
+    """Interface for representing quantity model for de-serialization"""
+
     module_type: typing.Any
     class_name: str
 
@@ -59,7 +61,7 @@ class SQLiteCostDB:
         if field_type in ANNOTATION_TO_SQLITE_MAPPING:
             return field_type
 
-        elif get_origin(field_type) in [typing.Union, typing.Annotated]:
+        if get_origin(field_type) in [typing.Union, typing.Annotated]:
             args = get_args(field_type)
 
             if len(args) == 2 and NoneType in args:
@@ -84,15 +86,15 @@ class SQLiteCostDB:
             msg = f"Type error: {field_type=}"
             raise NotImplementedError(msg)
 
-        elif issubclass(field_type, Enum) and issubclass(field_type, str):
+        if issubclass(field_type, Enum) and issubclass(field_type, str):
             return str
-        elif issubclass(field_type, BaseQuantity):
+        if issubclass(field_type, BaseQuantity):
             return str
-        else:
-            msg = f"Type error {field_type=}"
-            raise NotImplementedError(msg)
 
-    def _create_table(self, cost_obj: BaseCost):
+        msg = f"Type error {field_type=}"
+        raise NotImplementedError(msg)
+
+    def _create_table(self, cost_obj: typing.Type[BaseModel]):
         """Method to create table for given cost type."""
 
         columns = []
@@ -114,7 +116,7 @@ class SQLiteCostDB:
         self.cursor.execute(sql_query)
         logger.info(f"Created table {table_name} successfully.")
 
-    def add_cost(self, cost: BaseCost):
+    def add_cost(self, cost: typing.Type[BaseModel]):
         """Method to add cost to database."""
 
         table_name = cost.__class__.__name__.lower()
@@ -129,13 +131,13 @@ class SQLiteCostDB:
 
         self.cursor.execute(sql_query, list(cost_obj.values()))
 
-    def add_costs(self, costs: list[BaseCost]):
+    def add_costs(self, costs: list[typing.Type[BaseModel]]):
         """Method to add costs to database."""
 
         for cost in costs:
             self.add_cost(cost)
 
-    def _get_quantity_model(self, field_type: typing.Type) -> QuantityModel | None:
+    def _get_quantity_model(self, field_type: typing.Type) -> Optional[QuantityModel]:
         """Method to return quantity model."""
         if get_origin(field_type) in [typing.Union, typing.Annotated]:
             args = get_args(field_type)
@@ -160,17 +162,19 @@ class SQLiteCostDB:
 
     def _get_pydantic_obj(
         self,
-        cost_type: typing.Type[BaseCost],
+        cost_type: typing.Type[typing.Type[BaseModel]],
         data: dict,
         quantity_mapping: dict[str, QuantityModel],
     ):
         return cost_type(
             **{
-                k: getattr(quantity_mapping[k].module_type, quantity_mapping[k].class_name)(
-                    *self._split_qauntity_value(v)
+                k: (
+                    getattr(quantity_mapping[k].module_type, quantity_mapping[k].class_name)(
+                        *self._split_qauntity_value(v)
+                    )
+                    if k in quantity_mapping
+                    else v
                 )
-                if k in quantity_mapping
-                else v
                 for k, v in data.items()
             }
         )
@@ -185,21 +189,23 @@ class SQLiteCostDB:
 
         return (float(fields[0]), fields[1])
 
-    def get_cost(self, cost_type: BaseCost, id: int) -> BaseCost:
+    def get_cost(
+        self, cost_type: typing.Type[BaseModel], identifier: int
+    ) -> typing.Type[BaseModel]:
         """Method to return the cost component."""
         table_name = cost_type.__name__.lower()
 
         self.cursor.execute(f"PRAGMA table_info({table_name})")
         columns = [row[1] for row in self.cursor.fetchall()]
 
-        self.cursor.execute(f"SELECT * FROM {table_name} where id=?", (id,))
+        self.cursor.execute(f"SELECT * FROM {table_name} where id=?", (identifier,))
         rows = self.cursor.fetchall()[0]
 
         data = dict(zip(columns, rows))
         quantity_mapping = self._get_quantity_mapping(cost_type=cost_type)
         return self._get_pydantic_obj(cost_type, data, quantity_mapping)
 
-    def get_costs(self, cost_type: BaseCost) -> list[BaseCost]:
+    def get_costs(self, cost_type: typing.Type[BaseModel]) -> list[typing.Type[BaseModel]]:
         """Method to return the cost components"""
         table_name = cost_type.__name__.lower()
 

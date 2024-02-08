@@ -1,4 +1,7 @@
 """ This module contains interface for power system capacitor."""
+
+# pylint:disable=pointless-statement
+
 from typing import Annotated
 
 from pydantic import Field, NonNegativeInt, PositiveInt, model_validator
@@ -21,6 +24,7 @@ class PowerSystemCapacitor(ComponentWithQuantities):
 
     @model_validator(mode="after")
     def validate_fields(self) -> "PowerSystemCapacitor":
+        """Custom validator for fields."""
         if self.num_banks < self.num_banks_on:
             msg = f"Status {self.num_banks_on} must be less than or equal"
             f"to number of banks. {self.num_banks}"
@@ -30,8 +34,9 @@ class PowerSystemCapacitor(ComponentWithQuantities):
 
     @classmethod
     def example(cls) -> "PowerSystemCapacitor":
+        """Example for power system capacitor."""
         return PowerSystemCapacitor(
-            name="Capacitor1",
+            name="Phase-Cap-1",
             rated_capacity=PositiveReactivePower(200, "kvar"),
             num_banks_on=1,
             num_banks=1,

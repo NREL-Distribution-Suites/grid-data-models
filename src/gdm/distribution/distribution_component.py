@@ -1,4 +1,5 @@
 """ This module contains class for managing basic fields for distribution assets."""
+
 from abc import ABC
 
 from infrasys.component_models import Component

@@ -1,4 +1,5 @@
 """ This module contains interface for powersystem load."""
+
 from typing import Annotated
 
 from infrasys.component_models import ComponentWithQuantities
@@ -11,57 +12,57 @@ from gdm.quantities import ReactivePower
 class PowerSystemLoad(ComponentWithQuantities):
     """Interface for power system load."""
 
-    z_kw: Annotated[
+    z_real: Annotated[
         ActivePower,
         Field(
             default=ActivePower(0, "kilowatt"),
-            description="Constant impedance load active component.",
+            description="Constant impedance load real component.",
         ),
     ]
-    z_kvar: Annotated[
+    z_imag: Annotated[
         ReactivePower,
         Field(
             default=ReactivePower(0, "kilovar"),
-            description="Constant impedance load reactive component.",
+            description="Constant impedance load imaginary component.",
         ),
     ]
-    i_kw: Annotated[
+    i_real: Annotated[
         ActivePower,
         Field(
             default=ActivePower(0, "kilowatt"),
-            description="Constant current load active component.",
+            description="Constant current load real component.",
         ),
     ]
-    i_kvar: Annotated[
+    i_imag: Annotated[
         ReactivePower,
         Field(
             default=ReactivePower(0, "kilovar"),
-            description="Constant current load reactive component.",
+            description="Constant current load imaginary component.",
         ),
     ]
-    p_kw: Annotated[
+    p_real: Annotated[
         ActivePower,
         Field(
             default=ActivePower(0, "kilowatt"),
-            description="Constant power load active component.",
+            description="Constant power load real component.",
         ),
     ]
-    p_kvar: Annotated[
+    p_imag: Annotated[
         ReactivePower,
         Field(
             default=ReactivePower(0, "kilovar"),
-            description="Constant power load reactive component.",
+            description="Constant power load imaginary component.",
         ),
     ]
 
     @classmethod
     def example(cls) -> "PowerSystemLoad":
         return PowerSystemLoad(
-            z_kw=ActivePower(0, "watt"),
-            z_kvar=ReactivePower(0, "var"),
-            i_kw=ActivePower(0, "watt"),
-            i_kvar=ReactivePower(0, "var"),
-            p_kw=ActivePower(2.5, "kilowatt"),
-            p_kvar=ReactivePower(0, "kilovar"),
+            z_real=ActivePower(0, "watt"),
+            z_imag=ReactivePower(0, "var"),
+            i_real=ActivePower(0, "watt"),
+            i_imag=ReactivePower(0, "var"),
+            p_real=ActivePower(2.5, "kilowatt"),
+            p_imag=ReactivePower(0, "kilovar"),
             name="PhaseLoad1",
         )
