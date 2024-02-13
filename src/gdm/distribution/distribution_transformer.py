@@ -4,7 +4,7 @@ from itertools import groupby
 from typing import Annotated
 
 from infrasys.component_models import Component, ComponentWithQuantities
-from pydantic import Field, conint, model_validator
+from pydantic import Field, model_validator
 
 from gdm.distribution.distribution_common import BELONG_TO_TYPE, SequencePair
 from gdm.distribution.distribution_enum import Phase, ConnectionType
@@ -29,7 +29,7 @@ class WindingEquipment(Component):
         Field(..., description="Rated power for this winding."),
     ]
     num_phases: Annotated[
-        conint(ge=1, le=3), Field(..., description="Number of phases for this winding.")
+        int, Field(..., ge=1, le=3, description="Number of phases for this winding.")
     ]
     connection_type: Annotated[
         ConnectionType,

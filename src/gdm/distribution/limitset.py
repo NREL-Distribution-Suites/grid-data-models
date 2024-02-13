@@ -1,16 +1,18 @@
 """ This module contains interface for operation limit sets. """
 
+from typing import Annotated
 from infrasys.component_models import Component
 
 from gdm.quantities import PositiveCurrent, PositiveVoltage
 from gdm.distribution.distribution_enum import LimitType
+from pydantic import Field
 
 
 class VoltageLimitSet(Component):
     """Interface for voltage limit set."""
 
-    limit_type: LimitType
-    value: PositiveVoltage
+    limit_type: Annotated[LimitType, Field(..., description="Limit type used.")]
+    value: Annotated[PositiveVoltage, Field(..., description="Voltage threshold.")]
 
     @classmethod
     def example(cls) -> "VoltageLimitSet":
@@ -21,8 +23,8 @@ class VoltageLimitSet(Component):
 class ThermalLimitSet(Component):
     """Interface for voltage limit set."""
 
-    limit_type: LimitType
-    value: PositiveCurrent
+    limit_type: Annotated[LimitType, Field(..., description="Limit type used.")]
+    value: Annotated[PositiveCurrent, Field(..., description="Current threshold.")]
 
     @classmethod
     def example(cls) -> "ThermalLimitSet":

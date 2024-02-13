@@ -1,15 +1,16 @@
 """ This module contains class for managing basic fields for distribution assets."""
 
-from abc import ABC
+from typing_extensions import Annotated
 
+from pydantic import Field
 from infrasys.component_models import Component
 
 
-class DistributionComponent(Component, ABC):
+class DistributionComponent(Component):
     """Interface for simple distribution component."""
 
-    substation: str
-    feeder: str
+    substation: Annotated[str, Field(..., description="Name of the substation.")]
+    feeder: Annotated[str, Field(..., description="Name of the feeder.")]
 
     @classmethod
     def example(cls) -> "DistributionComponent":

@@ -29,7 +29,7 @@ from gdm.quantities import (
 )
 
 
-def _get_mat_size(mat: list[list[Any]]) -> (int, int):
+def _get_mat_size(mat: list[list[Any]]) -> tuple[int, int]:
     """Internal function to get matrix size."""
     mat_item_sizes = set(len(item) for item in mat)
     if len(mat_item_sizes) != 1:
@@ -319,7 +319,10 @@ class DistributionBranch(ComponentWithQuantities):
 class MatrixImpedanceBranch(DistributionBranch):
     """Interface for matrix impedance branch."""
 
-    equipment: MatrixImpedanceBranchEquipment
+    equipment: Annotated[
+        MatrixImpedanceBranchEquipment,
+        Field(..., description="Matrix impedance branch equipment."),
+    ]
 
     @model_validator(mode="after")
     def validate_fields(self) -> "MatrixImpedanceBranch":
@@ -353,7 +356,9 @@ class MatrixImpedanceBranch(DistributionBranch):
 class SequenceImpedanceBranch(DistributionBranch):
     """Interface for sequence impedance branch."""
 
-    equipment: SequenceImpedanceBranchEquipment
+    equipment: Annotated[
+        SequenceImpedanceBranchEquipment, Field(..., description="Sequence impedance branch.")
+    ]
 
     @model_validator(mode="after")
     def validate_fields(self) -> "SequenceImpedanceBranch":
@@ -380,7 +385,9 @@ class SequenceImpedanceBranch(DistributionBranch):
 class GeometryBranch(DistributionBranch):
     """Interface for geometry based lines."""
 
-    equipment: GeometryBranchEquipment
+    equipment: Annotated[
+        GeometryBranchEquipment, Field(..., description="Geometry branch equipment.")
+    ]
 
     def validate_fields(self) -> "GeometryBranch":
         """Custom validator for geometry branch fields."""

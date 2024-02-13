@@ -24,3 +24,29 @@ To get started, you can clone and pip install this library from [here](https://g
 - **Aadil Latif**
 - **Daniel Thompson**
 - **Jeremy Keen**
+
+
+```{toctree}
+:caption: Getting Started
+:hidden: true
+
+install.md
+```
+
+```{toctree}
+:caption: API Documentation
+:hidden: true
+:toc-depth: 0
+
+api/distribution_bus.md
+api/distribution_branch.md
+api/distribution_capacitor.md
+api/distribution_load.md
+api/distribution_transformer.md
+api/distribution_wires.md
+api/distribution_vsource.md
+api/limitset.md
+api/distribution_enum.md
+api/distribution_component.md
+api/quantities
+```

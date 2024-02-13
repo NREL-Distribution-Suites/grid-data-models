@@ -21,10 +21,10 @@ class DistributionBus(PowerSystemBus):
         >>> DistributionBus.example()
     """
 
-    voltage_type: VoltageTypes
+    voltage_type: Annotated[VoltageTypes, Field(..., description="Voltage types for buses.")]
     belongs_to: BELONG_TO_TYPE
     phases: Annotated[list[Phase], Field(..., description="List of phases for this bus.")]
-    voltagelimit: Annotated[
+    voltagelimits: Annotated[
         list[VoltageLimitSet],
         Field([], description="List of voltage limit sets for this bus."),
     ]
@@ -37,7 +37,7 @@ class DistributionBus(PowerSystemBus):
             phases=[Phase.A, Phase.B, Phase.C],
             nominal_voltage=PositiveVoltage(400, "volt"),
             name="DistBus1",
-            voltagelimit=[
+            voltagelimits=[
                 VoltageLimitSet(
                     limit_type=LimitType.MIN, value=PositiveVoltage(400 * 0.9, "volt")
                 ),
