@@ -17,7 +17,7 @@ class WindingEquipment(Component):
 
     resistance: Annotated[
         float,
-        Field(..., strict=True, ge=0, le=100, description="Resistance for this winding."),
+        Field(..., strict=True, ge=0, le=100, description="Percentage resistance for this winding."),
     ]
     is_grounded: Annotated[bool, Field(..., description="Is this winding grounded or not.")]
     nominal_voltage: Annotated[

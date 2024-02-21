@@ -1,4 +1,5 @@
-from typing import Annotated
+""" This module contains interface for distribution controllers."""
+from typing import Annotated, Optional
 
 from infrasys.component_models import Component
 from infrasys.quantities import Time
@@ -11,6 +12,105 @@ from gdm.quantities import (
     PositiveVoltage,
     PositiveCurrent,
 )
+class Curve(Component):
+    """An interface for represening volt-var or volt-watt curves."""
+
+    curve_x: Annotated[
+        list[float], Field(..., description="The x values of the curve")
+    ]
+
+    curve_y: Annotated[
+        list[float], Field(..., description="The y values of the curve")
+    ]
+
+    @classmethod
+    def example(cls) -> "Curve":
+        """Example of a Curve (Volt-Var IEEE-1547 standard)."""
+        return Curve(
+            curve_x = [0.5,0.92,0.98,1.02,1.08,1.5],
+            curve_y = [1.0,1.0,0.0,0.0,-1.0,-1.0]
+        )
+
+class SolarController(Component):
+    """Interface for Solar PV controllers."""
+
+    active_rating: Annotated[
+        PositiveActivePower, Field(..., description="Active power rating for the PV controller.")
+    ]
+
+    reactive_rating: Annotated[
+        PositiveReactivePower, Field(..., description="Reactive power rating for the PV controller.")
+    ]
+
+    # TODO: Note that if this is not applicable, then it's set to 0
+    cutout_percent: Annotated[
+        float, Field(ge=0,le=100, description="If the per-unit power drops below this value the PV output is turned off.")
+    ]
+
+    # TODO: Note that if this is not applicable, then it's set to 0
+    cutin_percent: Annotated[
+        float, Field(ge=0,le=100, description="If the per-unit power rises above this value the PV output is turned on.")
+    ]
+
+
+    # TODO: Should specificity be provided in units e.g kw/min as a unit?
+    rise_limit: Annotated[
+        Optional[float],
+        Field(ge=0,le=100, description="The percentage rise in power output allowed per minute")
+    ]
+
+    fall_limit: Annotated[
+        Optional[float],
+        Field(ge=0,le=100, description="The percentage fall in power output allowed per minute")
+    ]
+
+
+class PowerfactorSolarController(SolarController):
+    """Interface for a PV Controller using powerfactor to determine power output."""
+
+    power_factor: Annotated[
+        float, Field(..., description="The power factor used for the controller.")
+    ]
+
+class FixedValueSolarController(SolarController):
+    """Interface for a PV Controller with set value outputs."""
+
+    real_power: Annotated[
+        PositiveActivePower, Field(..., description="The active power attempted to be injected by the controller.")
+    ]
+
+    reactive_power: Annotated[
+        PositiveReactivePower, Field(..., description="The reactive power attempted to be injected by the controller.")
+    ]
+
+class VoltVarSolarController(SolarController):
+    """Interface for a Volt-Var PV Controller."""
+
+    volt_var_curve: Annotated[
+        Curve, Field(..., description="The volt-var curve that is being applied.")
+    ]
+
+    @classmethod
+    def example(cls) -> "VoltVarSolarController":
+        "Example of a Volt-Var Solar Controller"
+        return VoltVarSolarController(
+                active_rating = PositiveActivePower(3.8, "kW"),
+                reactive_rating = PositiveReactivePower(3.8, "kvar"),
+                cutin_percent = 10,
+                cutout_percent = 10,
+                rise_limit=100,
+                fall_limit=100,
+                volt_var_curve = Curve.example()
+        )
+
+
+class VoltWattSolarController(SolarController):
+    """Interface for a Volt-Watt PV Controller."""
+
+    volt_watt_curve: Annotated[
+        Curve, Field(..., description="The volt-watt curve that is being applied.")
+    ]
+
 
 class CapacitorController(Component):
     """Interface for capacitor controllers."""

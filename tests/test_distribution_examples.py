@@ -24,6 +24,8 @@ from gdm import (
     WindingEquipment,
     DistributionTransformer,
     DistributionTransformerEquipment,
+    SolarEquipment,
+    DistributionSolar,
 )
 
 DIST_INTERFACES = [
@@ -48,6 +50,8 @@ DIST_INTERFACES = [
     WindingEquipment,
     DistributionTransformer,
     DistributionTransformerEquipment,
+    SolarEquipment,
+    DistributionSolar,
 ]
 
 
