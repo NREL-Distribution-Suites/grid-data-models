@@ -36,6 +36,7 @@ from gdm.distribution.distribution_transformer import (
     WindingEquipment,
     DistributionTransformer,
     DistributionTransformerEquipment,
+    DistributionRegulator,
 )
 from gdm.distribution.distribution_solar import (
     SolarEquipment,
@@ -54,6 +55,7 @@ from gdm.distribution.distribution_controller import (
     ReactivePowerCapacitorController,
     CurrentCapacitorController,
     TimedCapacitorController,
+    RegulatorController,
 )
 
 

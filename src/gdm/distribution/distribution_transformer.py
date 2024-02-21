@@ -10,6 +10,7 @@ from gdm.distribution.distribution_common import BELONG_TO_TYPE, SequencePair
 from gdm.distribution.distribution_enum import Phase, ConnectionType
 from gdm.quantities import PositiveApparentPower, PositiveVoltage
 from gdm.distribution.distribution_bus import DistributionBus
+from gdm.distribution.distribution_controller import RegulatorController
 
 
 class WindingEquipment(Component):
@@ -316,3 +317,27 @@ class DistributionTransformer(ComponentWithQuantities):
             winding_phases=[[Phase.A, Phase.B, Phase.C], [Phase.A, Phase.B, Phase.C]],
             equipment=DistributionTransformerEquipment.example(),
         )
+
+class DistributionRegulator(ComponentWithQuantities):
+
+    transformer: Annotated[
+        DistributionTransformer, Field(...,description="The transformer that a voltage regulator controls")
+    ]
+
+    controllers: Annotated[
+        list[RegulatorController], Field(...,description="The regulators that are used to conrol voltage on each phase of the transformer")
+    ]
+
+    @classmethod
+    def example(cls) -> "DistributionRegulator":
+        """Example for Voltage Regulator"""
+        return DistributionRegulator(
+            name="DistributionRegulator1",
+            transformer=DistributionTransformer.example(),
+            controllers = [
+                RegulatorController.example(),
+                RegulatorController.example(),
+                RegulatorController.example(),
+            ]
+        )
+
