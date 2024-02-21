@@ -10,6 +10,7 @@ from gdm.distribution.distribution_enum import ConnectionType, Phase
 from gdm.distribution.distribution_common import BELONG_TO_TYPE
 from gdm.distribution.distribution_bus import DistributionBus
 from gdm.capacitor import PowerSystemCapacitor
+from gdm.distribution.distribution_controller import CapacitorController, VoltageCapacitorController
 
 
 class PhaseCapacitorEquipment(PowerSystemCapacitor):
@@ -87,6 +88,16 @@ class DistributionCapacitor(ComponentWithQuantities):
             ),
         ),
     ]
+    controllers: Annotated[
+        list[CapacitorController],
+        Field(
+            ...,
+            description=(
+                "List of the controllers which are used for each phase in order.",
+            ),
+        ),
+    ]
+
     equipment: Annotated[CapacitorEquipment, Field(..., description="Capacitor model.")]
 
     @model_validator(mode="after")
@@ -118,4 +129,9 @@ class DistributionCapacitor(ComponentWithQuantities):
             ),
             phases=[Phase.A, Phase.B, Phase.C],
             equipment=CapacitorEquipment.example(),
+            controllers=[
+                VoltageCapacitorController.example(),
+                VoltageCapacitorController.example(),
+                VoltageCapacitorController.example()
+            ],
         )

@@ -36,3 +36,11 @@ class LimitType(str, Enum):
 
     MIN = "min"
     MAX = "max"
+
+class OnOffSetting(str, Enum):
+    ON = "ON"
+    OFF = "OFF"
+
+class ControllerType(str,Enum):
+    PT = "PT",
+    CT = "CT"
