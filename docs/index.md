@@ -50,3 +50,12 @@ api/distribution_enum.md
 api/distribution_component.md
 api/quantities
 ```
+
+```{toctree}
+:caption: CIM vs Grid Data Models
+:hidden: true
+:toc-depth: 0
+
+cim/index.md
+cim/distribution-bus.md
+```

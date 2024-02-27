@@ -21,6 +21,7 @@ extensions = [
     "sphinx.ext.napoleon",
     "sphinx.ext.intersphinx",
     "sphinx_immaterial",
+    "sphinxcontrib.mermaid",
 ]
 extensions.append("sphinx_immaterial.apidoc.python.apigen")
 # templates_path = ["_templates"]

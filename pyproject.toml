@@ -26,7 +26,7 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = ["pre-commit", "pytest", "pytest-cov", "ruff"]
-doc = ["sphinx", "sphinx-immaterial", "myst-parser"]
+doc = ["sphinx", "sphinx-immaterial", "myst-parser", "sphinxcontrib-mermaid"]
 
 [project.urls]
 Documentation = "https://github.com/unknown/powermodels#readme"
