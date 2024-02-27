@@ -91,7 +91,7 @@ class DistributionCapacitor(ComponentWithQuantities):
     controllers: Annotated[
         list[CapacitorController],
         Field(
-            ...,
+            [],
             description=(
                 "List of the controllers which are used for each phase in order.",
             ),
@@ -113,6 +113,11 @@ class DistributionCapacitor(ComponentWithQuantities):
             msg = (
                 f"Length of phase capacitors {self.equipment.phase_capacitors=} "
                 f"did not match length of phases {self.phases=}"
+            )
+        if len(self.equipment.phase_capacitors) != len(self.controllers):
+            msg = (
+                    f"Number of controllers ({self.controllers=}) "
+                    f"did not match number of phase capacitors {self.equipment.phase_capacitors=}"
             )
         return self
 
