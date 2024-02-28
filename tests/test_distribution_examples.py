@@ -27,6 +27,19 @@ from gdm import (
     SolarEquipment,
     DistributionSolar,
     DistributionRegulator,
+    CapacitorController,
+    VoltageCapacitorController,
+    ActivePowerCapacitorController,
+    ReactivePowerCapacitorController,
+    CurrentCapacitorController,
+    DailyTimedCapacitorController,
+    Curve,
+    InverterController,
+    PowerfactorInverterController,
+    VoltVarInverterController,
+    VoltVarVoltWattInverterController,
+    RegulatorController,
+
 )
 
 DIST_INTERFACES = [
@@ -54,6 +67,21 @@ DIST_INTERFACES = [
     SolarEquipment,
     DistributionSolar,
     DistributionRegulator,
+    DistributionSolar,
+    DistributionRegulator,
+    CapacitorController,
+    VoltageCapacitorController,
+    ActivePowerCapacitorController,
+    ReactivePowerCapacitorController,
+    CurrentCapacitorController,
+    DailyTimedCapacitorController,
+    Curve,
+    InverterController,
+    PowerfactorInverterController,
+    VoltVarInverterController,
+    VoltVarVoltWattInverterController,
+    RegulatorController,
+
 ]
 
 

@@ -2,7 +2,7 @@
 from typing import Annotated, Optional
 
 from infrasys.component_models import Component
-from datetime import datetime
+import datetime
 from infrasys.quantities import Time
 from pydantic import Field
 
@@ -17,7 +17,7 @@ class CapacitorController(Component):
     """Interface for capacitor controllers. Phase connection specified in the capacitor."""
 
     delay: Annotated[
-        Optional[Time], Field(...,description="The time that the capacitor needs to connect or disconnect when activated")
+        Optional[Time], Field(None,description="The time that the capacitor needs to connect or disconnect when activated")
     ]
 
 
@@ -79,10 +79,10 @@ class ReactivePowerCapacitorController(CapacitorController):
     @classmethod
     def example(cls) -> "ReactivePowerCapacitorController":
         """Example for an ReactivePowerCapacitorController."""
-        return ActivePowerCapacitorController(
+        return ReactivePowerCapacitorController(
                 delay = Time(20, "seconds"),
-                on_power = PositiveReactivePower(300, "kVar"),
-                off_power = PositiveReactivePower(300, "kVar"),
+                on_power = PositiveReactivePower(300, "kvar"),
+                off_power = PositiveReactivePower(300, "kvar"),
         )
 
 
@@ -103,11 +103,11 @@ class CurrentCapacitorController(CapacitorController):
     @classmethod
     def example(cls) -> "CurrentCapacitorController":
         """Example for a CurrentCapacitorController."""
-        return VoltageCapacitorController(
+        return CurrentCapacitorController(
                 delay = Time(20, "seconds"),
                 ct_ratio=10,
-                on_current = PositiveCurrent(110, "amps"),
-                off_current = PositiveCurrent(110, "amps"),
+                on_current = PositiveCurrent(110, "ampere"),
+                off_current = PositiveCurrent(110, "ampere"),
         )
 
 
@@ -124,10 +124,10 @@ class DailyTimedCapacitorController(CapacitorController):
     @classmethod
     def example(cls) -> "DailyTimedCapacitorController":
         """Example for a DailyTimedCapacitorController."""
-        return VoltageCapacitorController(
+        return DailyTimedCapacitorController(
                 delay = Time(20, "seconds"),
-                on_time = PositiveVoltage(110, "amps"),
-                off_time = PositiveVoltage(110, "amps"),
+                on_time = datetime.time(hour=9),
+                off_time = datetime.time(hour=17),
         )
 
 
