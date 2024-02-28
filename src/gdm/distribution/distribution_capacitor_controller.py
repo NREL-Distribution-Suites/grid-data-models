@@ -1,0 +1,133 @@
+""" This module contains interface for distribution capacitor controllers."""
+from typing import Annotated, Optional
+
+from infrasys.component_models import Component
+from datetime import datetime
+from infrasys.quantities import Time
+from pydantic import Field
+
+from gdm.quantities import (
+    PositiveActivePower,
+    PositiveReactivePower,
+    PositiveVoltage,
+    PositiveCurrent,
+)
+
+class CapacitorController(Component):
+    """Interface for capacitor controllers. Phase connection specified in the capacitor."""
+
+    delay: Annotated[
+        Optional[Time], Field(...,description="The time that the capacitor needs to connect or disconnect when activated")
+    ]
+
+
+class VoltageCapacitorController(CapacitorController):
+    """Interface for a Capacitor Controller which uses voltage."""
+    on_voltage: Annotated[
+        PositiveVoltage, Field(..., description="Value of the controller voltage, above which the capacitor switches on.")
+    ]
+
+    off_voltage: Annotated[
+        PositiveVoltage, Field(..., description="Value of the voltage, below which the capacitors switches off.")
+    ]
+
+    pt_ratio: Annotated[
+        float, Field(..., ge=0, description="Value of the voltage (potential) transformer ratio used to stwp down the voltage for the controller.")
+    ]
+
+    @classmethod
+    def example(cls) -> "VoltageCapacitorController":
+        """Example for a VoltageCapacitorController."""
+        return VoltageCapacitorController(
+                delay = Time(20, "seconds"),
+                pt_ratio=60,
+                on_voltage = PositiveVoltage(125, "volt"),
+                off_voltage = PositiveVoltage(120, "volt"),
+        )
+
+
+
+class ActivePowerCapacitorController(CapacitorController):
+    """Interface for a Capacitor Controller which uses active power."""
+    on_power: Annotated[
+        PositiveActivePower, Field(..., description="Value of the active power, above which the capacitor switches on.")
+    ]
+
+    off_power: Annotated[
+        PositiveActivePower, Field(..., description="Value of the active power, below which the capacitor switches off.")
+    ]
+
+    @classmethod
+    def example(cls) -> "ActivePowerCapacitorController":
+        """Example for an ActivePowerCapacitorController."""
+        return ActivePowerCapacitorController(
+                delay = Time(20, "seconds"),
+                on_power = PositiveActivePower(300, "kW"),
+                off_power = PositiveActivePower(300, "kW"),
+        )
+
+class ReactivePowerCapacitorController(CapacitorController):
+    """Interface for a Capacitor Controller which uses reactive power."""
+    on_power: Annotated[
+        PositiveReactivePower, Field(..., description="Value of the reactive power, above which the capacitor switches on.")
+    ]
+
+    off_power: Annotated[
+        PositiveReactivePower, Field(..., description="Value of the reactive power, below which the capacitor switches off.")
+    ]
+
+    @classmethod
+    def example(cls) -> "ReactivePowerCapacitorController":
+        """Example for an ReactivePowerCapacitorController."""
+        return ActivePowerCapacitorController(
+                delay = Time(20, "seconds"),
+                on_power = PositiveReactivePower(300, "kVar"),
+                off_power = PositiveReactivePower(300, "kVar"),
+        )
+
+
+class CurrentCapacitorController(CapacitorController):
+    """Interface for a Capacitor Controller which uses current."""
+    on_current: Annotated[
+        PositiveCurrent, Field(..., description="Value of the controller current, above which the capacitor switches on.")
+    ]
+
+    off_current: Annotated[
+        PositiveCurrent, Field(..., description="Value of the controller current, below which the capacitor switches off.")
+    ]
+
+    ct_ratio: Annotated[
+        float, Field(...,ge=0, description="The current transformer ratio used to step down the current for the controller.")
+    ]
+
+    @classmethod
+    def example(cls) -> "CurrentCapacitorController":
+        """Example for a CurrentCapacitorController."""
+        return VoltageCapacitorController(
+                delay = Time(20, "seconds"),
+                ct_ratio=10,
+                on_current = PositiveCurrent(110, "amps"),
+                off_current = PositiveCurrent(110, "amps"),
+        )
+
+
+class DailyTimedCapacitorController(CapacitorController):
+    """Interface for a Capacitor Controller which uses a timed controller."""
+    on_time: Annotated[
+            datetime.time, Field(..., description="Time at which the capacitor switches on.")
+    ]
+
+    off_time: Annotated[
+            datetime.time, Field(..., description="Time at which the capacitor switches off.")
+    ]
+
+    @classmethod
+    def example(cls) -> "DailyTimedCapacitorController":
+        """Example for a DailyTimedCapacitorController."""
+        return VoltageCapacitorController(
+                delay = Time(20, "seconds"),
+                on_time = PositiveVoltage(110, "amps"),
+                off_time = PositiveVoltage(110, "amps"),
+        )
+
+

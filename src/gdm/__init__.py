@@ -42,19 +42,23 @@ from gdm.distribution.distribution_solar import (
     SolarEquipment,
     DistributionSolar,
 )
-from gdm.distribution.distribution_controller import (
+from gdm.distribution.distribution_inverter_controller import (
     Curve,
-    SolarController,
-    PowerfactorSolarController,
-    FixedValueSolarController,
-    VoltVarSolarController,
-    VoltWattSolarController,
+    InverterController,
+    PowerfactorInverterController,
+    VoltVarInverterController,
+    VoltVarVoltWattInverterController,
+)
+
+from gdm.distribution.distribution_capacitor_controller import (
     CapacitorController,
     VoltageCapacitorController,
     ActivePowerCapacitorController,
     ReactivePowerCapacitorController,
     CurrentCapacitorController,
-    TimedCapacitorController,
+    DailyTimedCapacitorController,
+)
+from gdm.distribution.distribution_regulator_controller import (
     RegulatorController,
 )
 

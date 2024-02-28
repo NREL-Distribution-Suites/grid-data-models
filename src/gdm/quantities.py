@@ -131,3 +131,9 @@ class PositiveDistance(Distance):
 
     def __init__(self, value, units, **kwargs):
         assert value > 0, f"Distance ({value}, {units}) must be positive."
+
+class ActivePowerPUTime(BaseQuantity):
+    """Quantity representing active power per unit of time"""
+
+    __compatible_unit__ = "watt/minute"
+

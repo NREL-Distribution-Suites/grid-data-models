@@ -10,7 +10,7 @@ from gdm.distribution.distribution_common import BELONG_TO_TYPE, SequencePair
 from gdm.distribution.distribution_enum import Phase, ConnectionType
 from gdm.quantities import PositiveApparentPower, PositiveVoltage
 from gdm.distribution.distribution_bus import DistributionBus
-from gdm.distribution.distribution_controller import RegulatorController
+from gdm.distribution.distribution_regulator_controller import RegulatorController
 
 
 class WindingEquipment(Component):

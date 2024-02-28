@@ -9,7 +9,7 @@ from gdm.quantities import PositiveVoltage, PositiveActivePower
 from gdm.distribution.distribution_enum import Phase
 from gdm.distribution.distribution_common import BELONG_TO_TYPE
 from gdm.distribution.distribution_bus import DistributionBus
-from gdm.distribution.distribution_controller import SolarController, VoltVarSolarController
+from gdm.distribution.distribution_inverter_controller import InverterController, VoltVarInverterController
 
 # TODO: Is a SolarEquipment necessary? Currently using the same paradigm as loads and capacitors, but with no PhaseSolarEquipment objects.
 class SolarEquipment(ComponentWithQuantities):
@@ -30,6 +30,17 @@ class SolarEquipment(ComponentWithQuantities):
         Field(..., strict=True, ge=0, le=100, description="Percentage internal reactance for the PV array."),
     ]
 
+    # TODO: Note that if this is not applicable, then it's set to 0
+    cutout_percent: Annotated[
+        float, Field(ge=0,le=100, description="If the per-unit power drops below this value the PV output is turned off.")
+    ]
+
+    # TODO: Note that if this is not applicable, then it's set to 0
+    cutin_percent: Annotated[
+        float, Field(ge=0,le=100, description="If the per-unit power rises above this value the PV output is turned on.")
+    ]
+
+
     @classmethod
     def example(cls) -> "SolarEquipment":
         "Example for a solar Equipment"
@@ -38,6 +49,8 @@ class SolarEquipment(ComponentWithQuantities):
             rated_capacity=PositiveActivePower(4, "kW"),
             resistance = 50,
             reactance = 0,
+            cutin_percent=25,
+            cutout_percent=20,
         )
 
 class DistributionSolar(ComponentWithQuantities):
@@ -61,7 +74,7 @@ class DistributionSolar(ComponentWithQuantities):
         ),
     ]
     controller: Annotated[
-        SolarController,
+        InverterController,
         Field(
             ...,
             description=(
@@ -85,7 +98,7 @@ class DistributionSolar(ComponentWithQuantities):
             ),
             phases=[Phase.A, Phase.B, Phase.C],
             equipment=SolarEquipment.example(),
-            controller = VoltVarSolarController.example()
+            controller = VoltVarInverterController.example()
         )
 
 

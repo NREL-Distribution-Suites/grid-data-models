@@ -10,7 +10,7 @@ from gdm.distribution.distribution_enum import ConnectionType, Phase
 from gdm.distribution.distribution_common import BELONG_TO_TYPE
 from gdm.distribution.distribution_bus import DistributionBus
 from gdm.capacitor import PowerSystemCapacitor
-from gdm.distribution.distribution_controller import CapacitorController, VoltageCapacitorController
+from gdm.distribution.distribution_capacitor_controller import CapacitorController, VoltageCapacitorController
 
 
 class PhaseCapacitorEquipment(PowerSystemCapacitor):
