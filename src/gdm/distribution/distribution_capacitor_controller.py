@@ -19,6 +19,11 @@ class CapacitorController(Component):
     delay: Annotated[
         Optional[Time], Field(None,description="The time that the capacitor needs to connect or disconnect when activated")
     ]
+    @classmethod
+    def example(cls) -> "CapacitorController":
+        """Example for a CapacitorController."""
+        return CapacitorController()
+
 
 
 class VoltageCapacitorController(CapacitorController):
