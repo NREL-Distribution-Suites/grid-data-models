@@ -55,24 +55,22 @@ class WindingEquipment(Component):
 class TapWindingEquipment(WindingEquipment):
     """Interface for tapped winding equipment."""
 
-    minimum_tap: Annotated[
-        PositiveVoltage, Field(..., description="Minimum tap position of a winding.")
-    ]
-    maximum_tap: Annotated[
-        PositiveVoltage, Field(..., description="Maximum tap position of a winding.")
-    ]
     tap_positions: Annotated[
-        list[int], Field(..., description="List of tap positions for each phases.")
+        list[int], Field(..., description="List of tap positions for each phase. Centered at 0.")
     ]
-    allow_neg_tap: Annotated[
-        bool,
-        Field(
-            True,
-            description="""If allowed tap position would vary from negative
-            half of total taps to positive half of total taps.""",
-        ),
+    total_taps: Annotated[
+        int, Field(default=32, description="Total number of taps along the bandwidth.")
     ]
-    total_taps: Annotated[int, Field(default=32, description="Maximum tap position of a winding.")]
+    bandwidth: Annotated[
+        PositiveVoltage, Field(..., description="The total voltage bandwidth for the controller")
+    ]
+    band_center: Annotated[
+        PositiveVoltage, Field(..., description="The voltage bandcenter on the controller.")
+    ]
+    max_step: Annotated[
+        int, Field(ge=0, description="Maximum number of steps upwards or downwards that can be made per control iteration.")
+    ]
+
 
     @model_validator(mode="after")
     def validate_fields(self) -> "TapWindingEquipment":
@@ -83,20 +81,12 @@ class TapWindingEquipment(WindingEquipment):
                 f"should be equal to number of phase {self.num_phases}"
             )
             raise ValueError(msg)
-        if self.minimum_tap.to("kilovolt") >= self.maximum_tap.to("kilovolt"):
-            msg = (
-                f"Minimum tap {self.minimum_tap=} must be"
-                f" smaller than maximum tap {self.maximum_tap=}"
-            )
-            raise ValueError(msg)
         for tap in self.tap_positions:
-            if self.allow_neg_tap and abs(tap) > self.total_taps / 2:
-                msg = f"Invalid tap position {tap=} must be within +- {self.total_taps/2}"
-                raise ValueError(msg)
-            if not self.allow_neg_tap and (tap > self.total_taps or tap < 0):
+            if not abs(tap) <=self.total_taps/2:
                 msg = (
-                    f"Invalid tap position {tap=} must be less "
-                    f"than {self.total_taps} and greater than 0"
+                    f"Tap position {tap=} outside allowable range"
+                    f" of [{-1*self.total_taps/2=}-{self.total_taps/2=}] for"
+                    f" total taps of {self.total_taps=}."
                 )
                 raise ValueError(msg)
 
@@ -110,10 +100,12 @@ class TapWindingEquipment(WindingEquipment):
             nominal_voltage=PositiveVoltage(12.47, "kilovolt"),
             rated_power=PositiveApparentPower(500, "kilova"),
             connection_type=ConnectionType.STAR,
-            num_phase=3,
-            minimum_tap=PositiveVoltage(12.45, "kilovolt"),
-            maximum_tap=PositiveVoltage(12.49, "kilovolt"),
-            tap_positions=[0, 0, 0],
+            num_phases=3,
+            tap_positions=[0, -1, 2],
+            total_taps=32,
+            bandwidth=PositiveVoltage(3,"volts"),
+            band_center=PositiveVoltage(120,"volts"),
+            max_step=4,
         )
 
 
@@ -228,6 +220,22 @@ class DistributionTransformerEquipment(ComponentWithQuantities):
             winding_reactances=[2.3],
         )
 
+    @classmethod
+    def example_with_taps(cls) -> "DistributionTransformerEquipment":
+        """Example for distribution transformer model."""
+        return DistributionTransformerEquipment(
+            name="Transformer-Taps1",
+            pct_no_load_loss=0.1,
+            pct_full_load_loss=1,
+            is_center_tapped=False,
+            windings=[
+                TapWindingEquipment.example(),
+                TapWindingEquipment.example(),
+            ],
+            coupling_sequences=[SequencePair(0, 1)],
+            winding_reactances=[2.3],
+        )
+
 
 class DistributionTransformer(ComponentWithQuantities):
     """Interface for distribution transformer."""
@@ -318,22 +326,70 @@ class DistributionTransformer(ComponentWithQuantities):
             equipment=DistributionTransformerEquipment.example(),
         )
 
-class DistributionRegulator(ComponentWithQuantities):
-
-    transformer: Annotated[
-        DistributionTransformer, Field(...,description="The transformer that a voltage regulator controls")
-    ]
+class DistributionRegulator(DistributionTransformer):
 
     controllers: Annotated[
         list[RegulatorController], Field(...,description="The regulators that are used to conrol voltage on each phase of the transformer")
     ]
+
+    @model_validator(mode="after")
+    def validate_fields(self) -> "DistributionRegulator":
+        """Custom validator for voltage regulator."""
+        has_tap_winding = False
+        for winding in self.equipment.windings:
+            if isinstance(winding,TapWindingEquipment):
+                has_tap_winding = True
+                if len(winding.tap_positions) != len(self.controllers):
+                    msg = (
+                        f"Number of tap positions {winding.tap_positions=} "
+                        f"should be equal to the number of controllers {self.controllers=}."
+                    )
+                    raise ValueError(msg)
+                for controller in self.controllers:
+                    if controller.regulator_setting > winding.band_center+winding.bandwidth/2:
+                        msg = (
+                            f"Controller setpoint {controller.regulator_setting=} is "
+                            f"larger than the upper controller range of {winding.band_center+winding.bandwidth/2=}."
+                            f"using bandwidth {winding.bandwidth=} around band center {winding.band_center=}."
+                        )
+                        raise ValueError(msg)
+                    if controller.regulator_setting < winding.band_center-winding.bandwidth/2:
+                        msg = (
+                            f"Controller setpoint {controller.regulator_setting=} is "
+                            f"less than the lower controller range of {winding.band_center-winding.bandwidth/2=} "
+                            f"using bandwidth {winding.bandwidth=} around band center {winding.band_center=}."
+                        )
+                        raise ValueError(msg)
+
+        if not has_tap_winding:
+            msg = (
+                f"No winding with taps found on regulator in {self.equipment.windings=}."
+            )
+            raise ValueError(msg)
+
+
 
     @classmethod
     def example(cls) -> "DistributionRegulator":
         """Example for Voltage Regulator"""
         return DistributionRegulator(
             name="DistributionRegulator1",
-            transformer=DistributionTransformer.example(),
+            buses=[
+                DistributionBus(
+                    voltage_type="line-to-ground",
+                    name="Bus1",
+                    nominal_voltage=PositiveVoltage(12.47, "kilovolt"),
+                    phases=[Phase.A, Phase.B, Phase.C],
+                ),
+                DistributionBus(
+                    voltage_type="line-to-ground",
+                    name="Bus2",
+                    nominal_voltage=PositiveVoltage(12.47, "kilovolt"),
+                    phases=[Phase.A, Phase.B, Phase.C],
+                ),
+            ],
+            winding_phases=[[Phase.A, Phase.B, Phase.C], [Phase.A, Phase.B, Phase.C]],
+            equipment=DistributionTransformerEquipment.example_with_taps(),
             controllers = [
                 RegulatorController.example(),
                 RegulatorController.example(),
