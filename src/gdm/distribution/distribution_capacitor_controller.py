@@ -37,7 +37,7 @@ class VoltageCapacitorController(CapacitorController):
     ]
 
     pt_ratio: Annotated[
-        float, Field(..., ge=0, description="Value of the voltage (potential) transformer ratio used to stwp down the voltage for the controller.")
+        float, Field(..., ge=0, description="Value of the voltage (potential) transformer ratio used to step down the voltage for the controller.")
     ]
 
     @classmethod

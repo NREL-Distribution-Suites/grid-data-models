@@ -34,6 +34,7 @@ from gdm.distribution.distribution_load import (
 )
 from gdm.distribution.distribution_transformer import (
     WindingEquipment,
+    TapWindingEquipment,
     DistributionTransformer,
     DistributionTransformerEquipment,
     DistributionRegulator,

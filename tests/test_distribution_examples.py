@@ -22,6 +22,7 @@ from gdm import (
     DistributionCapacitor,
     DistributionLoad,
     WindingEquipment,
+    TapWindingEquipment,
     DistributionTransformer,
     DistributionTransformerEquipment,
     SolarEquipment,
@@ -39,7 +40,6 @@ from gdm import (
     VoltVarInverterController,
     VoltVarVoltWattInverterController,
     RegulatorController,
-
 )
 
 DIST_INTERFACES = [
@@ -62,6 +62,7 @@ DIST_INTERFACES = [
     DistributionCapacitor,
     DistributionLoad,
     WindingEquipment,
+    TapWindingEquipment,
     DistributionTransformer,
     DistributionTransformerEquipment,
     SolarEquipment,
@@ -81,7 +82,6 @@ DIST_INTERFACES = [
     VoltVarInverterController,
     VoltVarVoltWattInverterController,
     RegulatorController,
-
 ]
 
 
