@@ -16,8 +16,14 @@ from gdm.quantities import (
 class CapacitorController(Component):
     """Interface for capacitor controllers. Phase connection specified in the capacitor."""
 
-    delay: Annotated[
-        Optional[Time], Field(None,description="The time that the capacitor needs to connect or disconnect when activated")
+    delay_on: Annotated[
+        Optional[Time], Field(None,description="The time that the capacitor needs to connect or disconnect when switching on")
+    ]
+    delay_off: Annotated[
+        Optional[Time], Field(None,description="The time that the capacitor needs to connect or disconnect when switching off")
+    ]
+    dead_time: Annotated[
+        Optional[Time], Field(None,description="The time that the capacitor must remain off before turning back on again")
     ]
     @classmethod
     def example(cls) -> "CapacitorController":
@@ -44,7 +50,7 @@ class VoltageCapacitorController(CapacitorController):
     def example(cls) -> "VoltageCapacitorController":
         """Example for a VoltageCapacitorController."""
         return VoltageCapacitorController(
-                delay = Time(20, "seconds"),
+                delay_on = Time(20, "seconds"),
                 pt_ratio=60,
                 on_voltage = PositiveVoltage(125, "volt"),
                 off_voltage = PositiveVoltage(120, "volt"),
@@ -66,7 +72,7 @@ class ActivePowerCapacitorController(CapacitorController):
     def example(cls) -> "ActivePowerCapacitorController":
         """Example for an ActivePowerCapacitorController."""
         return ActivePowerCapacitorController(
-                delay = Time(20, "seconds"),
+                delay_on = Time(20, "seconds"),
                 on_power = PositiveActivePower(300, "kW"),
                 off_power = PositiveActivePower(300, "kW"),
         )
@@ -85,7 +91,7 @@ class ReactivePowerCapacitorController(CapacitorController):
     def example(cls) -> "ReactivePowerCapacitorController":
         """Example for an ReactivePowerCapacitorController."""
         return ReactivePowerCapacitorController(
-                delay = Time(20, "seconds"),
+                delay_on = Time(20, "seconds"),
                 on_power = PositiveReactivePower(300, "kvar"),
                 off_power = PositiveReactivePower(300, "kvar"),
         )
@@ -109,7 +115,7 @@ class CurrentCapacitorController(CapacitorController):
     def example(cls) -> "CurrentCapacitorController":
         """Example for a CurrentCapacitorController."""
         return CurrentCapacitorController(
-                delay = Time(20, "seconds"),
+                delay_on = Time(20, "seconds"),
                 ct_ratio=10,
                 on_current = PositiveCurrent(110, "ampere"),
                 off_current = PositiveCurrent(110, "ampere"),
@@ -130,7 +136,7 @@ class DailyTimedCapacitorController(CapacitorController):
     def example(cls) -> "DailyTimedCapacitorController":
         """Example for a DailyTimedCapacitorController."""
         return DailyTimedCapacitorController(
-                delay = Time(20, "seconds"),
+                delay_on = Time(20, "seconds"),
                 on_time = datetime.time(hour=9),
                 off_time = datetime.time(hour=17),
         )

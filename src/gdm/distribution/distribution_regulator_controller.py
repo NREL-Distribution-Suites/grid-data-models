@@ -26,7 +26,7 @@ class RegulatorController(Component):
     ldc_X: Annotated[
         Optional[PositiveVoltage], Field(None, description="X setting on the line drop compensator of the regulator in Volts.")
     ]
-    CT_primary: Annotated[
+    ct_primary: Annotated[
         Optional[PositiveCurrent], Field(None, description="Current at which the line drop compensator voltages match the R and X settings.")
     ]
 
