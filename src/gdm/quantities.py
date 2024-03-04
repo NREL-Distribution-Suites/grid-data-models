@@ -4,7 +4,7 @@
 # pylint:disable=super-init-not-called
 
 from infrasys.base_quantity import BaseQuantity, ureg
-from infrasys.quantities import Current, Distance, Resistance, Voltage
+from infrasys.quantities import Current, Distance, Resistance, Voltage, ActivePower
 
 
 ureg.define("var = ampere * volt")
@@ -106,6 +106,11 @@ class PositiveApparentPower(ApparentPower):
     def __init__(self, value, units, **kwargs):
         assert value > 0, f"Apparent power ({value}, {units}) must be positive."
 
+#TODO: Should these get added to infrasys rather than here?
+
+class PositiveActivePower(ActivePower):
+    def __init__(self, value, units, **kwargs):
+        assert value > 0, f"Active power ({value}, {units}) must be positive."
 
 class PositiveCurrent(Current):
     """Qauntity representing positive current."""
@@ -126,3 +131,9 @@ class PositiveDistance(Distance):
 
     def __init__(self, value, units, **kwargs):
         assert value > 0, f"Distance ({value}, {units}) must be positive."
+
+class ActivePowerPUTime(BaseQuantity):
+    """Quantity representing active power per unit of time"""
+
+    __compatible_unit__ = "watt/minute"
+
