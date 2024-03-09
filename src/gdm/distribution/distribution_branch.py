@@ -5,7 +5,7 @@ from itertools import groupby, product
 
 from pydantic import PlainSerializer, model_validator, Field
 from infrasys.component_models import Component, ComponentWithQuantities
-from infrasys.quantities import Resistance, Distance
+from infrasys.quantities import Distance
 from infrasys.models import InfraSysBaseModel
 
 from gdm.distribution.distribution_wires import (
@@ -24,8 +24,6 @@ from gdm.quantities import (
     PositiveDistance,
     PositiveCurrent,
     PositiveVoltage,
-    Capacitance,
-    Reactance,
 )
 
 
@@ -112,18 +110,15 @@ class MatrixImpedanceBranchEquipment(Component):
     """Interface for impedance based conductor."""
 
     r_matrix: Annotated[
-        list[list[PositiveResistancePULength]],
-        serializer("ResistancePerUnitLength"),
+        PositiveResistancePULength,
         Field(..., description="Per unit length resistance matrix."),
     ]
     x_matrix: Annotated[
-        list[list[ReactancePULength]],
-        serializer("ReactancePerUnitLength"),
+        ReactancePULength,
         Field(..., description="Per unit length reactance matrix."),
     ]
     c_matrix: Annotated[
-        list[list[CapacitancePULength]],
-        serializer("Capacitance"),
+        CapacitancePULength,
         Field(..., description="Per unit length capacitance matrix."),
     ]
     ampacity: Annotated[PositiveCurrent, Field(..., description="Ampacity of the conducotr.")]
@@ -131,22 +126,6 @@ class MatrixImpedanceBranchEquipment(Component):
         Optional[ThermalLimitSet],
         Field(None, description="Loading limit set for this conductor."),
     ]
-
-    @model_validator(mode="before")
-    @classmethod
-    def parse_values(cls, values):
-        """Method for parsing values."""
-        req_keys = ["r_matrix", "x_matrix", "c_matrix"]
-        if set(req_keys).difference(values):
-            msg = f"Keys missing in values {values.keys()=} {req_keys=}"
-            raise ValueError(msg)
-
-        for quantity_, key_ in zip([Resistance, Reactance, Capacitance], req_keys):
-            val = values[key_]
-            if isinstance(val, dict) and "data" in val:
-                values[key_] = [[quantity_(el, val["unit"]) for el in arr] for arr in val["data"]]
-
-        return values
 
     @model_validator(mode="after")
     def validate_fields(self) -> "MatrixImpedanceBranchEquipment":
@@ -164,12 +143,11 @@ class MatrixImpedanceBranchEquipment(Component):
     def example(cls) -> "MatrixImpedanceBranchEquipment":
         """Example for matrix impedance model."""
         return MatrixImpedanceBranchEquipment(
-            r_matrix=[[PositiveResistancePULength(1, "ohm/mi")] * 3 for _ in range(3)],
-            x_matrix=[[ReactancePULength(1, "ohm/mi")] * 3 for _ in range(3)],
-            c_matrix=[[CapacitancePULength(1, "farad/mi")] * 3 for _ in range(3)],
+            r_matrix=PositiveResistancePULength([[1,2,3] for _ in range(3)] ,  "ohm/mi"),
+            x_matrix=ReactancePULength([[1,2,3] for _ in range(3)] ,  "ohm/mi"),
+            c_matrix=CapacitancePULength([[1,2,3] for _ in range(3)] ,  "farad/mi"),
             ampacity=PositiveCurrent(90, "ampere"),
         )
-
 
 class GeometryBranchEquipment(Component):
     """Interface for geometry branch info."""
