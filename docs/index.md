@@ -49,6 +49,8 @@ api/limitset.md
 api/distribution_enum.md
 api/distribution_component.md
 api/quantities
+api/distribution_feeder.md
+api/distribution_substation.md
 ```
 
 ```{toctree}

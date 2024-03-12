@@ -33,7 +33,7 @@ class DistributionBus(PowerSystemBus):
     def example(cls) -> "DistributionBus":
         return DistributionBus(
             voltage_type=VoltageTypes.LINE_TO_LINE,
-            belongs_to=DistributionComponent(substation="Dist Substation", feeder="Dist feeder"),
+            belongs_to=DistributionComponent.example(),
             phases=[Phase.A, Phase.B, Phase.C],
             nominal_voltage=PositiveVoltage(400, "volt"),
             name="DistBus1",

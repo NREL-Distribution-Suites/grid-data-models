@@ -12,7 +12,8 @@ from gdm.distribution.distribution_wires import (
     BareConductorEquipment,
     ConcentricCableEquipment,
 )
-from gdm.distribution.distribution_common import BELONG_TO_TYPE, SequencePair
+from gdm.distribution.distribution_common import BELONG_TO_TYPE
+from gdm.distribution.sequence_pair import SequencePair
 from gdm.distribution.distribution_bus import DistributionBus
 from gdm.distribution.limitset import ThermalLimitSet
 from gdm.distribution.distribution_enum import Phase
