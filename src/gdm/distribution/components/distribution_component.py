@@ -6,8 +6,8 @@ from typing import Optional
 from pydantic import Field
 from infrasys.component_models import Component
 
-from gdm.distribution.distribution_feeder import DistributionFeeder
-from gdm.distribution.distribution_substation import DistributionSubstation
+from gdm.distribution.components.distribution_feeder import DistributionFeeder
+from gdm.distribution.components.distribution_substation import DistributionSubstation
 
 
 class DistributionComponent(Component):

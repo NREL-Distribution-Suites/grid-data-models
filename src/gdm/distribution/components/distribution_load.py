@@ -1,60 +1,15 @@
 """ This module contains interface for distribution load."""
 
-from typing import Annotated, Optional
+from typing import Annotated
 
-from pydantic import PositiveInt, model_validator, Field
+from pydantic import model_validator, Field
 from infrasys.component_models import ComponentWithQuantities
 
-from gdm.distribution.distribution_enum import ConnectionType, Phase
+from gdm.distribution.distribution_enum import Phase
 from gdm.distribution.distribution_common import BELONG_TO_TYPE
-from gdm.distribution.distribution_bus import DistributionBus
+from gdm.distribution.components.distribution_bus import DistributionBus
 from gdm.quantities import PositiveVoltage
-from gdm.load import PowerSystemLoad
-
-
-class PhaseLoadEquipment(PowerSystemLoad):
-    """Interface for single phase load equipment."""
-
-    num_customers: Annotated[
-        Optional[PositiveInt],
-        Field(None, description="Number of customers for this load"),
-    ]
-
-    @classmethod
-    def example(cls) -> "PhaseLoadEquipment":
-        """Example for phase load."""
-        base_load = PowerSystemLoad.example()
-        return PhaseLoadEquipment(
-            name=base_load.name,
-            z_real=base_load.z_real,
-            z_imag=base_load.z_imag,
-            i_real=base_load.i_real,
-            i_imag=base_load.i_imag,
-            p_real=base_load.p_real,
-            p_imag=base_load.p_imag,
-        )
-
-
-class LoadEquipment(ComponentWithQuantities):
-    """Interface for load model."""
-
-    phase_loads: Annotated[
-        list[PhaseLoadEquipment], Field(..., description="List of phase loads.")
-    ]
-    connection_type: Annotated[
-        ConnectionType,
-        Field(ConnectionType.STAR, description="Connection type for multi phase load."),
-    ]
-
-    @classmethod
-    def example(cls) -> "LoadEquipment":
-        """Example for load model."""
-        phase_loads = [PhaseLoadEquipment.example()] * 3
-        return LoadEquipment(
-            name="Load Eqiup 1",
-            phase_loads=phase_loads,
-            connection_type=ConnectionType.STAR,
-        )
+from gdm.distribution.equipment.load_equipment import LoadEquipment
 
 
 class DistributionLoad(ComponentWithQuantities):

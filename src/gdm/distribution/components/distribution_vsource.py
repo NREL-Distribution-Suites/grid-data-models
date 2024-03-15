@@ -7,7 +7,7 @@ from infrasys.quantities import Angle, Resistance, Voltage
 from pydantic import Field
 
 from gdm.distribution.distribution_common import BELONG_TO_TYPE
-from gdm.distribution.distribution_bus import DistributionBus
+from gdm.distribution.components.distribution_bus import DistributionBus
 from gdm.quantities import Reactance, PositiveVoltage
 from gdm.distribution.distribution_enum import Phase
 

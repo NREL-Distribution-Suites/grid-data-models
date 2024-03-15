@@ -2,69 +2,18 @@
 
 from typing import Annotated
 
-from infrasys.component_models import Component, ComponentWithQuantities
+from infrasys.component_models import ComponentWithQuantities
 from pydantic import Field, model_validator
 
-from gdm.quantities import PositiveReactance, PositiveResistance, PositiveVoltage
-from gdm.distribution.distribution_enum import ConnectionType, Phase
+from gdm.distribution.components.distribution_bus import DistributionBus
+from gdm.distribution.equipment.capacitor_equipment import CapacitorEquipment
+from gdm.quantities import PositiveVoltage
+from gdm.distribution.distribution_enum import Phase
 from gdm.distribution.distribution_common import BELONG_TO_TYPE
-from gdm.distribution.distribution_bus import DistributionBus
-from gdm.capacitor import PowerSystemCapacitor
-from gdm.distribution.distribution_capacitor_controller import CapacitorController, VoltageCapacitorController
-
-
-class PhaseCapacitorEquipment(PowerSystemCapacitor):
-    """Interface for phase capacitor."""
-
-    resistance: Annotated[
-        PositiveResistance,
-        Field(
-            PositiveResistance(0, "ohm"),
-            description="Positive resistance for the capacitor.",
-        ),
-    ]
-    reactance: Annotated[
-        PositiveReactance,
-        Field(
-            PositiveReactance(0, "ohm"),
-            description="Positive reactance for the capacitor.",
-        ),
-    ]
-
-    @classmethod
-    def example(cls) -> "PhaseCapacitorEquipment":
-        """Example for phase capacitor equipment."""
-        base_cap = PowerSystemCapacitor.example()
-        return PhaseCapacitorEquipment(
-            name=base_cap.name,
-            rated_capacity=base_cap.rated_capacity,
-            num_banks=base_cap.num_banks,
-            num_banks_on=base_cap.num_banks_on,
-        )
-
-
-class CapacitorEquipment(Component):
-    """Interface for capacitor model."""
-
-    phase_capacitors: Annotated[
-        list[PhaseCapacitorEquipment],
-        Field(
-            ...,
-            description="List of phase capacitors for this distribution capacitor.",
-        ),
-    ]
-    connection_type: Annotated[
-        ConnectionType,
-        Field(ConnectionType.STAR, description="Connection type for this capacitor."),
-    ]
-
-    @classmethod
-    def example(cls) -> "CapacitorEquipment":
-        """Example for capacitor model."""
-        return CapacitorEquipment(
-            phase_capacitors=[PhaseCapacitorEquipment.example()] * 3,
-            connection_type=ConnectionType.STAR,
-        )
+from gdm.distribution.controllers.distribution_capacitor_controller import (
+    CapacitorController,
+    VoltageCapacitorController,
+)
 
 
 class DistributionCapacitor(ComponentWithQuantities):
@@ -92,9 +41,7 @@ class DistributionCapacitor(ComponentWithQuantities):
         list[CapacitorController],
         Field(
             [],
-            description=(
-                "List of the controllers which are used for each phase in order.",
-            ),
+            description=("List of the controllers which are used for each phase in order.",),
         ),
     ]
 
@@ -116,8 +63,8 @@ class DistributionCapacitor(ComponentWithQuantities):
             )
         if len(self.equipment.phase_capacitors) != len(self.controllers):
             msg = (
-                    f"Number of controllers ({self.controllers=}) "
-                    f"did not match number of phase capacitors {self.equipment.phase_capacitors=}"
+                f"Number of controllers ({self.controllers=}) "
+                f"did not match number of phase capacitors {self.equipment.phase_capacitors=}"
             )
         return self
 
@@ -137,6 +84,6 @@ class DistributionCapacitor(ComponentWithQuantities):
             controllers=[
                 VoltageCapacitorController.example(),
                 VoltageCapacitorController.example(),
-                VoltageCapacitorController.example()
+                VoltageCapacitorController.example(),
             ],
         )

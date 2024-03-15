@@ -6,7 +6,7 @@ from infrasys.location import Location
 from pydantic import Field
 
 from gdm.distribution.distribution_enum import LimitType, Phase, VoltageTypes
-from gdm.distribution.distribution_component import DistributionComponent
+from gdm.distribution.components.distribution_component import DistributionComponent
 from gdm.distribution.distribution_common import BELONG_TO_TYPE
 from gdm.distribution.limitset import VoltageLimitSet
 from gdm.quantities import PositiveVoltage

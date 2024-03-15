@@ -1,65 +1,17 @@
-"""This module contains interface for catalogs."""
+""" This module contains concentric cable equipment."""
 
 from typing import Annotated, Optional
 
 from infrasys.component_models import ComponentWithQuantities
-from pydantic import PositiveInt, model_validator, Field
+from pydantic import Field, PositiveInt, model_validator
 
-from gdm.distribution.limitset import ThermalLimitSet
 from gdm.quantities import (
-    PositiveResistancePULength,
     PositiveDistance,
     PositiveCurrent,
+    PositiveResistancePULength,
     PositiveVoltage,
 )
-
-
-class BareConductorEquipment(ComponentWithQuantities):
-    """Interface for conductor catalaog."""
-
-    conductor_diameter: Annotated[
-        PositiveDistance, Field(..., description="Diameter of the conductor.")
-    ]
-    conductor_gmr: Annotated[
-        PositiveDistance,
-        Field(..., description="Geometric mean radius of the conductor."),
-    ]
-    ampacity: Annotated[PositiveCurrent, Field(..., description="Ampacity of the conductor.")]
-    ac_resistance: Annotated[
-        PositiveResistancePULength,
-        Field(
-            ...,
-            description="Per unit length positive alternating current resistance of the conductor.",
-        ),
-    ]
-    emergency_ampacity: Annotated[
-        PositiveCurrent,
-        Field(..., description="Emergency ampacity for this conductor."),
-    ]
-    dc_resistance: Annotated[
-        PositiveResistancePULength,
-        Field(
-            ...,
-            description="Per unit length positive direct current resistance of the conductor.",
-        ),
-    ]
-    loading_limit: Annotated[
-        Optional[ThermalLimitSet],
-        Field(None, description="Loading limit set for this conductor."),
-    ]
-
-    @classmethod
-    def example(cls) -> "BareConductorEquipment":
-        """Example for bare conductor."""
-        return BareConductorEquipment(
-            name="24_AWGSLD_Copper",
-            conductor_diameter=PositiveDistance(0.0201, "in"),
-            conductor_gmr=PositiveDistance(0.00065, "ft"),
-            ampacity=PositiveCurrent(1, "ampere"),
-            ac_resistance=PositiveResistancePULength(151.62, "ohm/m"),
-            dc_resistance=PositiveResistancePULength(151.62, "ohm/m"),
-            emergency_ampacity=PositiveCurrent(1, "ampere"),
-        )
+from gdm.distribution.limitset import ThermalLimitSet
 
 
 class ConcentricCableEquipment(ComponentWithQuantities):

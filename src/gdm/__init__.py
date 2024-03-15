@@ -2,54 +2,54 @@
 
 import pkg_resources
 
-from gdm.distribution.distribution_bus import DistributionBus
-from gdm.distribution.distribution_component import DistributionComponent
-from gdm.distribution.distribution_feeder import DistributionFeeder
-from gdm.distribution.distribution_substation import DistributionSubstation
-from gdm.distribution.distribution_vsource import (
+from gdm.distribution.components.distribution_bus import DistributionBus
+from gdm.distribution.components.distribution_component import DistributionComponent
+from gdm.distribution.components.distribution_feeder import DistributionFeeder
+from gdm.distribution.components.distribution_substation import DistributionSubstation
+from gdm.distribution.components.distribution_vsource import (
     PhaseVoltageSourceEquipment,
     VoltageSourceEquipment,
     DistributionVoltageSource,
 )
-from gdm.distribution.distribution_branch import (
+from gdm.distribution.components.distribution_branch import DistributionBranch
+from gdm.distribution.components.sequence_impedance_branch import SequenceImpedanceBranch
+from gdm.distribution.components.matrix_impedance_branch import MatrixImpedanceBranch
+from gdm.distribution.components.geometry_branch import GeometryBranch
+from gdm.distribution.equipment.geometry_branch_equipment import GeometryBranchEquipment
+from gdm.distribution.equipment.sequence_impedance_branch_equipment import (
     SequenceImpedanceBranchEquipment,
+)
+from gdm.distribution.equipment.matrix_impedance_branch_equipment import (
     MatrixImpedanceBranchEquipment,
-    GeometryBranchEquipment,
-    DistributionBranch,
-    MatrixImpedanceBranch,
-    SequenceImpedanceBranch,
-    GeometryBranch,
 )
-from gdm.distribution.distribution_capacitor import (
-    PhaseCapacitorEquipment,
-    CapacitorEquipment,
-    DistributionCapacitor,
-)
-from gdm.distribution.distribution_wires import (
-    ConcentricCableEquipment,
-    BareConductorEquipment,
-)
-from gdm.distribution.distribution_load import (
-    DistributionLoad,
-    PhaseLoadEquipment,
-    LoadEquipment,
-)
+from gdm.distribution.equipment.bare_conductor_equipment import BareConductorEquipment
+from gdm.distribution.equipment.concentric_cable_equipment import ConcentricCableEquipment
 
-from gdm.distribution.distribution_transformer_equipment import (
+from gdm.distribution.components.distribution_capacitor import DistributionCapacitor
+from gdm.distribution.equipment.phase_capacitor_equipment import PhaseCapacitorEquipment
+from gdm.distribution.equipment.capacitor_equipment import CapacitorEquipment
+
+
+from gdm.distribution.components.distribution_load import DistributionLoad
+from gdm.distribution.equipment.phase_load_equipment import PhaseLoadEquipment
+from gdm.distribution.equipment.load_equipment import LoadEquipment
+
+from gdm.distribution.equipment.distribution_transformer_equipment import (
     DistributionTransformerEquipment,
     TapWindingEquipment,
     WindingEquipment,
 )
 
-from gdm.distribution.distribution_transformer import (
+from gdm.distribution.components.distribution_transformer import (
     DistributionTransformer,
-    DistributionRegulator,
 )
-from gdm.distribution.distribution_solar import (
-    SolarEquipment,
+from gdm.distribution.components.distribution_regulator import DistributionRegulator
+
+from gdm.distribution.components.distribution_solar import (
     DistributionSolar,
 )
-from gdm.distribution.distribution_inverter_controller import (
+from gdm.distribution.equipment.solar_equipment import SolarEquipment
+from gdm.distribution.controllers.distribution_inverter_controller import (
     Curve,
     InverterController,
     PowerfactorInverterController,
@@ -57,7 +57,7 @@ from gdm.distribution.distribution_inverter_controller import (
     VoltVarVoltWattInverterController,
 )
 
-from gdm.distribution.distribution_capacitor_controller import (
+from gdm.distribution.controllers.distribution_capacitor_controller import (
     CapacitorController,
     VoltageCapacitorController,
     ActivePowerCapacitorController,
@@ -65,7 +65,7 @@ from gdm.distribution.distribution_capacitor_controller import (
     CurrentCapacitorController,
     DailyTimedCapacitorController,
 )
-from gdm.distribution.distribution_regulator_controller import (
+from gdm.distribution.controllers.distribution_regulator_controller import (
     RegulatorController,
 )
 from gdm.distribution.sequence_pair import SequencePair

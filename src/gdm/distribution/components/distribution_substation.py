@@ -5,7 +5,7 @@ from typing import Annotated
 from infrasys.component_models import ComponentWithQuantities
 from pydantic import Field
 
-from gdm.distribution.distribution_feeder import DistributionFeeder
+from gdm.distribution.components.distribution_feeder import DistributionFeeder
 
 
 class DistributionSubstation(ComponentWithQuantities):
