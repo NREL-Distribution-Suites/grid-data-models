@@ -76,6 +76,8 @@ from gdm.distribution.distribution_enum import (
     VoltageTypes,
     LimitType,
 )
+from gdm.distribution.distribution_system import DistributionSystem
+from gdm.distribution.distribution_graph import DistributionGraph
 
 
 from gdm.transmission.transmission_bus import TransmissionBus
