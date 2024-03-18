@@ -12,6 +12,7 @@ def build_graph_from_system(system: System) -> nx.Graph:
     """Returns networkx instance of the system."""
 
     graph = nx.Graph()
+    node: DistributionBus
     for node in system.get_components(DistributionBus):
         graph.add_node(node.name)
 
