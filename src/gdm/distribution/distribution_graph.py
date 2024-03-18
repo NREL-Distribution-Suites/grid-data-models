@@ -8,12 +8,6 @@ from gdm.distribution.components.distribution_branch import DistributionBranch
 from gdm.distribution.components.distribution_transformer import DistributionTransformer
 
 
-def add_edges(edges: list[DistributionBranch | DistributionTransformer], graph: nx.Graph):
-    """Add edges to the graph"""
-    for edge in edges:
-        graph.add_edge(edge.buses[0].name, edge.buses[1].name)
-
-
 def build_graph_from_system(system: System) -> nx.Graph:
     """Returns networkx instance of the system."""
 
@@ -21,6 +15,10 @@ def build_graph_from_system(system: System) -> nx.Graph:
     for node in system.get_components(DistributionBus):
         graph.add_node(node.name)
 
-    add_edges(system.get_components(DistributionBranch), graph)
-    add_edges(system.get_components(DistributionTransformer), graph)
+    edges: list[DistributionBranch | DistributionTransformer] = list(
+        system.get_components(DistributionBranch)
+    ) + list(system.get_components(DistributionTransformer))
+
+    for edge in edges:
+        graph.add_edge(edge.buses[0].name, edge.buses[1].name)
     return graph
