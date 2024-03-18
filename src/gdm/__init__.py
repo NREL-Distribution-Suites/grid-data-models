@@ -77,7 +77,7 @@ from gdm.distribution.distribution_enum import (
     LimitType,
 )
 from gdm.distribution.distribution_system import DistributionSystem
-from gdm.distribution.distribution_graph import DistributionGraph
+from gdm.distribution.distribution_graph import build_graph_from_system
 
 
 from gdm.transmission.transmission_bus import TransmissionBus
