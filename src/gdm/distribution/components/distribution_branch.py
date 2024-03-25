@@ -28,7 +28,6 @@ class DistributionBranch(ComponentWithQuantities):
         list[Phase],
         Field(..., description="List of phases in the same order as conductors."),
     ]
-    is_closed: Annotated[bool, Field(True, description="Status of the line.")]
 
     @model_validator(mode="after")
     def validate_fields(self) -> "DistributionBranch":
@@ -82,4 +81,24 @@ class DistributionBranch(ComponentWithQuantities):
             length=PositiveDistance(130.2, "meter"),
             phases=[Phase.A, Phase.B, Phase.C],
             name="p14u405",
+        )
+
+
+class SwitchedDistributionBranch(DistributionBranch):
+    """Interface for distribution branch that can be toggled."""
+
+    is_closed: Annotated[list[bool], Field(description="Status of branch for each phase.")]
+
+    @model_validator(mode="after")
+    def validate_fields(self) -> "SwitchedDistributionBranch":
+        """Custom validator for distribution switch."""
+        if len(self.is_closed) != len(self.phases):
+            msg = f"Length of {self.is_closed=} must be equal to length of {self.phases=}"
+            raise ValueError(msg)
+
+    @classmethod
+    def example(cls) -> "SwitchedDistributionBranch":
+        return SwitchedDistributionBranch(
+            **DistributionBranch.example().model_dump(exclude_none=True),
+            is_closed=[True, True, True],
         )

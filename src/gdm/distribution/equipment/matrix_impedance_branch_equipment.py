@@ -1,6 +1,6 @@
 """ This module contains matrix impedance branch equipment."""
 
-from typing import Annotated, Optional, Any
+from typing import Annotated, Optional
 
 from infrasys.component_models import ComponentWithQuantities
 from pydantic import Field, model_validator
@@ -12,15 +12,6 @@ from gdm.quantities import (
     PositiveCurrent,
 )
 from gdm.distribution.limitset import ThermalLimitSet
-
-
-def get_mat_size(mat: list[list[Any]]) -> tuple[int, int]:
-    """Internal function to get matrix size."""
-    mat_item_sizes = set(len(item) for item in mat)
-    if len(mat_item_sizes) != 1:
-        msg = f"Matrix has uneven items {mat=}"
-        raise ValueError(msg)
-    return (len(mat), mat_item_sizes.pop())
 
 
 class MatrixImpedanceBranchEquipment(ComponentWithQuantities):
@@ -47,13 +38,10 @@ class MatrixImpedanceBranchEquipment(ComponentWithQuantities):
     @model_validator(mode="after")
     def validate_fields(self) -> "MatrixImpedanceBranchEquipment":
         """Custom validator for fields."""
-        r_matrix_size = get_mat_size(self.r_matrix)
-        x_matrix_size = get_mat_size(self.x_matrix)
-        c_matrix_size = get_mat_size(self.c_matrix)
-        if r_matrix_size == x_matrix_size == c_matrix_size:
+        if self.r_matrix.shape == self.x_matrix.shape == self.c_matrix.shape:
             return self
 
-        msg = f"matrix sizes are not equals {r_matrix_size=} {x_matrix_size=} {c_matrix_size=}"
+        msg = f"matrix sizes are not equals {self.r_matrix=} {self.x_matrix=} {self.c_matrix=}"
         raise ValueError(msg)
 
     @classmethod

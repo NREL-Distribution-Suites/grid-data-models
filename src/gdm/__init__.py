@@ -11,7 +11,10 @@ from gdm.distribution.components.distribution_vsource import (
     VoltageSourceEquipment,
     DistributionVoltageSource,
 )
-from gdm.distribution.components.distribution_branch import DistributionBranch
+from gdm.distribution.components.distribution_branch import (
+    DistributionBranch,
+    SwitchedDistributionBranch,
+)
 from gdm.distribution.components.sequence_impedance_branch import SequenceImpedanceBranch
 from gdm.distribution.components.matrix_impedance_branch import MatrixImpedanceBranch
 from gdm.distribution.components.geometry_branch import GeometryBranch
@@ -19,12 +22,16 @@ from gdm.distribution.equipment.geometry_branch_equipment import GeometryBranchE
 from gdm.distribution.equipment.sequence_impedance_branch_equipment import (
     SequenceImpedanceBranchEquipment,
 )
+from gdm.distribution.components.distribution_switch import DistributionSwitch
+from gdm.distribution.components.matrix_impedance_switch import MatrixImpedanceSwitch
+from gdm.distribution.components.distribution_fuse import DistributionFuse
+from gdm.distribution.components.matrix_impedance_fuse import MatrixImpedanceFuse
 from gdm.distribution.equipment.matrix_impedance_branch_equipment import (
     MatrixImpedanceBranchEquipment,
 )
 from gdm.distribution.equipment.bare_conductor_equipment import BareConductorEquipment
 from gdm.distribution.equipment.concentric_cable_equipment import ConcentricCableEquipment
-
+from gdm.distribution.equipment.matrix_impedance_fuse_equipment import MatrixImpedanceFuseEquipment
 from gdm.distribution.components.distribution_capacitor import DistributionCapacitor
 from gdm.distribution.equipment.phase_capacitor_equipment import PhaseCapacitorEquipment
 from gdm.distribution.equipment.capacitor_equipment import CapacitorEquipment

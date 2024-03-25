@@ -22,5 +22,6 @@ To get started, you can clone and pip install this library from [here](https://g
 - **Kapil Duwadi**
 - **Tarek Elgindy**
 - **Aadil Latif**
+- **Pedro Andres Sanchez Perez**
 - **Daniel Thompson**
 - **Jeremy Keen**

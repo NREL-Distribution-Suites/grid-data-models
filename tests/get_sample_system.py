@@ -103,7 +103,6 @@ def get_three_bus_system():
         buses=[bus_2, bus_3],
         phases=[Phase.S1, Phase.S2, Phase.N],
         length=PositiveDistance(20, "m"),
-        is_closed=True,
         equipment=MatrixImpedanceBranchEquipment(
             name="matrix-impedance-branch-1",
             r_matrix=PositiveResistancePULength([[1, 2, 3] for _ in range(3)], "ohm/mi"),

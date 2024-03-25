@@ -33,7 +33,6 @@ class SequenceImpedanceBranch(DistributionBranch):
             buses=base_branch.buses,
             length=base_branch.length,
             phases=base_branch.phases,
-            is_closed=True,
             name=base_branch.name,
             equipment=SequenceImpedanceBranchEquipment.example(),
         )

@@ -1,17 +1,17 @@
-"""This module contains matrix impedance branch."""
+"""This module contains matrix impedance switch."""
 
 from typing import Annotated
 
 from pydantic import Field, model_validator
 
-from gdm.distribution.components.distribution_branch import DistributionBranch
+from gdm.distribution.components.distribution_switch import DistributionSwitch
 from gdm.distribution.equipment.matrix_impedance_branch_equipment import (
     MatrixImpedanceBranchEquipment,
 )
 
 
-class MatrixImpedanceBranch(DistributionBranch):
-    """Interface for matrix impedance branch."""
+class MatrixImpedanceSwitch(DistributionSwitch):
+    """Interface for matrix impedance switch."""
 
     equipment: Annotated[
         MatrixImpedanceBranchEquipment,
@@ -19,7 +19,7 @@ class MatrixImpedanceBranch(DistributionBranch):
     ]
 
     @model_validator(mode="after")
-    def validate_fields(self) -> "MatrixImpedanceBranch":
+    def validate_fields(self) -> "MatrixImpedanceSwitch":
         """Custom validator for matrix impedance branch."""
         for mat in [
             self.equipment.r_matrix,
@@ -33,13 +33,9 @@ class MatrixImpedanceBranch(DistributionBranch):
         return self
 
     @classmethod
-    def example(cls) -> "MatrixImpedanceBranch":
+    def example(cls) -> "MatrixImpedanceSwitch":
         """Example for matrix impedance branch."""
-        base_branch = DistributionBranch.example()
-        return MatrixImpedanceBranch(
-            buses=base_branch.buses,
-            length=base_branch.length,
-            phases=base_branch.phases,
-            name=base_branch.name,
+        return MatrixImpedanceSwitch(
+            **DistributionSwitch.example().model_dump(exclude_none=True),
             equipment=MatrixImpedanceBranchEquipment.example(),
         )
