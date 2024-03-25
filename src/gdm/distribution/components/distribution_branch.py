@@ -4,7 +4,7 @@ from typing import Annotated
 from itertools import product
 
 from pydantic import model_validator, Field
-from infrasys.component_models import ComponentWithQuantities
+from infrasys import Component
 
 from gdm.distribution.distribution_common import BELONG_TO_TYPE
 from gdm.distribution.components.distribution_bus import DistributionBus
@@ -15,7 +15,7 @@ from gdm.quantities import (
 )
 
 
-class DistributionBranch(ComponentWithQuantities):
+class DistributionBranch(Component):
     """Interface for distribution branch."""
 
     belongs_to: BELONG_TO_TYPE

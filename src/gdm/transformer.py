@@ -1,7 +1,7 @@
 """This module contains base power system transformer interface."""
 
-from infrasys.component_models import ComponentWithQuantities
+from infrasys import Component
 
 
-class PowerSystemTransformer(ComponentWithQuantities):
+class PowerSystemTransformer(Component):
     """Interface for power system transformer."""

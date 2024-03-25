@@ -2,7 +2,7 @@
 
 from typing import Annotated
 
-from infrasys.component_models import ComponentWithQuantities
+from infrasys import Component
 from pydantic import Field, model_validator
 
 from gdm.distribution.components.distribution_bus import DistributionBus
@@ -16,7 +16,7 @@ from gdm.distribution.controllers.distribution_capacitor_controller import (
 )
 
 
-class DistributionCapacitor(ComponentWithQuantities):
+class DistributionCapacitor(Component):
     """Interface for capacitor present in distribution system models."""
 
     bus: Annotated[

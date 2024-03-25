@@ -1,7 +1,7 @@
 """ This module contains interface for distribution controllers."""
 from typing import Annotated, Optional
 
-from infrasys.component_models import Component
+from infrasys import Component
 from infrasys.quantities import Time
 from pydantic import Field
 
@@ -11,6 +11,7 @@ from gdm.quantities import (
 )
 class RegulatorController(Component):
     """Interface for a Regulator Controller."""
+    name: Annotated[str, Field('', description="Name of the regulator controller.")]
     delay: Annotated[
         Optional[Time], Field(..., description="Delay for the first tap change operation")
     ]

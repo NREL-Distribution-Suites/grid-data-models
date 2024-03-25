@@ -1,9 +1,9 @@
 """ This module contains pydantic model for distribution feeder. """
 
-from infrasys.component_models import ComponentWithQuantities
+from infrasys import Component
 
 
-class DistributionFeeder(ComponentWithQuantities):
+class DistributionFeeder(Component):
     """Class interface for distribution feeder."""
 
     @classmethod

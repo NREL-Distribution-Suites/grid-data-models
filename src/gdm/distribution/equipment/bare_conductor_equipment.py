@@ -2,7 +2,7 @@
 
 from typing import Annotated, Optional
 
-from infrasys.component_models import ComponentWithQuantities
+from infrasys import Component
 from pydantic import Field
 
 from gdm.distribution.limitset import ThermalLimitSet
@@ -13,7 +13,7 @@ from gdm.quantities import (
 )
 
 
-class BareConductorEquipment(ComponentWithQuantities):
+class BareConductorEquipment(Component):
     """Interface for conductor catalaog."""
 
     conductor_diameter: Annotated[

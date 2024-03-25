@@ -2,13 +2,13 @@
 
 from typing import Annotated
 
-from infrasys.component_models import ComponentWithQuantities
+from infrasys import Component
 from pydantic import Field
 
 from gdm.distribution.components.distribution_feeder import DistributionFeeder
 
 
-class DistributionSubstation(ComponentWithQuantities):
+class DistributionSubstation(Component):
     """Class interface for distribution feeder."""
 
     feeders: Annotated[

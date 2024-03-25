@@ -2,7 +2,7 @@
 
 from typing import Annotated, Optional
 
-from infrasys.component_models import Component
+from infrasys import Component
 from pydantic import Field
 
 from gdm.quantities import (
@@ -14,7 +14,7 @@ from gdm.distribution.curve import Curve
 
 class InverterController(Component):
     """Interface for Inverter controllers."""
-
+    name: Annotated[str, Field('', description="Name of the inverter controller.")]
     inverter_capacity: Annotated[
         PositiveApparentPower, Field(..., description="Apparent power rating for the inverter.")
     ]

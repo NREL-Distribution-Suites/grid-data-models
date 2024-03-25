@@ -2,7 +2,7 @@
 
 from typing import Annotated, Optional
 
-from infrasys.component_models import ComponentWithQuantities
+from infrasys import Component
 from pydantic import Field
 
 from gdm.quantities import (
@@ -14,7 +14,7 @@ from gdm.quantities import (
 from gdm.distribution.limitset import ThermalLimitSet
 
 
-class SequenceImpedanceBranchEquipment(ComponentWithQuantities):
+class SequenceImpedanceBranchEquipment(Component):
     """Interface for sequence impedance branch."""
 
     pos_seq_resistance: Annotated[

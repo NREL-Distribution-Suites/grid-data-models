@@ -1,13 +1,13 @@
 """ Interface for transmission branch."""
 
-from infrasys.component_models import ComponentWithQuantities
+from infrasys import Component
 from infrasys.quantities import ActivePower
 
 from gdm.transmission.transmission_bus import TransmissionBus
 from gdm.transmission.transmission_component import TransmissionComponent
 
 
-class TransmissionBranch(ComponentWithQuantities):
+class TransmissionBranch(Component):
     """Interface for transmission branch."""
 
     belongs_to: TransmissionComponent

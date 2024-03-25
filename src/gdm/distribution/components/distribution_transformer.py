@@ -2,7 +2,7 @@
 
 from typing import Annotated
 
-from infrasys.component_models import ComponentWithQuantities
+from infrasys import Component
 from pydantic import Field, model_validator
 
 from gdm.distribution.distribution_common import BELONG_TO_TYPE
@@ -14,7 +14,7 @@ from gdm.distribution.equipment.distribution_transformer_equipment import (
 )
 
 
-class DistributionTransformer(ComponentWithQuantities):
+class DistributionTransformer(Component):
     """Interface for distribution transformer."""
 
     belongs_to: BELONG_TO_TYPE

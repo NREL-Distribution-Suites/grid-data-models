@@ -21,7 +21,7 @@ classifiers = [
 dependencies = [
   "rich",
   "networkx",
-  "infrasys @ git+https://github.nrel.gov/CADET/infrastructure_systems.git@cac7811",
+  "infrasys @ git+https://github.nrel.gov/CADET/infrastructure_systems.git",
 ]
 
 [project.optional-dependencies]

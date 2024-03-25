@@ -1,7 +1,6 @@
 """This module contains distribution system."""
 
-from infrasys.system import System
-from infrasys.component_models import Component
+from infrasys import Component, System
 
 import gdm
 

@@ -2,7 +2,7 @@
 
 from typing import Annotated, Optional
 
-from infrasys.component_models import ComponentWithQuantities
+from infrasys import Component
 from pydantic import Field, PositiveInt, model_validator
 
 from gdm.quantities import (
@@ -14,7 +14,7 @@ from gdm.quantities import (
 from gdm.distribution.limitset import ThermalLimitSet
 
 
-class ConcentricCableEquipment(ComponentWithQuantities):
+class ConcentricCableEquipment(Component):
     """Interface for cable catalog."""
 
     strand_diameter: Annotated[

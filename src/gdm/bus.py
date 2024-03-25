@@ -2,14 +2,13 @@
 
 from typing import Annotated, Optional
 
-from infrasys.component_models import ComponentWithQuantities
-from infrasys.location import Location
+from infrasys import Component, Location
 from pydantic import Field
 
 from gdm.quantities import PositiveVoltage
 
 
-class PowerSystemBus(ComponentWithQuantities):
+class PowerSystemBus(Component):
     """Interface for power system bus."""
 
     nominal_voltage: Annotated[

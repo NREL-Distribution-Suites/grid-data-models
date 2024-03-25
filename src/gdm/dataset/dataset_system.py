@@ -3,8 +3,7 @@
 from typing import Any
 from uuid import UUID
 
-from infrasys.system import System
-from infrasys.component_models import Component
+from infrasys import System, Component
 
 from gdm.exceptions import GDMNotAttachedToSystemError, GDMIncompatibleInstanceError
 from gdm.dataset.cost_model import CostModel
