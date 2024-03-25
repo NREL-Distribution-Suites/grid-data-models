@@ -69,7 +69,7 @@ class DatasetSystem(System):
         ]
 
     def remove_cost(self, catalog: Component, cost: CostModel):
-        """Remove cost from catalog."""
+        """Remove cost from the catalog."""
 
         if not catalog.is_attached(system_uuid=self.uuid):
             msg = f"Catalog not attached to the system {catalog=}"
