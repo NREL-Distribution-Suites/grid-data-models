@@ -1,0 +1,28 @@
+""" This module contains distribution switch controller."""
+
+from typing import Annotated, Literal
+
+from pydantic import Field
+
+from infrasys.quantities import Time
+from infrasys.component_models import Component
+
+
+class DistributionSwitchController(Component):
+    """Interface for distribution switch controller."""
+
+    delay: Annotated[Time, Field(description="Fixed delay added to the recloser trip time.")]
+    normal_state: Annotated[
+        Literal["open", "close"],
+        Field(..., description="Action to open or close the switch after delay time."),
+    ]
+    is_locked: Annotated[
+        bool, Field(description="Boolean value representing whether the switch is locked or not.")
+    ]
+
+    @classmethod
+    def example(cls) -> "DistributionSwitchController":
+        """Example for distribution switch controller."""
+        return DistributionSwitchController(
+            delay=Time(0, "minutes"), normal_state="close", is_locked=False
+        )

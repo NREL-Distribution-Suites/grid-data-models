@@ -4,6 +4,7 @@ from typing import Annotated
 
 from pydantic import model_validator, Field
 from infrasys.component_models import Component
+from infrasys.quantities import Time, Current
 
 
 class Curve(Component):
@@ -31,3 +32,25 @@ class Curve(Component):
     def vv_vw_example(cls) -> "Curve":
         """Example of a Curve (Volt-Var Volt-Watt IEEE-1547 standard)."""
         return Curve(curve_x=[0.5, 1.06, 1.1, 1.5], curve_y=[1.0, 1.0, 0.0, 0.0])
+
+
+class TimeCurrentCurve(Component):
+    """An interface for time current curve."""
+
+    curve_x: Annotated[Current, Field(..., description="Array of time values.")]
+    curve_y: Annotated[Time, Field(..., description="Array of current values.")]
+
+    @model_validator(mode="after")
+    def validate_fields(self) -> "Curve":
+        if len(self.curve_x) != len(self.curve_y):
+            msg = f"curve_x ({self.curve_x=}) and curve_y ({self.curve_y=}) have different lengths"
+            raise ValueError(msg)
+        return self
+
+    @classmethod
+    def example(cls) -> "TimeCurrentCurve":
+        """Example time current curve."""
+        return TimeCurrentCurve(
+            curve_x=Current([100, 200, 300, 400, 500, 600, 800, 1000, 2000, 5000], "ampere"),
+            curve_y=Time([2.5, 0.6, 0.3, 0.2, 0.15, 0.1, 0.06, 0.04, 0.018, 0.012], "second"),
+        )

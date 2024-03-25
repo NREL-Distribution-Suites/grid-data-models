@@ -4,17 +4,17 @@ from typing import Annotated
 
 from pydantic import Field, model_validator
 
-from gdm.distribution.components.distribution_switch import DistributionSwitch
-from gdm.distribution.equipment.matrix_impedance_branch_equipment import (
-    MatrixImpedanceBranchEquipment,
+from gdm.distribution.equipment.matrix_impedance_switch_equipment import (
+    MatrixImpedanceSwitchEquipment,
 )
+from gdm.distribution.components.distribution_switch import DistributionSwitch
 
 
 class MatrixImpedanceSwitch(DistributionSwitch):
     """Interface for matrix impedance switch."""
 
     equipment: Annotated[
-        MatrixImpedanceBranchEquipment,
+        MatrixImpedanceSwitchEquipment,
         Field(..., description="Matrix impedance branch equipment."),
     ]
 
@@ -37,5 +37,5 @@ class MatrixImpedanceSwitch(DistributionSwitch):
         """Example for matrix impedance branch."""
         return MatrixImpedanceSwitch(
             **DistributionSwitch.example().model_dump(exclude_none=True),
-            equipment=MatrixImpedanceBranchEquipment.example(),
+            equipment=MatrixImpedanceSwitchEquipment.example(),
         )

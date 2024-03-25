@@ -9,14 +9,14 @@ from infrasys.quantities import Time
 from gdm.distribution.equipment.matrix_impedance_branch_equipment import (
     MatrixImpedanceBranchEquipment,
 )
-from gdm.distribution.curve import Curve
+from gdm.distribution.curve import TimeCurrentCurve
 
 
 class MatrixImpedanceFuseEquipment(MatrixImpedanceBranchEquipment):
     """Interface for impedance based fuse equipment."""
 
     delay: Annotated[Time, Field(description="Delay time before blowing the fuse.")]
-    tcc_curve: Annotated[Curve, Field(description="Time current curve")]
+    tcc_curve: Annotated[TimeCurrentCurve, Field(description="Time current curve")]
 
     @classmethod
     def example(cls) -> "MatrixImpedanceFuseEquipment":
@@ -24,5 +24,5 @@ class MatrixImpedanceFuseEquipment(MatrixImpedanceBranchEquipment):
         return MatrixImpedanceFuseEquipment(
             **MatrixImpedanceBranchEquipment.example().model_dump(exclude_none=True),
             delay=Time(0, "minutes"),
-            tcc_curve=Curve(curve_x=[1, 2], curve_y=[1, 2]),
+            tcc_curve=TimeCurrentCurve.example(),
         )

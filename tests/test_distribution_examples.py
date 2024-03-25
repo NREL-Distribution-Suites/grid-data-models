@@ -36,7 +36,6 @@ from gdm import (
     ReactivePowerCapacitorController,
     CurrentCapacitorController,
     DailyTimedCapacitorController,
-    Curve,
     InverterController,
     PowerfactorInverterController,
     VoltVarInverterController,
@@ -48,6 +47,15 @@ from gdm import (
     MatrixImpedanceFuseEquipment,
     MatrixImpedanceFuse,
     MatrixImpedanceSwitch,
+    Curve,
+    TimeCurrentCurve,
+    DistributionRecloser,
+    MatrixImpedanceRecloserEquipment,
+    MatrixImpedanceRecloser,
+    RecloserControllerEquipment,
+    DistributionSwitchController,
+    DistributionRecloserController,
+    MatrixImpedanceSwitchEquipment,
 )
 
 DIST_INTERFACES = [
@@ -98,6 +106,14 @@ DIST_INTERFACES = [
     MatrixImpedanceFuseEquipment,
     MatrixImpedanceFuse,
     MatrixImpedanceSwitch,
+    TimeCurrentCurve,
+    DistributionRecloser,
+    MatrixImpedanceRecloserEquipment,
+    MatrixImpedanceRecloser,
+    RecloserControllerEquipment,
+    DistributionSwitchController,
+    DistributionRecloserController,
+    MatrixImpedanceSwitchEquipment,
 ]
 
 
