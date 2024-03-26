@@ -2,7 +2,7 @@
 
 from typing import Annotated
 
-from infrasys.location import Location
+from infrasys import Location
 from pydantic import Field
 
 from gdm.distribution.distribution_enum import LimitType, Phase, VoltageTypes

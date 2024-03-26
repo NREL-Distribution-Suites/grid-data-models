@@ -3,10 +3,10 @@
 from abc import ABC
 from typing import Optional
 
-from infrasys.component_models import ComponentWithQuantities
+from infrasys import Component
 
 
-class TransmissionComponent(ComponentWithQuantities, ABC):
+class TransmissionComponent(Component, ABC):
     """Interface for simple distribution component."""
 
     area: Optional[int] = None

@@ -1,9 +1,9 @@
 """ This module contains interface for distribution capacitor controllers."""
 
 from typing import Annotated, Optional
-
-from infrasys.component_models import Component
 import datetime
+
+from infrasys import Component
 from infrasys.quantities import Time
 from pydantic import Field
 
@@ -17,7 +17,7 @@ from gdm.quantities import (
 
 class CapacitorController(Component):
     """Interface for capacitor controllers. Phase connection specified in the capacitor."""
-
+    name: Annotated[str, Field('', description="Name of the capacitor controller.")]
     delay_on: Annotated[
         Optional[Time],
         Field(

@@ -3,8 +3,7 @@
 from typing import Any
 from uuid import UUID
 
-from infrasys.system import System
-from infrasys.component_models import Component
+from infrasys import System, Component
 
 from gdm.exceptions import GDMNotAttachedToSystemError, GDMIncompatibleInstanceError
 from gdm.dataset.cost_model import CostModel
@@ -70,7 +69,7 @@ class DatasetSystem(System):
         ]
 
     def remove_cost(self, catalog: Component, cost: CostModel):
-        """Remove cost from catalog."""
+        """Remove cost from the catalog."""
 
         if not catalog.is_attached(system_uuid=self.uuid):
             msg = f"Catalog not attached to the system {catalog=}"

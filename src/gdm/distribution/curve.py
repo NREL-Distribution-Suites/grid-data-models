@@ -3,13 +3,13 @@
 from typing import Annotated
 
 from pydantic import model_validator, Field
-from infrasys.component_models import Component
+from infrasys import Component
 from infrasys.quantities import Time, Current
 
 
 class Curve(Component):
     """An interface for representing a curve using x and y points. e.g for volt-var and volt-watt curves."""
-
+    name: Annotated[str, Field('', description="Name of the curve.")]
     curve_x: Annotated[list[float], Field(..., description="The x values of the curve")]
 
     curve_y: Annotated[list[float], Field(..., description="The y values of the curve")]
@@ -36,7 +36,7 @@ class Curve(Component):
 
 class TimeCurrentCurve(Component):
     """An interface for time current curve."""
-
+    name: Annotated[str, Field('', description="Name of the curve.")]
     curve_x: Annotated[Current, Field(..., description="Array of time values.")]
     curve_y: Annotated[Time, Field(..., description="Array of current values.")]
 

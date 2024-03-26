@@ -3,7 +3,7 @@
 from typing import Annotated
 
 from pydantic import model_validator, Field
-from infrasys.component_models import ComponentWithQuantities
+from infrasys import Component
 
 from gdm.distribution.distribution_enum import Phase
 from gdm.distribution.distribution_common import BELONG_TO_TYPE
@@ -12,7 +12,7 @@ from gdm.quantities import PositiveVoltage
 from gdm.distribution.equipment.load_equipment import LoadEquipment
 
 
-class DistributionLoad(ComponentWithQuantities):
+class DistributionLoad(Component):
     """Interface for distribution load."""
 
     bus: Annotated[

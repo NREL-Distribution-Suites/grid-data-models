@@ -1,7 +1,7 @@
 """ This module contains class for creating graph representation of Distribution System."""
 
 import networkx as nx
-from infrasys.system import System
+from infrasys import System
 
 from gdm.distribution.components.distribution_bus import DistributionBus
 from gdm.distribution.components.distribution_branch import DistributionBranch

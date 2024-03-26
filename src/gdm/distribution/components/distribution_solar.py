@@ -2,7 +2,7 @@
 
 from typing import Annotated
 
-from infrasys.component_models import ComponentWithQuantities
+from infrasys import Component
 from pydantic import Field
 
 from gdm.quantities import PositiveVoltage
@@ -16,7 +16,7 @@ from gdm.distribution.controllers.distribution_inverter_controller import (
 from gdm.distribution.equipment.solar_equipment import SolarEquipment
 
 
-class DistributionSolar(ComponentWithQuantities):
+class DistributionSolar(Component):
     """Interface for Solar PV system in distribution system models."""
 
     bus: Annotated[

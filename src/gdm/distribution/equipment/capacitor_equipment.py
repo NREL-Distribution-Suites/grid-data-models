@@ -2,14 +2,14 @@
 
 from typing import Annotated
 
-from infrasys.component_models import ComponentWithQuantities
+from infrasys import Component
 from pydantic import Field
 
 from gdm.distribution.equipment.phase_capacitor_equipment import PhaseCapacitorEquipment
 from gdm.distribution.distribution_enum import ConnectionType
 
 
-class CapacitorEquipment(ComponentWithQuantities):
+class CapacitorEquipment(Component):
     """Interface for capacitor model."""
 
     phase_capacitors: Annotated[

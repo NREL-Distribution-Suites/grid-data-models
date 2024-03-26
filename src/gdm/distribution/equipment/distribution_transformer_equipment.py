@@ -3,7 +3,7 @@
 from itertools import groupby
 from typing import Annotated
 
-from infrasys.component_models import Component, ComponentWithQuantities
+from infrasys import Component
 from pydantic import Field, model_validator
 
 from gdm.distribution.sequence_pair import SequencePair
@@ -13,7 +13,7 @@ from gdm.quantities import PositiveApparentPower, PositiveVoltage
 
 class WindingEquipment(Component):
     """Interface for winding."""
-
+    name: Annotated[str, Field('', description="Name of the winding.")]
     resistance: Annotated[
         float,
         Field(
@@ -112,7 +112,7 @@ class TapWindingEquipment(WindingEquipment):
         )
 
 
-class DistributionTransformerEquipment(ComponentWithQuantities):
+class DistributionTransformerEquipment(Component):
     """Interface for distribution transformer info."""
 
     pct_no_load_loss: Annotated[

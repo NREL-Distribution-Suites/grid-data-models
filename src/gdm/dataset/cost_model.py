@@ -11,7 +11,7 @@ from pydantic import (
     ConfigDict,
     model_validator,
 )
-from infrasys.component_models import Component
+from infrasys import Component
 
 
 class OperatingUnitEnum(str, Enum):
@@ -31,7 +31,7 @@ class CostModel(Component):
     operating_dollars: Optional[PositiveFloat] = None
     operating_unit: Optional[OperatingUnitEnum] = None
     labor_dollars: Optional[PositiveFloat] = None
-    name: Optional[str] = None
+    name: str = ""
     notes: Optional[str] = None
     location: Optional[str] = None
     model_config = ConfigDict(arbitrary_types_allowed=True, use_enum_values=False)

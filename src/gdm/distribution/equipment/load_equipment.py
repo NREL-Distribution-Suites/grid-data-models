@@ -2,14 +2,14 @@
 
 from typing import Annotated
 
-from infrasys.component_models import ComponentWithQuantities
+from infrasys import Component
 from pydantic import Field
 
 from gdm.distribution.equipment.phase_load_equipment import PhaseLoadEquipment
 from gdm.distribution.distribution_enum import ConnectionType
 
 
-class LoadEquipment(ComponentWithQuantities):
+class LoadEquipment(Component):
     """Interface for load model."""
 
     phase_loads: Annotated[

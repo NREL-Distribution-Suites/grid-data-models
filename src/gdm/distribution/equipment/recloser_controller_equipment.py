@@ -1,9 +1,9 @@
 """ This module stores recloser controller equipment."""
 
-from infrasys.component_models import ComponentWithQuantities
+from infrasys import Component
 
 
-class RecloserControllerEquipment(ComponentWithQuantities):
+class RecloserControllerEquipment(Component):
     """Class interface for recloser controller equipment."""
 
     @classmethod

@@ -6,11 +6,11 @@ from typing import Annotated
 
 from pydantic import Field, NonNegativeInt, PositiveInt, model_validator
 
-from infrasys.component_models import ComponentWithQuantities
+from infrasys import Component
 from gdm.quantities import PositiveReactivePower
 
 
-class PowerSystemCapacitor(ComponentWithQuantities):
+class PowerSystemCapacitor(Component):
     """Interface for power system capacitor."""
 
     rated_capacity: Annotated[

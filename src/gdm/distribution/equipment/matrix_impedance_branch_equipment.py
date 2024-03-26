@@ -2,7 +2,7 @@
 
 from typing import Annotated, Optional
 
-from infrasys.component_models import ComponentWithQuantities
+from infrasys import Component
 from pydantic import Field, model_validator
 
 from gdm.quantities import (
@@ -14,7 +14,7 @@ from gdm.quantities import (
 from gdm.distribution.limitset import ThermalLimitSet
 
 
-class MatrixImpedanceBranchEquipment(ComponentWithQuantities):
+class MatrixImpedanceBranchEquipment(Component):
     """Interface for impedance based branch."""
 
     r_matrix: Annotated[

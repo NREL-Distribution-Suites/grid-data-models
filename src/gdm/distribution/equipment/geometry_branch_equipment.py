@@ -3,14 +3,14 @@
 from typing import Annotated
 
 from pydantic import Field, model_validator
-from infrasys.component_models import ComponentWithQuantities
+from infrasys import Component
 
 from gdm.distribution.equipment.bare_conductor_equipment import BareConductorEquipment
 from gdm.distribution.equipment.concentric_cable_equipment import ConcentricCableEquipment
 from gdm.quantities import Distance
 
 
-class GeometryBranchEquipment(ComponentWithQuantities):
+class GeometryBranchEquipment(Component):
     """Interface for geometry branch info."""
 
     conductors: Annotated[

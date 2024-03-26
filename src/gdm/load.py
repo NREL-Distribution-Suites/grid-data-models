@@ -2,14 +2,14 @@
 
 from typing import Annotated
 
-from infrasys.component_models import ComponentWithQuantities
+from infrasys import Component
 from infrasys.quantities import ActivePower
 from pydantic import Field
 
 from gdm.quantities import ReactivePower
 
 
-class PowerSystemLoad(ComponentWithQuantities):
+class PowerSystemLoad(Component):
     """Interface for power system load."""
 
     z_real: Annotated[

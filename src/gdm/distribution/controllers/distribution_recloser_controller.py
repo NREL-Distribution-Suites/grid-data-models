@@ -4,7 +4,7 @@ from typing import Annotated
 
 from pydantic import Field, model_validator
 from infrasys.quantities import Time
-from infrasys.component_models import Component
+from infrasys import Component
 
 from gdm.distribution.equipment.recloser_controller_equipment import RecloserControllerEquipment
 from gdm.distribution.curve import TimeCurrentCurve
@@ -12,7 +12,7 @@ from gdm.distribution.curve import TimeCurrentCurve
 
 class DistributionRecloserController(Component):
     """Interface for distribution recloser controller."""
-
+    name: Annotated[str, Field('', description="Name of the recloser controller.")]
     delay: Annotated[Time, Field(description="Fixed delay added to the recloser trip time.")]
     ground_delayed: Annotated[
         TimeCurrentCurve, Field(description="TCC curve related to ground delayed trip.")

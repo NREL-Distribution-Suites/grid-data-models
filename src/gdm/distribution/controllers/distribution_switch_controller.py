@@ -5,12 +5,12 @@ from typing import Annotated, Literal
 from pydantic import Field
 
 from infrasys.quantities import Time
-from infrasys.component_models import Component
+from infrasys import Component
 
 
 class DistributionSwitchController(Component):
     """Interface for distribution switch controller."""
-
+    name: Annotated[str, Field('', description="Name of the switch controller.")]
     delay: Annotated[Time, Field(description="Fixed delay added to the recloser trip time.")]
     normal_state: Annotated[
         Literal["open", "close"],

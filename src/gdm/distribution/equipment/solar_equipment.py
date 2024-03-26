@@ -2,13 +2,13 @@
 
 from typing import Annotated
 
-from infrasys.component_models import ComponentWithQuantities
+from infrasys import Component
 from pydantic import Field
 
 from gdm.quantities import PositiveActivePower
 
 
-class SolarEquipment(ComponentWithQuantities):
+class SolarEquipment(Component):
     """Interface for Solar Model."""
 
     rated_capacity: Annotated[
