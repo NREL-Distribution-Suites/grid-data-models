@@ -18,11 +18,11 @@ class GeometryBranchEquipment(Component):
         Field(..., description="List of overhead wires or cables."),
     ]
     horizontal_positions: Annotated[
-        list[Distance],
+        Distance,
         Field(..., description="Horizontal position of the conductor."),
     ]
     vertical_positions: Annotated[
-        list[Distance],
+        Distance,
         Field(
             ...,
             description="""Vertical position of the conductor.""",
@@ -52,6 +52,6 @@ class GeometryBranchEquipment(Component):
         return GeometryBranchEquipment(
             name="geometry-branch-1",
             conductors=[BareConductorEquipment.example()] * 3,
-            horizontal_positions=[Distance(0, "m")] * 3,
-            vertical_positions=[Distance(5.6, "m"), Distance(6.0, "m"), Distance(6.4, "m")],
+            horizontal_positions= Distance([5.6, 6.0, 6.4], "m") * 3,
+            vertical_positions=Distance([5.6, 6.0, 6.4], "m") ,
         )
