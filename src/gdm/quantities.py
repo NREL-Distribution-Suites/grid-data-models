@@ -138,3 +138,9 @@ class ActivePowerPUTime(BaseQuantity):
     """Quantity representing active power per unit of time"""
 
     __compatible_unit__ = "watt/minute"
+
+
+class Irradiance(BaseQuantity):
+    """Quantity representing irradiance in kilowatt per meter**2  """
+
+    __compatible_unit__ = "kilowatt/meter**2"
