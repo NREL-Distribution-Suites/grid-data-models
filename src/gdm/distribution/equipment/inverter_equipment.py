@@ -6,6 +6,7 @@ from infrasys import Component
 from pydantic import Field
 
 from gdm.quantities import PositiveApparentPower, ActivePowerPUTime
+from gdm.distribution.curve import Curve
 
 
 class InverterEquipment(Component):
@@ -24,6 +25,7 @@ class InverterEquipment(Component):
         Optional[ActivePowerPUTime],
         Field(..., description="The fall in power output allowed per unit of time"),
     ]
+    eff_curve: Annotated[Optional[Curve], Field(None, description="Efficency curve for inverter.")]
 
     @classmethod
     def example(cls) -> "InverterEquipment":

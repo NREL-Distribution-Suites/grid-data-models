@@ -45,6 +45,14 @@ class VoltVarInverterController(InverterController):
     volt_var_curve: Annotated[
         Curve, Field(..., description="The volt-var curve that is being applied.")
     ]
+    var_follow: Annotated[
+        bool,
+        Field(
+            ...,
+            description="""Set to false if you want inverter reactive power
+                        generation absorption to respect inverter status""",
+        ),
+    ]
 
     @classmethod
     def example(cls) -> "VoltVarInverterController":
@@ -52,6 +60,7 @@ class VoltVarInverterController(InverterController):
         return VoltVarInverterController(
             equipment=InverterEquipment.example(),
             volt_var_curve=Curve.example(),
+            var_follow=False,
         )
 
 
@@ -77,6 +86,13 @@ class VoltVarVoltWattInverterController(VoltVarInverterController):
     volt_watt_curve: Annotated[
         Curve, Field(..., description="The volt-watt curve that is being applied.")
     ]
+    var_priority: Annotated[
+        bool,
+        Field(
+            ...,
+            description="""True means var priority and false means watt priority.""",
+        ),
+    ]
 
     @classmethod
     def example(cls) -> "VoltVarVoltWattInverterController":
@@ -85,4 +101,6 @@ class VoltVarVoltWattInverterController(VoltVarInverterController):
             equipment=InverterEquipment.example(),
             volt_var_curve=Curve.example(),
             volt_watt_curve=Curve.vv_vw_example(),
+            var_priority=True,
+            var_follow=False,
         )
