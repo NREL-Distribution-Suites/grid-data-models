@@ -1,17 +1,25 @@
 """ This module contains interface for distribution transformer."""
 
+import math
 from typing import Annotated
 
 from infrasys import Component
+from infrasys.quantities import Voltage
 from pydantic import Field, model_validator
 
 from gdm.distribution.distribution_common import BELONG_TO_TYPE
-from gdm.distribution.distribution_enum import Phase
+from gdm.distribution.distribution_enum import Phase, VoltageTypes
 from gdm.quantities import PositiveVoltage
 from gdm.distribution.components.distribution_bus import DistributionBus
 from gdm.distribution.equipment.distribution_transformer_equipment import (
     DistributionTransformerEquipment,
 )
+
+
+def get_phase_voltage_in_kv(voltage: Voltage, voltage_type: VoltageTypes) -> Voltage:
+    """Function to return phase voltage"""
+    kv_voltage = voltage.to("kilovolt")
+    return kv_voltage / (math.sqrt(3)) if voltage_type == VoltageTypes.LINE_TO_LINE else kv_voltage
 
 
 class DistributionTransformer(Component):
@@ -66,11 +74,9 @@ class DistributionTransformer(Component):
                 raise ValueError(msg)
 
         for bus, wdg in zip(self.buses, self.equipment.windings):
-            if not (
-                0.85 * bus.nominal_voltage.to("kilovolt")
-                <= wdg.nominal_voltage.to("kilovolt")
-                <= 1.15 * bus.nominal_voltage.to("kilovolt")
-            ):
+            bus_phase_voltage = get_phase_voltage_in_kv(bus.nominal_voltage, bus.voltage_type)
+            wdg_phase_voltage = get_phase_voltage_in_kv(wdg.nominal_voltage, wdg.voltage_type)
+            if 0.85 * bus_phase_voltage <= wdg_phase_voltage <= 1.15 * bus_phase_voltage:
                 msg = (
                     f"Nominal voltage of transformer {wdg.nominal_voltage.to('kilovolt')}"
                     "needs to be within 15% range of"

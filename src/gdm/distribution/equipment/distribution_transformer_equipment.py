@@ -7,13 +7,14 @@ from infrasys import Component
 from pydantic import Field, model_validator
 
 from gdm.distribution.sequence_pair import SequencePair
-from gdm.distribution.distribution_enum import ConnectionType
+from gdm.distribution.distribution_enum import ConnectionType, VoltageTypes
 from gdm.quantities import PositiveApparentPower, PositiveVoltage
 
 
 class WindingEquipment(Component):
     """Interface for winding."""
-    name: Annotated[str, Field('', description="Name of the winding.")]
+
+    name: Annotated[str, Field("", description="Name of the winding.")]
     resistance: Annotated[
         float,
         Field(
@@ -24,6 +25,9 @@ class WindingEquipment(Component):
     nominal_voltage: Annotated[
         PositiveVoltage,
         Field(..., description="Nominal voltage rating for this winding."),
+    ]
+    voltage_type: Annotated[
+        VoltageTypes, Field(..., description="Set voltage type for nominal voltage.")
     ]
     rated_power: Annotated[
         PositiveApparentPower,
@@ -49,6 +53,7 @@ class WindingEquipment(Component):
             rated_power=PositiveApparentPower(500, "kilova"),
             connection_type=ConnectionType.STAR,
             num_phases=3,
+            voltage_type=VoltageTypes.LINE_TO_LINE,
         )
 
 
@@ -109,6 +114,7 @@ class TapWindingEquipment(WindingEquipment):
             bandwidth=PositiveVoltage(3, "volts"),
             band_center=PositiveVoltage(120, "volts"),
             max_step=4,
+            voltage_type=VoltageTypes.LINE_TO_LINE,
         )
 
 
@@ -209,6 +215,7 @@ class DistributionTransformerEquipment(Component):
                     rated_power=PositiveApparentPower(56, "kilova"),
                     connection_type=ConnectionType.STAR,
                     num_phases=3,
+                    voltage_type=VoltageTypes.LINE_TO_LINE,
                 ),
                 WindingEquipment(
                     resistance=1,
@@ -217,6 +224,7 @@ class DistributionTransformerEquipment(Component):
                     rated_power=PositiveApparentPower(56, "kilova"),
                     connection_type=ConnectionType.STAR,
                     num_phases=3,
+                    voltage_type=VoltageTypes.LINE_TO_LINE,
                 ),
             ],
             coupling_sequences=[SequencePair(0, 1)],
