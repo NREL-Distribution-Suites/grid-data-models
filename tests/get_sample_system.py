@@ -69,6 +69,7 @@ def get_three_bus_system():
                     rated_power=PositiveApparentPower(25, "kilova"),
                     num_phases=2,
                     connection_type=ConnectionType.DELTA,
+                    voltage_type=VoltageTypes.LINE_TO_LINE,
                 ),
                 WindingEquipment(
                     resistance=0.02,
@@ -77,6 +78,7 @@ def get_three_bus_system():
                     rated_power=PositiveApparentPower(25, "kilova"),
                     num_phases=2,
                     connection_type=ConnectionType.DELTA,
+                    voltage_type=VoltageTypes.LINE_TO_LINE,
                 ),
                 WindingEquipment(
                     resistance=0.02,
@@ -85,6 +87,7 @@ def get_three_bus_system():
                     rated_power=PositiveApparentPower(25, "kilova"),
                     num_phases=2,
                     connection_type=ConnectionType.DELTA,
+                    voltage_type=VoltageTypes.LINE_TO_LINE,
                 ),
             ],
             coupling_sequences=[

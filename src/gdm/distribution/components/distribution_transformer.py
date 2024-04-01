@@ -16,10 +16,13 @@ from gdm.distribution.equipment.distribution_transformer_equipment import (
 )
 
 
-def get_phase_voltage_in_kv(voltage: Voltage, voltage_type: VoltageTypes) -> Voltage:
+def get_phase_voltage_in_kv(
+    voltage: Voltage, voltage_type: VoltageTypes, split_phase_secondary: bool = False
+) -> Voltage:
     """Function to return phase voltage"""
     kv_voltage = voltage.to("kilovolt")
-    return kv_voltage / (math.sqrt(3)) if voltage_type == VoltageTypes.LINE_TO_LINE else kv_voltage
+    factor = math.sqrt(3) if not split_phase_secondary else 2
+    return kv_voltage / factor if voltage_type == VoltageTypes.LINE_TO_LINE else kv_voltage
 
 
 class DistributionTransformer(Component):
@@ -48,6 +51,17 @@ class DistributionTransformer(Component):
         Field(..., description="Transformer info object."),
     ]
 
+    def _check_if_voltage_is_on_split_side(self, voltage: Voltage) -> bool:
+        """Internal method to check if winding is on split side."""
+        if not self.equipment.is_center_tapped:
+            return False
+
+        all_voltages = [item.nominal_voltage for item in self.equipment.windings]
+        if voltage not in all_voltages:
+            msg = f"{voltage=} not in transformer winding voltages = {all_voltages}"
+            raise ValueError(msg)
+        return voltage < max(all_voltages)
+
     @model_validator(mode="after")
     def validate_fields(self) -> "DistributionTransformer":
         """Custom validator for distribution transformer."""
@@ -74,13 +88,21 @@ class DistributionTransformer(Component):
                 raise ValueError(msg)
 
         for bus, wdg in zip(self.buses, self.equipment.windings):
-            bus_phase_voltage = get_phase_voltage_in_kv(bus.nominal_voltage, bus.voltage_type)
-            wdg_phase_voltage = get_phase_voltage_in_kv(wdg.nominal_voltage, wdg.voltage_type)
-            if 0.85 * bus_phase_voltage <= wdg_phase_voltage <= 1.15 * bus_phase_voltage:
+            bus_phase_voltage = get_phase_voltage_in_kv(
+                bus.nominal_voltage,
+                bus.voltage_type,
+                split_phase_secondary=self._check_if_voltage_is_on_split_side(bus.nominal_voltage),
+            )
+            wdg_phase_voltage = get_phase_voltage_in_kv(
+                wdg.nominal_voltage,
+                wdg.voltage_type,
+                split_phase_secondary=self._check_if_voltage_is_on_split_side(wdg.nominal_voltage),
+            )
+            if not (0.85 * bus_phase_voltage <= wdg_phase_voltage <= 1.15 * bus_phase_voltage):
                 msg = (
-                    f"Nominal voltage of transformer {wdg.nominal_voltage.to('kilovolt')}"
-                    "needs to be within 15% range of"
-                    f"bus nominal voltage {bus.nominal_voltage.to('kilovolt')}"
+                    f"Nominal voltage of transformer {wdg_phase_voltage}"
+                    f" must be within 15% range of"
+                    f" bus nominal voltage {bus_phase_voltage}"
                 )
                 raise ValueError(msg)
 
@@ -93,13 +115,13 @@ class DistributionTransformer(Component):
             name="DistributionTransformer1",
             buses=[
                 DistributionBus(
-                    voltage_type="line-to-ground",
+                    voltage_type=VoltageTypes.LINE_TO_LINE,
                     name="Bus1",
                     nominal_voltage=PositiveVoltage(12.47, "kilovolt"),
                     phases=[Phase.A, Phase.B, Phase.C],
                 ),
                 DistributionBus(
-                    voltage_type="line-to-ground",
+                    voltage_type=VoltageTypes.LINE_TO_LINE,
                     name="Bus2",
                     nominal_voltage=PositiveVoltage(0.4, "kilovolt"),
                     phases=[Phase.A, Phase.B, Phase.C],
