@@ -8,8 +8,23 @@ from infrasys.quantities import Time, Current
 
 
 class Curve(Component):
-    """An interface for representing a curve using x and y points. e.g for volt-var and volt-watt curves."""
-    name: Annotated[str, Field('', description="Name of the curve.")]
+    """An interface for representing a curve using x and y points. e.g for volt-var and volt-watt curves.
+
+    Examples
+    --------
+
+    Example of a Curve (Volt-Var IEEE-1547 standard).
+
+    >>> Curve(
+            curve_x=[0.5, 0.92, 0.98, 1.02, 1.08, 1.5], curve_y=[1.0, 1.0, 0.0, 0.0, -1.0, -1.0]
+        )
+
+    Example of a Curve (Volt-Var Volt-Watt IEEE-1547 standard)
+
+    >>> Curve(curve_x=[0.5, 1.06, 1.1, 1.5], curve_y=[1.0, 1.0, 0.0, 0.0])
+    """
+
+    name: Annotated[str, Field("", description="Name of the curve.")]
     curve_x: Annotated[list[float], Field(..., description="The x values of the curve")]
 
     curve_y: Annotated[list[float], Field(..., description="The y values of the curve")]
@@ -28,15 +43,11 @@ class Curve(Component):
             curve_x=[0.5, 0.92, 0.98, 1.02, 1.08, 1.5], curve_y=[1.0, 1.0, 0.0, 0.0, -1.0, -1.0]
         )
 
-    @classmethod
-    def vv_vw_example(cls) -> "Curve":
-        """Example of a Curve (Volt-Var Volt-Watt IEEE-1547 standard)."""
-        return Curve(curve_x=[0.5, 1.06, 1.1, 1.5], curve_y=[1.0, 1.0, 0.0, 0.0])
-
 
 class TimeCurrentCurve(Component):
     """An interface for time current curve."""
-    name: Annotated[str, Field('', description="Name of the curve.")]
+
+    name: Annotated[str, Field("", description="Name of the curve.")]
     curve_x: Annotated[Current, Field(..., description="Array of time values.")]
     curve_y: Annotated[Time, Field(..., description="Array of current values.")]
 

@@ -76,7 +76,7 @@ class VoltWattInverterController(InverterController):
         "Example of a Volt-Watt Inverter Controller"
         return VoltWattInverterController(
             equipment=InverterEquipment.example(),
-            volt_watt_curve=Curve.vv_vw_example(),
+            volt_watt_curve=Curve(curve_x=[0.5, 1.06, 1.1, 1.5], curve_y=[1.0, 1.0, 0.0, 0.0]),
         )
 
 
@@ -100,7 +100,7 @@ class VoltVarVoltWattInverterController(VoltVarInverterController):
         return VoltVarVoltWattInverterController(
             equipment=InverterEquipment.example(),
             volt_var_curve=Curve.example(),
-            volt_watt_curve=Curve.vv_vw_example(),
+            volt_watt_curve=Curve(curve_x=[0.5, 1.06, 1.1, 1.5], curve_y=[1.0, 1.0, 0.0, 0.0]),
             var_priority=True,
             var_follow=False,
         )
