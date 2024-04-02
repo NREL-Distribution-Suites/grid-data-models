@@ -56,6 +56,8 @@ from gdm import (
     DistributionSwitchController,
     DistributionRecloserController,
     MatrixImpedanceSwitchEquipment,
+    VoltWattInverterController,
+    InverterEquipment,
 )
 
 DIST_INTERFACES = [
@@ -114,6 +116,8 @@ DIST_INTERFACES = [
     DistributionSwitchController,
     DistributionRecloserController,
     MatrixImpedanceSwitchEquipment,
+    VoltWattInverterController,
+    InverterEquipment,
 ]
 
 

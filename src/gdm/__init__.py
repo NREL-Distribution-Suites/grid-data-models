@@ -32,6 +32,7 @@ from gdm.distribution.components.distribution_regulator import DistributionRegul
 from gdm.distribution.components.distribution_solar import (
     DistributionSolar,
 )
+from gdm.distribution.components.distribution_capacitor import DistributionCapacitor
 
 from gdm.distribution.equipment.matrix_impedance_branch_equipment import (
     MatrixImpedanceBranchEquipment,
@@ -46,7 +47,6 @@ from gdm.distribution.equipment.matrix_impedance_switch_equipment import (
     MatrixImpedanceSwitchEquipment,
 )
 from gdm.distribution.equipment.recloser_controller_equipment import RecloserControllerEquipment
-from gdm.distribution.components.distribution_capacitor import DistributionCapacitor
 from gdm.distribution.equipment.phase_capacitor_equipment import PhaseCapacitorEquipment
 from gdm.distribution.equipment.capacitor_equipment import CapacitorEquipment
 from gdm.distribution.equipment.geometry_branch_equipment import GeometryBranchEquipment
@@ -62,14 +62,15 @@ from gdm.distribution.equipment.distribution_transformer_equipment import (
     WindingEquipment,
 )
 from gdm.distribution.equipment.solar_equipment import SolarEquipment
+from gdm.distribution.equipment.inverter_equipment import InverterEquipment
 
 from gdm.distribution.controllers.distribution_inverter_controller import (
     InverterController,
     PowerfactorInverterController,
     VoltVarInverterController,
     VoltVarVoltWattInverterController,
+    VoltWattInverterController,
 )
-
 from gdm.distribution.controllers.distribution_capacitor_controller import (
     CapacitorController,
     VoltageCapacitorController,
