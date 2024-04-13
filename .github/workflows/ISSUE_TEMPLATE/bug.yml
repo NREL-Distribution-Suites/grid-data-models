@@ -1,0 +1,59 @@
+name: GDM Bug 🐛
+description: Report a bug or unexpected behaviour in grid-data-models (gdm).
+labels: [bug, pending]
+
+body:
+  - type: markdown
+    attributes:
+        value: Thank you for contributing to grid-data-models. 👋
+
+  - type: checkboxes
+    id: checks
+    attributes:
+        label: Preliminary Checks
+        description: |
+            Making sure you need to submit a bug issue.
+        options: 
+          - label: I have searched existing issues for a duplicate issue and I'm sure this is new.
+            required: True
+          - label: I have read and followed [the docs](https://nrel-distribution-suites.github.io/grid-data-models) and still think this is a bug.
+            required: True 
+          - label: >
+                I am certain that this is an issue with grid-data-models 
+                (not my code or another library such as [infrasys](https://github.com/nrel/infrasys))
+            required: True
+
+  - type: textarea
+    id: description
+    attributes:
+        label: Description
+        description: |
+            Please explain in details what you are seeing and what you expect to see.
+    validations:
+        required: true 
+
+  - type: textarea
+    id: example
+    attributes:
+        label: Sample Code
+        description: >
+            If applicable, please add self contained minimal reproducible example code to demonstrate the bug.
+        placeholder: |
+            import gdm 
+
+            ...
+        render: python
+  - type: textarea
+    id: version
+    attributes:
+        label: Python, GDM 
+        description: |
+            Which version of python & grid-data-models are you using ?
+
+            Please run the following command and copy the output below:
+            ```bash
+            python -c "import gdm.version; print(gdm.version.version_summary())"
+            ```
+        render: Text
+    validations:
+        required: True 

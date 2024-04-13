@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: 🤔 Ask a Question
+    url: 'https://github.com/NREL-Distribution-Suites/grid-data-models/discussions/new?category=question'
+    about: Ask a question about how to use grid-data-models using github discussions

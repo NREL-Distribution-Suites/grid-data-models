@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "grid-data-models"
-version = "0.0.1"
+dynamic = ["version"]
 description = ''
 readme = "README.md"
 requires-python = ">=3.11"
@@ -38,6 +38,9 @@ ignore-init-module-imports = true
 line-length = 99
 indent-width = 4
 target-version = "py311"
+
+[tool.hatch.version]
+path = 'src/gdm/version.py'
 
 
 [tool.ruff.lint]
@@ -73,3 +76,6 @@ allow-direct-references = true
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/gdm"]
+
+[tool.hatch.build.targets.sdist]
+include = ["src/gdm"]

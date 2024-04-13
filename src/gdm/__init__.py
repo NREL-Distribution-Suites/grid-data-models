@@ -1,7 +1,5 @@
 """ Managing imports for this package."""
 
-import pkg_resources
-
 from gdm.distribution.components.distribution_substation import DistributionSubstation
 from gdm.distribution.components.distribution_component import DistributionComponent
 from gdm.distribution.components.distribution_feeder import DistributionFeeder
@@ -107,5 +105,3 @@ from gdm.transmission.transmission_branch import TransmissionBranch
 from gdm.transmission.transmission_capacitor import TransmissionCapacitor
 from gdm.transmission.transmission_load import TransmissionLoad
 from gdm.transmission.transmission_substation import TransmissionSubstation
-
-__version__ = pkg_resources.get_distribution("gdm").version
