@@ -1,0 +1,32 @@
+name: GDM Feature Request 💡
+description: Suggest new feature request for grid-data-models
+labels: [feature request]
+
+body:
+  - type: markdown
+    attributes:
+        value: Thank you for contributing to grid-data-models. 👋
+
+  - type: checkboxes
+    id: checks
+    attributes:
+        label: Preliminary Checks
+        description: |
+            Making sure you need to submit a new feature request.
+        options: 
+          - label: I have searched existing issues for a duplicate feature request and I'm sure this is new.
+            required: True
+          - label: I have read and followed [the docs](https://nrel-distribution-suites.github.io/grid-data-models) and still think this is missing.
+            required: True 
+        
+  - type: textarea
+    id: description
+    attributes:
+        label: Description
+        description: |
+            Please explain in details the feature you would like to see.
+
+            Please include a demo of what you would like to see and why 
+            this feature needs to be added.
+    validations:
+        required: true 

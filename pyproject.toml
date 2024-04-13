@@ -3,35 +3,33 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "gdm"
-version = "0.0.1"
+name = "grid-data-models"
+dynamic = ["version"]
 description = ''
 readme = "README.md"
 requires-python = ">=3.11"
-license = "MIT"
+license = "BSD-3-Clause"
 keywords = []
-authors = [{ name = "U.N. Owen", email = "void@some.where" }]
+authors = [
+  { name = "Kapil Duwadi", email = "Kapil.Duwadi@nrel.gov" },
+  { name = "Aadil Latif", email = "Aadil.Latif@nrel.gov" },
+  { name = "Tarek Elgindy", email = "tarek.elgindy@nrel.gov" },
+]
 classifiers = [
-  "Development Status :: 4 - Beta",
-  "Programming Language :: Python",
   "Programming Language :: Python :: 3.11",
-  "Programming Language :: Python :: Implementation :: CPython",
-  "Programming Language :: Python :: Implementation :: PyPy",
+  "License :: OSI Approved :: BSD License",
+  "Operating System :: OS Independent",
 ]
-dependencies = [
-  "rich",
-  "networkx",
-  "infrasys @ git+https://github.nrel.gov/CADET/infrastructure_systems.git",
-]
+dependencies = ["networkx", "infrasys"]
 
 [project.optional-dependencies]
 dev = ["pre-commit", "pytest", "pytest-cov", "ruff"]
 doc = ["sphinx", "sphinx-immaterial", "myst-parser", "sphinxcontrib-mermaid"]
 
 [project.urls]
-Documentation = "https://github.com/unknown/powermodels#readme"
-Issues = "https://github.com/unknown/powermodels/issues"
-Source = "https://github.com/unknown/powermodels"
+Documentation = "https://github.com/NREL-Distribution-Suites/grid-data-models#readme"
+Issues = "https://github.com/NREL-Distribution-Suites/grid-data-models/issues"
+Source = "https://github.com/NREL-Distribution-Suites/grid-data-models"
 
 [tool.ruff]
 # Exclude a variety of commonly ignored directories.
@@ -40,6 +38,9 @@ ignore-init-module-imports = true
 line-length = 99
 indent-width = 4
 target-version = "py311"
+
+[tool.hatch.version]
+path = 'src/gdm/version.py'
 
 
 [tool.ruff.lint]
@@ -72,3 +73,9 @@ allow-direct-references = true
 [tool.ruff.lint.per-file-ignores]
 "__init__.py" = ["E402", "F401"]
 "**/{tests,docs,tools}/*" = ["E402"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/gdm"]
+
+[tool.hatch.build.targets.sdist]
+include = ["src/gdm"]

@@ -5,7 +5,7 @@ from uuid import UUID
 
 from infrasys import System, Component
 
-from gdm.exceptions import GDMNotAttachedToSystemError, GDMIncompatibleInstanceError
+from gdm.exceptions import GDMIncompatibleInstanceError
 from gdm.dataset.cost_model import CostModel
 import gdm
 
@@ -28,9 +28,6 @@ class DatasetSystem(System):
 
     def add_cost(self, catalog: Component, cost: CostModel):
         """Method to add cost to catalog."""
-        if not catalog.is_attached(system_uuid=self.uuid):
-            msg = f"Catalog not attached to the system {catalog=}"
-            raise GDMNotAttachedToSystemError(msg)
 
         if isinstance(catalog, CostModel):
             msg = f"Catalog can not be an instance of cost model {catalog=}"
@@ -55,10 +52,6 @@ class DatasetSystem(System):
     def get_costs(self, catalog: Component) -> list[CostModel]:
         """Get costs for a catalog."""
 
-        if not catalog.is_attached(system_uuid=self.uuid):
-            msg = f"Catalog not attached to the system {catalog=}"
-            raise GDMNotAttachedToSystemError(msg)
-
         catalog_uuid = str(catalog.uuid)
         if catalog_uuid not in self.catalog_cost_mapping:
             return []
@@ -70,14 +63,6 @@ class DatasetSystem(System):
 
     def remove_cost(self, catalog: Component, cost: CostModel):
         """Remove cost from the catalog."""
-
-        if not catalog.is_attached(system_uuid=self.uuid):
-            msg = f"Catalog not attached to the system {catalog=}"
-            raise GDMNotAttachedToSystemError(msg)
-
-        if not cost.is_attached(system_uuid=self.uuid):
-            msg = f"Cost not attached to the system {cost=}"
-            raise GDMNotAttachedToSystemError(msg)
 
         self.remove_component(cost)
 
