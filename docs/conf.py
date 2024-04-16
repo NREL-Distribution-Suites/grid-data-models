@@ -7,8 +7,10 @@
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 project = "Grid Data Models"
-copyright = "2024, Kapil Duwadi, Tarek Elgindy, Aadil Latif, Daniel Thom"
-author = "Kapil Duwadi, Tarek Elgindy, Aadil Latif, Daniel Thom"
+copyright = (
+    "2024, Kapil Duwadi, Tarek Elgindy, Aadil Latif, Daniel Thom, Pedro Andres Sanchez Perez"
+)
+author = "Kapil Duwadi, Tarek Elgindy, Aadil Latif, Daniel Thom Pedro Andres Sanchez Perez"
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
@@ -20,69 +22,28 @@ extensions = [
     "sphinx.ext.coverage",
     "sphinx.ext.napoleon",
     "sphinx.ext.intersphinx",
-    "sphinx_immaterial",
+    "sphinxcontrib.autodoc_pydantic",
     "sphinxcontrib.mermaid",
 ]
-extensions.append("sphinx_immaterial.apidoc.python.apigen")
-# templates_path = ["_templates"]
+templates_path = ["_templates"]
 exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
-
-
+autodoc_pydantic_model_show_json = False
+autodoc_pydantic_model_show_config_summary = False
+autodoc_pydantic_model_show_field_summary = False
+autodoc_inherit_docstrings = False
+autodoc_pydantic_field_show_constraints = False
+autodoc_pydantic_settings_show_validator_summary = False
+autodoc_pydantic_settings_show_validator_members = False
+autodoc_pydantic_validator_list_fields = False
+autodoc_pydantic_field_list_validators = False
+autodoc_pydantic_model_show_validator_summary = False
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
-html_theme = "sphinx_immaterial"
-# html_static_path = ["_static"]
+html_theme = "pydata_sphinx_theme"
+html_static_path = ["_static"]
+html_css_files = [
+    "css/custom.css",
+]
 
 source_suffix = [".md"]
-html_theme_options = {
-    "icon": {
-        "repo": "fontawesome/brands/github",
-        "edit": "material/file-edit-outline",
-    },
-    "site_url": "https://github.nrel.gov/CADET/grid-data-models.git",
-    "repo_url": "https://github.nrel.gov/CADET/grid-data-models.git",
-    "repo_name": "Grid Data Models",
-    "globaltoc_collapse": True,
-    "toc_title_is_page_title": True,
-    "font": False,
-    "features": [
-        "navigation.expand",
-        "navigation.tabs",
-        "navigation.top",
-        "navigation.footer",
-        "navigation.tabs.sticky",
-        "navigation.sections",
-        "search.share",
-        "search.highlight",
-        # "toc.integrate",
-        "toc.follow",
-        "toc.sticky",
-        "content.tabs",
-        "content.tooltips",
-        "announce.dismiss",
-        "toc.follow",
-    ],
-    "palette": [
-        {
-            "media": "(prefers-color-scheme: light)",
-            "scheme": "default",
-            "primary": "deep-orange",
-            "accent": "lime",
-            "toggle": {
-                "icon": "material/weather-night",
-                "name": "Switch to dark mode",
-            },
-        },
-        {
-            "media": "(prefers-color-scheme: dark)",
-            "scheme": "slate",
-            "primary": "deep-orange",
-            "accent": "lime",
-            "toggle": {
-                "icon": "material/weather-night",
-                "name": "Switch to light mode",
-            },
-        },
-    ],
-}

@@ -8,6 +8,7 @@ from pydantic import Field, NonNegativeInt, PositiveInt, model_validator
 
 from infrasys import Component
 from gdm.quantities import PositiveReactivePower
+from gdm.constants import PINT_SCHEMA
 
 
 class PowerSystemCapacitor(Component):
@@ -15,6 +16,7 @@ class PowerSystemCapacitor(Component):
 
     rated_capacity: Annotated[
         PositiveReactivePower,
+        PINT_SCHEMA,
         Field(..., description="Capacity of this capacitor."),
     ]
     num_banks_on: Annotated[

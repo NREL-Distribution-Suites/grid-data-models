@@ -7,11 +7,16 @@ from pydantic import Field
 from infrasys.quantities import Time
 from infrasys import Component
 
+from gdm.constants import PINT_SCHEMA
+
 
 class DistributionSwitchController(Component):
     """Interface for distribution switch controller."""
-    name: Annotated[str, Field('', description="Name of the switch controller.")]
-    delay: Annotated[Time, Field(description="Fixed delay added to the recloser trip time.")]
+
+    name: Annotated[str, Field("", description="Name of the switch controller.")]
+    delay: Annotated[
+        Time, PINT_SCHEMA, Field(description="Fixed delay added to the recloser trip time.")
+    ]
     normal_state: Annotated[
         Literal["open", "close"],
         Field(..., description="Action to open or close the switch after delay time."),
