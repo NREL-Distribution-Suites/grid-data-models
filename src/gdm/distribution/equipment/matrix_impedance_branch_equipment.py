@@ -12,6 +12,7 @@ from gdm.quantities import (
     PositiveCurrent,
 )
 from gdm.distribution.limitset import ThermalLimitSet
+from gdm.constants import PINT_SCHEMA
 
 
 class MatrixImpedanceBranchEquipment(Component):
@@ -19,17 +20,22 @@ class MatrixImpedanceBranchEquipment(Component):
 
     r_matrix: Annotated[
         PositiveResistancePULength,
+        PINT_SCHEMA,
         Field(..., description="Per unit length resistance matrix."),
     ]
     x_matrix: Annotated[
         ReactancePULength,
+        PINT_SCHEMA,
         Field(..., description="Per unit length reactance matrix."),
     ]
     c_matrix: Annotated[
         CapacitancePULength,
+        PINT_SCHEMA,
         Field(..., description="Per unit length capacitance matrix."),
     ]
-    ampacity: Annotated[PositiveCurrent, Field(..., description="Ampacity of the conducotr.")]
+    ampacity: Annotated[
+        PositiveCurrent, PINT_SCHEMA, Field(..., description="Ampacity of the conducotr.")
+    ]
     loading_limit: Annotated[
         Optional[ThermalLimitSet],
         Field(None, description="Loading limit set for this conductor."),

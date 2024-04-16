@@ -23,5 +23,5 @@ To get started, you can clone and pip install this library from [here](https://g
 - **Tarek Elgindy**
 - **Aadil Latif**
 - **Pedro Andres Sanchez Perez**
-- **Daniel Thompson**
+- **Daniel Thom**
 - **Jeremy Keen**

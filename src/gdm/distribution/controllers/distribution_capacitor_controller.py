@@ -13,6 +13,7 @@ from gdm.quantities import (
     PositiveVoltage,
     PositiveCurrent,
 )
+from gdm.constants import PINT_SCHEMA
 
 
 class CapacitorController(Component):
@@ -21,6 +22,7 @@ class CapacitorController(Component):
     name: Annotated[str, Field("", description="Name of the capacitor controller.")]
     delay_on: Annotated[
         Optional[Time],
+        PINT_SCHEMA,
         Field(
             None,
             description="The time that the capacitor needs to connect or disconnect when switching on",
@@ -28,6 +30,7 @@ class CapacitorController(Component):
     ]
     delay_off: Annotated[
         Optional[Time],
+        PINT_SCHEMA,
         Field(
             None,
             description="The time that the capacitor needs to connect or disconnect when switching off",
@@ -35,6 +38,7 @@ class CapacitorController(Component):
     ]
     dead_time: Annotated[
         Optional[Time],
+        PINT_SCHEMA,
         Field(
             None,
             description="The time that the capacitor must remain off before turning back on again",
@@ -52,6 +56,7 @@ class VoltageCapacitorController(CapacitorController):
 
     on_voltage: Annotated[
         PositiveVoltage,
+        PINT_SCHEMA,
         Field(
             ...,
             description="Value of the controller voltage, above which the capacitor switches on.",
@@ -60,6 +65,7 @@ class VoltageCapacitorController(CapacitorController):
 
     off_voltage: Annotated[
         PositiveVoltage,
+        PINT_SCHEMA,
         Field(..., description="Value of the voltage, below which the capacitors switches off."),
     ]
 
@@ -88,6 +94,7 @@ class ActivePowerCapacitorController(CapacitorController):
 
     on_power: Annotated[
         PositiveActivePower,
+        PINT_SCHEMA,
         Field(
             ..., description="Value of the active power, above which the capacitor switches on."
         ),
@@ -95,6 +102,7 @@ class ActivePowerCapacitorController(CapacitorController):
 
     off_power: Annotated[
         PositiveActivePower,
+        PINT_SCHEMA,
         Field(
             ..., description="Value of the active power, below which the capacitor switches off."
         ),
@@ -115,6 +123,7 @@ class ReactivePowerCapacitorController(CapacitorController):
 
     on_power: Annotated[
         PositiveReactivePower,
+        PINT_SCHEMA,
         Field(
             ..., description="Value of the reactive power, above which the capacitor switches on."
         ),
@@ -122,6 +131,7 @@ class ReactivePowerCapacitorController(CapacitorController):
 
     off_power: Annotated[
         PositiveReactivePower,
+        PINT_SCHEMA,
         Field(
             ..., description="Value of the reactive power, below which the capacitor switches off."
         ),
@@ -142,6 +152,7 @@ class CurrentCapacitorController(CapacitorController):
 
     on_current: Annotated[
         PositiveCurrent,
+        PINT_SCHEMA,
         Field(
             ...,
             description="Value of the controller current, above which the capacitor switches on.",
@@ -150,6 +161,7 @@ class CurrentCapacitorController(CapacitorController):
 
     off_current: Annotated[
         PositiveCurrent,
+        PINT_SCHEMA,
         Field(
             ...,
             description="Value of the controller current, below which the capacitor switches off.",

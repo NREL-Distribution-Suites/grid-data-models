@@ -24,7 +24,13 @@ dependencies = ["networkx", "infrasys"]
 
 [project.optional-dependencies]
 dev = ["pre-commit", "pytest", "pytest-cov", "ruff"]
-doc = ["sphinx", "sphinx-immaterial", "myst-parser", "sphinxcontrib-mermaid"]
+doc = [
+  "sphinx",
+  "pydata-sphinx-theme",
+  "myst-parser",
+  "autodoc_pydantic",
+  "sphinxcontrib-mermaid",
+]
 
 [project.urls]
 Documentation = "https://github.com/NREL-Distribution-Suites/grid-data-models#readme"
@@ -42,6 +48,9 @@ target-version = "py311"
 [tool.hatch.version]
 path = 'src/gdm/version.py'
 
+[tool.pytest.ini_options]
+pythonpath = "src"
+testpaths = ["tests"]
 
 [tool.ruff.lint]
 # Enable Pyflakes (`F`) and a subset of the pycodestyle (`E`)  codes by default.

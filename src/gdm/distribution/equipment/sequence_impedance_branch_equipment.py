@@ -12,6 +12,7 @@ from gdm.quantities import (
     CapacitancePULength,
 )
 from gdm.distribution.limitset import ThermalLimitSet
+from gdm.constants import PINT_SCHEMA
 
 
 class SequenceImpedanceBranchEquipment(Component):
@@ -19,29 +20,37 @@ class SequenceImpedanceBranchEquipment(Component):
 
     pos_seq_resistance: Annotated[
         ResistancePULength,
+        PINT_SCHEMA,
         Field(..., description="Per unit length positive sequence resistance."),
     ]
     zero_seq_resistance: Annotated[
         ResistancePULength,
+        PINT_SCHEMA,
         Field(..., description="Per unit length zero sequence impedance."),
     ]
     pos_seq_reactance: Annotated[
         ReactancePULength,
+        PINT_SCHEMA,
         Field(..., description="Per unit length positive sequence impedance."),
     ]
     zero_seq_reactance: Annotated[
         ReactancePULength,
+        PINT_SCHEMA,
         Field(..., description="Per unit length zero sequence impedance."),
     ]
     pos_seq_capacitance: Annotated[
         CapacitancePULength,
+        PINT_SCHEMA,
         Field(..., description="Per unit length positive sequence capacitance."),
     ]
     zero_seq_capacitance: Annotated[
         CapacitancePULength,
+        PINT_SCHEMA,
         Field(..., description="Per unit length zero sequence capacitance."),
     ]
-    ampacity: Annotated[PositiveCurrent, Field(..., description="Ampacity of the conductor.")]
+    ampacity: Annotated[
+        PositiveCurrent, PINT_SCHEMA, Field(..., description="Ampacity of the conductor.")
+    ]
     loading_limit: Annotated[
         Optional[ThermalLimitSet],
         Field(None, description="Loading limit set for this conductor."),

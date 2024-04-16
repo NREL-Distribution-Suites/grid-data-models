@@ -10,12 +10,13 @@ from gdm.distribution.equipment.matrix_impedance_branch_equipment import (
     MatrixImpedanceBranchEquipment,
 )
 from gdm.distribution.curve import TimeCurrentCurve
+from gdm.constants import PINT_SCHEMA
 
 
 class MatrixImpedanceFuseEquipment(MatrixImpedanceBranchEquipment):
     """Interface for impedance based fuse equipment."""
 
-    delay: Annotated[Time, Field(description="Delay time before blowing the fuse.")]
+    delay: Annotated[Time, PINT_SCHEMA, Field(description="Delay time before blowing the fuse.")]
     tcc_curve: Annotated[TimeCurrentCurve, Field(description="Time current curve")]
 
     @classmethod

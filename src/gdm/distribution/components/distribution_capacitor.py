@@ -41,7 +41,7 @@ class DistributionCapacitor(Component):
         list[CapacitorController],
         Field(
             [],
-            description=("List of the controllers which are used for each phase in order.",),
+            description="List of the controllers which are used for each phase in order.",
         ),
     ]
 

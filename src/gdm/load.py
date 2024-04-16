@@ -7,6 +7,7 @@ from infrasys.quantities import ActivePower
 from pydantic import Field
 
 from gdm.quantities import ReactivePower
+from gdm.constants import PINT_SCHEMA
 
 
 class PowerSystemLoad(Component):
@@ -14,6 +15,7 @@ class PowerSystemLoad(Component):
 
     z_real: Annotated[
         ActivePower,
+        PINT_SCHEMA,
         Field(
             default=ActivePower(0, "kilowatt"),
             description="Constant impedance load real component.",
@@ -21,6 +23,7 @@ class PowerSystemLoad(Component):
     ]
     z_imag: Annotated[
         ReactivePower,
+        PINT_SCHEMA,
         Field(
             default=ReactivePower(0, "kilovar"),
             description="Constant impedance load imaginary component.",
@@ -28,6 +31,7 @@ class PowerSystemLoad(Component):
     ]
     i_real: Annotated[
         ActivePower,
+        PINT_SCHEMA,
         Field(
             default=ActivePower(0, "kilowatt"),
             description="Constant current load real component.",
@@ -35,6 +39,7 @@ class PowerSystemLoad(Component):
     ]
     i_imag: Annotated[
         ReactivePower,
+        PINT_SCHEMA,
         Field(
             default=ReactivePower(0, "kilovar"),
             description="Constant current load imaginary component.",
@@ -42,6 +47,7 @@ class PowerSystemLoad(Component):
     ]
     p_real: Annotated[
         ActivePower,
+        PINT_SCHEMA,
         Field(
             default=ActivePower(0, "kilowatt"),
             description="Constant power load real component.",
@@ -49,6 +55,7 @@ class PowerSystemLoad(Component):
     ]
     p_imag: Annotated[
         ReactivePower,
+        PINT_SCHEMA,
         Field(
             default=ReactivePower(0, "kilovar"),
             description="Constant power load imaginary component.",

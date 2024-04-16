@@ -2,6 +2,15 @@
 
 GDM is a python package containing [pydantic](https://docs.pydantic.dev/latest/) data models for power system assets and datasets. This package is actively being developed at [National Renewable Energy Laboratory (NREL)](https://www.nrel.gov/) and intended to be open sourced in the future.
 
+## Installation
+
+You can install latest version of `grid-data-models` from PyPi.
+
+```bash
+pip install grid-data-models
+```
+
+
 ## Why Grid Data Models ?
 
 In an effort to reduce code duplication and provide client packages a standard interface to interact with power system data, a group of 
@@ -22,42 +31,20 @@ To get started, you can clone and pip install this library from [here](https://g
 - **Kapil Duwadi**
 - **Tarek Elgindy**
 - **Aadil Latif**
-- **Daniel Thompson**
+- **Daniel Thom**
 - **Jeremy Keen**
 
 
 ```{toctree}
-:caption: Getting Started
-:hidden: true
-
-install.md
-```
-
-```{toctree}
 :caption: API Documentation
 :hidden: true
-:toc-depth: 0
 
-api/distribution_bus.md
-api/distribution_branch.md
-api/distribution_capacitor.md
-api/distribution_load.md
-api/distribution_transformer.md
-api/distribution_wires.md
-api/distribution_vsource.md
-api/limitset.md
-api/distribution_enum.md
-api/distribution_component.md
-api/quantities
-api/distribution_feeder.md
-api/distribution_substation.md
+api/index
 ```
 
 ```{toctree}
-:caption: CIM vs Grid Data Models
+:caption: CIM & GDM
 :hidden: true
-:toc-depth: 0
 
-cim/index.md
-cim/distribution-bus.md
+cim/index
 ```

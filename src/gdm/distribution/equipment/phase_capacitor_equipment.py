@@ -6,6 +6,7 @@ from pydantic import Field
 
 from gdm.capacitor import PowerSystemCapacitor
 from gdm.quantities import PositiveResistance, PositiveReactance
+from gdm.constants import PINT_SCHEMA
 
 
 class PhaseCapacitorEquipment(PowerSystemCapacitor):
@@ -13,6 +14,7 @@ class PhaseCapacitorEquipment(PowerSystemCapacitor):
 
     resistance: Annotated[
         PositiveResistance,
+        PINT_SCHEMA,
         Field(
             PositiveResistance(0, "ohm"),
             description="Positive resistance for the capacitor.",
@@ -20,6 +22,7 @@ class PhaseCapacitorEquipment(PowerSystemCapacitor):
     ]
     reactance: Annotated[
         PositiveReactance,
+        PINT_SCHEMA,
         Field(
             PositiveReactance(0, "ohm"),
             description="Positive reactance for the capacitor.",

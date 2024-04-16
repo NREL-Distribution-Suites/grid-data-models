@@ -1,9 +1,8 @@
 # Distribution Component
 
-
 ```{eval-rst}
-.. automodule:: gdm
-    :members: DistributionComponent
-    :exclude-members: model_fields, model_config, validate_fields
-
+.. autopydantic_model:: gdm.DistributionComponent
+   :members: __init__
+   :inherited-members: Component
+   :exclude-members: example, validate_fields
 ```

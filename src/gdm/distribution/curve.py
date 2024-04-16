@@ -6,6 +6,8 @@ from pydantic import model_validator, Field
 from infrasys import Component
 from infrasys.quantities import Time, Current
 
+from gdm.constants import PINT_SCHEMA
+
 
 class Curve(Component):
     """An interface for representing a curve using x and y points. e.g for volt-var and volt-watt curves.
@@ -48,8 +50,8 @@ class TimeCurrentCurve(Component):
     """An interface for time current curve."""
 
     name: Annotated[str, Field("", description="Name of the curve.")]
-    curve_x: Annotated[Current, Field(..., description="Array of time values.")]
-    curve_y: Annotated[Time, Field(..., description="Array of current values.")]
+    curve_x: Annotated[Current, PINT_SCHEMA, Field(..., description="Array of time values.")]
+    curve_y: Annotated[Time, PINT_SCHEMA, Field(..., description="Array of current values.")]
 
     @model_validator(mode="after")
     def validate_fields(self) -> "Curve":

@@ -6,13 +6,16 @@ from infrasys import Component, Location
 from pydantic import Field
 
 from gdm.quantities import PositiveVoltage
+from gdm.constants import PINT_SCHEMA
 
 
 class PowerSystemBus(Component):
     """Interface for power system bus."""
 
     nominal_voltage: Annotated[
-        PositiveVoltage, Field(..., description="Nominal voltage for this bus.")
+        PositiveVoltage,
+        PINT_SCHEMA,
+        Field(..., description="Nominal voltage for this bus."),
     ]
     coordinate: Annotated[
         Optional[Location],

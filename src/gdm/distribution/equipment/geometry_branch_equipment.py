@@ -8,6 +8,7 @@ from infrasys import Component
 from gdm.distribution.equipment.bare_conductor_equipment import BareConductorEquipment
 from gdm.distribution.equipment.concentric_cable_equipment import ConcentricCableEquipment
 from gdm.quantities import Distance
+from gdm.constants import PINT_SCHEMA
 
 
 class GeometryBranchEquipment(Component):
@@ -19,10 +20,12 @@ class GeometryBranchEquipment(Component):
     ]
     horizontal_positions: Annotated[
         Distance,
+        PINT_SCHEMA,
         Field(..., description="Horizontal position of the conductor."),
     ]
     vertical_positions: Annotated[
         Distance,
+        PINT_SCHEMA,
         Field(
             ...,
             description="""Vertical position of the conductor.""",

@@ -8,13 +8,17 @@ from infrasys import Component
 
 from gdm.distribution.equipment.recloser_controller_equipment import RecloserControllerEquipment
 from gdm.distribution.curve import TimeCurrentCurve
+from gdm.constants import PINT_SCHEMA
 
 
 class DistributionRecloserController(Component):
     """Interface for distribution recloser controller."""
 
     name: Annotated[str, Field("", description="Name of the recloser controller.")]
-    delay: Annotated[Time, Field(description="Fixed delay added to the recloser trip time.")]
+
+    delay: Annotated[
+        Time, PINT_SCHEMA, Field(description="Fixed delay added to the recloser trip time.")
+    ]
     ground_delayed: Annotated[
         TimeCurrentCurve, Field(description="TCC curve related to ground delayed trip.")
     ]
@@ -33,8 +37,10 @@ class DistributionRecloserController(Component):
     num_shots: Annotated[
         int, Field(ge=1, description="Number of fast and delayed shots before lockout.")
     ]
-    reclose_intervals: Annotated[Time, Field(..., description="Array of reclose intervals.")]
-    reset_time: Annotated[Time, Field(..., description="Reset time for recloser.")]
+    reclose_intervals: Annotated[
+        Time, PINT_SCHEMA, Field(..., description="Array of reclose intervals.")
+    ]
+    reset_time: Annotated[Time, PINT_SCHEMA, Field(..., description="Reset time for recloser.")]
     equipment: Annotated[
         RecloserControllerEquipment, Field(..., description="Recloser controller equipment.")
     ]

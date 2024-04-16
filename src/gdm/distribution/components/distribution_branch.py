@@ -13,6 +13,7 @@ from gdm.quantities import (
     PositiveDistance,
     PositiveVoltage,
 )
+from gdm.constants import PINT_SCHEMA
 
 
 class DistributionBranch(Component):
@@ -23,7 +24,9 @@ class DistributionBranch(Component):
         list[DistributionBus],
         Field(..., description="List of buses connecting a branch."),
     ]
-    length: Annotated[PositiveDistance, Field(..., description="Length of the branch.")]
+    length: Annotated[
+        PositiveDistance, PINT_SCHEMA, Field(..., description="Length of the branch.")
+    ]
     phases: Annotated[
         list[Phase],
         Field(..., description="List of phases in the same order as conductors."),

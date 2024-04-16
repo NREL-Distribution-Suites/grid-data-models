@@ -40,7 +40,7 @@ class DistributionSolar(Component):
         InverterController,
         Field(
             ...,
-            description=("The controller which is used for the PV array.",),
+            description="The controller which is used for the PV array.",
         ),
     ]
 
