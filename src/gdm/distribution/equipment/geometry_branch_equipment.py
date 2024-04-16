@@ -52,6 +52,6 @@ class GeometryBranchEquipment(Component):
         return GeometryBranchEquipment(
             name="geometry-branch-1",
             conductors=[BareConductorEquipment.example()] * 3,
-            horizontal_positions= Distance([5.6, 6.0, 6.4], "m") * 3,
-            vertical_positions=Distance([5.6, 6.0, 6.4], "m") ,
+            horizontal_positions=Distance([5.6, 6.0, 6.4], "m") * 3,
+            vertical_positions=Distance([5.6, 6.0, 6.4], "m"),
         )

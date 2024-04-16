@@ -12,7 +12,8 @@ from gdm.distribution.curve import TimeCurrentCurve
 
 class DistributionRecloserController(Component):
     """Interface for distribution recloser controller."""
-    name: Annotated[str, Field('', description="Name of the recloser controller.")]
+
+    name: Annotated[str, Field("", description="Name of the recloser controller.")]
     delay: Annotated[Time, Field(description="Fixed delay added to the recloser trip time.")]
     ground_delayed: Annotated[
         TimeCurrentCurve, Field(description="TCC curve related to ground delayed trip.")

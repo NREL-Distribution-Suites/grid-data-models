@@ -14,6 +14,7 @@ from gdm.distribution.distribution_enum import Phase
 
 class PhaseVoltageSourceEquipment(Component):
     """Interface for phase voltage source."""
+
     r0: Annotated[Resistance, Field(..., description="Zero sequence resistance.")]
     r1: Annotated[Resistance, Field(..., description="Positive sequence resistance.")]
     x0: Annotated[Reactance, Field(..., description="Zero sequence reactance.")]
@@ -37,6 +38,7 @@ class PhaseVoltageSourceEquipment(Component):
 
 class VoltageSourceEquipment(Component):
     """Interface for voltage source model."""
+
     sources: Annotated[
         list[PhaseVoltageSourceEquipment],
         Field(
@@ -48,7 +50,9 @@ class VoltageSourceEquipment(Component):
     @classmethod
     def example(cls) -> "VoltageSourceEquipment":
         """Example for voltage source model."""
-        return VoltageSourceEquipment(name="Voltage Source 1", sources=[PhaseVoltageSourceEquipment.example()] * 3)
+        return VoltageSourceEquipment(
+            name="Voltage Source 1", sources=[PhaseVoltageSourceEquipment.example()] * 3
+        )
 
 
 class DistributionVoltageSource(Component):

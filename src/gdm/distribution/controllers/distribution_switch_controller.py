@@ -10,7 +10,8 @@ from infrasys import Component
 
 class DistributionSwitchController(Component):
     """Interface for distribution switch controller."""
-    name: Annotated[str, Field('', description="Name of the switch controller.")]
+
+    name: Annotated[str, Field("", description="Name of the switch controller.")]
     delay: Annotated[Time, Field(description="Fixed delay added to the recloser trip time.")]
     normal_state: Annotated[
         Literal["open", "close"],

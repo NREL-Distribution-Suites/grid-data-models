@@ -74,8 +74,8 @@ class DistributionTransformer(Component):
 
         for wdg, pw_phases in zip(self.equipment.windings, self.winding_phases):
             pw_phases_length = len(pw_phases) - 1 if Phase.N in pw_phases else len(pw_phases)
-            
-            if pw_phases_length > wdg.num_phases and pw_phases_length != 2 :
+
+            if pw_phases_length > wdg.num_phases and pw_phases_length != 2:
                 msg = (
                     f"Number of phases in windings {wdg.num_phases=} must be "
                     f"less than or equal to phases {pw_phases=}"
@@ -89,9 +89,10 @@ class DistributionTransformer(Component):
                 raise ValueError(msg)
 
         for bus, pw_phases in zip(self.buses, self.winding_phases):
-            if not (set(pw_phases)-set(Phase.N)).issubset(bus.phases):
+            if not (set(pw_phases) - set(Phase.N)).issubset(bus.phases):
                 msg = (
-                    f"Winding phases {pw_phases=}" f" must be subset of bus phases ({bus.phases=})."
+                    f"Winding phases {pw_phases=}"
+                    f" must be subset of bus phases ({bus.phases=})."
                 )
                 raise ValueError(msg)
 

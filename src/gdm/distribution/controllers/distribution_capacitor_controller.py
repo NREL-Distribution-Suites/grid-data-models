@@ -17,7 +17,8 @@ from gdm.quantities import (
 
 class CapacitorController(Component):
     """Interface for capacitor controllers. Phase connection specified in the capacitor."""
-    name: Annotated[str, Field('', description="Name of the capacitor controller.")]
+
+    name: Annotated[str, Field("", description="Name of the capacitor controller.")]
     delay_on: Annotated[
         Optional[Time],
         Field(

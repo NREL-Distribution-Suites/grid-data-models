@@ -10,7 +10,8 @@ from pydantic import Field
 
 class VoltageLimitSet(Component):
     """Interface for voltage limit set."""
-    name: Annotated[str, Field('', description="Name of the voltage limit set.")]
+
+    name: Annotated[str, Field("", description="Name of the voltage limit set.")]
     limit_type: Annotated[LimitType, Field(..., description="Limit type used.")]
     value: Annotated[PositiveVoltage, Field(..., description="Voltage threshold.")]
 
@@ -22,7 +23,8 @@ class VoltageLimitSet(Component):
 
 class ThermalLimitSet(Component):
     """Interface for voltage limit set."""
-    name: Annotated[str, Field('', description="Name of the thermal limit set.")]
+
+    name: Annotated[str, Field("", description="Name of the thermal limit set.")]
     limit_type: Annotated[LimitType, Field(..., description="Limit type used.")]
     value: Annotated[PositiveCurrent, Field(..., description="Current threshold.")]
 
