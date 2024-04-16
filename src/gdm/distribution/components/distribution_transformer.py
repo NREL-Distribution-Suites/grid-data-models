@@ -75,10 +75,10 @@ class DistributionTransformer(Component):
         for wdg, pw_phases in zip(self.equipment.windings, self.winding_phases):
             if Phase.N in pw_phases:
                 pw_phases.pop(pw_phases.index(Phase.N))
-            if len(pw_phases) > wdg.num_phases:
+            if len(pw_phases) < wdg.num_phases:
                 msg = (
                     f"Number of phases in windings {wdg.num_phases=} must be "
-                    f"greater than or equal to phases {pw_phases=}"
+                    f"less than or equal to phases {pw_phases=}"
                 )
                 raise ValueError(msg)
 
