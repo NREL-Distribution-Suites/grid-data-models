@@ -1,14 +1,23 @@
 # Grid Data Models (GDM)
 
-GDM is a python package containing [pydantic](https://docs.pydantic.dev/latest/) data models for power system assets and datasets. This package is actively being developed at [National Renewable Energy Laboratory (NREL)](https://www.nrel.gov/).
+GDM is a python package containing [pydantic](https://docs.pydantic.dev/latest/) for power system assets and datasets. This package is actively being developed at [National Renewable Energy Laboratory (NREL)](https://www.nrel.gov/) and intended to be open sourced in the future.
+
+## Installation
+
+You can install latest version of `grid-data-models` from PyPi.
+
+```bash
+pip install grid-data-models
+```
+
 
 ## Why Grid Data Models ?
 
 In an effort to reduce code duplication and provide client packages a standard interface to interact with power system data, a group of 
 research engineers at NREL is working on developing standard data models. Features:
 
-- **Builtin validation layer:** Use of [pydantic](https://docs.pydantic.dev/latest/) in creating data models allows us to check for fields during the time of construction and update.
-- **Timeseries data management:** GDM uses [infrasys](https://github.nrel.gov/CADET/infrastructure_systems) package which enables attaching time series data to fields in the data model. For example, we can attach time series power consumption data to a load profile.
+- **Builtin validation layer:** Use of [pydantic](https://docs.pydantic.dev/latest/) allows us to validate model fields..
+- **Time series data management:** GDM uses [infrasys](https://github.nrel.gov/CADET/infrastructure_systems) package which enables [efficient time series data management](https://nrel.github.io/infrasys/explanation/time_series.html) by sharing arrays across components and offloading system memory. For example, we can attach time series power consumption data to a load profile.
 - **Builtin unit conversion:** GDM leverages [pint](https://pint.readthedocs.io/en/stable/) for unit conversion for power system quantities. For e.g power, voltage, time etc.
 - **JSON serialization/deserializatin:** GDM uses [infrasys](https://github.nrel.gov/CADET/infrastructure_systems) to serialize and deserialize distribution system containing power system components and time series data attached to components.
 
