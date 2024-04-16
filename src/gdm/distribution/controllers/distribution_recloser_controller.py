@@ -15,6 +15,7 @@ class DistributionRecloserController(Component):
     """Interface for distribution recloser controller."""
 
     name: Annotated[str, Field("", description="Name of the recloser controller.")]
+
     delay: Annotated[
         Time, PINT_SCHEMA, Field(description="Fixed delay added to the recloser trip time.")
     ]

@@ -56,9 +56,9 @@ class DistributionTransformer(Component):
         if not self.equipment.is_center_tapped:
             return False
 
-        all_voltages = [item.nominal_voltage for item in self.equipment.windings]
-        if voltage not in all_voltages:
-            msg = f"{voltage=} not in transformer winding voltages = {all_voltages}"
+        all_voltages = [round(item.nominal_voltage, 2) for item in self.equipment.windings]
+        if round(voltage, 2) not in all_voltages:
+            msg = f"{round(voltage, 2)=} not in transformer winding voltages = {all_voltages}"
             raise ValueError(msg)
         return voltage < max(all_voltages)
 
@@ -67,23 +67,32 @@ class DistributionTransformer(Component):
         """Custom validator for distribution transformer."""
         if len(self.winding_phases) != len(self.equipment.windings):
             msg = (
-                f"Number of windings {len(self.equipment.windings)} must be equal to"
+                f"Number of windings {len(self.equipment.windings)} must be equal to "
                 f"numbe of winding phases {len(self.winding_phases)}"
             )
             raise ValueError(msg)
 
         for wdg, pw_phases in zip(self.equipment.windings, self.winding_phases):
-            if len(pw_phases) > wdg.num_phases:
+            pw_phases_length = len(pw_phases) - 1 if Phase.N in pw_phases else len(pw_phases)
+
+            if pw_phases_length > wdg.num_phases and pw_phases_length != 2:
                 msg = (
-                    f"Number of phases in windings {wdg.num_phases=} must be"
-                    f"greater than or equal to phases {pw_phases=}"
+                    f"Number of phases in windings {wdg.num_phases=} must be "
+                    f"less than or equal to phases {pw_phases=}"
+                )
+                raise ValueError(msg)
+            elif pw_phases_length == 2 and wdg.num_phases != 1:
+                msg = (
+                    f"For a single phase delta connected transformer, {pw_phases=}"
+                    f" inconsistant number of phases provided for winding {wdg.num_phases=}"
                 )
                 raise ValueError(msg)
 
         for bus, pw_phases in zip(self.buses, self.winding_phases):
-            if not set(pw_phases).issubset(bus.phases):
+            if not (set(pw_phases) - set(Phase.N)).issubset(bus.phases):
                 msg = (
-                    f"Winding phases {pw_phases=}" f"must be subset of bus phases ({bus.phases=})."
+                    f"Winding phases {pw_phases=}"
+                    f" must be subset of bus phases ({bus.phases=})."
                 )
                 raise ValueError(msg)
 
