@@ -41,9 +41,9 @@ autodoc_pydantic_model_show_validator_summary = False
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
 html_theme = "pydata_sphinx_theme"
-html_static_path = ["_static"]
-html_css_files = [
-    "css/custom.css",
-]
+# html_static_path = ["_static"]
+# html_css_files = [
+#     "css/custom.css",
+# ]
 
 source_suffix = [".md"]
