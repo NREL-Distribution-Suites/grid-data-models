@@ -3,7 +3,7 @@ name: Pytest
 on: pull_request
 
 jobs:
-  test:
+  ci_test:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -22,14 +22,14 @@ jobs:
       - name: Run pytest
         run: |
           pytest -v --cov --cov-report=xml
-      - name: codecov
-        uses: codecov/codecov-action@v4.2.0
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v4.3.0
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          name: infrasys-tests
+          slug: NREL-Distribution-Suites/grid-data-models
           fail_ci_if_error: false
           verbose: true
-  ruff:
+  ci_ruff:
     runs-on: ubuntu-latest
     name: "ruff"
     steps:
