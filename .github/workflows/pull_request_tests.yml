@@ -21,7 +21,14 @@ jobs:
           python -m pip install ".[dev]"
       - name: Run pytest
         run: |
-          python -m pytest -v --disable-warnings tests
+          pytest -v --cov --cov-report=xml
+      - name: codecov
+        uses: codecov/codecov-action@v4.2.0
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          name: infrasys-tests
+          fail_ci_if_error: false
+          verbose: true
   ruff:
     runs-on: ubuntu-latest
     name: "ruff"

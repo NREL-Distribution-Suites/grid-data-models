@@ -9,6 +9,7 @@ from pydantic import Field, model_validator
 from gdm.distribution.sequence_pair import SequencePair
 from gdm.distribution.distribution_enum import ConnectionType, VoltageTypes
 from gdm.quantities import PositiveApparentPower, PositiveVoltage
+from gdm.constants import PINT_SCHEMA
 
 
 class WindingEquipment(Component):
@@ -24,6 +25,7 @@ class WindingEquipment(Component):
     is_grounded: Annotated[bool, Field(..., description="Is this winding grounded or not.")]
     nominal_voltage: Annotated[
         PositiveVoltage,
+        PINT_SCHEMA,
         Field(..., description="Nominal voltage rating for this winding."),
     ]
     voltage_type: Annotated[
@@ -31,6 +33,7 @@ class WindingEquipment(Component):
     ]
     rated_power: Annotated[
         PositiveApparentPower,
+        PINT_SCHEMA,
         Field(..., description="Rated power for this winding."),
     ]
     num_phases: Annotated[
@@ -67,10 +70,14 @@ class TapWindingEquipment(WindingEquipment):
         int, Field(default=32, description="Total number of taps along the bandwidth.")
     ]
     bandwidth: Annotated[
-        PositiveVoltage, Field(..., description="The total voltage bandwidth for the controller")
+        PositiveVoltage,
+        PINT_SCHEMA,
+        Field(..., description="The total voltage bandwidth for the controller"),
     ]
     band_center: Annotated[
-        PositiveVoltage, Field(..., description="The voltage bandcenter on the controller.")
+        PositiveVoltage,
+        PINT_SCHEMA,
+        Field(..., description="The voltage bandcenter on the controller."),
     ]
     max_step: Annotated[
         int,

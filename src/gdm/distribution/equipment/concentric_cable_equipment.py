@@ -12,49 +12,62 @@ from gdm.quantities import (
     PositiveVoltage,
 )
 from gdm.distribution.limitset import ThermalLimitSet
+from gdm.constants import PINT_SCHEMA
 
 
 class ConcentricCableEquipment(Component):
     """Interface for cable catalog."""
 
     strand_diameter: Annotated[
-        PositiveDistance, Field(..., description="Diameter of the cable strand.")
+        PositiveDistance, PINT_SCHEMA, Field(..., description="Diameter of the cable strand.")
     ]
     conductor_diameter: Annotated[
         PositiveDistance,
+        PINT_SCHEMA,
         Field(..., description="Diameter of the conductor inside cable."),
     ]
-    cable_diameter: Annotated[PositiveDistance, Field(..., description="Diameter of the cable.")]
+    cable_diameter: Annotated[
+        PositiveDistance, PINT_SCHEMA, Field(..., description="Diameter of the cable.")
+    ]
     insulation_thickness: Annotated[
-        PositiveDistance, Field(..., description="Thickness of insulation.")
+        PositiveDistance, PINT_SCHEMA, Field(..., description="Thickness of insulation.")
     ]
     insulation_diameter: Annotated[
-        PositiveDistance, Field(..., description="Diameter of the insulation.")
+        PositiveDistance, PINT_SCHEMA, Field(..., description="Diameter of the insulation.")
     ]
-    ampacity: Annotated[PositiveCurrent, Field(..., description="Ampacity of the conductor.")]
+    ampacity: Annotated[
+        PositiveCurrent, PINT_SCHEMA, Field(..., description="Ampacity of the conductor.")
+    ]
     emergency_ampacity: Annotated[
-        PositiveCurrent, Field(..., description="Emergency ampacity of the conductor.")
+        PositiveCurrent,
+        PINT_SCHEMA,
+        Field(..., description="Emergency ampacity of the conductor."),
     ]
     conductor_gmr: Annotated[
         PositiveDistance,
+        PINT_SCHEMA,
         Field(..., description="Geometric mean radius of the conductor."),
     ]
     strand_gmr: Annotated[
-        PositiveDistance, Field(..., description="Geometric mean radius of the strand.")
+        PositiveDistance,
+        PINT_SCHEMA,
+        Field(..., description="Geometric mean radius of the strand."),
     ]
     phase_ac_resistance: Annotated[
         PositiveResistancePULength,
+        PINT_SCHEMA,
         Field(..., description="Per unit length conductor ac resistance."),
     ]
     strand_ac_resistance: Annotated[
         PositiveResistancePULength,
+        PINT_SCHEMA,
         Field(..., description="Per unit length ac resistance of the strand."),
     ]
     num_neutral_strands: Annotated[
         PositiveInt, Field(..., description="Number of neutral strands in the cable.")
     ]
     rated_voltage: Annotated[
-        PositiveVoltage, Field(..., description="Rated voltage for the cable.")
+        PositiveVoltage, PINT_SCHEMA, Field(..., description="Rated voltage for the cable.")
     ]
     loading_limit: Annotated[
         Optional[ThermalLimitSet],

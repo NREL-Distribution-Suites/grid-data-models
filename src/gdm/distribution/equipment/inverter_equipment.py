@@ -7,6 +7,7 @@ from pydantic import Field
 
 from gdm.quantities import PositiveApparentPower, ActivePowerPUTime
 from gdm.distribution.curve import Curve
+from gdm.constants import PINT_SCHEMA
 
 
 class InverterEquipment(Component):
@@ -14,15 +15,19 @@ class InverterEquipment(Component):
 
     name: Annotated[str, Field("", description="Name of the inverter controller.")]
     capacity: Annotated[
-        PositiveApparentPower, Field(..., description="Apparent power rating for the inverter.")
+        PositiveApparentPower,
+        PINT_SCHEMA,
+        Field(..., description="Apparent power rating for the inverter."),
     ]
     rise_limit: Annotated[
         Optional[ActivePowerPUTime],
+        PINT_SCHEMA,
         Field(..., description="The rise in power output allowed per unit of time"),
     ]
 
     fall_limit: Annotated[
         Optional[ActivePowerPUTime],
+        PINT_SCHEMA,
         Field(..., description="The fall in power output allowed per unit of time"),
     ]
     eff_curve: Annotated[Optional[Curve], Field(None, description="Efficency curve for inverter.")]
