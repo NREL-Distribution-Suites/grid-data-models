@@ -3,9 +3,11 @@
 import networkx as nx
 from infrasys import System
 
-from gdm.distribution.components.distribution_bus import DistributionBus
-from gdm.distribution.components.distribution_branch import DistributionBranch
-from gdm.distribution.components.distribution_transformer import DistributionTransformer
+from gdm import (
+    DistributionTransformer,
+    DistributionBranch,
+    DistributionBus,
+)
 
 
 def build_graph_from_system(system: System) -> nx.Graph:
@@ -21,5 +23,9 @@ def build_graph_from_system(system: System) -> nx.Graph:
     ) + list(system.get_components(DistributionTransformer))
 
     for edge in edges:
-        graph.add_edge(edge.buses[0].name, edge.buses[1].name)
+        graph.add_edge(
+            edge.buses[0].name,
+            edge.buses[1].name,
+            **{"name": edge.name, "type": edge.__class__.__name__},
+        )
     return graph
