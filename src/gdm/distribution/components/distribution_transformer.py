@@ -56,10 +56,7 @@ class DistributionTransformer(Component):
         if not self.equipment.is_center_tapped:
             return False
 
-        all_voltages = [round(item.nominal_voltage, 2) for item in self.equipment.windings]
-        if round(voltage, 2) not in all_voltages:
-            msg = f"{round(voltage, 2)=} not in transformer winding voltages = {all_voltages}"
-            raise ValueError(msg)
+        all_voltages = [item.nominal_voltage for item in self.equipment.windings]
         return voltage < max(all_voltages)
 
     @model_validator(mode="after")
