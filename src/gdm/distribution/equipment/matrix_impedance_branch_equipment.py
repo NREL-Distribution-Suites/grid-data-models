@@ -6,7 +6,7 @@ from infrasys import Component
 from pydantic import Field, model_validator
 
 from gdm.quantities import (
-    PositiveResistancePULength,
+    ResistancePULength,
     ReactancePULength,
     CapacitancePULength,
     PositiveCurrent,
@@ -19,7 +19,7 @@ class MatrixImpedanceBranchEquipment(Component):
     """Interface for impedance based branch."""
 
     r_matrix: Annotated[
-        PositiveResistancePULength,
+        ResistancePULength,
         PINT_SCHEMA,
         Field(..., description="Per unit length resistance matrix."),
     ]
@@ -55,7 +55,7 @@ class MatrixImpedanceBranchEquipment(Component):
         """Example for matrix impedance model."""
         return MatrixImpedanceBranchEquipment(
             name="matrix-impedance-branch-1",
-            r_matrix=PositiveResistancePULength([[1, 2, 3] for _ in range(3)], "ohm/mi"),
+            r_matrix=ResistancePULength([[1, 2, 3] for _ in range(3)], "ohm/mi"),
             x_matrix=ReactancePULength([[1, 2, 3] for _ in range(3)], "ohm/mi"),
             c_matrix=CapacitancePULength([[1, 2, 3] for _ in range(3)], "farad/mi"),
             ampacity=PositiveCurrent(90, "ampere"),
