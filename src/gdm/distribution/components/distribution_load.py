@@ -3,7 +3,7 @@
 from typing import Annotated
 
 from pydantic import model_validator, Field
-from infrasys import Component
+from infrasys import Component, Location
 
 from gdm.distribution.distribution_enum import Phase
 from gdm.distribution.distribution_common import BELONG_TO_TYPE
@@ -54,6 +54,7 @@ class DistributionLoad(Component):
                 name="Bus1",
                 phases=[Phase.A, Phase.B, Phase.C],
                 nominal_voltage=PositiveVoltage(0.4, "kilovolt"),
+                coordinate=Location(x=20.0, y=30.0),
             ),
             phases=[Phase.A, Phase.B, Phase.C],
             equipment=LoadEquipment.example(),

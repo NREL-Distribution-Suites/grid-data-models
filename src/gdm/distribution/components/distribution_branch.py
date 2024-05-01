@@ -4,16 +4,16 @@ from typing import Annotated
 from itertools import product
 
 from pydantic import model_validator, Field
-from infrasys import Component
+from infrasys import Component, Location
 
 from gdm.distribution.distribution_common import BELONG_TO_TYPE
 from gdm.distribution.components.distribution_bus import DistributionBus
-from gdm.distribution.distribution_enum import Phase
+from gdm.distribution.distribution_enum import Phase, VoltageTypes
+from gdm.distribution.components.distribution_component import DistributionComponent
 from gdm.quantities import (
     PositiveDistance,
     PositiveVoltage,
 )
-from gdm.constants import PINT_SCHEMA
 
 
 class DistributionBranch(Component):
@@ -24,9 +24,7 @@ class DistributionBranch(Component):
         list[DistributionBus],
         Field(..., description="List of buses connecting a branch."),
     ]
-    length: Annotated[
-        PositiveDistance, PINT_SCHEMA, Field(..., description="Length of the branch.")
-    ]
+    length: Annotated[PositiveDistance, Field(..., description="Length of the branch.")]
     phases: Annotated[
         list[Phase],
         Field(..., description="List of phases in the same order as conductors."),
@@ -68,22 +66,26 @@ class DistributionBranch(Component):
     def example(cls) -> "DistributionBranch":
         """Example for base distribution branch."""
         bus1 = DistributionBus(
-            voltage_type="line-to-ground",
+            voltage_type=VoltageTypes.LINE_TO_GROUND,
+            belongs_to=DistributionComponent.example(),
             phases=[Phase.A, Phase.B, Phase.C],
             nominal_voltage=PositiveVoltage(400, "volt"),
-            name="DistBus1",
+            name="DistBranch_DistBus1",
+            coordinate=Location(x=20.0, y=30.0)
         )
         bus2 = DistributionBus(
-            voltage_type="line-to-ground",
+            voltage_type=VoltageTypes.LINE_TO_GROUND,
+            belongs_to=DistributionComponent.example(),
             phases=[Phase.A, Phase.B, Phase.C],
             nominal_voltage=PositiveVoltage(400, "volt"),
-            name="DistBus2",
+            name="DistBranch_DistBus2",
+            coordinate=Location(x=20.0, y=160.2)
         )
         return DistributionBranch(
             buses=[bus1, bus2],
             length=PositiveDistance(130.2, "meter"),
             phases=[Phase.A, Phase.B, Phase.C],
-            name="p14u405",
+            name="distbranch",
         )
 
 

@@ -2,7 +2,7 @@
 
 from typing import Annotated
 
-from infrasys import Component
+from infrasys import Component, Location
 from pydantic import Field, model_validator
 
 from gdm.distribution.components.distribution_bus import DistributionBus
@@ -41,7 +41,7 @@ class DistributionCapacitor(Component):
         list[CapacitorController],
         Field(
             [],
-            description="List of the controllers which are used for each phase in order.",
+            description=("List of the controllers which are used for each phase in order.",),
         ),
     ]
 
@@ -78,6 +78,7 @@ class DistributionCapacitor(Component):
                 name="Bus1",
                 nominal_voltage=PositiveVoltage(400, "volt"),
                 phases=[Phase.A, Phase.B, Phase.C],
+                coordinate=Location(x=20.0, y=30.0),
             ),
             phases=[Phase.A, Phase.B, Phase.C],
             equipment=CapacitorEquipment.example(),
