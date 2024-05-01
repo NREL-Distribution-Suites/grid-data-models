@@ -6,36 +6,30 @@ from infrasys import Component
 from pydantic import Field, model_validator
 
 from gdm.quantities import (
-    ResistancePULength,
+    PositiveResistancePULength,
     ReactancePULength,
     CapacitancePULength,
     PositiveCurrent,
 )
 from gdm.distribution.limitset import ThermalLimitSet
-from gdm.constants import PINT_SCHEMA
 
 
 class MatrixImpedanceBranchEquipment(Component):
     """Interface for impedance based branch."""
 
     r_matrix: Annotated[
-        ResistancePULength,
-        PINT_SCHEMA,
+        PositiveResistancePULength,
         Field(..., description="Per unit length resistance matrix."),
     ]
     x_matrix: Annotated[
         ReactancePULength,
-        PINT_SCHEMA,
         Field(..., description="Per unit length reactance matrix."),
     ]
     c_matrix: Annotated[
         CapacitancePULength,
-        PINT_SCHEMA,
         Field(..., description="Per unit length capacitance matrix."),
     ]
-    ampacity: Annotated[
-        PositiveCurrent, PINT_SCHEMA, Field(..., description="Ampacity of the conducotr.")
-    ]
+    ampacity: Annotated[PositiveCurrent, Field(..., description="Ampacity of the conductor.")]
     loading_limit: Annotated[
         Optional[ThermalLimitSet],
         Field(None, description="Loading limit set for this conductor."),
@@ -55,8 +49,8 @@ class MatrixImpedanceBranchEquipment(Component):
         """Example for matrix impedance model."""
         return MatrixImpedanceBranchEquipment(
             name="matrix-impedance-branch-1",
-            r_matrix=ResistancePULength([[1, 2, 3] for _ in range(3)], "ohm/mi"),
-            x_matrix=ReactancePULength([[1, 2, 3] for _ in range(3)], "ohm/mi"),
-            c_matrix=CapacitancePULength([[1, 2, 3] for _ in range(3)], "farad/mi"),
+            r_matrix=PositiveResistancePULength([[0.08820, 0.0312137, 0.0306264], [0.0312137, 0.0901946, 0.0316143 ], [0.0306264, 0.0316143, 0.0889665]], "ohm/mi"),
+            x_matrix=ReactancePULength([[0.20744, 0.0935314, 0.0760312], [0.0935314, 0.200783, 0.0855879], [0.0760312, 0.0855879, 0.204877]], "ohm/mi"),
+            c_matrix=CapacitancePULength([[2.90301, -0.679335, -0.22313], [-0.679335, 3.15896, -0.481416], [-0.22313, -0.481416, 2.8965]], "nanofarad/mi"),
             ampacity=PositiveCurrent(90, "ampere"),
         )
