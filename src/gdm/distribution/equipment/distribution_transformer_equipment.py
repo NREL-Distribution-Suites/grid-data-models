@@ -149,7 +149,7 @@ class DistributionTransformerEquipment(Component):
         ),
     ]
     windings: Annotated[
-        list[WindingEquipment],
+        list[TapWindingEquipment | WindingEquipment],
         Field(..., description="List of windings for this transformer."),
     ]
 
