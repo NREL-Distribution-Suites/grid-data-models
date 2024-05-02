@@ -19,6 +19,7 @@ class PowerSystemLoad(Component):
     """
     real_power: Annotated[
             ActivePower,
+            PINT_SCHEMA,
             Field(
                 default=ActivePower(0,"kilowatt"),
                 description="Base real power for the ZIP model. (P_0) ",
@@ -26,6 +27,7 @@ class PowerSystemLoad(Component):
     ]
     reactive_power: Annotated[
             ReactivePower,
+            PINT_SCHEMA,
             Field(
                 default=ReactivePower(0,"kilovar"),
                 description="Base reactive power for the ZIP model. (Q_0) ",
@@ -93,3 +95,4 @@ class PowerSystemLoad(Component):
             p_real=0.15,
             p_imag=0.0,
             name="PhaseLoad1",
+        )
