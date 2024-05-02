@@ -13,7 +13,6 @@ from gdm.distribution.components.distribution_substation import DistributionSubs
 class DistributionComponent(Component):
     """Interface for simple distribution component."""
 
-    name: Annotated[str, Field("", description="Name of the component.")]
     substation: Annotated[
         Optional[DistributionSubstation], Field(None, description="Name of the substation.")
     ]

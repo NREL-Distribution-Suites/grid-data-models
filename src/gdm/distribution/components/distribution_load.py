@@ -3,16 +3,16 @@
 from typing import Annotated
 
 from pydantic import model_validator, Field
-from infrasys import Component
 
 from gdm.distribution.distribution_enum import Phase
-from gdm.distribution.distribution_common import BELONG_TO_TYPE
 from gdm.distribution.components.distribution_bus import DistributionBus
+from gdm.distribution.components.distribution_feeder import DistributionFeeder
+from gdm.distribution.components.distribution_substation import DistributionSubstation
 from gdm.quantities import PositiveVoltage
 from gdm.distribution.equipment.load_equipment import LoadEquipment
 
 
-class DistributionLoad(Component):
+class DistributionLoad(DistributionComponent):
     """Interface for distribution load."""
 
     bus: Annotated[
@@ -22,7 +22,6 @@ class DistributionLoad(Component):
             description="Distribution bus to which this load is connected to.",
         ),
     ]
-    belongs_to: BELONG_TO_TYPE
     phases: Annotated[
         list[Phase],
         Field(..., description="Phases to which this load is connected to."),
@@ -53,8 +52,12 @@ class DistributionLoad(Component):
                 voltage_type="line-to-ground",
                 name="Bus1",
                 phases=[Phase.A, Phase.B, Phase.C],
+                substation=DistributionSubstation.example(),
+                feeder=DistributionFeeder.example(),
                 nominal_voltage=PositiveVoltage(0.4, "kilovolt"),
             ),
+            substation=DistributionSubstation.example(),
+            feeder=DistributionFeeder.example(),
             phases=[Phase.A, Phase.B, Phase.C],
             equipment=LoadEquipment.example(),
         )

@@ -45,8 +45,8 @@ class DistributionBus(DistributionComponent):
             phases=[Phase.A, Phase.B, Phase.C],
             nominal_voltage=PositiveVoltage(400, "volt"),
             name="DistBus1",
-            substation=DistributionSubstation.example()
-            feeder=DistributionFeeder.example()
+            substation=DistributionSubstation.example(),
+            feeder=DistributionFeeder.example(),
             voltagelimits=[
                 VoltageLimitSet(
                     limit_type=LimitType.MIN, value=PositiveVoltage(400 * 0.9, "volt")

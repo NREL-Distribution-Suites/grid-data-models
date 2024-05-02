@@ -6,9 +6,11 @@ from itertools import product
 from pydantic import model_validator, Field
 from infrasys import Component
 
-from gdm.distribution.distribution_common import BELONG_TO_TYPE
 from gdm.distribution.components.distribution_bus import DistributionBus
 from gdm.distribution.distribution_enum import Phase
+from gdm.distribution.components.distribution_component import DistributionComponent
+from gdm.distribution.components.distribution_feeder import DistributionFeeder
+from gdm.distribution.components.distribution_substation import DistributionSubstation
 from gdm.quantities import (
     PositiveDistance,
     PositiveVoltage,
@@ -16,10 +18,9 @@ from gdm.quantities import (
 from gdm.constants import PINT_SCHEMA
 
 
-class DistributionBranch(Component):
+class DistributionBranch(DistributionComponent):
     """Interface for distribution branch."""
 
-    belongs_to: BELONG_TO_TYPE
     buses: Annotated[
         list[DistributionBus],
         Field(..., description="List of buses connecting a branch."),
@@ -71,18 +72,24 @@ class DistributionBranch(Component):
             voltage_type="line-to-ground",
             phases=[Phase.A, Phase.B, Phase.C],
             nominal_voltage=PositiveVoltage(400, "volt"),
+            substation=DistributionSubstation.example(),
+            feeder=DistributionFeeder.example(),
             name="DistBus1",
         )
         bus2 = DistributionBus(
             voltage_type="line-to-ground",
             phases=[Phase.A, Phase.B, Phase.C],
             nominal_voltage=PositiveVoltage(400, "volt"),
+            substation=DistributionSubstation.example(),
+            feeder=DistributionFeeder.example(),
             name="DistBus2",
         )
         return DistributionBranch(
             buses=[bus1, bus2],
             length=PositiveDistance(130.2, "meter"),
             phases=[Phase.A, Phase.B, Phase.C],
+            substation=DistributionSubstation.example(),
+            feeder=DistributionFeeder.example(),
             name="p14u405",
         )
 
