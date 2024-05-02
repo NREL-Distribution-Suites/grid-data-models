@@ -2,14 +2,14 @@
 
 from typing import Annotated
 
-from pydantic import Field
+from pydantic import Field, NonNegativeInt, PositiveInt, model_validator
+from infrasys import Component
 
-from gdm.capacitor import PowerSystemCapacitor
 from gdm.quantities import PositiveResistance, PositiveReactance, PositiveReactivePower
 from gdm.constants import PINT_SCHEMA
 
 
-class PhaseCapacitorEquipment(PowerSystemCapacitor):
+class PhaseCapacitorEquipment(Component):
     """Interface for phase capacitor."""
 
     resistance: Annotated[
@@ -51,10 +51,9 @@ class PhaseCapacitorEquipment(PowerSystemCapacitor):
     @classmethod
     def example(cls) -> "PhaseCapacitorEquipment":
         """Example for phase capacitor equipment."""
-        base_cap = PowerSystemCapacitor.example()
         return PhaseCapacitorEquipment(
             name="Phase-Cap-1",
-            rated_capacity=PositiveReactance(200,"kvar"),
+            rated_capacity=PositiveReactivePower(200,"kvar"),
             num_banks=1,
             num_banks_on=1,
         )

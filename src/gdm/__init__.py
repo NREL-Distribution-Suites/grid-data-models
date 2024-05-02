@@ -118,7 +118,6 @@ from gdm.distribution.equipment.sequence_impedance_branch_equipment import (
 )
 from gdm.distribution.equipment.phase_load_equipment import PhaseLoadEquipment
 from gdm.distribution.equipment.load_equipment import LoadEquipment
-from gdm.load import PowerSystemLoad
 
 from gdm.distribution.equipment.distribution_transformer_equipment import (
     DistributionTransformerEquipment,
@@ -164,10 +163,3 @@ from gdm.distribution.distribution_enum import (
 from gdm.distribution.distribution_system import DistributionSystem
 from gdm.distribution.distribution_graph import build_graph_from_system
 from gdm.distribution.curve import Curve, TimeCurrentCurve
-
-from gdm.transmission.transmission_bus import TransmissionBus
-from gdm.transmission.transmission_component import TransmissionComponent
-from gdm.transmission.transmission_branch import TransmissionBranch
-from gdm.transmission.transmission_capacitor import TransmissionCapacitor
-from gdm.transmission.transmission_load import TransmissionLoad
-from gdm.transmission.transmission_substation import TransmissionSubstation

@@ -1,15 +1,15 @@
 """This module contains phase load equipment."""
 
 from typing import Annotated, Optional
+from infrasys import Component
 
 from pydantic import model_validator, PositiveInt, Field
 
 from gdm import ActivePower, ReactivePower
-from gdm.load import PowerSystemLoad
 from gdm.constants import PINT_SCHEMA
 
 
-class PhaseLoadEquipment(PowerSystemLoad):
+class PhaseLoadEquipment(Component):
     """Interface for single phase load equipment.
     Uses ZIP model where real power is:
     P = P_0[ a_p (|V|/V_0)^2 + b_p (|V|/V_0) + c_p]
@@ -92,7 +92,7 @@ class PhaseLoadEquipment(PowerSystemLoad):
 
     @classmethod
     def example(cls) -> "PhaseLoadEquipment":
-        return PowerSystemLoad(
+        return PhaseLoadEquipment(
             real_power = ActivePower(2.5, "kilowatt"),
             reactive_power = ReactivePower(0, "kilovar"),
             z_real=0.75,
