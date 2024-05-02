@@ -118,6 +118,7 @@ from gdm.distribution.equipment.sequence_impedance_branch_equipment import (
 )
 from gdm.distribution.equipment.phase_load_equipment import PhaseLoadEquipment
 from gdm.distribution.equipment.load_equipment import LoadEquipment
+from gdm.load import PowerSystemLoad
 
 from gdm.distribution.equipment.distribution_transformer_equipment import (
     DistributionTransformerEquipment,
