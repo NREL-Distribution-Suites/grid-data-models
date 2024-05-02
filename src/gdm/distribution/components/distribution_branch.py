@@ -4,7 +4,6 @@ from typing import Annotated
 from itertools import product
 
 from pydantic import model_validator, Field
-from infrasys import Component
 
 from gdm.distribution.components.distribution_bus import DistributionBus
 from gdm.distribution.distribution_enum import Phase
@@ -74,7 +73,7 @@ class DistributionBranch(DistributionComponent):
             nominal_voltage=PositiveVoltage(400, "volt"),
             substation=DistributionSubstation.example(),
             feeder=DistributionFeeder.example(),
-            name="DistBus1",
+            name="Branch-DistBus1",
         )
         bus2 = DistributionBus(
             voltage_type="line-to-ground",
@@ -82,7 +81,7 @@ class DistributionBranch(DistributionComponent):
             nominal_voltage=PositiveVoltage(400, "volt"),
             substation=DistributionSubstation.example(),
             feeder=DistributionFeeder.example(),
-            name="DistBus2",
+            name="Branch-DistBus2",
         )
         return DistributionBranch(
             buses=[bus1, bus2],
@@ -90,7 +89,7 @@ class DistributionBranch(DistributionComponent):
             phases=[Phase.A, Phase.B, Phase.C],
             substation=DistributionSubstation.example(),
             feeder=DistributionFeeder.example(),
-            name="p14u405",
+            name="DistBranch1",
         )
 
 

@@ -6,6 +6,7 @@ from pydantic import model_validator, Field
 
 from gdm.distribution.distribution_enum import Phase
 from gdm.distribution.components.distribution_bus import DistributionBus
+from gdm.distribution.components.distribution_component import DistributionComponent
 from gdm.distribution.components.distribution_feeder import DistributionFeeder
 from gdm.distribution.components.distribution_substation import DistributionSubstation
 from gdm.quantities import PositiveVoltage
@@ -50,7 +51,7 @@ class DistributionLoad(DistributionComponent):
             name="DistributionLoad1",
             bus=DistributionBus(
                 voltage_type="line-to-ground",
-                name="Bus1",
+                name="Load-DistBus1",
                 phases=[Phase.A, Phase.B, Phase.C],
                 substation=DistributionSubstation.example(),
                 feeder=DistributionFeeder.example(),

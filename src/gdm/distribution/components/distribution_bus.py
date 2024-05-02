@@ -1,6 +1,6 @@
 """ This module contains interface for Distribution Bus."""
 
-from typing import Annotated
+from typing import Annotated, Optional
 
 from infrasys import Location
 from pydantic import Field

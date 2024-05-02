@@ -2,7 +2,6 @@
 
 from typing import Annotated
 
-from infrasys import Component
 from pydantic import Field
 
 from gdm.quantities import PositiveVoltage
@@ -54,7 +53,7 @@ class DistributionSolar(DistributionComponent):
             name="pv1",
             bus=DistributionBus(
                 voltage_type="line-to-ground",
-                name="Bus1",
+                name="Solar-DistBus1",
                 nominal_voltage=PositiveVoltage(400, "volt"),
                 phases=[Phase.A, Phase.B, Phase.C],
                 substation=DistributionSubstation.example(),

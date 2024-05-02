@@ -21,5 +21,7 @@ class DistributionComponent(Component):
     @classmethod
     def example(cls) -> "DistributionComponent":
         return DistributionComponent(
-            substation=DistributionSubstation.example(), feeder=DistributionFeeder.example()
+            name="BaseComponent",
+            substation=DistributionSubstation.example(),
+            feeder=DistributionFeeder.example()
         )

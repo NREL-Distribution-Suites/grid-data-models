@@ -2,7 +2,6 @@
 
 from typing import Annotated
 
-from infrasys import Component
 from infrasys.quantities import Angle, Resistance, Voltage
 from pydantic import Field
 
@@ -10,6 +9,9 @@ from gdm.distribution.components.distribution_bus import DistributionBus
 from gdm.quantities import Reactance, PositiveVoltage
 from gdm.distribution.distribution_enum import Phase
 from gdm.constants import PINT_SCHEMA
+from gdm.distribution.components.distribution_component import DistributionComponent
+from gdm.distribution.components.distribution_feeder import DistributionFeeder
+from gdm.distribution.components.distribution_substation import DistributionSubstation
 
 
 class PhaseVoltageSourceEquipment(DistributionComponent):

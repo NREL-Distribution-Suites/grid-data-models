@@ -3,7 +3,6 @@
 import math
 from typing import Annotated
 
-from infrasys import Component
 from infrasys.quantities import Voltage
 from pydantic import Field, model_validator
 
@@ -122,7 +121,7 @@ class DistributionTransformer(DistributionComponent):
             buses=[
                 DistributionBus(
                     voltage_type=VoltageTypes.LINE_TO_LINE,
-                    name="Bus1",
+                    name="Transformer-DistBus1",
                     nominal_voltage=PositiveVoltage(12.47, "kilovolt"),
                     substation=DistributionSubstation.example(),
                     feeder=DistributionFeeder.example(),
@@ -130,7 +129,7 @@ class DistributionTransformer(DistributionComponent):
                 ),
                 DistributionBus(
                     voltage_type=VoltageTypes.LINE_TO_LINE,
-                    name="Bus2",
+                    name="Transformer-DistBus2",
                     nominal_voltage=PositiveVoltage(0.4, "kilovolt"),
                     substation=DistributionSubstation.example(),
                     feeder=DistributionFeeder.example(),
