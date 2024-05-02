@@ -21,6 +21,8 @@ class PhaseLoadEquipment(PowerSystemLoad):
         base_load = PowerSystemLoad.example()
         return PhaseLoadEquipment(
             name=base_load.name,
+            real_power=base_load.real_power,
+            reactive_power=base_load.reactive_power,
             z_real=base_load.z_real,
             z_imag=base_load.z_imag,
             i_real=base_load.i_real,
