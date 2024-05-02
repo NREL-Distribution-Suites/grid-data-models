@@ -73,12 +73,12 @@ class PowerSystemLoad(Component):
     @model_validator(mode="after")
     def validate_fields(self) -> "PowerSystemLoad":
         """Sum of ZIP parameters should be 1 for both P and Q"""
-        real_sum = self.z_real + self.i_real + self.p_real 
-        if not real_sum == 1: 
+        real_sum = self.z_real + self.i_real + self.p_real
+        if not real_sum == 1:
             msg = f"Sum of ZIP parameters z_real: {self.z_real}, i_real: {self.i_real}, p_real: {self.p_real} is {real_sum} not 1"
             raise ValueError(msg)
-        imag_sum = self.z_imag + self.i_imag + self.p_imag 
-        if not imag_sum == 1: 
+        imag_sum = self.z_imag + self.i_imag + self.p_imag
+        if not imag_sum == 1:
             msg = f"Sum of ZIP parameters z_imag: {self.z_imag}, i_imag: {self.i_imag}, p_imag: {self.p_imag} is {imag_sum} not 1"
             raise ValueError(msg)
         return self
