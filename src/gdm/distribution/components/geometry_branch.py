@@ -6,6 +6,8 @@ from pydantic import Field
 
 from gdm.distribution.components.distribution_branch import DistributionBranch
 from gdm.distribution.equipment.geometry_branch_equipment import GeometryBranchEquipment
+from gdm.distribution.components.distribution_feeder import DistributionFeeder
+from gdm.distribution.components.distribution_substation import DistributionSubstation
 
 
 class GeometryBranch(DistributionBranch):
@@ -31,5 +33,7 @@ class GeometryBranch(DistributionBranch):
             length=base_branch.length,
             phases=base_branch.phases,
             name=base_branch.name,
+            substation=DistributionSubstation.example(),
+            feeder=DistributionFeeder.example(),
             equipment=GeometryBranchEquipment.example(),
         )

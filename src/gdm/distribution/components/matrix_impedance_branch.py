@@ -5,6 +5,8 @@ from typing import Annotated
 from pydantic import Field, model_validator
 
 from gdm.distribution.components.distribution_branch import DistributionBranch
+from gdm.distribution.components.distribution_feeder import DistributionFeeder
+from gdm.distribution.components.distribution_substation import DistributionSubstation
 from gdm.distribution.equipment.matrix_impedance_branch_equipment import (
     MatrixImpedanceBranchEquipment,
 )
@@ -41,5 +43,7 @@ class MatrixImpedanceBranch(DistributionBranch):
             length=base_branch.length,
             phases=base_branch.phases,
             name=base_branch.name,
+            substation=DistributionSubstation.example(),
+            feeder=DistributionFeeder.example(),
             equipment=MatrixImpedanceBranchEquipment.example(),
         )

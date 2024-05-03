@@ -2,18 +2,19 @@
 
 from typing import Annotated
 
-from infrasys import Component
 from infrasys.quantities import Angle, Resistance, Voltage
 from pydantic import Field
 
-from gdm.distribution.distribution_common import BELONG_TO_TYPE
 from gdm.distribution.components.distribution_bus import DistributionBus
 from gdm.quantities import Reactance, PositiveVoltage
 from gdm.distribution.distribution_enum import Phase
 from gdm.constants import PINT_SCHEMA
+from gdm.distribution.components.distribution_component import DistributionComponent
+from gdm.distribution.components.distribution_feeder import DistributionFeeder
+from gdm.distribution.components.distribution_substation import DistributionSubstation
 
 
-class PhaseVoltageSourceEquipment(Component):
+class PhaseVoltageSourceEquipment(DistributionComponent):
     """Interface for phase voltage source."""
 
     r0: Annotated[Resistance, PINT_SCHEMA, Field(..., description="Zero sequence resistance.")]
@@ -36,10 +37,12 @@ class PhaseVoltageSourceEquipment(Component):
             x1=Reactance(0.001, "ohm"),
             voltage=PositiveVoltage(132.0, "kilovolt"),
             angle=Angle(180, "degree"),
+            substation=DistributionSubstation.example(),
+            feeder=DistributionFeeder.example(),
         )
 
 
-class VoltageSourceEquipment(Component):
+class VoltageSourceEquipment(DistributionComponent):
     """Interface for voltage source model."""
 
     sources: Annotated[
@@ -58,10 +61,9 @@ class VoltageSourceEquipment(Component):
         )
 
 
-class DistributionVoltageSource(Component):
+class DistributionVoltageSource(DistributionComponent):
     """Interface for distribution substation."""
 
-    belongs_to: BELONG_TO_TYPE
     bus: Annotated[
         DistributionBus,
         Field(
@@ -79,5 +81,7 @@ class DistributionVoltageSource(Component):
             name="DistributionVoltageSource1",
             bus=DistributionBus.example(),
             phases=[Phase.A, Phase.B, Phase.C],
+            substation=DistributionSubstation.example(),
+            feeder=DistributionFeeder.example(),
             equipment=VoltageSourceEquipment.example(),
         )

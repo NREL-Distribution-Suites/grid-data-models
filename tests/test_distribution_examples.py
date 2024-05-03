@@ -58,7 +58,6 @@ from gdm import (
     MatrixImpedanceSwitchEquipment,
     VoltWattInverterController,
     InverterEquipment,
-    PowerSystemLoad,
 )
 
 DIST_INTERFACES = [
@@ -119,7 +118,6 @@ DIST_INTERFACES = [
     MatrixImpedanceSwitchEquipment,
     VoltWattInverterController,
     InverterEquipment,
-    PowerSystemLoad,
 ]
 
 

@@ -2,21 +2,22 @@
 
 from typing import Annotated
 
-from infrasys import Component
 from pydantic import Field, model_validator
 
 from gdm.distribution.components.distribution_bus import DistributionBus
 from gdm.distribution.equipment.capacitor_equipment import CapacitorEquipment
+from gdm.distribution.components.distribution_component import DistributionComponent
+from gdm.distribution.components.distribution_feeder import DistributionFeeder
+from gdm.distribution.components.distribution_substation import DistributionSubstation
 from gdm.quantities import PositiveVoltage
 from gdm.distribution.distribution_enum import Phase
-from gdm.distribution.distribution_common import BELONG_TO_TYPE
 from gdm.distribution.controllers.distribution_capacitor_controller import (
     CapacitorController,
     VoltageCapacitorController,
 )
 
 
-class DistributionCapacitor(Component):
+class DistributionCapacitor(DistributionComponent):
     """Interface for capacitor present in distribution system models."""
 
     bus: Annotated[
@@ -26,7 +27,6 @@ class DistributionCapacitor(Component):
             description="Distribution bus to which this capacitor is connected to.",
         ),
     ]
-    belongs_to: BELONG_TO_TYPE
     phases: Annotated[
         list[Phase],
         Field(
@@ -75,10 +75,14 @@ class DistributionCapacitor(Component):
             name="Capacitor1",
             bus=DistributionBus(
                 voltage_type="line-to-ground",
-                name="Bus1",
+                name="Capacitor-DistBus1",
                 nominal_voltage=PositiveVoltage(400, "volt"),
                 phases=[Phase.A, Phase.B, Phase.C],
+                substation=DistributionSubstation.example(),
+                feeder=DistributionFeeder.example(),
             ),
+            substation=DistributionSubstation.example(),
+            feeder=DistributionFeeder.example(),
             phases=[Phase.A, Phase.B, Phase.C],
             equipment=CapacitorEquipment.example(),
             controllers=[

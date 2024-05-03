@@ -3,14 +3,15 @@
 import math
 from typing import Annotated
 
-from infrasys import Component
 from infrasys.quantities import Voltage
 from pydantic import Field, model_validator
 
-from gdm.distribution.distribution_common import BELONG_TO_TYPE
 from gdm.distribution.distribution_enum import Phase, VoltageTypes
 from gdm.quantities import PositiveVoltage
 from gdm.distribution.components.distribution_bus import DistributionBus
+from gdm.distribution.components.distribution_component import DistributionComponent
+from gdm.distribution.components.distribution_feeder import DistributionFeeder
+from gdm.distribution.components.distribution_substation import DistributionSubstation
 from gdm.distribution.equipment.distribution_transformer_equipment import (
     DistributionTransformerEquipment,
 )
@@ -25,10 +26,8 @@ def get_phase_voltage_in_kv(
     return kv_voltage / factor if voltage_type == VoltageTypes.LINE_TO_LINE else kv_voltage
 
 
-class DistributionTransformer(Component):
+class DistributionTransformer(DistributionComponent):
     """Interface for distribution transformer."""
-
-    belongs_to: BELONG_TO_TYPE
 
     buses: Annotated[
         list[DistributionBus],
@@ -122,14 +121,18 @@ class DistributionTransformer(Component):
             buses=[
                 DistributionBus(
                     voltage_type=VoltageTypes.LINE_TO_LINE,
-                    name="Bus1",
+                    name="Transformer-DistBus1",
                     nominal_voltage=PositiveVoltage(12.47, "kilovolt"),
+                    substation=DistributionSubstation.example(),
+                    feeder=DistributionFeeder.example(),
                     phases=[Phase.A, Phase.B, Phase.C],
                 ),
                 DistributionBus(
                     voltage_type=VoltageTypes.LINE_TO_LINE,
-                    name="Bus2",
+                    name="Transformer-DistBus2",
                     nominal_voltage=PositiveVoltage(0.4, "kilovolt"),
+                    substation=DistributionSubstation.example(),
+                    feeder=DistributionFeeder.example(),
                     phases=[Phase.A, Phase.B, Phase.C],
                 ),
             ],

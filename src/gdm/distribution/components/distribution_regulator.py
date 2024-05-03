@@ -5,6 +5,8 @@ from typing import Annotated
 from pydantic import Field, model_validator
 
 from gdm.distribution.components.distribution_transformer import DistributionTransformer
+from gdm.distribution.components.distribution_feeder import DistributionFeeder
+from gdm.distribution.components.distribution_substation import DistributionSubstation
 from gdm.distribution.controllers.distribution_regulator_controller import RegulatorController
 from gdm.distribution.equipment.distribution_transformer_equipment import (
     TapWindingEquipment,
@@ -65,14 +67,18 @@ class DistributionRegulator(DistributionTransformer):
             buses=[
                 DistributionBus(
                     voltage_type="line-to-ground",
-                    name="Bus1",
+                    name="Regulator-DistBus1",
                     nominal_voltage=PositiveVoltage(12.47, "kilovolt"),
+                    substation=DistributionSubstation.example(),
+                    feeder=DistributionFeeder.example(),
                     phases=[Phase.A, Phase.B, Phase.C],
                 ),
                 DistributionBus(
                     voltage_type="line-to-ground",
-                    name="Bus2",
+                    name="Regulator-DistBus2",
                     nominal_voltage=PositiveVoltage(12.47, "kilovolt"),
+                    substation=DistributionSubstation.example(),
+                    feeder=DistributionFeeder.example(),
                     phases=[Phase.A, Phase.B, Phase.C],
                 ),
             ],
