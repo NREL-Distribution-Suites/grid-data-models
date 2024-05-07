@@ -2,6 +2,7 @@
 
 from typing import Annotated
 
+from infrasys import Component
 from infrasys.quantities import Angle, Resistance, Voltage
 from pydantic import Field
 
@@ -14,7 +15,7 @@ from gdm.distribution.components.distribution_feeder import DistributionFeeder
 from gdm.distribution.components.distribution_substation import DistributionSubstation
 
 
-class PhaseVoltageSourceEquipment(DistributionComponent):
+class PhaseVoltageSourceEquipment(Component):
     """Interface for phase voltage source."""
 
     r0: Annotated[Resistance, PINT_SCHEMA, Field(..., description="Zero sequence resistance.")]
@@ -37,12 +38,10 @@ class PhaseVoltageSourceEquipment(DistributionComponent):
             x1=Reactance(0.001, "ohm"),
             voltage=PositiveVoltage(132.0, "kilovolt"),
             angle=Angle(180, "degree"),
-            substation=DistributionSubstation.example(),
-            feeder=DistributionFeeder.example(),
         )
 
 
-class VoltageSourceEquipment(DistributionComponent):
+class VoltageSourceEquipment(Component):
     """Interface for voltage source model."""
 
     sources: Annotated[
