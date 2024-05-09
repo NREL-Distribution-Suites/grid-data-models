@@ -74,7 +74,7 @@ class DistributionRegulator(DistributionTransformer):
                 ),
             ],
             winding_phases=[[Phase.A, Phase.B, Phase.C], [Phase.A, Phase.B, Phase.C]],
-            equipment=DistributionTransformerEquipment.example_with_taps(),
+            equipment=DistributionTransformerEquipment.example(),
             controllers=[
                 RegulatorController.example(),
                 RegulatorController.example(),
