@@ -46,23 +46,6 @@ class WindingEquipment(Component):
             description="""Connection type for this winding.""",
         ),
     ]
-
-    @classmethod
-    def example(cls) -> "WindingEquipment":
-        return WindingEquipment(
-            resistance=1,
-            is_grounded=False,
-            nominal_voltage=PositiveVoltage(12.47, "kilovolt"),
-            rated_power=PositiveApparentPower(500, "kilova"),
-            connection_type=ConnectionType.STAR,
-            num_phases=3,
-            voltage_type=VoltageTypes.LINE_TO_LINE,
-        )
-
-
-class TapWindingEquipment(WindingEquipment):
-    """Interface for tapped winding equipment."""
-
     tap_positions: Annotated[
         list[int], Field(..., description="List of tap positions for each phase. Centered at 0.")
     ]
@@ -88,7 +71,7 @@ class TapWindingEquipment(WindingEquipment):
     ]
 
     @model_validator(mode="after")
-    def validate_fields(self) -> "TapWindingEquipment":
+    def validate_fields(self) -> "WindingEquipment":
         """Custom validator for winding fields."""
         if not len(self.tap_positions) == self.num_phases:
             msg = (
@@ -106,10 +89,9 @@ class TapWindingEquipment(WindingEquipment):
                 raise ValueError(msg)
 
         return self
-
     @classmethod
-    def example(cls) -> "TapWindingEquipment":
-        return TapWindingEquipment(
+    def example(cls) -> "WindingEquipment":
+        return WindingEquipment(
             resistance=1,
             is_grounded=False,
             nominal_voltage=PositiveVoltage(12.47, "kilovolt"),
@@ -123,7 +105,6 @@ class TapWindingEquipment(WindingEquipment):
             max_step=4,
             voltage_type=VoltageTypes.LINE_TO_LINE,
         )
-
 
 class DistributionTransformerEquipment(Component):
     """Interface for distribution transformer info."""
@@ -149,7 +130,7 @@ class DistributionTransformerEquipment(Component):
         ),
     ]
     windings: Annotated[
-        list[TapWindingEquipment | WindingEquipment],
+        list[WindingEquipment],
         Field(..., description="List of windings for this transformer."),
     ]
 
@@ -222,6 +203,11 @@ class DistributionTransformerEquipment(Component):
                     rated_power=PositiveApparentPower(56, "kilova"),
                     connection_type=ConnectionType.STAR,
                     num_phases=3,
+                    tap_positions=[0, -1, 2],
+                    total_taps=32,
+                    bandwidth=PositiveVoltage(3, "volts"),
+                    band_center=PositiveVoltage(120, "volts"),
+                    max_step=4,
                     voltage_type=VoltageTypes.LINE_TO_LINE,
                 ),
                 WindingEquipment(
@@ -231,24 +217,13 @@ class DistributionTransformerEquipment(Component):
                     rated_power=PositiveApparentPower(56, "kilova"),
                     connection_type=ConnectionType.STAR,
                     num_phases=3,
+                    tap_positions=[0, -1, 2],
+                    total_taps=32,
+                    bandwidth=PositiveVoltage(3, "volts"),
+                    band_center=PositiveVoltage(120, "volts"),
+                    max_step=4,
                     voltage_type=VoltageTypes.LINE_TO_LINE,
                 ),
-            ],
-            coupling_sequences=[SequencePair(0, 1)],
-            winding_reactances=[2.3],
-        )
-
-    @classmethod
-    def example_with_taps(cls) -> "DistributionTransformerEquipment":
-        """Example for distribution transformer model."""
-        return DistributionTransformerEquipment(
-            name="Transformer-Taps1",
-            pct_no_load_loss=0.1,
-            pct_full_load_loss=1,
-            is_center_tapped=False,
-            windings=[
-                TapWindingEquipment.example(),
-                TapWindingEquipment.example(),
             ],
             coupling_sequences=[SequencePair(0, 1)],
             winding_reactances=[2.3],
