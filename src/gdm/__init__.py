@@ -121,7 +121,6 @@ from gdm.distribution.equipment.load_equipment import LoadEquipment
 
 from gdm.distribution.equipment.distribution_transformer_equipment import (
     DistributionTransformerEquipment,
-    TapWindingEquipment,
     WindingEquipment,
 )
 from gdm.distribution.equipment.solar_equipment import SolarEquipment
