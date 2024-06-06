@@ -23,10 +23,13 @@ class RegulatorController(Component):
         PINT_SCHEMA,
         Field(..., description="Delay for the first tap change operation"),
     ]
-    regulator_setting: Annotated[
+    vsetpoint: Annotated[
         PositiveVoltage,
         PINT_SCHEMA,
-        Field(..., description="The target control voltage for regulator controller."),
+        Field(
+            ...,
+            description="The target control voltage for regulator controller.",
+        ),
     ]
     pt_ratio: Annotated[
         float,
@@ -40,14 +43,16 @@ class RegulatorController(Component):
         Optional[PositiveVoltage],
         PINT_SCHEMA,
         Field(
-            None, description="R setting on the line drop compensator of the regulator in Volts."
+            None,
+            description="R setting on the line drop compensator of the regulator in Volts.",
         ),
     ]
     ldc_X: Annotated[
         Optional[PositiveVoltage],
         PINT_SCHEMA,
         Field(
-            None, description="X setting on the line drop compensator of the regulator in Volts."
+            None,
+            description="X setting on the line drop compensator of the regulator in Volts.",
         ),
     ]
     ct_primary: Annotated[
@@ -58,12 +63,26 @@ class RegulatorController(Component):
             description="Current at which the line drop compensator voltages match the R and X settings.",
         ),
     ]
+    max_step: Annotated[
+        int,
+        Field(
+            ge=0,
+            description="Maximum number of steps upwards or downwards that can be made per control iteration.",
+        ),
+    ]
+    bandwidth: Annotated[
+        PositiveVoltage,
+        PINT_SCHEMA,
+        Field(..., description="The total voltage bandwidth for the controller"),
+    ]
 
     @classmethod
     def example(cls) -> "RegulatorController":
         """Example for a Regulator Controller."""
         return RegulatorController(
             delay=Time(10, "seconds"),
-            regulator_setting=PositiveVoltage(120, "volts"),
+            vsetpoint=PositiveVoltage(120, "volts"),
             pt_ratio=60,
+            max_step=16,
+            bandwidth=PositiveVoltage(3, "volts"),
         )

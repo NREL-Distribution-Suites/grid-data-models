@@ -136,6 +136,8 @@ class DistributionTransformer(DistributionComponent):
                     phases=[Phase.A, Phase.B, Phase.C],
                 ),
             ],
+            substation=DistributionSubstation.example(),
+            feeder=DistributionFeeder.example(),
             winding_phases=[[Phase.A, Phase.B, Phase.C], [Phase.A, Phase.B, Phase.C]],
             equipment=DistributionTransformerEquipment.example(),
         )
