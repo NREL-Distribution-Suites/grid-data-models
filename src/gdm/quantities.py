@@ -23,7 +23,7 @@ class PositiveResistance(Resistance):
 class ResistancePULength(BaseQuantity):
     """Quantity representing per unit length power system resistance."""
 
-    __compatible_unit__ = "ohm/m"
+    __base_unit__ = "ohm/m"
 
 
 class PositiveResistancePULength(ResistancePULength):
@@ -42,7 +42,7 @@ class Reactance(Resistance):
 class ReactancePULength(BaseQuantity):
     """Quantity representing per unit length power system reactance."""
 
-    __compatible_unit__ = "ohm/m"
+    __base_unit__ = "ohm/m"
 
 
 class PositiveReactancePULength(ReactancePULength):
@@ -66,13 +66,13 @@ class PositiveReactance(PositiveResistance):
 class Capacitance(BaseQuantity):
     """Quantity representing power system capacitance."""
 
-    __compatible_unit__ = "farad"
+    __base_unit__ = "farad"
 
 
 class CapacitancePULength(BaseQuantity):
     """Quantity representing per unit length power system capacitance."""
 
-    __compatible_unit__ = "farad/m"
+    __base_unit__ = "farad/m"
 
 
 class PositiveCapacitancePULength(CapacitancePULength):
@@ -96,7 +96,7 @@ class PositiveCapacitance(Capacitance):
 class ReactivePower(BaseQuantity):
     """Quantity representing reactive power."""
 
-    __compatible_unit__ = "var"
+    __base_unit__ = "var"
 
 
 class PositiveReactivePower(ReactivePower):
@@ -111,7 +111,7 @@ class PositiveReactivePower(ReactivePower):
 class ApparentPower(BaseQuantity):
     """Quantity representing apparent power."""
 
-    __compatible_unit__ = "va"
+    __base_unit__ = "va"
 
 
 class PositiveApparentPower(ApparentPower):
@@ -159,10 +159,10 @@ class PositiveDistance(Distance):
 class ActivePowerPUTime(BaseQuantity):
     """Quantity representing active power per unit of time"""
 
-    __compatible_unit__ = "watt/minute"
+    __base_unit__ = "watt/minute"
 
 
 class Irradiance(BaseQuantity):
     """Quantity representing irradiance in kilowatt per meter**2"""
 
-    __compatible_unit__ = "kilowatt/meter**2"
+    __base_unit__ = "kilowatt/meter**2"
