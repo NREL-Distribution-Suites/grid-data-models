@@ -6,14 +6,14 @@ from pydantic import model_validator, Field
 
 from gdm.distribution.distribution_enum import Phase
 from gdm.distribution.components.distribution_bus import DistributionBus
-from gdm.distribution.components.distribution_component import DistributionComponent
+from gdm.distribution.components.base.distribution_component_base import DistributionComponentBase
 from gdm.distribution.components.distribution_feeder import DistributionFeeder
 from gdm.distribution.components.distribution_substation import DistributionSubstation
 from gdm.quantities import PositiveVoltage
 from gdm.distribution.equipment.load_equipment import LoadEquipment
 
 
-class DistributionLoad(DistributionComponent):
+class DistributionLoad(DistributionComponentBase):
     """Interface for distribution load."""
 
     bus: Annotated[

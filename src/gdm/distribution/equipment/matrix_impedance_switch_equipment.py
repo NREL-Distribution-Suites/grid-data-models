@@ -11,9 +11,12 @@ from gdm.distribution.equipment.matrix_impedance_branch_equipment import (
 from gdm.distribution.controllers.distribution_switch_controller import (
     DistributionSwitchController,
 )
+from gdm.distribution.equipment.base.matrix_impedance_branch_equipment_base import (
+    MatrixImpedanceBranchEquipmentBase,
+)
 
 
-class MatrixImpedanceSwitchEquipment(MatrixImpedanceBranchEquipment):
+class MatrixImpedanceSwitchEquipment(MatrixImpedanceBranchEquipmentBase):
     """Interface for matrix impedance based recloser equipment."""
 
     controller: Annotated[

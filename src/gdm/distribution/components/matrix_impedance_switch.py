@@ -7,10 +7,15 @@ from pydantic import Field, model_validator
 from gdm.distribution.equipment.matrix_impedance_switch_equipment import (
     MatrixImpedanceSwitchEquipment,
 )
-from gdm.distribution.components.distribution_switch import DistributionSwitch
+from gdm.distribution.components.base.distribution_switch_base import DistributionSwitchBase
+from gdm.distribution.components.distribution_bus import DistributionBus
+from gdm.distribution.distribution_enum import Phase
+from gdm.quantities import PositiveVoltage, PositiveDistance
+from gdm.distribution.components.distribution_substation import DistributionSubstation
+from gdm.distribution.components.distribution_feeder import DistributionFeeder
 
 
-class MatrixImpedanceSwitch(DistributionSwitch):
+class MatrixImpedanceSwitch(DistributionSwitchBase):
     """Interface for matrix impedance switch."""
 
     equipment: Annotated[
@@ -35,7 +40,29 @@ class MatrixImpedanceSwitch(DistributionSwitch):
     @classmethod
     def example(cls) -> "MatrixImpedanceSwitch":
         """Example for matrix impedance branch."""
+        bus1 = DistributionBus(
+            voltage_type="line-to-ground",
+            phases=[Phase.A, Phase.B, Phase.C],
+            nominal_voltage=PositiveVoltage(400, "volt"),
+            substation=DistributionSubstation.example(),
+            feeder=DistributionFeeder.example(),
+            name="Branch-DistBus1",
+        )
+        bus2 = DistributionBus(
+            voltage_type="line-to-ground",
+            phases=[Phase.A, Phase.B, Phase.C],
+            nominal_voltage=PositiveVoltage(400, "volt"),
+            substation=DistributionSubstation.example(),
+            feeder=DistributionFeeder.example(),
+            name="Branch-DistBus2",
+        )
         return MatrixImpedanceSwitch(
-            **DistributionSwitch.example().model_dump(exclude_none=True),
+            buses=[bus1, bus2],
+            length=PositiveDistance(130.2, "meter"),
+            phases=[Phase.A, Phase.B, Phase.C],
+            substation=DistributionSubstation.example(),
+            feeder=DistributionFeeder.example(),
+            name="DistBranch1",
+            is_closed=[True, True, True],
             equipment=MatrixImpedanceSwitchEquipment.example(),
         )

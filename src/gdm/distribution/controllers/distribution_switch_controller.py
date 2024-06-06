@@ -3,7 +3,6 @@
 from typing import Annotated, Literal
 
 from pydantic import Field
-
 from infrasys.quantities import Time
 from infrasys import Component
 

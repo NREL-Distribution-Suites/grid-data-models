@@ -2,28 +2,14 @@
 
 from typing import Annotated
 
-from infrasys import Component
 from pydantic import Field
 
 from gdm.distribution.curve import Curve
 from gdm.distribution.equipment.inverter_equipment import InverterEquipment
+from gdm.distribution.controllers.base.inverter_controller_base import InverterControllerBase
 
 
-class InverterController(Component):
-    """Interface for Inverter controllers."""
-
-    name: Annotated[str, Field("", description="Name of the inverter controller.")]
-    equipment: Annotated[
-        InverterEquipment, Field(..., description="Inverter equipment for this controller.")
-    ]
-
-    @classmethod
-    def example(cls) -> "InverterController":
-        "Example of a Generic Inverter controller"
-        return InverterController(equipment=InverterEquipment.example())
-
-
-class PowerfactorInverterController(InverterController):
+class PowerfactorInverterController(InverterControllerBase):
     """Interface for an Inverter Controller using powerfactor to determine power output."""
 
     power_factor: Annotated[
@@ -39,7 +25,7 @@ class PowerfactorInverterController(InverterController):
         )
 
 
-class VoltVarInverterController(InverterController):
+class VoltVarInverterController(InverterControllerBase):
     """Interface for a Volt-Var Inverter Controller."""
 
     volt_var_curve: Annotated[
@@ -64,7 +50,7 @@ class VoltVarInverterController(InverterController):
         )
 
 
-class VoltWattInverterController(InverterController):
+class VoltWattInverterController(InverterControllerBase):
     """Interface for a Volt-Var Inverter Controller."""
 
     volt_watt_curve: Annotated[

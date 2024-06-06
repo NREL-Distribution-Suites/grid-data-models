@@ -6,6 +6,9 @@ from pydantic import Field
 from infrasys.quantities import Time
 
 
+from gdm.distribution.equipment.base.matrix_impedance_branch_equipment_base import (
+    MatrixImpedanceBranchEquipmentBase,
+)
 from gdm.distribution.equipment.matrix_impedance_branch_equipment import (
     MatrixImpedanceBranchEquipment,
 )
@@ -13,7 +16,7 @@ from gdm.distribution.curve import TimeCurrentCurve
 from gdm.constants import PINT_SCHEMA
 
 
-class MatrixImpedanceFuseEquipment(MatrixImpedanceBranchEquipment):
+class MatrixImpedanceFuseEquipment(MatrixImpedanceBranchEquipmentBase):
     """Interface for impedance based fuse equipment."""
 
     delay: Annotated[Time, PINT_SCHEMA, Field(description="Delay time before blowing the fuse.")]

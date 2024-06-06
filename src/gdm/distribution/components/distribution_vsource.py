@@ -2,65 +2,17 @@
 
 from typing import Annotated
 
-from infrasys import Component
-from infrasys.quantities import Angle, Resistance, Voltage
 from pydantic import Field
 
 from gdm.distribution.components.distribution_bus import DistributionBus
-from gdm.quantities import Reactance, PositiveVoltage
 from gdm.distribution.distribution_enum import Phase
-from gdm.constants import PINT_SCHEMA
-from gdm.distribution.components.distribution_component import DistributionComponent
+from gdm.distribution.components.base.distribution_component_base import DistributionComponentBase
 from gdm.distribution.components.distribution_feeder import DistributionFeeder
 from gdm.distribution.components.distribution_substation import DistributionSubstation
+from gdm.distribution.equipment.voltagesource_equipment import VoltageSourceEquipment
 
 
-class PhaseVoltageSourceEquipment(Component):
-    """Interface for phase voltage source."""
-
-    r0: Annotated[Resistance, PINT_SCHEMA, Field(..., description="Zero sequence resistance.")]
-    r1: Annotated[Resistance, PINT_SCHEMA, Field(..., description="Positive sequence resistance.")]
-    x0: Annotated[Reactance, PINT_SCHEMA, Field(..., description="Zero sequence reactance.")]
-    x1: Annotated[Reactance, PINT_SCHEMA, Field(..., description="Positive sequence reactane.")]
-    voltage: Annotated[
-        Voltage, PINT_SCHEMA, Field(..., description="Voltage for this substation.")
-    ]
-    angle: Annotated[Angle, PINT_SCHEMA, Field(..., description="Angle for the voltage")]
-
-    @classmethod
-    def example(cls) -> "PhaseVoltageSourceEquipment":
-        """Example for phase voltage source."""
-        return PhaseVoltageSourceEquipment(
-            name="phase-source-1",
-            r0=Resistance(0.001, "ohm"),
-            r1=Resistance(0.001, "ohm"),
-            x0=Reactance(0.001, "ohm"),
-            x1=Reactance(0.001, "ohm"),
-            voltage=PositiveVoltage(132.0, "kilovolt"),
-            angle=Angle(180, "degree"),
-        )
-
-
-class VoltageSourceEquipment(Component):
-    """Interface for voltage source model."""
-
-    sources: Annotated[
-        list[PhaseVoltageSourceEquipment],
-        Field(
-            ...,
-            description="list of single phase voltage sources",
-        ),
-    ]
-
-    @classmethod
-    def example(cls) -> "VoltageSourceEquipment":
-        """Example for voltage source model."""
-        return VoltageSourceEquipment(
-            name="Voltage Source 1", sources=[PhaseVoltageSourceEquipment.example()] * 3
-        )
-
-
-class DistributionVoltageSource(DistributionComponent):
+class DistributionVoltageSource(DistributionComponentBase):
     """Interface for distribution substation."""
 
     bus: Annotated[

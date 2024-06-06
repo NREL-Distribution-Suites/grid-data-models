@@ -4,7 +4,9 @@ from typing import Annotated
 
 from pydantic import Field, model_validator
 
-from gdm.distribution.components.distribution_transformer import DistributionTransformer
+from gdm.distribution.components.base.distribution_transformer_base import (
+    DistributionTransformerBase,
+)
 from gdm.distribution.components.distribution_feeder import DistributionFeeder
 from gdm.distribution.components.distribution_substation import DistributionSubstation
 from gdm.distribution.controllers.distribution_regulator_controller import RegulatorController
@@ -16,7 +18,7 @@ from gdm.distribution.distribution_enum import Phase
 from gdm.quantities import PositiveVoltage
 
 
-class DistributionRegulator(DistributionTransformer):
+class DistributionRegulator(DistributionTransformerBase):
     controllers: Annotated[
         list[RegulatorController],
         Field(
