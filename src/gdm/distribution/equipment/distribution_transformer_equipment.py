@@ -19,7 +19,11 @@ class WindingEquipment(Component):
     resistance: Annotated[
         float,
         Field(
-            ..., strict=True, ge=0, le=100, description="Percentage resistance for this winding."
+            ...,
+            strict=True,
+            ge=0,
+            le=100,
+            description="Percentage resistance for this winding.",
         ),
     ]
     is_grounded: Annotated[bool, Field(..., description="Is this winding grounded or not.")]
@@ -29,7 +33,8 @@ class WindingEquipment(Component):
         Field(..., description="Nominal voltage rating for this winding."),
     ]
     voltage_type: Annotated[
-        VoltageTypes, Field(..., description="Set voltage type for nominal voltage.")
+        VoltageTypes,
+        Field(..., description="Set voltage type for nominal voltage."),
     ]
     rated_power: Annotated[
         PositiveApparentPower,
@@ -37,7 +42,8 @@ class WindingEquipment(Component):
         Field(..., description="Rated power for this winding."),
     ]
     num_phases: Annotated[
-        int, Field(..., ge=1, le=3, description="Number of phases for this winding.")
+        int,
+        Field(..., ge=1, le=3, description="Number of phases for this winding."),
     ]
     connection_type: Annotated[
         ConnectionType,
@@ -47,27 +53,23 @@ class WindingEquipment(Component):
         ),
     ]
     tap_positions: Annotated[
-        list[int], Field(..., description="List of tap positions for each phase. Centered at 0.")
+        list[float],
+        Field(
+            ...,
+            description="List of per unit tap positions for each phase. Centered at 0.",
+        ),
     ]
     total_taps: Annotated[
-        int, Field(default=32, description="Total number of taps along the bandwidth.")
-    ]
-    bandwidth: Annotated[
-        PositiveVoltage,
-        PINT_SCHEMA,
-        Field(..., description="The total voltage bandwidth for the controller"),
-    ]
-    band_center: Annotated[
-        PositiveVoltage,
-        PINT_SCHEMA,
-        Field(..., description="The voltage bandcenter on the controller."),
-    ]
-    max_step: Annotated[
         int,
-        Field(
-            ge=0,
-            description="Maximum number of steps upwards or downwards that can be made per control iteration.",
-        ),
+        Field(default=32, description="Total number of taps along the bandwidth."),
+    ]
+    min_tap_pu: Annotated[
+        float,
+        Field(0.9, le=1.0, ge=0, description="Min tap in pu for this winding."),
+    ]
+    max_tap_pu: Annotated[
+        float,
+        Field(1.1, ge=1.0, description="Min tap in pu for this winding."),
     ]
 
     @model_validator(mode="after")
@@ -89,6 +91,7 @@ class WindingEquipment(Component):
                 raise ValueError(msg)
 
         return self
+
     @classmethod
     def example(cls) -> "WindingEquipment":
         return WindingEquipment(
@@ -98,13 +101,11 @@ class WindingEquipment(Component):
             rated_power=PositiveApparentPower(500, "kilova"),
             connection_type=ConnectionType.STAR,
             num_phases=3,
-            tap_positions=[0, -1, 2],
+            tap_positions=[1.0, 1.0, 1.0],
             total_taps=32,
-            bandwidth=PositiveVoltage(3, "volts"),
-            band_center=PositiveVoltage(120, "volts"),
-            max_step=4,
             voltage_type=VoltageTypes.LINE_TO_LINE,
         )
+
 
 class DistributionTransformerEquipment(Component):
     """Interface for distribution transformer info."""
@@ -203,11 +204,7 @@ class DistributionTransformerEquipment(Component):
                     rated_power=PositiveApparentPower(56, "kilova"),
                     connection_type=ConnectionType.STAR,
                     num_phases=3,
-                    tap_positions=[0, -1, 2],
-                    total_taps=32,
-                    bandwidth=PositiveVoltage(3, "volts"),
-                    band_center=PositiveVoltage(120, "volts"),
-                    max_step=4,
+                    tap_positions=[1.0, 1.0, 1.0],
                     voltage_type=VoltageTypes.LINE_TO_LINE,
                 ),
                 WindingEquipment(
@@ -217,11 +214,7 @@ class DistributionTransformerEquipment(Component):
                     rated_power=PositiveApparentPower(56, "kilova"),
                     connection_type=ConnectionType.STAR,
                     num_phases=3,
-                    tap_positions=[0, -1, 2],
-                    total_taps=32,
-                    bandwidth=PositiveVoltage(3, "volts"),
-                    band_center=PositiveVoltage(120, "volts"),
-                    max_step=4,
+                    tap_positions=[1.0, 1.0, 1.0],
                     voltage_type=VoltageTypes.LINE_TO_LINE,
                 ),
             ],

@@ -8,7 +8,9 @@ from gdm.distribution.components.distribution_transformer import DistributionTra
 from gdm.distribution.components.distribution_feeder import DistributionFeeder
 from gdm.distribution.components.distribution_substation import DistributionSubstation
 from gdm.distribution.controllers.distribution_regulator_controller import RegulatorController
-from gdm.distribution.equipment.distribution_transformer_equipment import DistributionTransformerEquipment
+from gdm.distribution.equipment.distribution_transformer_equipment import (
+    DistributionTransformerEquipment,
+)
 from gdm.distribution.components.distribution_bus import DistributionBus
 from gdm.distribution.distribution_enum import Phase
 from gdm.quantities import PositiveVoltage
@@ -33,22 +35,6 @@ class DistributionRegulator(DistributionTransformer):
                     f"should be equal to the number of controllers {self.controllers=}."
                 )
                 raise ValueError(msg)
-            for controller in self.controllers:
-                if controller.regulator_setting > winding.band_center + winding.bandwidth / 2:
-                    msg = (
-                        f"Controller setpoint {controller.regulator_setting=} is "
-                        f"larger than the upper controller range of {winding.band_center+winding.bandwidth/2=}."
-                        f"using bandwidth {winding.bandwidth=} around band center {winding.band_center=}."
-                    )
-                    raise ValueError(msg)
-                if controller.regulator_setting < winding.band_center - winding.bandwidth / 2:
-                    msg = (
-                        f"Controller setpoint {controller.regulator_setting=} is "
-                        f"less than the lower controller range of {winding.band_center-winding.bandwidth/2=} "
-                        f"using bandwidth {winding.bandwidth=} around band center {winding.band_center=}."
-                    )
-                    raise ValueError(msg)
-
 
     @classmethod
     def example(cls) -> "DistributionRegulator":
