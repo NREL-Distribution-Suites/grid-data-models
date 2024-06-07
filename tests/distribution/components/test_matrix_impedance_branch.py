@@ -1,6 +1,6 @@
 import pytest
 
-from gdm import MatrixImpedanceBranch, DistributionBus, Phase
+from gdm import MatrixImpedanceBranch, DistributionBus, Phase, PositiveVoltage
 
 
 def test_wrong_number_of_buses():
@@ -47,5 +47,20 @@ def test_duplicate_phases():
             buses=branch.buses,
             length=branch.length,
             phases=[Phase.A, Phase.A, Phase.B],
+            equipment=branch.equipment,
+        )
+
+
+def test_connecting_buses_with_different_voltage():
+    branch = MatrixImpedanceBranch.example()
+    bus1, bus2 = branch.buses
+    bus1.nominal_voltage = PositiveVoltage(12.47, "kilovolts")
+    bus2.nominal_voltage = PositiveVoltage(12.48, "kilovolts")
+    with pytest.raises(ValueError):
+        MatrixImpedanceBranch(
+            name=branch.name,
+            buses=[bus1, bus2],
+            length=branch.length,
+            phases=branch.phases,
             equipment=branch.equipment,
         )
