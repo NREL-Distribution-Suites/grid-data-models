@@ -57,7 +57,7 @@ class DistributionTransformerBase(DistributionComponentBase, ABC):
         return voltage < max(all_voltages)
 
     @model_validator(mode="after")
-    def validate_fields(self) -> "DistributionTransformerBase":
+    def validate_fields_base(self) -> "DistributionTransformerBase":
         """Custom validator for distribution transformer."""
         if len(self.winding_phases) != len(self.equipment.windings):
             msg = (

@@ -31,7 +31,7 @@ class DistributionBranchBase(DistributionComponentBase, ABC):
     ]
 
     @model_validator(mode="after")
-    def validate_fields(self) -> "DistributionBranchBase":
+    def validate_fields_base(self) -> "DistributionBranchBase":
         """Custom validator for base distribution branch."""
         if len(self.buses) != 2:
             msg = f"Number of buses {len(self.buses)} must be 2."
