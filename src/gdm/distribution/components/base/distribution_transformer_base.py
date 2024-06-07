@@ -62,7 +62,7 @@ class DistributionTransformerBase(DistributionComponentBase, ABC):
         if len(self.winding_phases) != len(self.equipment.windings):
             msg = (
                 f"Number of windings {len(self.equipment.windings)} must be equal to "
-                f"numbe of winding phases {len(self.winding_phases)}"
+                f"number of winding phases {len(self.winding_phases)}"
             )
             raise ValueError(msg)
 
@@ -71,8 +71,8 @@ class DistributionTransformerBase(DistributionComponentBase, ABC):
 
             if pw_phases_length > wdg.num_phases and pw_phases_length != 2:
                 msg = (
-                    f"Number of phases in windings {wdg.num_phases=} must be "
-                    f"less than or equal to phases {pw_phases=}"
+                    f"More phases {pw_phases=} specified in winding phases for the winding {wdg=}"
+                    f" which is allowed only for delta connected configuration i.e. phase length =2."
                 )
                 raise ValueError(msg)
             elif pw_phases_length == 2 and wdg.num_phases != 1:

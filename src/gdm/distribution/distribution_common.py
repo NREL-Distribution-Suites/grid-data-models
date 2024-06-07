@@ -5,7 +5,7 @@ from typing import Annotated, Optional
 
 from pydantic import Field
 
-from gdm.distribution.components.distribution_component import DistributionComponent
+from gdm.distribution.components.base.distribution_component_base import DistributionComponent
 
 
 BELONG_TO_TYPE = Annotated[
