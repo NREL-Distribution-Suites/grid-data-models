@@ -6,18 +6,18 @@ from pydantic import Field, model_validator
 
 from gdm.distribution.components.distribution_bus import DistributionBus
 from gdm.distribution.equipment.capacitor_equipment import CapacitorEquipment
-from gdm.distribution.components.distribution_component import DistributionComponent
+from gdm.distribution.components.base.distribution_component_base import DistributionComponentBase
 from gdm.distribution.components.distribution_feeder import DistributionFeeder
 from gdm.distribution.components.distribution_substation import DistributionSubstation
 from gdm.quantities import PositiveVoltage
 from gdm.distribution.distribution_enum import Phase
 from gdm.distribution.controllers.distribution_capacitor_controller import (
-    CapacitorController,
     VoltageCapacitorController,
 )
+from gdm.distribution.controllers.base.capacitor_controller_base import CapacitorControllerBase
 
 
-class DistributionCapacitor(DistributionComponent):
+class DistributionCapacitor(DistributionComponentBase):
     """Interface for capacitor present in distribution system models."""
 
     bus: Annotated[
@@ -38,7 +38,7 @@ class DistributionCapacitor(DistributionComponent):
         ),
     ]
     controllers: Annotated[
-        list[CapacitorController],
+        list[CapacitorControllerBase],
         Field(
             [],
             description="List of the controllers which are used for each phase in order.",

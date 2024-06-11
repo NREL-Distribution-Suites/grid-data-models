@@ -1,9 +1,8 @@
 """ This module contains interface for distribution capacitor controllers."""
 
-from typing import Annotated, Optional
+from typing import Annotated
 import datetime
 
-from infrasys import Component
 from infrasys.quantities import Time
 from pydantic import Field
 
@@ -13,45 +12,11 @@ from gdm.quantities import (
     PositiveVoltage,
     PositiveCurrent,
 )
+from gdm.distribution.controllers.base.capacitor_controller_base import CapacitorControllerBase
 from gdm.constants import PINT_SCHEMA
 
 
-class CapacitorController(Component):
-    """Interface for capacitor controllers. Phase connection specified in the capacitor."""
-
-    name: Annotated[str, Field("", description="Name of the capacitor controller.")]
-    delay_on: Annotated[
-        Optional[Time],
-        PINT_SCHEMA,
-        Field(
-            None,
-            description="The time that the capacitor needs to connect or disconnect when switching on",
-        ),
-    ]
-    delay_off: Annotated[
-        Optional[Time],
-        PINT_SCHEMA,
-        Field(
-            None,
-            description="The time that the capacitor needs to connect or disconnect when switching off",
-        ),
-    ]
-    dead_time: Annotated[
-        Optional[Time],
-        PINT_SCHEMA,
-        Field(
-            None,
-            description="The time that the capacitor must remain off before turning back on again",
-        ),
-    ]
-
-    @classmethod
-    def example(cls) -> "CapacitorController":
-        """Example for a CapacitorController."""
-        return CapacitorController()
-
-
-class VoltageCapacitorController(CapacitorController):
+class VoltageCapacitorController(CapacitorControllerBase):
     """Interface for a Capacitor Controller which uses voltage."""
 
     on_voltage: Annotated[
@@ -89,7 +54,7 @@ class VoltageCapacitorController(CapacitorController):
         )
 
 
-class ActivePowerCapacitorController(CapacitorController):
+class ActivePowerCapacitorController(CapacitorControllerBase):
     """Interface for a Capacitor Controller which uses active power."""
 
     on_power: Annotated[
@@ -118,7 +83,7 @@ class ActivePowerCapacitorController(CapacitorController):
         )
 
 
-class ReactivePowerCapacitorController(CapacitorController):
+class ReactivePowerCapacitorController(CapacitorControllerBase):
     """Interface for a Capacitor Controller which uses reactive power."""
 
     on_power: Annotated[
@@ -147,7 +112,7 @@ class ReactivePowerCapacitorController(CapacitorController):
         )
 
 
-class CurrentCapacitorController(CapacitorController):
+class CurrentCapacitorController(CapacitorControllerBase):
     """Interface for a Capacitor Controller which uses current."""
 
     on_current: Annotated[
@@ -188,7 +153,7 @@ class CurrentCapacitorController(CapacitorController):
         )
 
 
-class DailyTimedCapacitorController(CapacitorController):
+class DailyTimedCapacitorController(CapacitorControllerBase):
     """Interface for a Capacitor Controller which uses a timed controller."""
 
     on_time: Annotated[

@@ -3,9 +3,12 @@
 from gdm.distribution.equipment.matrix_impedance_branch_equipment import (
     MatrixImpedanceBranchEquipment,
 )
+from gdm.distribution.equipment.base.matrix_impedance_branch_equipment_base import (
+    MatrixImpedanceBranchEquipmentBase,
+)
 
 
-class MatrixImpedanceRecloserEquipment(MatrixImpedanceBranchEquipment):
+class MatrixImpedanceRecloserEquipment(MatrixImpedanceBranchEquipmentBase):
     """Interface for matrix impedance based recloser equipment."""
 
     @classmethod

@@ -6,7 +6,7 @@ from infrasys import Location
 from pydantic import Field
 
 from gdm.distribution.distribution_enum import LimitType, Phase, VoltageTypes
-from gdm.distribution.components.distribution_component import DistributionComponent
+from gdm.distribution.components.base.distribution_component_base import DistributionComponentBase
 from gdm.distribution.components.distribution_feeder import DistributionFeeder
 from gdm.distribution.components.distribution_substation import DistributionSubstation
 from gdm.distribution.limitset import VoltageLimitSet
@@ -14,7 +14,7 @@ from gdm.quantities import PositiveVoltage
 from gdm.constants import PINT_SCHEMA
 
 
-class DistributionBus(DistributionComponent):
+class DistributionBus(DistributionComponentBase):
     """Interface for distribution bus.
 
     Examples:

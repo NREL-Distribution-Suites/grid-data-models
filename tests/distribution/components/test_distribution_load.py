@@ -1,4 +1,5 @@
 import pytest
+
 from gdm import PhaseLoadEquipment, ActivePower, ReactivePower
 
 

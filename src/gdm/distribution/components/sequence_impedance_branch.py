@@ -4,15 +4,18 @@ from typing import Annotated
 
 from pydantic import Field, model_validator
 
-from gdm.distribution.components.distribution_branch import DistributionBranch
+from gdm.distribution.components.base.distribution_branch_base import DistributionBranchBase
 from gdm.distribution.components.distribution_feeder import DistributionFeeder
 from gdm.distribution.components.distribution_substation import DistributionSubstation
 from gdm.distribution.equipment.sequence_impedance_branch_equipment import (
     SequenceImpedanceBranchEquipment,
 )
+from gdm.distribution.components.distribution_bus import DistributionBus
+from gdm.distribution.distribution_enum import Phase
+from gdm.quantities import PositiveVoltage, PositiveDistance
 
 
-class SequenceImpedanceBranch(DistributionBranch):
+class SequenceImpedanceBranch(DistributionBranchBase):
     """Interface for sequence impedance branch."""
 
     equipment: Annotated[
@@ -30,13 +33,28 @@ class SequenceImpedanceBranch(DistributionBranch):
     @classmethod
     def example(cls) -> "SequenceImpedanceBranch":
         """Example for sequence impedance branch."""
-        base_branch = DistributionBranch.example()
-        return SequenceImpedanceBranch(
-            buses=base_branch.buses,
-            length=base_branch.length,
-            phases=base_branch.phases,
-            name=base_branch.name,
+        bus1 = DistributionBus(
+            voltage_type="line-to-ground",
+            phases=[Phase.A, Phase.B, Phase.C],
+            nominal_voltage=PositiveVoltage(400, "volt"),
             substation=DistributionSubstation.example(),
             feeder=DistributionFeeder.example(),
+            name="Branch-DistBus1",
+        )
+        bus2 = DistributionBus(
+            voltage_type="line-to-ground",
+            phases=[Phase.A, Phase.B, Phase.C],
+            nominal_voltage=PositiveVoltage(400, "volt"),
+            substation=DistributionSubstation.example(),
+            feeder=DistributionFeeder.example(),
+            name="Branch-DistBus2",
+        )
+        return SequenceImpedanceBranch(
+            buses=[bus1, bus2],
+            length=PositiveDistance(130.2, "meter"),
+            phases=[Phase.A, Phase.B, Phase.C],
+            substation=DistributionSubstation.example(),
+            feeder=DistributionFeeder.example(),
+            name="DistBranch1",
             equipment=SequenceImpedanceBranchEquipment.example(),
         )

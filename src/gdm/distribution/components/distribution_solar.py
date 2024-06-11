@@ -7,17 +7,17 @@ from pydantic import Field
 from gdm.quantities import PositiveVoltage
 from gdm.distribution.distribution_enum import Phase
 from gdm.distribution.components.distribution_bus import DistributionBus
-from gdm.distribution.components.distribution_component import DistributionComponent
+from gdm.distribution.components.base.distribution_component_base import DistributionComponentBase
 from gdm.distribution.components.distribution_feeder import DistributionFeeder
 from gdm.distribution.components.distribution_substation import DistributionSubstation
 from gdm.distribution.controllers.distribution_inverter_controller import (
-    InverterController,
     VoltVarInverterController,
 )
+from gdm.distribution.controllers.base.inverter_controller_base import InverterControllerBase
 from gdm.distribution.equipment.solar_equipment import SolarEquipment
 
 
-class DistributionSolar(DistributionComponent):
+class DistributionSolar(DistributionComponentBase):
     """Interface for Solar PV system in distribution system models."""
 
     bus: Annotated[
@@ -37,7 +37,7 @@ class DistributionSolar(DistributionComponent):
         ),
     ]
     controller: Annotated[
-        InverterController,
+        InverterControllerBase,
         Field(
             ...,
             description="The controller which is used for the PV array.",
