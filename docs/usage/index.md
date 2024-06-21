@@ -6,4 +6,5 @@
 
 components/distribution_bus
 components/distribution_load
+components/distribution_transformer.md
 ```
