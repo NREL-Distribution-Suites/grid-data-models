@@ -28,7 +28,7 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-dev = ["pre-commit", "pytest", "pytest-cov", "ruff"]
+dev = ["pre-commit", "pytest", "pytest-cov", "pytest-doctestplus", "ruff"]
 doc = [
   "sphinx",
   "pydata-sphinx-theme",
