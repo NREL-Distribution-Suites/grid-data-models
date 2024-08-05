@@ -36,7 +36,7 @@ jobs:
     runs-on: ubuntu-latest
     name: "ruff"
     steps:
-      - uses: davidslusser/actions_python_ruff@v1.0.0
+      - uses: davidslusser/actions_python_ruff@v1.0.1
         with:
           src: "src"
           pip_install_command: "pip install -e .[dev]"
