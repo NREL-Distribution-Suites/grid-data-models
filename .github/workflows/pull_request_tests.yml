@@ -38,6 +38,6 @@ jobs:
     steps:
       - uses: davidslusser/actions_python_ruff@v1.0.1
         with:
-          src: "src"
+          src: "check src"
           pip_install_command: "pip install -e .[dev]"
           python_version: "3.11"
