@@ -31,7 +31,8 @@ class MatrixImpedanceBranch(DistributionBranchBase):
             self.equipment.x_matrix,
             self.equipment.c_matrix,
         ]:
-            if set(mat.shape) != {len(self.phases)}:
+            ph_wo_neutral = set(self.phases) - set(Phase.N)
+            if set(mat.shape) != {len(ph_wo_neutral)}:
                 msg = f"Length of matrix {mat=} did not match number of phases {self.phases=}"
                 raise ValueError(msg)
 

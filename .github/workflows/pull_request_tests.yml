@@ -22,6 +22,9 @@ jobs:
       - name: Run pytest
         run: |
           pytest -v --cov --cov-report=xml
+          cd docs
+          pytest --doctest-glob="*.md"
+          cd ..
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v4.0.1
         with:
@@ -33,8 +36,8 @@ jobs:
     runs-on: ubuntu-latest
     name: "ruff"
     steps:
-      - uses: davidslusser/actions_python_ruff@v1.0.0
+      - uses: davidslusser/actions_python_ruff@v1.0.1
         with:
-          src: "src"
+          src: "check src"
           pip_install_command: "pip install -e .[dev]"
           python_version: "3.11"

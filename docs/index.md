@@ -48,3 +48,11 @@ api/index
 
 cim/index
 ```
+
+
+```{toctree}
+:caption: Usage
+:hidden: true
+
+usage/index
+```
