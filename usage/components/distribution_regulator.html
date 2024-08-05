@@ -1,0 +1,631 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Distribution Regulator &#8212; Grid Data Models  documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/autodoc_pydantic.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'usage/components/distribution_regulator';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="prev" title="Distribution Transformer" href="distribution_transformer.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Grid Data Models  documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/index.html">
+    References
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../cim/index.html">
+    CIM & GDM
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../index.html">
+    Usage
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/index.html">
+    References
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../cim/index.html">
+    CIM & GDM
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../index.html">
+    Usage
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Distribution Components</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="distribution_bus.html">Distribution Bus</a></li>
+<li class="toctree-l1"><a class="reference internal" href="distribution_load.html">Distribution Load</a></li>
+<li class="toctree-l1"><a class="reference internal" href="distribution_transformer.html">Distribution Transformer</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Distribution Regulator</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">Usage</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">Distribution...</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="distribution-regulator">
+<h1>Distribution Regulator<a class="headerlink" href="#distribution-regulator" title="Link to this heading">#</a></h1>
+<section id="single-phase-regulator">
+<h2>Single Phase Regulator<a class="headerlink" href="#single-phase-regulator" title="Link to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gdm</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="gp">... </span>    <span class="n">DistributionBus</span><span class="p">,</span> 
+<span class="gp">... </span>    <span class="n">DistributionSubstation</span><span class="p">,</span> 
+<span class="gp">... </span>    <span class="n">DistributionFeeder</span><span class="p">,</span> 
+<span class="gp">... </span>    <span class="n">DistributionRegulator</span><span class="p">,</span> 
+<span class="gp">... </span>    <span class="n">DistributionTransformerEquipment</span><span class="p">,</span> 
+<span class="gp">... </span>    <span class="n">WindingEquipment</span><span class="p">,</span> 
+<span class="gp">... </span>    <span class="n">SequencePair</span><span class="p">,</span> 
+<span class="gp">... </span>    <span class="n">RegulatorController</span><span class="p">,</span> 
+<span class="gp">... </span>    <span class="n">PositiveVoltage</span><span class="p">,</span> 
+<span class="gp">... </span>    <span class="n">VoltageTypes</span><span class="p">,</span> 
+<span class="gp">... </span>    <span class="n">Phase</span><span class="p">,</span> 
+<span class="gp">... </span>    <span class="n">ConnectionType</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">Time</span><span class="p">,</span> 
+<span class="gp">... </span>    <span class="n">PositiveApparentPower</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">bus_1</span> <span class="o">=</span> <span class="n">DistributionBus</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Bus-1&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">nominal_voltage</span><span class="o">=</span><span class="n">PositiveVoltage</span><span class="p">(</span><span class="mf">12.47</span><span class="p">,</span> <span class="s2">&quot;kilovolts&quot;</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="n">phases</span><span class="o">=</span><span class="p">[</span><span class="n">Phase</span><span class="o">.</span><span class="n">A</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="n">voltage_type</span><span class="o">=</span><span class="n">VoltageTypes</span><span class="o">.</span><span class="n">LINE_TO_GROUND</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">)</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">bus_2</span> <span class="o">=</span> <span class="n">DistributionBus</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Bus-2&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">nominal_voltage</span><span class="o">=</span><span class="n">PositiveVoltage</span><span class="p">(</span><span class="mf">12.47</span><span class="p">,</span> <span class="s2">&quot;kilovolts&quot;</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="n">phases</span><span class="o">=</span><span class="p">[</span><span class="n">Phase</span><span class="o">.</span><span class="n">A</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="n">voltage_type</span><span class="o">=</span><span class="n">VoltageTypes</span><span class="o">.</span><span class="n">LINE_TO_GROUND</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">)</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">regulator_equipment</span> <span class="o">=</span> <span class="n">DistributionTransformerEquipment</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;SinglePhase-Regulator-1&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">pct_full_load_loss</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">pct_no_load_loss</span><span class="o">=</span><span class="mf">0.002</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">windings</span><span class="o">=</span><span class="p">[</span>
+<span class="gp">... </span>        <span class="n">WindingEquipment</span><span class="p">(</span>
+<span class="gp">... </span>            <span class="n">resistance</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+<span class="gp">... </span>            <span class="n">is_grounded</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="gp">... </span>            <span class="n">nominal_voltage</span><span class="o">=</span><span class="n">PositiveVoltage</span><span class="p">(</span><span class="mf">12.47</span><span class="p">,</span> <span class="s2">&quot;kilovolts&quot;</span><span class="p">),</span>
+<span class="gp">... </span>            <span class="n">rated_power</span><span class="o">=</span><span class="n">PositiveApparentPower</span><span class="p">(</span><span class="mi">25</span><span class="p">,</span> <span class="s2">&quot;kilova&quot;</span><span class="p">),</span>
+<span class="gp">... </span>            <span class="n">num_phases</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+<span class="gp">... </span>            <span class="n">tap_positions</span><span class="o">=</span><span class="p">[</span><span class="mf">1.0</span><span class="p">],</span>
+<span class="gp">... </span>            <span class="n">connection_type</span><span class="o">=</span><span class="n">ConnectionType</span><span class="o">.</span><span class="n">STAR</span><span class="p">,</span>
+<span class="gp">... </span>            <span class="n">voltage_type</span><span class="o">=</span><span class="n">VoltageTypes</span><span class="o">.</span><span class="n">LINE_TO_GROUND</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="p">),</span>
+<span class="gp">... </span>        <span class="n">WindingEquipment</span><span class="p">(</span>
+<span class="gp">... </span>            <span class="n">resistance</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+<span class="gp">... </span>            <span class="n">is_grounded</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="gp">... </span>            <span class="n">nominal_voltage</span><span class="o">=</span><span class="n">PositiveVoltage</span><span class="p">(</span><span class="mf">12.47</span><span class="p">,</span> <span class="s2">&quot;kilovolts&quot;</span><span class="p">),</span>
+<span class="gp">... </span>            <span class="n">rated_power</span><span class="o">=</span><span class="n">PositiveApparentPower</span><span class="p">(</span><span class="mi">25</span><span class="p">,</span> <span class="s2">&quot;kilova&quot;</span><span class="p">),</span>
+<span class="gp">... </span>            <span class="n">num_phases</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+<span class="gp">... </span>            <span class="n">tap_positions</span><span class="o">=</span><span class="p">[</span><span class="mf">1.0</span><span class="p">],</span>
+<span class="gp">... </span>            <span class="n">connection_type</span><span class="o">=</span><span class="n">ConnectionType</span><span class="o">.</span><span class="n">STAR</span><span class="p">,</span>
+<span class="gp">... </span>            <span class="n">voltage_type</span><span class="o">=</span><span class="n">VoltageTypes</span><span class="o">.</span><span class="n">LINE_TO_GROUND</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="p">),</span>
+<span class="gp">... </span>    <span class="p">],</span>
+<span class="gp">... </span>    <span class="n">coupling_sequences</span><span class="o">=</span><span class="p">[</span><span class="n">SequencePair</span><span class="p">(</span><span class="n">from_index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">to_index</span><span class="o">=</span><span class="mi">1</span><span class="p">)],</span>
+<span class="gp">... </span>    <span class="n">winding_reactances</span><span class="o">=</span><span class="p">[</span><span class="mf">2.3</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="n">is_center_tapped</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">)</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">regulator_controller</span> <span class="o">=</span> <span class="n">RegulatorController</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;RegulatorController-1&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">delay</span><span class="o">=</span><span class="n">Time</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="s2">&quot;seconds&quot;</span><span class="p">),</span>  <span class="c1"># seconds</span>
+<span class="gp">... </span>    <span class="n">vsetpoint</span><span class="o">=</span><span class="mi">120</span><span class="p">,</span>  <span class="c1"># volts</span>
+<span class="gp">... </span>    <span class="n">pt_ratio</span><span class="o">=</span><span class="mf">60.0</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">ldc_R</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">ldc_X</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">ct_primary</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">max_step</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">bandwidth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>  <span class="c1"># volts</span>
+<span class="gp">... </span><span class="p">)</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">regulator_1</span> <span class="o">=</span> <span class="n">DistributionRegulator</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Regulator-1&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">buses</span><span class="o">=</span><span class="p">[</span><span class="n">bus_1</span><span class="p">,</span> <span class="n">bus_2</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="n">winding_phases</span><span class="o">=</span><span class="p">[[</span><span class="n">Phase</span><span class="o">.</span><span class="n">A</span><span class="p">],</span> <span class="p">[</span><span class="n">Phase</span><span class="o">.</span><span class="n">A</span><span class="p">]],</span>
+<span class="gp">... </span>    <span class="n">equipment</span><span class="o">=</span><span class="n">regulator_equipment</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">controllers</span><span class="o">=</span><span class="p">[</span><span class="n">regulator_controller</span><span class="p">],</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">regulator_1</span><span class="o">.</span><span class="n">pprint</span><span class="p">()</span>
+<span class="go">DistributionRegulator(</span>
+<span class="go">    name=&#39;Regulator-1&#39;,</span>
+<span class="go">    substation=None,</span>
+<span class="go">    feeder=None,</span>
+<span class="go">    buses=[</span>
+<span class="go">        DistributionBus(</span>
+<span class="go">            name=&#39;Bus-1&#39;,</span>
+<span class="go">            substation=None,</span>
+<span class="go">            feeder=None,</span>
+<span class="go">            voltage_type=&lt;VoltageTypes.LINE_TO_GROUND: &#39;line-to-ground&#39;&gt;,</span>
+<span class="go">            phases=[&lt;Phase.A: &#39;A&#39;&gt;],</span>
+<span class="go">            voltagelimits=[],</span>
+<span class="go">            nominal_voltage=&lt;Quantity(12.47, &#39;kilovolt&#39;)&gt;,</span>
+<span class="go">            coordinate=None</span>
+<span class="go">        ),</span>
+<span class="go">        DistributionBus(</span>
+<span class="go">            name=&#39;Bus-2&#39;,</span>
+<span class="go">            substation=None,</span>
+<span class="go">            feeder=None,</span>
+<span class="go">            voltage_type=&lt;VoltageTypes.LINE_TO_GROUND: &#39;line-to-ground&#39;&gt;,</span>
+<span class="go">            phases=[&lt;Phase.A: &#39;A&#39;&gt;],</span>
+<span class="go">            voltagelimits=[],</span>
+<span class="go">            nominal_voltage=&lt;Quantity(12.47, &#39;kilovolt&#39;)&gt;,</span>
+<span class="go">            coordinate=None</span>
+<span class="go">        )</span>
+<span class="go">    ],</span>
+<span class="go">    winding_phases=[[&lt;Phase.A: &#39;A&#39;&gt;], [&lt;Phase.A: &#39;A&#39;&gt;]],</span>
+<span class="go">    equipment=DistributionTransformerEquipment(</span>
+<span class="go">        name=&#39;SinglePhase-Regulator-1&#39;,</span>
+<span class="go">        pct_no_load_loss=0.002,</span>
+<span class="go">        pct_full_load_loss=0.1,</span>
+<span class="go">        windings=[</span>
+<span class="go">            WindingEquipment(</span>
+<span class="go">                name=&#39;&#39;,</span>
+<span class="go">                resistance=1.0,</span>
+<span class="go">                is_grounded=False,</span>
+<span class="go">                nominal_voltage=&lt;Quantity(12.47, &#39;kilovolt&#39;)&gt;,</span>
+<span class="go">                voltage_type=&lt;VoltageTypes.LINE_TO_GROUND: &#39;line-to-ground&#39;&gt;,</span>
+<span class="go">                rated_power=&lt;Quantity(25, &#39;kilova&#39;)&gt;,</span>
+<span class="go">                num_phases=1,</span>
+<span class="go">                connection_type=&lt;ConnectionType.STAR: &#39;STAR&#39;&gt;,</span>
+<span class="go">                tap_positions=[1.0],</span>
+<span class="go">                total_taps=32,</span>
+<span class="go">                min_tap_pu=0.9,</span>
+<span class="go">                max_tap_pu=1.1</span>
+<span class="go">            ),</span>
+<span class="go">            WindingEquipment(</span>
+<span class="go">                name=&#39;&#39;,</span>
+<span class="go">                resistance=1.0,</span>
+<span class="go">                is_grounded=False,</span>
+<span class="go">                nominal_voltage=&lt;Quantity(12.47, &#39;kilovolt&#39;)&gt;,</span>
+<span class="go">                voltage_type=&lt;VoltageTypes.LINE_TO_GROUND: &#39;line-to-ground&#39;&gt;,</span>
+<span class="go">                rated_power=&lt;Quantity(25, &#39;kilova&#39;)&gt;,</span>
+<span class="go">                num_phases=1,</span>
+<span class="go">                connection_type=&lt;ConnectionType.STAR: &#39;STAR&#39;&gt;,</span>
+<span class="go">                tap_positions=[1.0],</span>
+<span class="go">                total_taps=32,</span>
+<span class="go">                min_tap_pu=0.9,</span>
+<span class="go">                max_tap_pu=1.1</span>
+<span class="go">            )</span>
+<span class="go">        ],</span>
+<span class="go">        coupling_sequences=[SequencePair(from_index=0, to_index=1)],</span>
+<span class="go">        winding_reactances=[2.3],</span>
+<span class="go">        is_center_tapped=False</span>
+<span class="go">    ),</span>
+<span class="go">    controllers=[</span>
+<span class="go">        RegulatorController(</span>
+<span class="go">            name=&#39;RegulatorController-1&#39;,</span>
+<span class="go">            delay=&lt;Quantity(10, &#39;second&#39;)&gt;,</span>
+<span class="go">            vsetpoint=&lt;Quantity(120, &#39;volt&#39;)&gt;,</span>
+<span class="go">            pt_ratio=60.0,</span>
+<span class="go">            ldc_R=None,</span>
+<span class="go">            ldc_X=None,</span>
+<span class="go">            ct_primary=None,</span>
+<span class="go">            max_step=16,</span>
+<span class="go">            bandwidth=&lt;Quantity(3, &#39;volt&#39;)&gt;</span>
+<span class="go">        )</span>
+<span class="go">    ]</span>
+<span class="go">)</span>
+
+<span class="go">&quot;&quot;&quot;</span>
+
+</pre></div>
+</div>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="distribution_transformer.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Distribution Transformer</p>
+      </div>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#single-phase-regulator">Single Phase Regulator</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+
+  <div class="tocsection sourcelink">
+    <a href="../../_sources/usage/components/distribution_regulator.md.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2024, Kapil Duwadi, Tarek Elgindy, Aadil Latif, Daniel Thom, Pedro Andres Sanchez Perez.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.0.2.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.4.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,1257 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Index &#8212; Grid Data Models  documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="_static/autodoc_pydantic.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="https://unpkg.com/mermaid@10.2.0/dist/mermaid.min.js"></script>
+    <script>mermaid.initialize({startOnLoad:true});</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'genindex';</script>
+    <link rel="index" title="Index" href="#" />
+    <link rel="search" title="Search" href="search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Grid Data Models  documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="api/index.html">
+    References
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="cim/index.html">
+    CIM & GDM
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="usage/index.html">
+    Usage
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="api/index.html">
+    References
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="cim/index.html">
+    CIM & GDM
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="usage/index.html">
+    Usage
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none"></div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+
+<h1 id="index">Index</h1>
+
+<div class="genindex-jumpbox">
+ <a href="#A"><strong>A</strong></a>
+ | <a href="#B"><strong>B</strong></a>
+ | <a href="#C"><strong>C</strong></a>
+ | <a href="#D"><strong>D</strong></a>
+ | <a href="#E"><strong>E</strong></a>
+ | <a href="#F"><strong>F</strong></a>
+ | <a href="#G"><strong>G</strong></a>
+ | <a href="#H"><strong>H</strong></a>
+ | <a href="#I"><strong>I</strong></a>
+ | <a href="#L"><strong>L</strong></a>
+ | <a href="#M"><strong>M</strong></a>
+ | <a href="#N"><strong>N</strong></a>
+ | <a href="#O"><strong>O</strong></a>
+ | <a href="#P"><strong>P</strong></a>
+ | <a href="#R"><strong>R</strong></a>
+ | <a href="#S"><strong>S</strong></a>
+ | <a href="#T"><strong>T</strong></a>
+ | <a href="#U"><strong>U</strong></a>
+ | <a href="#V"><strong>V</strong></a>
+ | <a href="#W"><strong>W</strong></a>
+ | <a href="#X"><strong>X</strong></a>
+ | <a href="#Z"><strong>Z</strong></a>
+ 
+</div>
+<h2 id="A">A</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/equipment/distribution_wires.html#gdm.BareConductorEquipment.ac_resistance">ac_resistance (gdm.BareConductorEquipment attribute)</a>
+</li>
+      <li><a href="api/quantities.html#gdm.quantities.ActivePowerPUTime">ActivePowerPUTime (class in gdm.quantities)</a>
+</li>
+      <li><a href="api/equipment/distribution_wires.html#gdm.BareConductorEquipment.ampacity">ampacity (gdm.BareConductorEquipment attribute)</a>
+
+      <ul>
+        <li><a href="api/equipment/distribution_wires.html#gdm.ConcentricCableEquipment.ampacity">(gdm.ConcentricCableEquipment attribute)</a>
+</li>
+        <li><a href="api/equipment/fuse_equipment.html#gdm.MatrixImpedanceFuseEquipment.ampacity">(gdm.MatrixImpedanceFuseEquipment attribute)</a>
+</li>
+        <li><a href="api/equipment/recloser_equipment.html#gdm.MatrixImpedanceRecloserEquipment.ampacity">(gdm.MatrixImpedanceRecloserEquipment attribute)</a>
+</li>
+        <li><a href="api/equipment/switch_equipment.html#gdm.MatrixImpedanceSwitchEquipment.ampacity">(gdm.MatrixImpedanceSwitchEquipment attribute)</a>
+</li>
+        <li><a href="api/equipment/branch_equipment.html#gdm.SequenceImpedanceBranchEquipment.ampacity">(gdm.SequenceImpedanceBranchEquipment attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/equipment/vsource_equipment.html#gdm.PhaseVoltageSourceEquipment.angle">angle (gdm.PhaseVoltageSourceEquipment attribute)</a>
+</li>
+      <li><a href="api/quantities.html#gdm.quantities.ApparentPower">ApparentPower (class in gdm.quantities)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="B">B</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/controllers/regulator_controllers.html#gdm.RegulatorController.bandwidth">bandwidth (gdm.RegulatorController attribute)</a>
+</li>
+      <li><a href="api/components/distribution_capacitor.html#gdm.DistributionCapacitor.bus">bus (gdm.DistributionCapacitor attribute)</a>
+
+      <ul>
+        <li><a href="api/components/distribution_load.html#gdm.DistributionLoad.bus">(gdm.DistributionLoad attribute)</a>
+</li>
+        <li><a href="api/components/distribution_solar.html#gdm.DistributionSolar.bus">(gdm.DistributionSolar attribute)</a>
+</li>
+        <li><a href="api/components/distribution_vsource.html#gdm.DistributionVoltageSource.bus">(gdm.DistributionVoltageSource attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="api/components/distribution_regulator.html#gdm.DistributionRegulator.buses">buses (gdm.DistributionRegulator attribute)</a>
+
+      <ul>
+        <li><a href="api/components/distribution_transformer.html#gdm.DistributionTransformer.buses">(gdm.DistributionTransformer attribute)</a>
+</li>
+        <li><a href="api/components/distribution_branch.html#gdm.GeometryBranch.buses">(gdm.GeometryBranch attribute)</a>
+</li>
+        <li><a href="api/components/distribution_branch.html#gdm.MatrixImpedanceBranch.buses">(gdm.MatrixImpedanceBranch attribute)</a>
+</li>
+        <li><a href="api/components/distribution_fuse.html#gdm.MatrixImpedanceFuse.buses">(gdm.MatrixImpedanceFuse attribute)</a>
+</li>
+        <li><a href="api/components/distribution_recloser.html#gdm.MatrixImpedanceRecloser.buses">(gdm.MatrixImpedanceRecloser attribute)</a>
+</li>
+        <li><a href="api/components/distribution_switch.html#gdm.MatrixImpedanceSwitch.buses">(gdm.MatrixImpedanceSwitch attribute)</a>
+</li>
+        <li><a href="api/components/distribution_branch.html#gdm.SequenceImpedanceBranch.buses">(gdm.SequenceImpedanceBranch attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="C">C</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/equipment/fuse_equipment.html#gdm.MatrixImpedanceFuseEquipment.c_matrix">c_matrix (gdm.MatrixImpedanceFuseEquipment attribute)</a>
+
+      <ul>
+        <li><a href="api/equipment/recloser_equipment.html#gdm.MatrixImpedanceRecloserEquipment.c_matrix">(gdm.MatrixImpedanceRecloserEquipment attribute)</a>
+</li>
+        <li><a href="api/equipment/switch_equipment.html#gdm.MatrixImpedanceSwitchEquipment.c_matrix">(gdm.MatrixImpedanceSwitchEquipment attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="api/equipment/distribution_wires.html#gdm.ConcentricCableEquipment.cable_diameter">cable_diameter (gdm.ConcentricCableEquipment attribute)</a>
+</li>
+      <li><a href="api/quantities.html#gdm.quantities.Capacitance">Capacitance (class in gdm.quantities)</a>
+</li>
+      <li><a href="api/quantities.html#gdm.quantities.CapacitancePULength">CapacitancePULength (class in gdm.quantities)</a>
+</li>
+      <li><a href="api/equipment/inverter_equipment.html#gdm.InverterEquipment.capacity">capacity (gdm.InverterEquipment attribute)</a>
+</li>
+      <li><a href="api/equipment/distribution_wires.html#gdm.BareConductorEquipment.conductor_diameter">conductor_diameter (gdm.BareConductorEquipment attribute)</a>
+
+      <ul>
+        <li><a href="api/equipment/distribution_wires.html#gdm.ConcentricCableEquipment.conductor_diameter">(gdm.ConcentricCableEquipment attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="api/equipment/distribution_wires.html#gdm.BareConductorEquipment.conductor_gmr">conductor_gmr (gdm.BareConductorEquipment attribute)</a>
+
+      <ul>
+        <li><a href="api/equipment/distribution_wires.html#gdm.ConcentricCableEquipment.conductor_gmr">(gdm.ConcentricCableEquipment attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="api/equipment/branch_equipment.html#gdm.GeometryBranchEquipment.conductors">conductors (gdm.GeometryBranchEquipment attribute)</a>
+</li>
+      <li><a href="api/equipment/capacitor_equipment.html#gdm.CapacitorEquipment.connection_type">connection_type (gdm.CapacitorEquipment attribute)</a>
+
+      <ul>
+        <li><a href="api/equipment/load_equipment.html#gdm.LoadEquipment.connection_type">(gdm.LoadEquipment attribute)</a>
+</li>
+        <li><a href="api/equipment/distribution_transformer_equipment.html#gdm.WindingEquipment.connection_type">(gdm.WindingEquipment attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/distribution_enum.html#gdm.ConnectionType">ConnectionType (class in gdm)</a>
+</li>
+      <li><a href="api/components/distribution_solar.html#gdm.DistributionSolar.controller">controller (gdm.DistributionSolar attribute)</a>
+
+      <ul>
+        <li><a href="api/components/distribution_recloser.html#gdm.MatrixImpedanceRecloser.controller">(gdm.MatrixImpedanceRecloser attribute)</a>
+</li>
+        <li><a href="api/equipment/switch_equipment.html#gdm.MatrixImpedanceSwitchEquipment.controller">(gdm.MatrixImpedanceSwitchEquipment attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="api/components/distribution_capacitor.html#gdm.DistributionCapacitor.controllers">controllers (gdm.DistributionCapacitor attribute)</a>
+
+      <ul>
+        <li><a href="api/components/distribution_regulator.html#gdm.DistributionRegulator.controllers">(gdm.DistributionRegulator attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="api/components/distribution_bus.html#gdm.DistributionBus.coordinate">coordinate (gdm.DistributionBus attribute)</a>
+</li>
+      <li><a href="api/equipment/distribution_transformer_equipment.html#gdm.DistributionTransformerEquipment.coupling_sequences">coupling_sequences (gdm.DistributionTransformerEquipment attribute)</a>
+</li>
+      <li><a href="api/controllers/regulator_controllers.html#gdm.RegulatorController.ct_primary">ct_primary (gdm.RegulatorController attribute)</a>
+</li>
+      <li><a href="api/controllers/capacitor_controllers.html#gdm.CurrentCapacitorController.ct_ratio">ct_ratio (gdm.CurrentCapacitorController attribute)</a>
+</li>
+      <li><a href="api/equipment/solar_equipment.html#gdm.SolarEquipment.cutin_percent">cutin_percent (gdm.SolarEquipment attribute)</a>
+</li>
+      <li><a href="api/equipment/solar_equipment.html#gdm.SolarEquipment.cutout_percent">cutout_percent (gdm.SolarEquipment attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="D">D</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/equipment/distribution_wires.html#gdm.BareConductorEquipment.dc_resistance">dc_resistance (gdm.BareConductorEquipment attribute)</a>
+</li>
+      <li><a href="api/controllers/capacitor_controllers.html#gdm.ActivePowerCapacitorController.dead_time">dead_time (gdm.ActivePowerCapacitorController attribute)</a>
+
+      <ul>
+        <li><a href="api/controllers/capacitor_controllers.html#gdm.CurrentCapacitorController.dead_time">(gdm.CurrentCapacitorController attribute)</a>
+</li>
+        <li><a href="api/controllers/capacitor_controllers.html#gdm.DailyTimedCapacitorController.dead_time">(gdm.DailyTimedCapacitorController attribute)</a>
+</li>
+        <li><a href="api/controllers/capacitor_controllers.html#gdm.ReactivePowerCapacitorController.dead_time">(gdm.ReactivePowerCapacitorController attribute)</a>
+</li>
+        <li><a href="api/controllers/capacitor_controllers.html#gdm.VoltageCapacitorController.dead_time">(gdm.VoltageCapacitorController attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="api/controllers/recloser_controllers.html#gdm.DistributionRecloserController.delay">delay (gdm.DistributionRecloserController attribute)</a>
+
+      <ul>
+        <li><a href="api/controllers/switch_controllers.html#gdm.DistributionSwitchController.delay">(gdm.DistributionSwitchController attribute)</a>
+</li>
+        <li><a href="api/equipment/fuse_equipment.html#gdm.MatrixImpedanceFuseEquipment.delay">(gdm.MatrixImpedanceFuseEquipment attribute)</a>
+</li>
+        <li><a href="api/controllers/regulator_controllers.html#gdm.RegulatorController.delay">(gdm.RegulatorController attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/controllers/capacitor_controllers.html#gdm.ActivePowerCapacitorController.delay_off">delay_off (gdm.ActivePowerCapacitorController attribute)</a>
+
+      <ul>
+        <li><a href="api/controllers/capacitor_controllers.html#gdm.CurrentCapacitorController.delay_off">(gdm.CurrentCapacitorController attribute)</a>
+</li>
+        <li><a href="api/controllers/capacitor_controllers.html#gdm.DailyTimedCapacitorController.delay_off">(gdm.DailyTimedCapacitorController attribute)</a>
+</li>
+        <li><a href="api/controllers/capacitor_controllers.html#gdm.ReactivePowerCapacitorController.delay_off">(gdm.ReactivePowerCapacitorController attribute)</a>
+</li>
+        <li><a href="api/controllers/capacitor_controllers.html#gdm.VoltageCapacitorController.delay_off">(gdm.VoltageCapacitorController attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="api/controllers/capacitor_controllers.html#gdm.ActivePowerCapacitorController.delay_on">delay_on (gdm.ActivePowerCapacitorController attribute)</a>
+
+      <ul>
+        <li><a href="api/controllers/capacitor_controllers.html#gdm.CurrentCapacitorController.delay_on">(gdm.CurrentCapacitorController attribute)</a>
+</li>
+        <li><a href="api/controllers/capacitor_controllers.html#gdm.DailyTimedCapacitorController.delay_on">(gdm.DailyTimedCapacitorController attribute)</a>
+</li>
+        <li><a href="api/controllers/capacitor_controllers.html#gdm.ReactivePowerCapacitorController.delay_on">(gdm.ReactivePowerCapacitorController attribute)</a>
+</li>
+        <li><a href="api/controllers/capacitor_controllers.html#gdm.VoltageCapacitorController.delay_on">(gdm.VoltageCapacitorController attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="E">E</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/equipment/inverter_equipment.html#gdm.InverterEquipment.eff_curve">eff_curve (gdm.InverterEquipment attribute)</a>
+</li>
+      <li><a href="api/equipment/distribution_wires.html#gdm.BareConductorEquipment.emergency_ampacity">emergency_ampacity (gdm.BareConductorEquipment attribute)</a>
+
+      <ul>
+        <li><a href="api/equipment/distribution_wires.html#gdm.ConcentricCableEquipment.emergency_ampacity">(gdm.ConcentricCableEquipment attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="api/components/distribution_capacitor.html#gdm.DistributionCapacitor.equipment">equipment (gdm.DistributionCapacitor attribute)</a>
+
+      <ul>
+        <li><a href="api/components/distribution_load.html#gdm.DistributionLoad.equipment">(gdm.DistributionLoad attribute)</a>
+</li>
+        <li><a href="api/controllers/recloser_controllers.html#gdm.DistributionRecloserController.equipment">(gdm.DistributionRecloserController attribute)</a>
+</li>
+        <li><a href="api/components/distribution_regulator.html#gdm.DistributionRegulator.equipment">(gdm.DistributionRegulator attribute)</a>
+</li>
+        <li><a href="api/components/distribution_solar.html#gdm.DistributionSolar.equipment">(gdm.DistributionSolar attribute)</a>
+</li>
+        <li><a href="api/components/distribution_transformer.html#gdm.DistributionTransformer.equipment">(gdm.DistributionTransformer attribute)</a>
+</li>
+        <li><a href="api/components/distribution_vsource.html#gdm.DistributionVoltageSource.equipment">(gdm.DistributionVoltageSource attribute)</a>
+</li>
+        <li><a href="api/components/distribution_branch.html#gdm.GeometryBranch.equipment">(gdm.GeometryBranch attribute)</a>
+</li>
+        <li><a href="api/components/distribution_branch.html#gdm.MatrixImpedanceBranch.equipment">(gdm.MatrixImpedanceBranch attribute)</a>
+</li>
+        <li><a href="api/components/distribution_fuse.html#gdm.MatrixImpedanceFuse.equipment">(gdm.MatrixImpedanceFuse attribute)</a>
+</li>
+        <li><a href="api/components/distribution_recloser.html#gdm.MatrixImpedanceRecloser.equipment">(gdm.MatrixImpedanceRecloser attribute)</a>
+</li>
+        <li><a href="api/components/distribution_switch.html#gdm.MatrixImpedanceSwitch.equipment">(gdm.MatrixImpedanceSwitch attribute)</a>
+</li>
+        <li><a href="api/controllers/inverter_controllers.html#gdm.PowerfactorInverterController.equipment">(gdm.PowerfactorInverterController attribute)</a>
+</li>
+        <li><a href="api/components/distribution_branch.html#gdm.SequenceImpedanceBranch.equipment">(gdm.SequenceImpedanceBranch attribute)</a>
+</li>
+        <li><a href="api/controllers/inverter_controllers.html#gdm.VoltVarInverterController.equipment">(gdm.VoltVarInverterController attribute)</a>
+</li>
+        <li><a href="api/controllers/inverter_controllers.html#gdm.VoltVarVoltWattInverterController.equipment">(gdm.VoltVarVoltWattInverterController attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="F">F</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/equipment/inverter_equipment.html#gdm.InverterEquipment.fall_limit">fall_limit (gdm.InverterEquipment attribute)</a>
+</li>
+      <li><a href="api/components/distribution_bus.html#gdm.DistributionBus.feeder">feeder (gdm.DistributionBus attribute)</a>
+
+      <ul>
+        <li><a href="api/components/distribution_capacitor.html#gdm.DistributionCapacitor.feeder">(gdm.DistributionCapacitor attribute)</a>
+</li>
+        <li><a href="api/components/distribution_load.html#gdm.DistributionLoad.feeder">(gdm.DistributionLoad attribute)</a>
+</li>
+        <li><a href="api/components/distribution_regulator.html#gdm.DistributionRegulator.feeder">(gdm.DistributionRegulator attribute)</a>
+</li>
+        <li><a href="api/components/distribution_solar.html#gdm.DistributionSolar.feeder">(gdm.DistributionSolar attribute)</a>
+</li>
+        <li><a href="api/components/distribution_transformer.html#gdm.DistributionTransformer.feeder">(gdm.DistributionTransformer attribute)</a>
+</li>
+        <li><a href="api/components/distribution_vsource.html#gdm.DistributionVoltageSource.feeder">(gdm.DistributionVoltageSource attribute)</a>
+</li>
+        <li><a href="api/components/distribution_branch.html#gdm.GeometryBranch.feeder">(gdm.GeometryBranch attribute)</a>
+</li>
+        <li><a href="api/components/distribution_branch.html#gdm.MatrixImpedanceBranch.feeder">(gdm.MatrixImpedanceBranch attribute)</a>
+</li>
+        <li><a href="api/components/distribution_fuse.html#gdm.MatrixImpedanceFuse.feeder">(gdm.MatrixImpedanceFuse attribute)</a>
+</li>
+        <li><a href="api/components/distribution_recloser.html#gdm.MatrixImpedanceRecloser.feeder">(gdm.MatrixImpedanceRecloser attribute)</a>
+</li>
+        <li><a href="api/components/distribution_switch.html#gdm.MatrixImpedanceSwitch.feeder">(gdm.MatrixImpedanceSwitch attribute)</a>
+</li>
+        <li><a href="api/components/distribution_branch.html#gdm.SequenceImpedanceBranch.feeder">(gdm.SequenceImpedanceBranch attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/components/distribution_substation.html#gdm.DistributionSubstation.feeders">feeders (gdm.DistributionSubstation attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="G">G</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li>
+    gdm
+
+      <ul>
+        <li><a href="api/distribution_enum.html#module-gdm">module</a>
+</li>
+      </ul></li>
+      <li>
+    gdm.quantities
+
+      <ul>
+        <li><a href="api/quantities.html#module-gdm.quantities">module</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/controllers/recloser_controllers.html#gdm.DistributionRecloserController.ground_delayed">ground_delayed (gdm.DistributionRecloserController attribute)</a>
+</li>
+      <li><a href="api/controllers/recloser_controllers.html#gdm.DistributionRecloserController.ground_fast">ground_fast (gdm.DistributionRecloserController attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="H">H</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/equipment/branch_equipment.html#gdm.GeometryBranchEquipment.horizontal_positions">horizontal_positions (gdm.GeometryBranchEquipment attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="I">I</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/equipment/load_equipment.html#gdm.PhaseLoadEquipment.i_imag">i_imag (gdm.PhaseLoadEquipment attribute)</a>
+</li>
+      <li><a href="api/equipment/load_equipment.html#gdm.PhaseLoadEquipment.i_real">i_real (gdm.PhaseLoadEquipment attribute)</a>
+</li>
+      <li><a href="api/equipment/distribution_wires.html#gdm.ConcentricCableEquipment.insulation_diameter">insulation_diameter (gdm.ConcentricCableEquipment attribute)</a>
+</li>
+      <li><a href="api/equipment/distribution_wires.html#gdm.ConcentricCableEquipment.insulation_thickness">insulation_thickness (gdm.ConcentricCableEquipment attribute)</a>
+</li>
+      <li><a href="api/quantities.html#gdm.quantities.Irradiance">Irradiance (class in gdm.quantities)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/equipment/distribution_transformer_equipment.html#gdm.DistributionTransformerEquipment.is_center_tapped">is_center_tapped (gdm.DistributionTransformerEquipment attribute)</a>
+</li>
+      <li><a href="api/components/distribution_fuse.html#gdm.MatrixImpedanceFuse.is_closed">is_closed (gdm.MatrixImpedanceFuse attribute)</a>
+
+      <ul>
+        <li><a href="api/components/distribution_recloser.html#gdm.MatrixImpedanceRecloser.is_closed">(gdm.MatrixImpedanceRecloser attribute)</a>
+</li>
+        <li><a href="api/components/distribution_switch.html#gdm.MatrixImpedanceSwitch.is_closed">(gdm.MatrixImpedanceSwitch attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="api/equipment/distribution_transformer_equipment.html#gdm.WindingEquipment.is_grounded">is_grounded (gdm.WindingEquipment attribute)</a>
+</li>
+      <li><a href="api/controllers/switch_controllers.html#gdm.DistributionSwitchController.is_locked">is_locked (gdm.DistributionSwitchController attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="L">L</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/controllers/regulator_controllers.html#gdm.RegulatorController.ldc_R">ldc_R (gdm.RegulatorController attribute)</a>
+</li>
+      <li><a href="api/controllers/regulator_controllers.html#gdm.RegulatorController.ldc_X">ldc_X (gdm.RegulatorController attribute)</a>
+</li>
+      <li><a href="api/components/distribution_branch.html#gdm.GeometryBranch.length">length (gdm.GeometryBranch attribute)</a>
+
+      <ul>
+        <li><a href="api/components/distribution_branch.html#gdm.MatrixImpedanceBranch.length">(gdm.MatrixImpedanceBranch attribute)</a>
+</li>
+        <li><a href="api/components/distribution_fuse.html#gdm.MatrixImpedanceFuse.length">(gdm.MatrixImpedanceFuse attribute)</a>
+</li>
+        <li><a href="api/components/distribution_recloser.html#gdm.MatrixImpedanceRecloser.length">(gdm.MatrixImpedanceRecloser attribute)</a>
+</li>
+        <li><a href="api/components/distribution_switch.html#gdm.MatrixImpedanceSwitch.length">(gdm.MatrixImpedanceSwitch attribute)</a>
+</li>
+        <li><a href="api/components/distribution_branch.html#gdm.SequenceImpedanceBranch.length">(gdm.SequenceImpedanceBranch attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/limitset.html#gdm.ThermalLimitSet.limit_type">limit_type (gdm.ThermalLimitSet attribute)</a>
+
+      <ul>
+        <li><a href="api/limitset.html#gdm.VoltageLimitSet.limit_type">(gdm.VoltageLimitSet attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="api/distribution_enum.html#gdm.LimitType">LimitType (class in gdm)</a>
+</li>
+      <li><a href="api/equipment/distribution_wires.html#gdm.BareConductorEquipment.loading_limit">loading_limit (gdm.BareConductorEquipment attribute)</a>
+
+      <ul>
+        <li><a href="api/equipment/distribution_wires.html#gdm.ConcentricCableEquipment.loading_limit">(gdm.ConcentricCableEquipment attribute)</a>
+</li>
+        <li><a href="api/equipment/fuse_equipment.html#gdm.MatrixImpedanceFuseEquipment.loading_limit">(gdm.MatrixImpedanceFuseEquipment attribute)</a>
+</li>
+        <li><a href="api/equipment/recloser_equipment.html#gdm.MatrixImpedanceRecloserEquipment.loading_limit">(gdm.MatrixImpedanceRecloserEquipment attribute)</a>
+</li>
+        <li><a href="api/equipment/switch_equipment.html#gdm.MatrixImpedanceSwitchEquipment.loading_limit">(gdm.MatrixImpedanceSwitchEquipment attribute)</a>
+</li>
+        <li><a href="api/equipment/branch_equipment.html#gdm.SequenceImpedanceBranchEquipment.loading_limit">(gdm.SequenceImpedanceBranchEquipment attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="M">M</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/controllers/regulator_controllers.html#gdm.RegulatorController.max_step">max_step (gdm.RegulatorController attribute)</a>
+</li>
+      <li><a href="api/equipment/distribution_transformer_equipment.html#gdm.WindingEquipment.max_tap_pu">max_tap_pu (gdm.WindingEquipment attribute)</a>
+</li>
+      <li><a href="api/equipment/distribution_transformer_equipment.html#gdm.WindingEquipment.min_tap_pu">min_tap_pu (gdm.WindingEquipment attribute)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li>
+    module
+
+      <ul>
+        <li><a href="api/distribution_enum.html#module-gdm">gdm</a>
+</li>
+        <li><a href="api/quantities.html#module-gdm.quantities">gdm.quantities</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="N">N</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/controllers/capacitor_controllers.html#gdm.ActivePowerCapacitorController.name">name (gdm.ActivePowerCapacitorController attribute)</a>
+
+      <ul>
+        <li><a href="api/controllers/capacitor_controllers.html#gdm.CurrentCapacitorController.name">(gdm.CurrentCapacitorController attribute)</a>
+</li>
+        <li><a href="api/controllers/capacitor_controllers.html#gdm.DailyTimedCapacitorController.name">(gdm.DailyTimedCapacitorController attribute)</a>
+</li>
+        <li><a href="api/controllers/recloser_controllers.html#gdm.DistributionRecloserController.name">(gdm.DistributionRecloserController attribute)</a>
+</li>
+        <li><a href="api/controllers/switch_controllers.html#gdm.DistributionSwitchController.name">(gdm.DistributionSwitchController attribute)</a>
+</li>
+        <li><a href="api/equipment/inverter_equipment.html#gdm.InverterEquipment.name">(gdm.InverterEquipment attribute)</a>
+</li>
+        <li><a href="api/controllers/inverter_controllers.html#gdm.PowerfactorInverterController.name">(gdm.PowerfactorInverterController attribute)</a>
+</li>
+        <li><a href="api/controllers/capacitor_controllers.html#gdm.ReactivePowerCapacitorController.name">(gdm.ReactivePowerCapacitorController attribute)</a>
+</li>
+        <li><a href="api/controllers/regulator_controllers.html#gdm.RegulatorController.name">(gdm.RegulatorController attribute)</a>
+</li>
+        <li><a href="api/limitset.html#gdm.ThermalLimitSet.name">(gdm.ThermalLimitSet attribute)</a>
+</li>
+        <li><a href="api/controllers/capacitor_controllers.html#gdm.VoltageCapacitorController.name">(gdm.VoltageCapacitorController attribute)</a>
+</li>
+        <li><a href="api/limitset.html#gdm.VoltageLimitSet.name">(gdm.VoltageLimitSet attribute)</a>
+</li>
+        <li><a href="api/controllers/inverter_controllers.html#gdm.VoltVarInverterController.name">(gdm.VoltVarInverterController attribute)</a>
+</li>
+        <li><a href="api/controllers/inverter_controllers.html#gdm.VoltVarVoltWattInverterController.name">(gdm.VoltVarVoltWattInverterController attribute)</a>
+</li>
+        <li><a href="api/equipment/distribution_transformer_equipment.html#gdm.WindingEquipment.name">(gdm.WindingEquipment attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/components/distribution_bus.html#gdm.DistributionBus.nominal_voltage">nominal_voltage (gdm.DistributionBus attribute)</a>
+
+      <ul>
+        <li><a href="api/equipment/distribution_transformer_equipment.html#gdm.WindingEquipment.nominal_voltage">(gdm.WindingEquipment attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="api/controllers/switch_controllers.html#gdm.DistributionSwitchController.normal_state">normal_state (gdm.DistributionSwitchController attribute)</a>
+</li>
+      <li><a href="api/equipment/capacitor_equipment.html#gdm.PhaseCapacitorEquipment.num_banks">num_banks (gdm.PhaseCapacitorEquipment attribute)</a>
+</li>
+      <li><a href="api/equipment/capacitor_equipment.html#gdm.PhaseCapacitorEquipment.num_banks_on">num_banks_on (gdm.PhaseCapacitorEquipment attribute)</a>
+</li>
+      <li><a href="api/equipment/load_equipment.html#gdm.PhaseLoadEquipment.num_customers">num_customers (gdm.PhaseLoadEquipment attribute)</a>
+</li>
+      <li><a href="api/controllers/recloser_controllers.html#gdm.DistributionRecloserController.num_fast_ops">num_fast_ops (gdm.DistributionRecloserController attribute)</a>
+</li>
+      <li><a href="api/equipment/distribution_wires.html#gdm.ConcentricCableEquipment.num_neutral_strands">num_neutral_strands (gdm.ConcentricCableEquipment attribute)</a>
+</li>
+      <li><a href="api/equipment/distribution_transformer_equipment.html#gdm.WindingEquipment.num_phases">num_phases (gdm.WindingEquipment attribute)</a>
+</li>
+      <li><a href="api/controllers/recloser_controllers.html#gdm.DistributionRecloserController.num_shots">num_shots (gdm.DistributionRecloserController attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="O">O</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/controllers/capacitor_controllers.html#gdm.CurrentCapacitorController.off_current">off_current (gdm.CurrentCapacitorController attribute)</a>
+</li>
+      <li><a href="api/controllers/capacitor_controllers.html#gdm.ActivePowerCapacitorController.off_power">off_power (gdm.ActivePowerCapacitorController attribute)</a>
+
+      <ul>
+        <li><a href="api/controllers/capacitor_controllers.html#gdm.ReactivePowerCapacitorController.off_power">(gdm.ReactivePowerCapacitorController attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="api/controllers/capacitor_controllers.html#gdm.DailyTimedCapacitorController.off_time">off_time (gdm.DailyTimedCapacitorController attribute)</a>
+</li>
+      <li><a href="api/controllers/capacitor_controllers.html#gdm.VoltageCapacitorController.off_voltage">off_voltage (gdm.VoltageCapacitorController attribute)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/controllers/capacitor_controllers.html#gdm.CurrentCapacitorController.on_current">on_current (gdm.CurrentCapacitorController attribute)</a>
+</li>
+      <li><a href="api/controllers/capacitor_controllers.html#gdm.ActivePowerCapacitorController.on_power">on_power (gdm.ActivePowerCapacitorController attribute)</a>
+
+      <ul>
+        <li><a href="api/controllers/capacitor_controllers.html#gdm.ReactivePowerCapacitorController.on_power">(gdm.ReactivePowerCapacitorController attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="api/controllers/capacitor_controllers.html#gdm.DailyTimedCapacitorController.on_time">on_time (gdm.DailyTimedCapacitorController attribute)</a>
+</li>
+      <li><a href="api/controllers/capacitor_controllers.html#gdm.VoltageCapacitorController.on_voltage">on_voltage (gdm.VoltageCapacitorController attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="P">P</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/equipment/load_equipment.html#gdm.PhaseLoadEquipment.p_imag">p_imag (gdm.PhaseLoadEquipment attribute)</a>
+</li>
+      <li><a href="api/equipment/load_equipment.html#gdm.PhaseLoadEquipment.p_real">p_real (gdm.PhaseLoadEquipment attribute)</a>
+</li>
+      <li><a href="api/equipment/distribution_transformer_equipment.html#gdm.DistributionTransformerEquipment.pct_full_load_loss">pct_full_load_loss (gdm.DistributionTransformerEquipment attribute)</a>
+</li>
+      <li><a href="api/equipment/distribution_transformer_equipment.html#gdm.DistributionTransformerEquipment.pct_no_load_loss">pct_no_load_loss (gdm.DistributionTransformerEquipment attribute)</a>
+</li>
+      <li><a href="api/distribution_enum.html#gdm.Phase">Phase (class in gdm)</a>
+</li>
+      <li><a href="api/equipment/distribution_wires.html#gdm.ConcentricCableEquipment.phase_ac_resistance">phase_ac_resistance (gdm.ConcentricCableEquipment attribute)</a>
+</li>
+      <li><a href="api/equipment/capacitor_equipment.html#gdm.CapacitorEquipment.phase_capacitors">phase_capacitors (gdm.CapacitorEquipment attribute)</a>
+</li>
+      <li><a href="api/controllers/recloser_controllers.html#gdm.DistributionRecloserController.phase_delayed">phase_delayed (gdm.DistributionRecloserController attribute)</a>
+</li>
+      <li><a href="api/controllers/recloser_controllers.html#gdm.DistributionRecloserController.phase_fast">phase_fast (gdm.DistributionRecloserController attribute)</a>
+</li>
+      <li><a href="api/equipment/load_equipment.html#gdm.LoadEquipment.phase_loads">phase_loads (gdm.LoadEquipment attribute)</a>
+</li>
+      <li><a href="api/components/distribution_bus.html#gdm.DistributionBus.phases">phases (gdm.DistributionBus attribute)</a>
+
+      <ul>
+        <li><a href="api/components/distribution_capacitor.html#gdm.DistributionCapacitor.phases">(gdm.DistributionCapacitor attribute)</a>
+</li>
+        <li><a href="api/components/distribution_load.html#gdm.DistributionLoad.phases">(gdm.DistributionLoad attribute)</a>
+</li>
+        <li><a href="api/components/distribution_solar.html#gdm.DistributionSolar.phases">(gdm.DistributionSolar attribute)</a>
+</li>
+        <li><a href="api/components/distribution_vsource.html#gdm.DistributionVoltageSource.phases">(gdm.DistributionVoltageSource attribute)</a>
+</li>
+        <li><a href="api/components/distribution_branch.html#gdm.GeometryBranch.phases">(gdm.GeometryBranch attribute)</a>
+</li>
+        <li><a href="api/components/distribution_branch.html#gdm.MatrixImpedanceBranch.phases">(gdm.MatrixImpedanceBranch attribute)</a>
+</li>
+        <li><a href="api/components/distribution_fuse.html#gdm.MatrixImpedanceFuse.phases">(gdm.MatrixImpedanceFuse attribute)</a>
+</li>
+        <li><a href="api/components/distribution_recloser.html#gdm.MatrixImpedanceRecloser.phases">(gdm.MatrixImpedanceRecloser attribute)</a>
+</li>
+        <li><a href="api/components/distribution_switch.html#gdm.MatrixImpedanceSwitch.phases">(gdm.MatrixImpedanceSwitch attribute)</a>
+</li>
+        <li><a href="api/components/distribution_branch.html#gdm.SequenceImpedanceBranch.phases">(gdm.SequenceImpedanceBranch attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/equipment/branch_equipment.html#gdm.SequenceImpedanceBranchEquipment.pos_seq_capacitance">pos_seq_capacitance (gdm.SequenceImpedanceBranchEquipment attribute)</a>
+</li>
+      <li><a href="api/equipment/branch_equipment.html#gdm.SequenceImpedanceBranchEquipment.pos_seq_reactance">pos_seq_reactance (gdm.SequenceImpedanceBranchEquipment attribute)</a>
+</li>
+      <li><a href="api/equipment/branch_equipment.html#gdm.SequenceImpedanceBranchEquipment.pos_seq_resistance">pos_seq_resistance (gdm.SequenceImpedanceBranchEquipment attribute)</a>
+</li>
+      <li><a href="api/quantities.html#gdm.quantities.PositiveApparentPower">PositiveApparentPower (class in gdm.quantities)</a>
+</li>
+      <li><a href="api/quantities.html#gdm.quantities.PositiveCapacitance">PositiveCapacitance (class in gdm.quantities)</a>
+</li>
+      <li><a href="api/quantities.html#gdm.quantities.PositiveCapacitancePULength">PositiveCapacitancePULength (class in gdm.quantities)</a>
+</li>
+      <li><a href="api/quantities.html#gdm.quantities.PositiveCurrent">PositiveCurrent (class in gdm.quantities)</a>
+</li>
+      <li><a href="api/quantities.html#gdm.quantities.PositiveDistance">PositiveDistance (class in gdm.quantities)</a>
+</li>
+      <li><a href="api/quantities.html#gdm.quantities.PositiveReactance">PositiveReactance (class in gdm.quantities)</a>
+</li>
+      <li><a href="api/quantities.html#gdm.quantities.PositiveReactancePULength">PositiveReactancePULength (class in gdm.quantities)</a>
+</li>
+      <li><a href="api/quantities.html#gdm.quantities.PositiveReactivePower">PositiveReactivePower (class in gdm.quantities)</a>
+</li>
+      <li><a href="api/quantities.html#gdm.quantities.PositiveResistance">PositiveResistance (class in gdm.quantities)</a>
+</li>
+      <li><a href="api/quantities.html#gdm.quantities.PositiveResistancePULength">PositiveResistancePULength (class in gdm.quantities)</a>
+</li>
+      <li><a href="api/quantities.html#gdm.quantities.PositiveVoltage">PositiveVoltage (class in gdm.quantities)</a>
+</li>
+      <li><a href="api/controllers/inverter_controllers.html#gdm.PowerfactorInverterController.power_factor">power_factor (gdm.PowerfactorInverterController attribute)</a>
+</li>
+      <li><a href="api/controllers/regulator_controllers.html#gdm.RegulatorController.pt_ratio">pt_ratio (gdm.RegulatorController attribute)</a>
+
+      <ul>
+        <li><a href="api/controllers/capacitor_controllers.html#gdm.VoltageCapacitorController.pt_ratio">(gdm.VoltageCapacitorController attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="R">R</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/equipment/vsource_equipment.html#gdm.PhaseVoltageSourceEquipment.r0">r0 (gdm.PhaseVoltageSourceEquipment attribute)</a>
+</li>
+      <li><a href="api/equipment/vsource_equipment.html#gdm.PhaseVoltageSourceEquipment.r1">r1 (gdm.PhaseVoltageSourceEquipment attribute)</a>
+</li>
+      <li><a href="api/equipment/fuse_equipment.html#gdm.MatrixImpedanceFuseEquipment.r_matrix">r_matrix (gdm.MatrixImpedanceFuseEquipment attribute)</a>
+
+      <ul>
+        <li><a href="api/equipment/recloser_equipment.html#gdm.MatrixImpedanceRecloserEquipment.r_matrix">(gdm.MatrixImpedanceRecloserEquipment attribute)</a>
+</li>
+        <li><a href="api/equipment/switch_equipment.html#gdm.MatrixImpedanceSwitchEquipment.r_matrix">(gdm.MatrixImpedanceSwitchEquipment attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="api/equipment/capacitor_equipment.html#gdm.PhaseCapacitorEquipment.rated_capacity">rated_capacity (gdm.PhaseCapacitorEquipment attribute)</a>
+
+      <ul>
+        <li><a href="api/equipment/solar_equipment.html#gdm.SolarEquipment.rated_capacity">(gdm.SolarEquipment attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="api/equipment/distribution_transformer_equipment.html#gdm.WindingEquipment.rated_power">rated_power (gdm.WindingEquipment attribute)</a>
+</li>
+      <li><a href="api/equipment/distribution_wires.html#gdm.ConcentricCableEquipment.rated_voltage">rated_voltage (gdm.ConcentricCableEquipment attribute)</a>
+</li>
+      <li><a href="api/quantities.html#gdm.quantities.Reactance">Reactance (class in gdm.quantities)</a>
+</li>
+      <li><a href="api/equipment/capacitor_equipment.html#gdm.PhaseCapacitorEquipment.reactance">reactance (gdm.PhaseCapacitorEquipment attribute)</a>
+
+      <ul>
+        <li><a href="api/equipment/solar_equipment.html#gdm.SolarEquipment.reactance">(gdm.SolarEquipment attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/quantities.html#gdm.quantities.ReactancePULength">ReactancePULength (class in gdm.quantities)</a>
+</li>
+      <li><a href="api/equipment/load_equipment.html#gdm.PhaseLoadEquipment.reactive_power">reactive_power (gdm.PhaseLoadEquipment attribute)</a>
+</li>
+      <li><a href="api/quantities.html#gdm.quantities.ReactivePower">ReactivePower (class in gdm.quantities)</a>
+</li>
+      <li><a href="api/equipment/load_equipment.html#gdm.PhaseLoadEquipment.real_power">real_power (gdm.PhaseLoadEquipment attribute)</a>
+</li>
+      <li><a href="api/controllers/recloser_controllers.html#gdm.DistributionRecloserController.reclose_intervals">reclose_intervals (gdm.DistributionRecloserController attribute)</a>
+</li>
+      <li><a href="api/controllers/recloser_controllers.html#gdm.DistributionRecloserController.reset_time">reset_time (gdm.DistributionRecloserController attribute)</a>
+</li>
+      <li><a href="api/equipment/capacitor_equipment.html#gdm.PhaseCapacitorEquipment.resistance">resistance (gdm.PhaseCapacitorEquipment attribute)</a>
+
+      <ul>
+        <li><a href="api/equipment/solar_equipment.html#gdm.SolarEquipment.resistance">(gdm.SolarEquipment attribute)</a>
+</li>
+        <li><a href="api/equipment/distribution_transformer_equipment.html#gdm.WindingEquipment.resistance">(gdm.WindingEquipment attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="api/quantities.html#gdm.quantities.ResistancePULength">ResistancePULength (class in gdm.quantities)</a>
+</li>
+      <li><a href="api/equipment/inverter_equipment.html#gdm.InverterEquipment.rise_limit">rise_limit (gdm.InverterEquipment attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="S">S</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/equipment/solar_equipment.html#gdm.SolarEquipment.solar_power">solar_power (gdm.SolarEquipment attribute)</a>
+</li>
+      <li><a href="api/equipment/vsource_equipment.html#gdm.VoltageSourceEquipment.sources">sources (gdm.VoltageSourceEquipment attribute)</a>
+</li>
+      <li><a href="api/equipment/distribution_wires.html#gdm.ConcentricCableEquipment.strand_ac_resistance">strand_ac_resistance (gdm.ConcentricCableEquipment attribute)</a>
+</li>
+      <li><a href="api/equipment/distribution_wires.html#gdm.ConcentricCableEquipment.strand_diameter">strand_diameter (gdm.ConcentricCableEquipment attribute)</a>
+</li>
+      <li><a href="api/equipment/distribution_wires.html#gdm.ConcentricCableEquipment.strand_gmr">strand_gmr (gdm.ConcentricCableEquipment attribute)</a>
+</li>
+      <li><a href="api/components/distribution_bus.html#gdm.DistributionBus.substation">substation (gdm.DistributionBus attribute)</a>
+
+      <ul>
+        <li><a href="api/components/distribution_capacitor.html#gdm.DistributionCapacitor.substation">(gdm.DistributionCapacitor attribute)</a>
+</li>
+        <li><a href="api/components/distribution_load.html#gdm.DistributionLoad.substation">(gdm.DistributionLoad attribute)</a>
+</li>
+        <li><a href="api/components/distribution_regulator.html#gdm.DistributionRegulator.substation">(gdm.DistributionRegulator attribute)</a>
+</li>
+        <li><a href="api/components/distribution_solar.html#gdm.DistributionSolar.substation">(gdm.DistributionSolar attribute)</a>
+</li>
+        <li><a href="api/components/distribution_transformer.html#gdm.DistributionTransformer.substation">(gdm.DistributionTransformer attribute)</a>
+</li>
+        <li><a href="api/components/distribution_vsource.html#gdm.DistributionVoltageSource.substation">(gdm.DistributionVoltageSource attribute)</a>
+</li>
+        <li><a href="api/components/distribution_branch.html#gdm.GeometryBranch.substation">(gdm.GeometryBranch attribute)</a>
+</li>
+        <li><a href="api/components/distribution_branch.html#gdm.MatrixImpedanceBranch.substation">(gdm.MatrixImpedanceBranch attribute)</a>
+</li>
+        <li><a href="api/components/distribution_fuse.html#gdm.MatrixImpedanceFuse.substation">(gdm.MatrixImpedanceFuse attribute)</a>
+</li>
+        <li><a href="api/components/distribution_recloser.html#gdm.MatrixImpedanceRecloser.substation">(gdm.MatrixImpedanceRecloser attribute)</a>
+</li>
+        <li><a href="api/components/distribution_switch.html#gdm.MatrixImpedanceSwitch.substation">(gdm.MatrixImpedanceSwitch attribute)</a>
+</li>
+        <li><a href="api/components/distribution_branch.html#gdm.SequenceImpedanceBranch.substation">(gdm.SequenceImpedanceBranch attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="T">T</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/equipment/distribution_transformer_equipment.html#gdm.WindingEquipment.tap_positions">tap_positions (gdm.WindingEquipment attribute)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/equipment/fuse_equipment.html#gdm.MatrixImpedanceFuseEquipment.tcc_curve">tcc_curve (gdm.MatrixImpedanceFuseEquipment attribute)</a>
+</li>
+      <li><a href="api/equipment/distribution_transformer_equipment.html#gdm.WindingEquipment.total_taps">total_taps (gdm.WindingEquipment attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="U">U</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/controllers/inverter_controllers.html#gdm.VoltVarVoltWattInverterController.uuid">uuid (gdm.VoltVarVoltWattInverterController attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="V">V</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/components/distribution_regulator.html#gdm.DistributionRegulator.validate_fields_base">validate_fields_base() (gdm.DistributionRegulator method)</a>
+
+      <ul>
+        <li><a href="api/components/distribution_transformer.html#gdm.DistributionTransformer.validate_fields_base">(gdm.DistributionTransformer method)</a>
+</li>
+        <li><a href="api/components/distribution_branch.html#gdm.GeometryBranch.validate_fields_base">(gdm.GeometryBranch method)</a>
+</li>
+        <li><a href="api/components/distribution_branch.html#gdm.MatrixImpedanceBranch.validate_fields_base">(gdm.MatrixImpedanceBranch method)</a>
+</li>
+        <li><a href="api/components/distribution_fuse.html#gdm.MatrixImpedanceFuse.validate_fields_base">(gdm.MatrixImpedanceFuse method)</a>
+</li>
+        <li><a href="api/components/distribution_recloser.html#gdm.MatrixImpedanceRecloser.validate_fields_base">(gdm.MatrixImpedanceRecloser method)</a>
+</li>
+        <li><a href="api/components/distribution_switch.html#gdm.MatrixImpedanceSwitch.validate_fields_base">(gdm.MatrixImpedanceSwitch method)</a>
+</li>
+        <li><a href="api/components/distribution_branch.html#gdm.SequenceImpedanceBranch.validate_fields_base">(gdm.SequenceImpedanceBranch method)</a>
+</li>
+      </ul></li>
+      <li><a href="api/limitset.html#gdm.ThermalLimitSet.value">value (gdm.ThermalLimitSet attribute)</a>
+
+      <ul>
+        <li><a href="api/limitset.html#gdm.VoltageLimitSet.value">(gdm.VoltageLimitSet attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="api/controllers/inverter_controllers.html#gdm.VoltVarInverterController.var_follow">var_follow (gdm.VoltVarInverterController attribute)</a>
+
+      <ul>
+        <li><a href="api/controllers/inverter_controllers.html#gdm.VoltVarVoltWattInverterController.var_follow">(gdm.VoltVarVoltWattInverterController attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/controllers/inverter_controllers.html#gdm.VoltVarVoltWattInverterController.var_priority">var_priority (gdm.VoltVarVoltWattInverterController attribute)</a>
+</li>
+      <li><a href="api/equipment/branch_equipment.html#gdm.GeometryBranchEquipment.vertical_positions">vertical_positions (gdm.GeometryBranchEquipment attribute)</a>
+</li>
+      <li><a href="api/controllers/inverter_controllers.html#gdm.VoltVarInverterController.volt_var_curve">volt_var_curve (gdm.VoltVarInverterController attribute)</a>
+
+      <ul>
+        <li><a href="api/controllers/inverter_controllers.html#gdm.VoltVarVoltWattInverterController.volt_var_curve">(gdm.VoltVarVoltWattInverterController attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="api/controllers/inverter_controllers.html#gdm.VoltVarVoltWattInverterController.volt_watt_curve">volt_watt_curve (gdm.VoltVarVoltWattInverterController attribute)</a>
+</li>
+      <li><a href="api/equipment/vsource_equipment.html#gdm.PhaseVoltageSourceEquipment.voltage">voltage (gdm.PhaseVoltageSourceEquipment attribute)</a>
+</li>
+      <li><a href="api/components/distribution_bus.html#gdm.DistributionBus.voltage_type">voltage_type (gdm.DistributionBus attribute)</a>
+
+      <ul>
+        <li><a href="api/equipment/distribution_transformer_equipment.html#gdm.WindingEquipment.voltage_type">(gdm.WindingEquipment attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="api/components/distribution_bus.html#gdm.DistributionBus.voltagelimits">voltagelimits (gdm.DistributionBus attribute)</a>
+</li>
+      <li><a href="api/distribution_enum.html#gdm.VoltageTypes">VoltageTypes (class in gdm)</a>
+</li>
+      <li><a href="api/controllers/regulator_controllers.html#gdm.RegulatorController.vsetpoint">vsetpoint (gdm.RegulatorController attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="W">W</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/components/distribution_regulator.html#gdm.DistributionRegulator.winding_phases">winding_phases (gdm.DistributionRegulator attribute)</a>
+
+      <ul>
+        <li><a href="api/components/distribution_transformer.html#gdm.DistributionTransformer.winding_phases">(gdm.DistributionTransformer attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/equipment/distribution_transformer_equipment.html#gdm.DistributionTransformerEquipment.winding_reactances">winding_reactances (gdm.DistributionTransformerEquipment attribute)</a>
+</li>
+      <li><a href="api/equipment/distribution_transformer_equipment.html#gdm.DistributionTransformerEquipment.windings">windings (gdm.DistributionTransformerEquipment attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="X">X</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/equipment/vsource_equipment.html#gdm.PhaseVoltageSourceEquipment.x0">x0 (gdm.PhaseVoltageSourceEquipment attribute)</a>
+</li>
+      <li><a href="api/equipment/vsource_equipment.html#gdm.PhaseVoltageSourceEquipment.x1">x1 (gdm.PhaseVoltageSourceEquipment attribute)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/equipment/fuse_equipment.html#gdm.MatrixImpedanceFuseEquipment.x_matrix">x_matrix (gdm.MatrixImpedanceFuseEquipment attribute)</a>
+
+      <ul>
+        <li><a href="api/equipment/recloser_equipment.html#gdm.MatrixImpedanceRecloserEquipment.x_matrix">(gdm.MatrixImpedanceRecloserEquipment attribute)</a>
+</li>
+        <li><a href="api/equipment/switch_equipment.html#gdm.MatrixImpedanceSwitchEquipment.x_matrix">(gdm.MatrixImpedanceSwitchEquipment attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="Z">Z</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/equipment/load_equipment.html#gdm.PhaseLoadEquipment.z_imag">z_imag (gdm.PhaseLoadEquipment attribute)</a>
+</li>
+      <li><a href="api/equipment/load_equipment.html#gdm.PhaseLoadEquipment.z_real">z_real (gdm.PhaseLoadEquipment attribute)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/equipment/branch_equipment.html#gdm.SequenceImpedanceBranchEquipment.zero_seq_capacitance">zero_seq_capacitance (gdm.SequenceImpedanceBranchEquipment attribute)</a>
+</li>
+      <li><a href="api/equipment/branch_equipment.html#gdm.SequenceImpedanceBranchEquipment.zero_seq_reactance">zero_seq_reactance (gdm.SequenceImpedanceBranchEquipment attribute)</a>
+</li>
+      <li><a href="api/equipment/branch_equipment.html#gdm.SequenceImpedanceBranchEquipment.zero_seq_resistance">zero_seq_resistance (gdm.SequenceImpedanceBranchEquipment attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2024, Kapil Duwadi, Tarek Elgindy, Aadil Latif, Daniel Thom, Pedro Andres Sanchez Perez.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.0.2.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.4.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>
