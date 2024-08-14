@@ -36,11 +36,11 @@ class DistributionSolar(DistributionComponentBase):
             ),
         ),
     ]
-    controller: Annotated[
-        InverterControllerBase,
+    controllers: Annotated[
+        list[InverterControllerBase],
         Field(
-            ...,
-            description="The controller which is used for the PV array.",
+            [],
+            description="List of controllers which is used for the PV array. Assumed to have a single inverter if one exists.",
         ),
     ]
 
