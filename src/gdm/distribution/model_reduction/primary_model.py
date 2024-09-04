@@ -18,7 +18,7 @@ from gdm.distribution.components.distribution_capacitor import DistributionCapac
 from gdm.distribution.components.distribution_load import DistributionLoad
 from gdm.distribution.components.distribution_bus import DistributionBus
 from gdm.distribution.distribution_graph import build_graph_from_system
-from gdm.distribution.distribution_enum import Phase, ConnectionType
+from gdm.distribution.distribution_enum import ConnectionType
 from gdm.distribution.distribution_system import DistributionSystem
 
 
@@ -47,7 +47,7 @@ class PrimaryModel:
     def build(self) -> DistributionSystem:
         all_subtree_buses = []
         components = {}
-        
+
         primary_buses = [
             bus.name
             for bus in self._distribution_system.get_components(
@@ -74,8 +74,8 @@ class PrimaryModel:
             ld_kw, ld_kvar, gen_kw, cap_kvar = self._lump_graph_load_and_generation(subgraph)
             components[primary_bus] = {
                 "ld_kw": ld_kw * 100,
-                "ld_kvar": ld_kvar* 100,
-                "gen_kw": gen_kw* 100,
+                "ld_kvar": ld_kvar * 100,
+                "gen_kw": gen_kw * 100,
                 "cap_kvar": cap_kvar * 100,
             }
 
