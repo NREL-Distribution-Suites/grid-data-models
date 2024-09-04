@@ -188,8 +188,8 @@ class ThreePhaseBalancedReduction:
                 self.add_lumped_load(bus_name, bus, primary, lumped_components)
                 self.add_lumped_generator(bus_name, bus, primary, lumped_components)
                 self.add_lumped_capacitor(bus_name, bus, primary, lumped_components)
-            except Exception as e:
-                #TODO: @aadil to fix this logic before merge
+            except Exception:
+                # TODO: @aadil to fix this logic before merge
                 logger.warning("Error adding component")
 
         return primary
