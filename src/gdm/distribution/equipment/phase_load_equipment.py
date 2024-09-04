@@ -16,21 +16,22 @@ class PhaseLoadEquipment(Component):
     and reactive power is:
     Q = Q_0[ a_q (|V|/V_0)^2 + b_q (|V|/V_0) + c_q]
     """
+
     real_power: Annotated[
-            ActivePower,
-            PINT_SCHEMA,
-            Field(
-                default=ActivePower(0,"kilowatt"),
-                description="Base real power for the ZIP model. (P_0) ",
-            ),
+        ActivePower,
+        PINT_SCHEMA,
+        Field(
+            default=ActivePower(0, "kilowatt"),
+            description="Base real power for the ZIP model. (P_0) ",
+        ),
     ]
     reactive_power: Annotated[
-            ReactivePower,
-            PINT_SCHEMA,
-            Field(
-                default=ReactivePower(0,"kilovar"),
-                description="Base reactive power for the ZIP model. (Q_0) ",
-            ),
+        ReactivePower,
+        PINT_SCHEMA,
+        Field(
+            default=ReactivePower(0, "kilovar"),
+            description="Base reactive power for the ZIP model. (Q_0) ",
+        ),
     ]
     z_real: Annotated[
         float,
@@ -82,19 +83,16 @@ class PhaseLoadEquipment(Component):
             raise ValueError(msg)
         return self
 
-
-
     num_customers: Annotated[
         Optional[PositiveInt],
         Field(None, description="Number of customers for this load"),
     ]
 
-
     @classmethod
     def example(cls) -> "PhaseLoadEquipment":
         return PhaseLoadEquipment(
-            real_power = ActivePower(2.5, "kilowatt"),
-            reactive_power = ReactivePower(0, "kilovar"),
+            real_power=ActivePower(2.5, "kilowatt"),
+            reactive_power=ReactivePower(0, "kilovar"),
             z_real=0.75,
             z_imag=1.0,
             i_real=0.1,

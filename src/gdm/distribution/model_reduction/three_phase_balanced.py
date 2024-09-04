@@ -27,9 +27,9 @@ class ThreePhaseBalancedReduction:
         self._distribution_system = distribution_system
         self._graph = build_graph_from_system(distribution_system)
         self._all_buses = set(self._graph.nodes)
-        source_buses = self.get_source_bus(self._distribution_system)
-        assert len(set(source_buses)) == 1, "Source bus should be singular"
-        self._tree = nx.dfs_tree(self._graph, source=source_buses[0])
+        self._source_buses = self.get_source_bus(self._distribution_system)
+        assert len(set(self._source_buses)) == 1, "Source bus should be singular"
+        self._tree = nx.dfs_tree(self._graph, source=self._source_buses[0])
         for u, v in self._tree.edges():
             attrs = self._graph.edges[u, v]
             self._tree.add_edge(u, v, **attrs)
@@ -47,51 +47,46 @@ class ThreePhaseBalancedReduction:
     def build(self) -> DistributionSystem:
         all_subtree_buses = []
         components = {}
-        for node_1, node_2 in self._tree.edges():
-            bus_1: DistributionBus = self._distribution_system.get_component(
-                DistributionBus, node_1
+
+        three_phases_buses = set(
+            [
+                Phase.A,
+                Phase.B,
+                Phase.C,
+            ]
+        )
+        primary_buses = [
+            bus.name
+            for bus in self._distribution_system.get_components(
+                DistributionBus,
+                filter_func=lambda x: three_phases_buses.issubset(x.phases)
+                and x.nominal_voltage.magnitude > 1.0,
             )
-            bus_2: DistributionBus = self._distribution_system.get_component(
-                DistributionBus, node_2
-            )
-
-            phases_1 = bus_1.phases
-            phases_2 = bus_2.phases
-            if Phase.N in phases_1:
-                phases_1.pop(phases_1.index(Phase.N))
-            if Phase.N in phases_2:
-                phases_2.pop(phases_2.index(Phase.N))
-
-            xfmr_buses = [node_1, node_2]
-
-            if (
-                len(phases_1) == 3 and len(phases_2) != 3
-            ) and bus_2.nominal_voltage.magnitude > 1.0:
-                lv_xfmr_bus = (
-                    xfmr_buses[0]
-                    if xfmr_buses[0] in list(nx.dfs_successors(self._tree, xfmr_buses[1]))
-                    else xfmr_buses[1]
-                )
-
-                filter_nodes = []
-                for node, sucessors in nx.bfs_successors(self._tree, lv_xfmr_bus):
-                    filter_nodes.append(node)
-                    filter_nodes.extend(sucessors)
-
-                descendants = set(filter_nodes)
-                subgraph = self._graph.subgraph(descendants)
-                all_subtree_buses.extend(list(subgraph.nodes))
-                ld_kw, ld_kvar, gen_kw, cap_kvar = self._lump_graph_load_and_generation(subgraph)
-                components[node_1] = {
-                    "ld_kw": ld_kw,
-                    "ld_kvar": ld_kvar,
-                    "gen_kw": gen_kw,
-                    "cap_kvar": cap_kvar,
-                }
-
-        primary_buses = self._all_buses - set(all_subtree_buses)
+        ]
         primary_network = self._graph.subgraph(primary_buses)
+        primary_tree = nx.dfs_tree(primary_network, source=self._source_buses[0])
         primary_system: DistributionSystem = self.build_primary_model(primary_network)
+
+        primary_leaf_buses = set(
+            [
+                x
+                for x in primary_tree.nodes()
+                if primary_tree.out_degree(x) == 0 and primary_tree.in_degree(x) == 1
+            ]
+        )
+
+        for primary_bus in primary_leaf_buses.difference(self._source_buses):
+            subgraph = self._graph.subgraph(nx.descendants(self._tree, primary_bus))
+            all_subtree_buses.extend(list(subgraph.nodes))
+
+            ld_kw, ld_kvar, gen_kw, cap_kvar = self._lump_graph_load_and_generation(subgraph)
+            components[primary_bus] = {
+                "ld_kw": ld_kw,
+                "ld_kvar": ld_kvar,
+                "gen_kw": gen_kw,
+                "cap_kvar": cap_kvar,
+            }
+
         primary_system = self.add_lumped_components_to_primary(primary_system, components)
         return primary_system
 
@@ -188,10 +183,14 @@ class ThreePhaseBalancedReduction:
         self, primary: DistributionSystem, lumped_components: dict[str, dict]
     ) -> DistributionSystem:
         for bus_name in lumped_components:
-            bus: DistributionBus = primary.get_component(DistributionBus, bus_name)
-            self.add_lumped_load(bus_name, bus, primary, lumped_components)
-            self.add_lumped_generator(bus_name, bus, primary, lumped_components)
-            self.add_lumped_capacitor(bus_name, bus, primary, lumped_components)
+            try:
+                bus: DistributionBus = primary.get_component(DistributionBus, bus_name)
+                self.add_lumped_load(bus_name, bus, primary, lumped_components)
+                self.add_lumped_generator(bus_name, bus, primary, lumped_components)
+                self.add_lumped_capacitor(bus_name, bus, primary, lumped_components)
+            except Exception as e:
+                #TODO: @aadil to fix this logic before merge
+                logger.warning("Error adding component")
 
         return primary
 
@@ -202,6 +201,7 @@ class ThreePhaseBalancedReduction:
             auto_add_composed_components=True,
         )
         for bus in primary_buses:
+            models = []
             for model_type in [
                 DistributionLoad,
                 DistributionSolar,
@@ -210,13 +210,28 @@ class ThreePhaseBalancedReduction:
                 DistributionVoltageSource,
                 DistributionTransformerBase,
             ]:
-                models = self._distribution_system.get_bus_connected_components(bus, model_type)
-                if models:
-                    for model in models:
-                        try:
-                            primary_system.add_component(model)
-                        except Exception as e:
-                            logger.info(str(e))
+                queried_models = self._distribution_system.get_bus_connected_components(
+                    bus, model_type
+                )
+                if model_type not in [DistributionBranchBase, DistributionTransformerBase]:
+                    models.extend(queried_models)
+                else:
+                    for queried_model in queried_models:
+                        edge_buses = set([b.name for b in queried_model.buses])
+                        if edge_buses.issubset(primary_buses):
+                            models.append(queried_model)
+
+            if models:
+                for model in models:
+                    try:
+                        primary_system.add_component(model)
+                    except Exception as e:
+                        logger.info(str(e))
+            else:
+                primary_system.add_component(
+                    self._distribution_system.get_component(DistributionBus, bus)
+                )
+
         return primary_system
 
     def _lump_graph_load_and_generation(self, subgraph: nx.Graph):
