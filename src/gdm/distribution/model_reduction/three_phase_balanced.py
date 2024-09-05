@@ -20,6 +20,15 @@ from gdm.distribution.components.distribution_bus import DistributionBus
 from gdm.distribution.distribution_graph import build_graph_from_system
 from gdm.distribution.distribution_enum import Phase, ConnectionType
 from gdm.distribution.distribution_system import DistributionSystem
+from infrasys.exceptions import ISNotStored
+
+
+from gdm.quantities import (
+    PositiveReactivePower,
+    PositiveActivePower,
+    ReactivePower,
+    ActivePower,
+)
 
 
 class ThreePhaseBalancedReduction:
@@ -45,7 +54,6 @@ class ThreePhaseBalancedReduction:
         return buses
 
     def build(self) -> DistributionSystem:
-        all_subtree_buses = []
         components = {}
 
         three_phases_buses = set(
@@ -60,7 +68,7 @@ class ThreePhaseBalancedReduction:
             for bus in self._distribution_system.get_components(
                 DistributionBus,
                 filter_func=lambda x: three_phases_buses.issubset(x.phases)
-                and x.nominal_voltage.magnitude > 1.0,
+                and x.nominal_voltage.to("kilovolt").magnitude > 1.0,
             )
         ]
         primary_network = self._graph.subgraph(primary_buses)
@@ -71,15 +79,29 @@ class ThreePhaseBalancedReduction:
             [
                 x
                 for x in primary_tree.nodes()
-                if primary_tree.out_degree(x) == 0 and primary_tree.in_degree(x) == 1
+                if primary_tree.out_degree(x) != self._tree.out_degree(x)
             ]
         )
 
-        for primary_bus in primary_leaf_buses.difference(self._source_buses):
-            subgraph = self._graph.subgraph(nx.descendants(self._tree, primary_bus))
-            all_subtree_buses.extend(list(subgraph.nodes))
+        for i, primary_bus in enumerate(primary_leaf_buses):
+            
+            logger.info(
+                f"Primary lump load complete: {i / len(primary_leaf_buses) * 100.0}"
+            )
+            
+            edges_on_complete_system = set(self._graph.edges(primary_bus))
+            edges_on_primary_system = set(primary_network.edges(primary_bus))
+         
+            edges_removed = edges_on_complete_system.difference(edges_on_primary_system)
+            subgraphs = nx.Graph()
+            for from_node, to_node in edges_removed:
+                subgraph = self._graph.subgraph(nx.descendants(self._tree, to_node))
+                logger.info(
+                    f"Secondary subgraph size: {len(subgraph.nodes())} nodes and {len(subgraph.edges())} edges"
+                )
+                subgraphs = nx.union(subgraphs, subgraph)
 
-            ld_kw, ld_kvar, gen_kw, cap_kvar = self._lump_graph_load_and_generation(subgraph)
+            ld_kw, ld_kvar, gen_kw, cap_kvar = self._lump_graph_load_and_generation(subgraphs)
             components[primary_bus] = {
                 "ld_kw": ld_kw,
                 "ld_kvar": ld_kvar,
@@ -107,9 +129,12 @@ class ThreePhaseBalancedReduction:
                     phase_loads=[
                         PhaseLoadEquipment(
                             name=f"lump_load_{bus_name}_{phase.value}",
-                            real_power=lumped_components[bus_name]["ld_kw"] / len(bus.phases),
-                            reactive_power=lumped_components[bus_name]["ld_kvar"]
-                            / len(bus.phases),
+                            real_power=ActivePower(
+                                lumped_components[bus_name]["ld_kw"] / len(bus.phases), "kilowatt"
+                            ),
+                            reactive_power=ReactivePower(
+                                lumped_components[bus_name]["ld_kvar"] / len(bus.phases), "kilovar"
+                            ),
                             z_real=0.0,
                             z_imag=0.0,
                             i_real=0.0,
@@ -138,8 +163,12 @@ class ThreePhaseBalancedReduction:
                 phases=bus.phases,
                 equipment=SolarEquipment(
                     name=f"lump_generator_{bus_name}_equipment",
-                    rated_capacity=lumped_components[bus_name]["gen_kw"],
-                    solar_power=lumped_components[bus_name]["gen_kw"],
+                    rated_capacity=PositiveActivePower(
+                        lumped_components[bus_name]["gen_kw"], "kilowatt"
+                    ),
+                    solar_power=PositiveActivePower(
+                        lumped_components[bus_name]["gen_kw"], "kilowatt"
+                    ),
                     resistance=1e-6,
                     reactance=1e-6,
                     cutin_percent=10.0,
@@ -168,8 +197,9 @@ class ThreePhaseBalancedReduction:
                             name=f"lump_capacitor_{bus_name}_equipment_{phase.value}",
                             resistance=1e-6,
                             reactance=1e-6,
-                            rated_capacity=lumped_components[bus_name]["cap_kvar"]
-                            / len(bus.phases),
+                            rated_capacity=PositiveReactivePower(
+                                lumped_components[bus_name]["cap_kvar"], "kilovar"
+                            ) / len(bus.phases),
                             num_banks=1,
                             num_banks_on=1,
                         )
@@ -183,14 +213,10 @@ class ThreePhaseBalancedReduction:
         self, primary: DistributionSystem, lumped_components: dict[str, dict]
     ) -> DistributionSystem:
         for bus_name in lumped_components:
-            try:
-                bus: DistributionBus = primary.get_component(DistributionBus, bus_name)
-                self.add_lumped_load(bus_name, bus, primary, lumped_components)
-                self.add_lumped_generator(bus_name, bus, primary, lumped_components)
-                self.add_lumped_capacitor(bus_name, bus, primary, lumped_components)
-            except Exception:
-                # TODO: @aadil to fix this logic before merge
-                logger.warning("Error adding component")
+            bus: DistributionBus = primary.get_component(DistributionBus, bus_name)
+            self.add_lumped_load(bus_name, bus, primary, lumped_components)
+            self.add_lumped_generator(bus_name, bus, primary, lumped_components)
+            self.add_lumped_capacitor(bus_name, bus, primary, lumped_components)
 
         return primary
 
@@ -224,9 +250,15 @@ class ThreePhaseBalancedReduction:
             if models:
                 for model in models:
                     try:
+                        primary_system.get_component(type(model), model.name)
+                        logger.warning(
+                            f"{model.__class__.__name__}.{model.name} already exists in the primary network"
+                        )
+                    except ISNotStored:
+                        logger.info(
+                            f"{model.__class__.__name__}.{model.name} added to the primary network"
+                        )
                         primary_system.add_component(model)
-                    except Exception as e:
-                        logger.info(str(e))
             else:
                 primary_system.add_component(
                     self._distribution_system.get_component(DistributionBus, bus)
@@ -267,10 +299,10 @@ class ThreePhaseBalancedReduction:
 
         total_capacitor_capacity_kvar = 0
         for capacitor in capacitors:
-            total_capacitor_capacity_kvar += [
+            total_capacitor_capacity_kvar += sum([
                 capacitor.rated_capacity.magnitude
                 for capacitor in capacitor.equipment.phase_capacitors
-            ]
+            ])
 
         return (
             total_load_kw,
