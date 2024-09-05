@@ -22,6 +22,7 @@ from gdm.distribution.distribution_system import DistributionSystem
 from gdm.distribution.distribution_enum import ConnectionType
 from infrasys.exceptions import ISNotStored
 
+
 class PrimaryModel:
     def __init__(self, distribution_system: DistributionSystem):
         self._distribution_system = distribution_system
@@ -56,25 +57,33 @@ class PrimaryModel:
             )
         ]
         logger.info(f"Number of primary buses identified: {len(primary_buses)}")
-        
+
         primary_network = self._graph.subgraph(primary_buses)
         logger.info("Building primary skeleton")
         primary_system: DistributionSystem = self.build_primary_model(primary_network)
         logger.info("Primary skeleton build complete")
-        
-        distribution_xfmr_hv_buses = set([
-            xfmr.buses[0].name
-            for xfmr in self._distribution_system.get_components(
-                DistributionTransformerBase,
-                filter_func=lambda x: x.equipment.windings[0].rated_power.to("kilova").magnitude < 5000,
-            )
-        ])
-        logger.info(f"Number of HV distribution transformer buses identified: {len(distribution_xfmr_hv_buses)}")
-        
+
+        distribution_xfmr_hv_buses = set(
+            [
+                xfmr.buses[0].name
+                for xfmr in self._distribution_system.get_components(
+                    DistributionTransformerBase,
+                    filter_func=lambda x: x.equipment.windings[0]
+                    .rated_power.to("kilova")
+                    .magnitude
+                    < 5000,
+                )
+            ]
+        )
+        logger.info(
+            f"Number of HV distribution transformer buses identified: {len(distribution_xfmr_hv_buses)}"
+        )
+
         for i, primary_bus in enumerate(distribution_xfmr_hv_buses):
-            logger.info(f"Primary lump load complete: {i / len(distribution_xfmr_hv_buses) * 100.0}")
-            
-            
+            logger.info(
+                f"Primary lump load complete: {i / len(distribution_xfmr_hv_buses) * 100.0}"
+            )
+
             subgraph = self._graph.subgraph(nx.descendants(self._tree, primary_bus))
             all_subtree_buses.extend(list(subgraph.nodes))
 
@@ -182,7 +191,6 @@ class PrimaryModel:
         self, primary: DistributionSystem, lumped_components: dict[str, dict]
     ) -> DistributionSystem:
         for bus_name in lumped_components:
-            
             print(lumped_components[bus_name])
             try:
                 bus: DistributionBus = primary.get_component(DistributionBus, bus_name)
@@ -226,9 +234,13 @@ class PrimaryModel:
                 for model in models:
                     try:
                         primary_system.get_component(type(model), model.name)
-                        logger.warning(f"{model.__class__.__name__}.{model.name} already exists in the primary network")
+                        logger.warning(
+                            f"{model.__class__.__name__}.{model.name} already exists in the primary network"
+                        )
                     except ISNotStored:
-                        logger.info(f"{model.__class__.__name__}.{model.name} added to the primary network")
+                        logger.info(
+                            f"{model.__class__.__name__}.{model.name} added to the primary network"
+                        )
                         primary_system.add_component(model)
             else:
                 primary_system.add_component(
@@ -270,10 +282,12 @@ class PrimaryModel:
 
         total_capacitor_capacity_kvar = 0
         for capacitor in capacitors:
-            total_capacitor_capacity_kvar += sum([
-                capacitor.rated_capacity.magnitude
-                for capacitor in capacitor.equipment.phase_capacitors
-            ])
+            total_capacitor_capacity_kvar += sum(
+                [
+                    capacitor.rated_capacity.magnitude
+                    for capacitor in capacitor.equipment.phase_capacitors
+                ]
+            )
 
         return (
             total_load_kw,
