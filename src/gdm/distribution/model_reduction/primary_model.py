@@ -111,7 +111,7 @@ class PrimaryModel:
                 bus=bus,
                 phases=bus.phases,
                 equipment=LoadEquipment(
-                    name="lump_load_{bus_name}_equipment",
+                    name=f"lump_load_{bus_name}_equipment",
                     phase_loads=[
                         PhaseLoadEquipment(
                             name=f"lump_load_{bus_name}_{phase.value}",

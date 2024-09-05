@@ -99,11 +99,11 @@ class ThreePhaseBalancedReduction:
     ):
         if lumped_components[bus_name]["ld_kw"] + lumped_components[bus_name]["ld_kvar"] != 0:
             load = DistributionLoad(
-                name="lump_load_{bus_name}",
+                name=f"lump_load_{bus_name}",
                 bus=bus,
                 phases=bus.phases,
                 equipment=LoadEquipment(
-                    name="lump_load_{bus_name}_equipment",
+                    name=f"lump_load_{bus_name}_equipment",
                     phase_loads=[
                         PhaseLoadEquipment(
                             name=f"lump_load_{bus_name}_{phase.value}",
