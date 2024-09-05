@@ -84,14 +84,11 @@ class ThreePhaseBalancedReduction:
         )
 
         for i, primary_bus in enumerate(primary_leaf_buses):
-            
-            logger.info(
-                f"Primary lump load complete: {i / len(primary_leaf_buses) * 100.0}"
-            )
-            
+            logger.info(f"Primary lump load complete: {i / len(primary_leaf_buses) * 100.0}")
+
             edges_on_complete_system = set(self._graph.edges(primary_bus))
             edges_on_primary_system = set(primary_network.edges(primary_bus))
-         
+
             edges_removed = edges_on_complete_system.difference(edges_on_primary_system)
             subgraphs = nx.Graph()
             for from_node, to_node in edges_removed:
@@ -199,7 +196,8 @@ class ThreePhaseBalancedReduction:
                             reactance=1e-6,
                             rated_capacity=PositiveReactivePower(
                                 lumped_components[bus_name]["cap_kvar"], "kilovar"
-                            ) / len(bus.phases),
+                            )
+                            / len(bus.phases),
                             num_banks=1,
                             num_banks_on=1,
                         )
@@ -299,10 +297,12 @@ class ThreePhaseBalancedReduction:
 
         total_capacitor_capacity_kvar = 0
         for capacitor in capacitors:
-            total_capacitor_capacity_kvar += sum([
-                capacitor.rated_capacity.magnitude
-                for capacitor in capacitor.equipment.phase_capacitors
-            ])
+            total_capacitor_capacity_kvar += sum(
+                [
+                    capacitor.rated_capacity.magnitude
+                    for capacitor in capacitor.equipment.phase_capacitors
+                ]
+            )
 
         return (
             total_load_kw,

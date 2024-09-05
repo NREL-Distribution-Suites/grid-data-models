@@ -194,7 +194,8 @@ class PrimaryModel:
                             reactance=1e-6,
                             rated_capacity=PositiveReactivePower(
                                 lumped_components[bus_name]["cap_kvar"], "kilovar"
-                            ) / len(bus.phases),
+                            )
+                            / len(bus.phases),
                             num_banks=1,
                             num_banks_on=1,
                         )
