@@ -23,6 +23,14 @@ from gdm.distribution.distribution_enum import ConnectionType
 from infrasys.exceptions import ISNotStored
 
 
+from gdm.quantities import (
+    PositiveReactivePower,
+    PositiveActivePower,
+    ReactivePower,
+    ActivePower,
+    
+)
+
 class PrimaryModel:
     def __init__(self, distribution_system: DistributionSystem):
         self._distribution_system = distribution_system
@@ -56,8 +64,8 @@ class PrimaryModel:
                 filter_func=lambda x: x.nominal_voltage.to("kilovolt").magnitude > 1.0,
             )
         ]
+        
         logger.info(f"Number of primary buses identified: {len(primary_buses)}")
-
         primary_network = self._graph.subgraph(primary_buses)
         logger.info("Building primary skeleton")
         primary_system: DistributionSystem = self.build_primary_model(primary_network)
@@ -65,13 +73,10 @@ class PrimaryModel:
 
         distribution_xfmr_hv_buses = set(
             [
-                xfmr.buses[0].name
+                (xfmr.buses[0].name, xfmr.buses[1].name)
                 for xfmr in self._distribution_system.get_components(
                     DistributionTransformerBase,
-                    filter_func=lambda x: x.equipment.windings[0]
-                    .rated_power.to("kilova")
-                    .magnitude
-                    < 5000,
+                    filter_func=lambda x: x.buses[1].nominal_voltage.to("kilovolt").magnitude < 1.0 and x.buses[0].nominal_voltage.to("kilovolt").magnitude > 1.0,
                 )
             ]
         )
@@ -79,12 +84,13 @@ class PrimaryModel:
             f"Number of HV distribution transformer buses identified: {len(distribution_xfmr_hv_buses)}"
         )
 
-        for i, primary_bus in enumerate(distribution_xfmr_hv_buses):
+        for i, xfmr_buses in enumerate(distribution_xfmr_hv_buses):
+            primary_bus, secondary_bus = xfmr_buses
             logger.info(
                 f"Primary lump load complete: {i / len(distribution_xfmr_hv_buses) * 100.0}"
             )
-
-            subgraph = self._graph.subgraph(nx.descendants(self._tree, primary_bus))
+            subgraph = self._graph.subgraph(nx.descendants(self._tree, secondary_bus))
+            logger.info(f"Secondary subgraph size: {len(subgraph.nodes())} nodes and {len(subgraph.edges())} edges")
             all_subtree_buses.extend(list(subgraph.nodes))
 
             ld_kw, ld_kvar, gen_kw, cap_kvar = self._lump_graph_load_and_generation(subgraph)
@@ -115,9 +121,8 @@ class PrimaryModel:
                     phase_loads=[
                         PhaseLoadEquipment(
                             name=f"lump_load_{bus_name}_{phase.value}",
-                            real_power=lumped_components[bus_name]["ld_kw"] / len(bus.phases),
-                            reactive_power=lumped_components[bus_name]["ld_kvar"]
-                            / len(bus.phases),
+                            real_power=ActivePower(lumped_components[bus_name]["ld_kw"] / len(bus.phases), "kilowatt"),
+                            reactive_power=ReactivePower(lumped_components[bus_name]["ld_kvar"] / len(bus.phases), "kilovar"),
                             z_real=0.0,
                             z_imag=0.0,
                             i_real=0.0,
@@ -146,8 +151,8 @@ class PrimaryModel:
                 phases=bus.phases,
                 equipment=SolarEquipment(
                     name=f"lump_generator_{bus_name}_equipment",
-                    rated_capacity=lumped_components[bus_name]["gen_kw"],
-                    solar_power=lumped_components[bus_name]["gen_kw"],
+                    rated_capacity=PositiveActivePower(lumped_components[bus_name]["gen_kw"], "kilowatt"),
+                    solar_power=PositiveActivePower(lumped_components[bus_name]["gen_kw"], "kilowatt"),
                     resistance=1e-6,
                     reactance=1e-6,
                     cutin_percent=10.0,
@@ -176,7 +181,7 @@ class PrimaryModel:
                             name=f"lump_capacitor_{bus_name}_equipment_{phase.value}",
                             resistance=1e-6,
                             reactance=1e-6,
-                            rated_capacity=lumped_components[bus_name]["cap_kvar"]
+                            rated_capacity= PositiveReactivePower(lumped_components[bus_name]["cap_kvar"], "kilovar")
                             / len(bus.phases),
                             num_banks=1,
                             num_banks_on=1,
@@ -191,16 +196,10 @@ class PrimaryModel:
         self, primary: DistributionSystem, lumped_components: dict[str, dict]
     ) -> DistributionSystem:
         for bus_name in lumped_components:
-            print(lumped_components[bus_name])
-            try:
-                bus: DistributionBus = primary.get_component(DistributionBus, bus_name)
-                self.add_lumped_load(bus_name, bus, primary, lumped_components)
-                self.add_lumped_generator(bus_name, bus, primary, lumped_components)
-                self.add_lumped_capacitor(bus_name, bus, primary, lumped_components)
-            except Exception:
-                # TODO: @aadil to fix this logic before merge
-                logger.warning("Error adding component")
-
+            bus: DistributionBus = primary.get_component(DistributionBus, bus_name)
+            self.add_lumped_load(bus_name, bus, primary, lumped_components)
+            self.add_lumped_generator(bus_name, bus, primary, lumped_components)
+            self.add_lumped_capacitor(bus_name, bus, primary, lumped_components)
         return primary
 
     def build_primary_model(self, primary_network: nx.Graph):
@@ -270,21 +269,21 @@ class PrimaryModel:
         total_load_kvar = 0
         for load in loads:
             total_load_kw += sum(
-                [phs_load.real_power.magnitude for phs_load in load.equipment.phase_loads]
+                [phs_load.real_power.to("kilowatt").magnitude for phs_load in load.equipment.phase_loads]
             )
             total_load_kvar += sum(
-                [phs_load.reactive_power.magnitude for phs_load in load.equipment.phase_loads]
+                [phs_load.reactive_power.to("kilovar").magnitude for phs_load in load.equipment.phase_loads]
             )
 
         total_generator_capacity_kw = 0
         for generator in generators:
-            total_generator_capacity_kw += generator.equipment.rated_capacity.magnitude
+            total_generator_capacity_kw += generator.equipment.rated_capacity.to("kilovar").magnitude
 
         total_capacitor_capacity_kvar = 0
         for capacitor in capacitors:
             total_capacitor_capacity_kvar += sum(
                 [
-                    capacitor.rated_capacity.magnitude
+                    capacitor.rated_capacity.to("kilova").magnitude
                     for capacitor in capacitor.equipment.phase_capacitors
                 ]
             )
