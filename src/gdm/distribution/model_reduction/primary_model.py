@@ -1,5 +1,3 @@
-from pathlib import Path
-
 from loguru import logger
 import networkx as nx
 
@@ -13,18 +11,15 @@ from gdm.distribution.distribution_system import DistributionSystem
 
 
 class PrimaryModel(AbstractReducer):
-  
     def __init__(self, distribution_system: DistributionSystem) -> None:
         super().__init__(distribution_system)
-    
 
     def build(
-        self, 
-        reduced_system : DistributionSystem = DistributionSystem(
-            auto_add_composed_components = True,
-            name = "reduced_model"
-            )
-        ) -> DistributionSystem:
+        self,
+        reduced_system: DistributionSystem = DistributionSystem(
+            auto_add_composed_components=True, name="reduced_model"
+        ),
+    ) -> DistributionSystem:
         all_subtree_buses = []
         components: dict[str, LumpedComponent] = {}
 
@@ -40,8 +35,7 @@ class PrimaryModel(AbstractReducer):
         primary_network = self._graph.subgraph(primary_buses)
         logger.info("Building primary skeleton")
         reduced_system: DistributionSystem = self._build_reduced_network_skeleton(
-            reduced_system,
-            primary_network
+            reduced_system, primary_network
         )
         logger.info("Primary skeleton build complete")
 
@@ -70,6 +64,6 @@ class PrimaryModel(AbstractReducer):
             )
             all_subtree_buses.extend(list(subgraph.nodes))
             components[primary_bus] = self._build_lumped_components(subgraph)
-            
+
         reduced_system = self._add_lumped_components_to_primary(reduced_system, components)
         return reduced_system

@@ -1,27 +1,23 @@
-from pathlib import Path
-
 from loguru import logger
 import networkx as nx
 
 from gdm.distribution.components.distribution_bus import DistributionBus
 from gdm.distribution.distribution_system import DistributionSystem
-from infrasys.exceptions import ISNotStored
 
 from gdm.distribution.model_reduction.abstract_reducer import AbstractReducer
-from gdm.distribution.model_reduction.abstract_reducer import LumpedComponent
 from gdm import Phase
+
 
 class ThreePhaseBalancedReduction(AbstractReducer):
     def __init__(self, distribution_system: DistributionSystem):
         super().__init__(distribution_system)
 
     def build(
-        self, 
-        reduced_system : DistributionSystem = DistributionSystem(
-            auto_add_composed_components = True,
-            name = "reduced_model"
-            )
-        ) -> DistributionSystem:
+        self,
+        reduced_system: DistributionSystem = DistributionSystem(
+            auto_add_composed_components=True, name="reduced_model"
+        ),
+    ) -> DistributionSystem:
         components = {}
 
         three_phases_buses = set(
@@ -42,10 +38,9 @@ class ThreePhaseBalancedReduction(AbstractReducer):
         primary_network = self._graph.subgraph(primary_buses)
         primary_tree = nx.dfs_tree(primary_network, source=self._source_buses[0])
         reduced_system: DistributionSystem = self._build_reduced_network_skeleton(
-            reduced_system,
-            primary_network
+            reduced_system, primary_network
         )
-        
+
         primary_leaf_buses = set(
             [
                 x
@@ -55,7 +50,6 @@ class ThreePhaseBalancedReduction(AbstractReducer):
         )
 
         for i, primary_bus in enumerate(primary_leaf_buses):
-            
             logger.info(f"Primary lump load complete: {i / len(primary_leaf_buses) * 100.0}")
 
             edges_on_complete_system = set(self._graph.edges(primary_bus))
@@ -71,6 +65,6 @@ class ThreePhaseBalancedReduction(AbstractReducer):
                 subgraphs = nx.union(subgraphs, subgraph)
 
             components[primary_bus] = self._build_lumped_components(subgraphs)
-           
+
         reduced_system = self._add_lumped_components_to_primary(reduced_system, components)
         return reduced_system
