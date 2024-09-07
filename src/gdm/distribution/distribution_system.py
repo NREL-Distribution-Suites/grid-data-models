@@ -24,3 +24,10 @@ class DistributionSystem(System):
                     self.get_components(component_type),
                 )
             )
+        elif "buses" in component_type.model_fields:
+            return list(
+                filter(
+                    lambda x: bus_name in [bus.name for bus in x.buses],
+                    self.get_components(component_type),
+                )
+            )
