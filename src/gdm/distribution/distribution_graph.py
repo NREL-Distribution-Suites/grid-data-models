@@ -26,6 +26,6 @@ def build_graph_from_system(system: System) -> nx.Graph:
         graph.add_edge(
             edge.buses[0].name,
             edge.buses[1].name,
-            **{"name": edge.name, "type": edge.__class__.__name__},
+            **{"name": edge.name, "type": edge.__class__},
         )
     return graph
