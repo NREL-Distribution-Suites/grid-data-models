@@ -62,9 +62,10 @@ class DegreeOneReducer(AbstractReducer):
                     )
                     if isinstance(component, DistributionTransformerBase):
                         unfrozen_one_degree_lateral.remove_edge(u, v)
-                self._build_merged_branches(unfrozen_one_degree_lateral, reduced_network, reduced_system)
-                
-                
+                self._build_merged_branches(
+                    unfrozen_one_degree_lateral, reduced_network, reduced_system
+                )
+
         for u, v in reduced_network.edges():
             if self._graph.has_edge(u, v):
                 component = self._distribution_system.get_component(
@@ -86,7 +87,6 @@ class DegreeOneReducer(AbstractReducer):
         return reduced_system
 
     def _build_merged_branches(self, unfrozen_one_degree_lateral, reduced_network, reduced_system):
-    
         for _, e in enumerate(nx.connected_components(unfrozen_one_degree_lateral)):
             if len(e) > 2:
                 one_degree_sub_lateral: nx.DiGraph = self._tree.subgraph(e)
@@ -98,16 +98,12 @@ class DegreeOneReducer(AbstractReducer):
                     component = self._distribution_system.get_component(
                         self._graph.edges[u, v]["type"], self._graph.edges[u, v]["name"]
                     )
-                    equipments.append(
-                        remove_keys_from_dict(component.equipment.model_dump())
-                    )
+                    equipments.append(remove_keys_from_dict(component.equipment.model_dump()))
                     length += component.length
 
                 if all(equipments):
                     n12 = self.get_lateral_end_nodes(one_degree_sub_lateral)
-                    buses_to_be_removed = set(one_degree_sub_lateral.nodes()).difference(
-                        n12
-                    )
+                    buses_to_be_removed = set(one_degree_sub_lateral.nodes()).difference(n12)
                     loads = []
                     for bus in buses_to_be_removed:
                         loads.extend(
@@ -132,9 +128,7 @@ class DegreeOneReducer(AbstractReducer):
                                 equipment=component.equipment,
                                 is_closed=[True for phase in buses[1].phases],
                             )
-                        elif isinstance(
-                            component.equipment, MatrixImpedanceBranchEquipment
-                        ):
+                        elif isinstance(component.equipment, MatrixImpedanceBranchEquipment):
                             branch = MatrixImpedanceBranch(
                                 name=f"{n12[0]}__{n12[1]}",
                                 buses=buses,
@@ -143,11 +137,8 @@ class DegreeOneReducer(AbstractReducer):
                                 equipment=component.equipment,
                             )
                         else:
-                            raise NotImplementedError(
-                                "Equipment type not currently supported"
-                            )
+                            raise NotImplementedError("Equipment type not currently supported")
                         reduced_system.add_component(branch)
-
 
     def get_lateral_end_nodes(self, lateral: nx.Graph):
         lateral_end_node = None
