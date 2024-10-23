@@ -17,14 +17,17 @@ class LoadEquipment(Component):
     ]
     connection_type: Annotated[
         ConnectionType,
-        Field(ConnectionType.STAR, description="Connection type for multi phase load."),
+        Field(
+            ConnectionType.STAR,
+            description="Connection type for multi phase load.",
+        ),
     ]
 
     @classmethod
     def example(cls) -> "LoadEquipment":
         """Example for load model."""
         phase_loads = [PhaseLoadEquipment.example()] * 3
-        return LoadEquipment(
+        return cls(
             name="Load Eqiup 1",
             phase_loads=phase_loads,
             connection_type=ConnectionType.STAR,

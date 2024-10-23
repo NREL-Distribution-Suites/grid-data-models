@@ -1,5 +1,7 @@
 """ This module contains class for creating graph representation of Distribution System."""
 
+import warnings
+
 import networkx as nx
 from infrasys import System
 
@@ -12,6 +14,14 @@ from gdm import (
 
 def build_graph_from_system(system: System) -> nx.Graph:
     """Returns networkx instance of the system."""
+
+    warnings.warn(
+        """This function will be deprecated in future version (after v2.0.0)
+        You can use `system.get_undirected_graph()` instead.
+        """,
+        DeprecationWarning,
+        stacklevel=2,
+    )
 
     graph = nx.Graph()
     node: DistributionBus

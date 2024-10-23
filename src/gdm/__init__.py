@@ -163,3 +163,5 @@ from gdm.distribution.distribution_enum import (
 from gdm.distribution.distribution_system import DistributionSystem
 from gdm.distribution.distribution_graph import build_graph_from_system
 from gdm.distribution.curve import Curve, TimeCurrentCurve
+
+from gdm.distribution.network.reducer import reduce_to_three_phase_system

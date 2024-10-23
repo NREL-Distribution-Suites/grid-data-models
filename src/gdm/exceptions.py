@@ -11,3 +11,7 @@ class GDMNotAttachedToSystemError(GDMBaseException):
 
 class GDMIncompatibleInstanceError(GDMBaseException):
     """Raises this error if incompatible instance is passed."""
+
+
+class MultipleOrEmptyVsourceFound(GDMBaseException):
+    """Raises this error if multiple or no vsource found."""

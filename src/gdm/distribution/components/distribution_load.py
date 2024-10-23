@@ -1,14 +1,20 @@
 """ This module contains interface for distribution load."""
 
+from collections import defaultdict
 from typing import Annotated
 
 from pydantic import model_validator, Field
 
 from gdm.distribution.distribution_enum import Phase
 from gdm.distribution.components.distribution_bus import DistributionBus
-from gdm.distribution.components.base.distribution_component_base import DistributionComponentBase
+from gdm.distribution.components.base.distribution_component_base import (
+    DistributionComponentBase,
+)
 from gdm.distribution.components.distribution_feeder import DistributionFeeder
-from gdm.distribution.components.distribution_substation import DistributionSubstation
+from gdm.distribution.components.distribution_substation import (
+    DistributionSubstation,
+)
+from gdm.distribution.equipment.phase_load_equipment import PhaseLoadEquipment
 from gdm.quantities import PositiveVoltage
 from gdm.distribution.equipment.load_equipment import LoadEquipment
 
@@ -28,6 +34,41 @@ class DistributionLoad(DistributionComponentBase):
         Field(..., description="Phases to which this load is connected to."),
     ]
     equipment: Annotated[LoadEquipment, Field(..., description="Load model.")]
+
+    @classmethod
+    def aggregate(
+        cls,
+        instances: list["DistributionLoad"],
+        bus: DistributionBus,
+        name: str,
+        split_phase_mapping: dict[str, set[Phase]],
+    ) -> "DistributionLoad":
+        phase_loads = defaultdict(list)
+        for load in instances:
+            if {Phase.S1, Phase.S2} & set(load.phases):
+                parent_phase = split_phase_mapping[load.uuid]
+                split_load = PhaseLoadEquipment.split(
+                    PhaseLoadEquipment.aggregate(load.equipment.phase_loads, name=""),
+                    len(parent_phase),
+                )
+                for phase in parent_phase:
+                    phase_loads[phase].append(split_load)
+                continue
+            for phase, phase_load in zip(load.phases, load.equipment.phase_loads):
+                phase_loads[phase].append(phase_load)
+
+        return DistributionLoad(
+            name=name,
+            bus=bus,
+            phases=list(phase_loads.keys()),
+            equipment=LoadEquipment(
+                name=f"{name}_load_equipment",
+                phase_loads=[
+                    PhaseLoadEquipment.aggregate(loads, name="") for loads in phase_loads.values()
+                ],
+                connection_type=set([item.equipment.connection_type for item in instances]).pop(),
+            ),
+        )
 
     @model_validator(mode="after")
     def validate_fields(self) -> "DistributionLoad":

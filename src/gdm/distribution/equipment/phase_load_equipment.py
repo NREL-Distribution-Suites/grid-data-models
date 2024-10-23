@@ -1,6 +1,7 @@
 """This module contains phase load equipment."""
 
 from typing import Annotated, Optional
+import uuid
 from infrasys import Component
 
 from pydantic import model_validator, PositiveInt, Field
@@ -69,24 +70,76 @@ class PhaseLoadEquipment(Component):
             description="Constant power zip load imaginary component. (c_q)",
         ),
     ]
+    num_customers: Annotated[
+        Optional[PositiveInt],
+        Field(None, description="Number of customers for this load"),
+    ]
+
+    @classmethod
+    def split(cls, instance: "PhaseLoadEquipment", num_splits: int) -> "PhaseLoadEquipment":
+        return instance.model_copy(
+            update={
+                "name": str(uuid.uuid4()),
+                "real_power": instance.real_power / num_splits,
+                "reactive_power": instance.reactive_power / num_splits,
+            }
+        )
+
+    @classmethod
+    def aggregate(cls, instances: list["PhaseLoadEquipment"], name: str) -> "PhaseLoadEquipment":
+        z_real_sum = sum([inst.real_power * inst.z_real for inst in instances]) or ActivePower(
+            0, "watt"
+        )
+        z_imag_sum = sum(
+            [inst.reactive_power * inst.z_imag for inst in instances]
+        ) or ReactivePower(0, "var")
+        p_real_sum = sum([inst.real_power * inst.p_real for inst in instances]) or ActivePower(
+            0, "watt"
+        )
+        p_imag_sum = sum(
+            [inst.reactive_power * inst.p_imag for inst in instances]
+        ) or ReactivePower(0, "var")
+        i_real_sum = sum([inst.real_power * inst.i_real for inst in instances]) or ActivePower(
+            0, "watt"
+        )
+        i_imag_sum = sum(
+            [inst.reactive_power * inst.i_imag for inst in instances]
+        ) or ReactivePower(0, "var")
+        new_real = (z_real_sum + p_real_sum + i_real_sum) or ActivePower(0, "watt")
+        new_react = (z_imag_sum + p_imag_sum + i_imag_sum) or ReactivePower(0, "var")
+
+        def weighted_factor(sum_component, total_power, unit):
+            return (
+                (sum_component.to(unit) / total_power.to(unit)).magnitude
+                if total_power.magnitude
+                else 0
+            )
+
+        return PhaseLoadEquipment(
+            name=name,
+            real_power=new_real,
+            reactive_power=new_react,
+            z_real=weighted_factor(z_real_sum, new_real, "watt"),
+            z_imag=weighted_factor(z_imag_sum, new_react, "var"),
+            p_real=weighted_factor(p_real_sum, new_real, "watt"),
+            p_imag=weighted_factor(p_imag_sum, new_react, "var"),
+            i_real=weighted_factor(i_real_sum, new_real, "watt"),
+            i_imag=weighted_factor(i_imag_sum, new_react, "var"),
+            num_customers=sum(filter(None, [inst.num_customers for inst in instances])) or None,
+        )
 
     @model_validator(mode="after")
     def validate_fields(self) -> "PhaseLoadEquipment":
         """Sum of ZIP parameters should be 1 for both P and Q"""
         real_sum = self.z_real + self.i_real + self.p_real
-        if not real_sum == 1:
+        if self.real_power.magnitude and real_sum != 1:
             msg = f"Sum of ZIP parameters z_real: {self.z_real}, i_real: {self.i_real}, p_real: {self.p_real} is {real_sum} not 1"
             raise ValueError(msg)
         imag_sum = self.z_imag + self.i_imag + self.p_imag
-        if not imag_sum == 1:
+        if self.reactive_power and imag_sum != 1:
             msg = f"Sum of ZIP parameters z_imag: {self.z_imag}, i_imag: {self.i_imag}, p_imag: {self.p_imag} is {imag_sum} not 1"
             raise ValueError(msg)
         return self
-
-    num_customers: Annotated[
-        Optional[PositiveInt],
-        Field(None, description="Number of customers for this load"),
-    ]
 
     @classmethod
     def example(cls) -> "PhaseLoadEquipment":
