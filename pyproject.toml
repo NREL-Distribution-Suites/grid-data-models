@@ -23,7 +23,7 @@ classifiers = [
 dependencies = [
   "networkx", 
   "pydantic~=2.7",
-  "infrasys~=0.0.4", 
+  "infrasys~=0.1.0", 
   "importlib_metadata"
 ]
 
