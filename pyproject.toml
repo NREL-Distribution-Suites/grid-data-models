@@ -23,12 +23,12 @@ classifiers = [
 dependencies = [
   "networkx", 
   "pydantic~=2.7",
-  "infrasys~=0.0.4", 
+  "infrasys~=0.1.0", 
   "importlib_metadata"
 ]
 
 [project.optional-dependencies]
-dev = ["pre-commit", "pytest", "pytest-cov", "pytest-doctestplus", "ruff"]
+dev = ["pre-commit", "pytest", "pytest-cov", "pytest-doctestplus", "ruff", "docutils"]
 doc = [
   "sphinx",
   "pydata-sphinx-theme",

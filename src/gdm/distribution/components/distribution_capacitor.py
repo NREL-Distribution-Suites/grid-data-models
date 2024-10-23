@@ -1,5 +1,6 @@
 """ This module contains interface for distribution system capacitor."""
 
+from collections import defaultdict
 from typing import Annotated
 
 from pydantic import Field, model_validator
@@ -9,6 +10,7 @@ from gdm.distribution.equipment.capacitor_equipment import CapacitorEquipment
 from gdm.distribution.components.base.distribution_component_base import DistributionComponentBase
 from gdm.distribution.components.distribution_feeder import DistributionFeeder
 from gdm.distribution.components.distribution_substation import DistributionSubstation
+from gdm.distribution.equipment.phase_capacitor_equipment import PhaseCapacitorEquipment
 from gdm.quantities import PositiveVoltage
 from gdm.distribution.distribution_enum import Phase
 from gdm.distribution.controllers.distribution_capacitor_controller import (
@@ -46,6 +48,42 @@ class DistributionCapacitor(DistributionComponentBase):
     ]
 
     equipment: Annotated[CapacitorEquipment, Field(..., description="Capacitor model.")]
+
+    @classmethod
+    def aggregate(
+        cls,
+        instances: list["DistributionCapacitor"],
+        bus: DistributionBus,
+        name: str,
+        split_phase_mapping: dict[str, set[Phase]],
+    ) -> "DistributionCapacitor":
+        phase_caps = defaultdict(list)
+        for cap in instances:
+            if {Phase.S1, Phase.S2} & set(cap.phases):
+                parent_phase = split_phase_mapping[cap.uuid]
+                split_cap = PhaseCapacitorEquipment.split(
+                    PhaseCapacitorEquipment.aggregate(cap.equipment.phase_capacitors, name=""),
+                    len(parent_phase),
+                )
+                for phase in parent_phase:
+                    phase_caps[phase].append(split_cap)
+                continue
+            for phase, phase_load in zip(cap.phases, cap.equipment.phase_capacitors):
+                phase_caps[phase].append(phase_load)
+
+        return DistributionCapacitor(
+            name=name,
+            bus=bus,
+            phases=list(phase_caps.keys()),
+            equipment=CapacitorEquipment(
+                name=f"{name}_capacitor_equipment",
+                phase_capacitors=[
+                    PhaseCapacitorEquipment.aggregate(caps, name="")
+                    for caps in phase_caps.values()
+                ],
+                connection_type=set([item.equipment.connection_type for item in instances]).pop(),
+            ),
+        )
 
     @model_validator(mode="after")
     def validate_fields(self) -> "DistributionCapacitor":

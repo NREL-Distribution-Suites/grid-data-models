@@ -7,13 +7,19 @@ from pydantic import Field
 from gdm.quantities import PositiveVoltage
 from gdm.distribution.distribution_enum import Phase
 from gdm.distribution.components.distribution_bus import DistributionBus
-from gdm.distribution.components.base.distribution_component_base import DistributionComponentBase
+from gdm.distribution.components.base.distribution_component_base import (
+    DistributionComponentBase,
+)
 from gdm.distribution.components.distribution_feeder import DistributionFeeder
-from gdm.distribution.components.distribution_substation import DistributionSubstation
+from gdm.distribution.components.distribution_substation import (
+    DistributionSubstation,
+)
 from gdm.distribution.controllers.distribution_inverter_controller import (
     VoltVarInverterController,
 )
-from gdm.distribution.controllers.base.inverter_controller_base import InverterControllerBase
+from gdm.distribution.controllers.base.inverter_controller_base import (
+    InverterControllerBase,
+)
 from gdm.distribution.equipment.solar_equipment import SolarEquipment
 
 
@@ -45,6 +51,47 @@ class DistributionSolar(DistributionComponentBase):
     ]
 
     equipment: Annotated[SolarEquipment, Field(..., description="Solar PV model.")]
+
+    @classmethod
+    def aggregate(
+        cls,
+        instances: list["DistributionSolar"],
+        bus: DistributionBus,
+        name: str,
+        split_phase_mapping: dict[str, set[Phase]],
+    ) -> "DistributionSolar":
+        phases = set()
+        for solar in instances:
+            if {Phase.S1, Phase.S2} & set(solar.phases):
+                parent_phase = split_phase_mapping[solar.uuid]
+                phases = phases.union(set(parent_phase))
+            else:
+                phases = phases.union(set(solar.phases))
+
+        return DistributionSolar(
+            name=name,
+            bus=bus,
+            phases=list(phases),
+            equipment=SolarEquipment(
+                name=f"{name}_solar_equipment",
+                rated_capacity=sum(inst.equipment.rated_capacity for inst in instances),
+                solar_power=sum(inst.equipment.rated_capacity for inst in instances),
+                resistance=1
+                / sum(
+                    (1 / inst.equipment.resistance if inst.equipment.resistance else 0)
+                    for inst in instances
+                ),
+                reactance=1
+                / sum(
+                    (1 / inst.equipment.reactance if inst.equipment.reactance else 0)
+                    for inst in instances
+                ),
+                cutin_percent=sum(inst.equipment.cutin_percent for inst in instances)
+                / len(instances),
+                cutout_percent=sum(inst.equipment.cutout_percent for inst in instances)
+                / len(instances),
+            ),
+        )
 
     @classmethod
     def example(cls) -> "DistributionSolar":
