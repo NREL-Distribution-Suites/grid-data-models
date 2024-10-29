@@ -1,7 +1,7 @@
 import uuid
 from typing import Type
 
-from docutils import Component
+from infrasys import Component
 import networkx as nx
 
 from gdm.distribution.components.distribution_bus import DistributionBus
