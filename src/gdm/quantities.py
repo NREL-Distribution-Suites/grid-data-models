@@ -147,6 +147,19 @@ class PositiveVoltage(Voltage):
         assert all(np.array(value).flatten() >= 0), f"Voltage ({value}, {units}) must be positive."
 
 
+class Frequency(BaseQuantity):
+    __base_unit__ = "hertz"
+
+
+class PositiveFrequency(Frequency):
+    """Quantity representing positive frequency."""
+
+    def __init__(self, value, units, **kwargs):
+        assert all(
+            np.array(value).flatten() >= 0
+        ), f"Frequency ({value}, {units}) must be positive."
+
+
 class PositiveDistance(Distance):
     """Quantity representing positive distance."""
 
