@@ -23,8 +23,9 @@ classifiers = [
 dependencies = [
   "networkx", 
   "pydantic~=2.7",
-  "infrasys~=0.1.0", 
-  "importlib_metadata"
+  "infrasys~=0.1.1", 
+  "importlib_metadata",
+  "click~=8.1.7"
 ]
 
 [project.optional-dependencies]
@@ -36,6 +37,9 @@ doc = [
   "autodoc_pydantic",
   "sphinxcontrib-mermaid",
 ]
+
+[project.scripts]
+gdm = "gdm.cli.cli:cli"
 
 [project.urls]
 Documentation = "https://github.com/NREL-Distribution-Suites/grid-data-models#readme"

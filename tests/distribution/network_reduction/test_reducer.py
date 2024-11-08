@@ -18,7 +18,7 @@ def get_total_kvar(load: DistributionLoad):
 def test_three_phase_network_reducer():
     data_path = Path(__file__).parents[2] / "data/p10_gdm.json"
     gdm_sys: DistributionSystem = DistributionSystem.from_json(data_path)
-    reducer = reduce_to_three_phase_system(gdm_sys, name="reduced_system")
+    reducer = reduce_to_three_phase_system(gdm_sys, name="reduced_system", agg_timeseries=False)
     bus = list(reducer.get_components(DistributionBus))[0]
 
     split_phase_mapping = gdm_sys.get_split_phase_mapping()

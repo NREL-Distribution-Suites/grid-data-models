@@ -15,3 +15,11 @@ class GDMIncompatibleInstanceError(GDMBaseException):
 
 class MultipleOrEmptyVsourceFound(GDMBaseException):
     """Raises this error if multiple or no vsource found."""
+
+
+class InconsistentTimeseriesAggregation(GDMBaseException):
+    """Raises this error if time series data aggregated are inconsistent."""
+
+
+class FolderAlreadyExistsError(GDMBaseException):
+    """Raised if folder already exists which is not suppose to exist."""
