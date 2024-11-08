@@ -1,9 +1,14 @@
 """This module contains distribution system."""
 
+from datetime import date
 from typing import Type
 
 from infrasys import Component, System
+from rich.console import Console
+from rich.table import Table
+from loguru import logger
 import networkx as nx
+
 
 import gdm
 from gdm.distribution.components.base.distribution_branch_base import (
@@ -21,6 +26,7 @@ from gdm.distribution.components.distribution_vsource import (
 )
 from gdm.distribution.distribution_enum import Phase
 from gdm.exceptions import MultipleOrEmptyVsourceFound
+from gdm.temporal_models import ModelUpdates, TemporalUpdates
 
 
 class DistributionSystem(System):
@@ -134,3 +140,60 @@ class DistributionSystem(System):
                 for asset in lv_system.get_components(model_type):
                     split_phase_map[asset.uuid] = set(self.get_component_by_uuid(hv_bus).phases)
         return split_phase_map
+
+    def apply_updates_at_timestamp(self, date: date, update_scenario: str):
+        self.update_log = []
+        scenario: ModelUpdates = self.get_component(ModelUpdates, update_scenario)
+        for update in scenario.updates:
+            if update.date <= date:
+                logger.info(f"Modification applied at timestamp: {update.date}")
+                self.update_temporal_component_addition(update)
+                self.update_temporal_component_deletion(update)
+                self.update_temporal_component_edit(update)
+        self.system_update_info(scenario)
+
+    def update_temporal_component_addition(self, update: TemporalUpdates):
+        for addition in update.additions:
+            c: Component = addition.component
+            self.add_component(c)
+            self.update_log.append(
+                [str(update.date), "Addition", str(c.uuid), c.__class__.__name__, c.name]
+            )
+
+    def update_temporal_component_deletion(self, update: TemporalUpdates):
+        for deltetion in update.deletions:
+            c: Component = self.get_component_by_uuid(deltetion.component_uuid)
+            self.remove_component(c)
+            self.update_log.append(
+                [str(update.date), "Deletion", str(c.uuid), c.__class__.__name__, c.name]
+            )
+
+    def update_temporal_component_edit(self, update: TemporalUpdates):
+        for edit in update.edits:
+            c: Component = self.get_component_by_uuid(edit.component_uuid)
+            component_parameters = list(c.model_fields.keys())
+
+            for parameter, value in edit.component_parameters.items():
+                if parameter not in component_parameters:
+                    raise KeyError(
+                        f"{parameter} is not a valid parameter for model type {c.__class__.__name__}"
+                    )
+                setattr(c, parameter, value)
+                self.update_log.append(
+                    [str(update.date), "Edit", str(c.uuid), c.__class__.__name__, c.name]
+                )
+            self.get_component_by_uuid(edit.component_uuid)
+
+    def system_update_info(self, scenario: ModelUpdates):
+        table = Table(title=f"Updates applied to system from scenario '{scenario.name}'")
+        table.add_column("Timestamp", justify="right", style="cyan", no_wrap=True)
+        table.add_column("Operation", style="magenta")
+        table.add_column("UUID", justify="right", style="bright_magenta")
+        table.add_column("Component Type", justify="right", style="cyan")
+        table.add_column("Component Name", justify="right", style="green")
+
+        for log in self.update_log:
+            table.add_row(*log)
+
+        console = Console()
+        console.print(table)
