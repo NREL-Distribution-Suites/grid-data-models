@@ -19,3 +19,7 @@ class MultipleOrEmptyVsourceFound(GDMBaseException):
 
 class InconsistentTimeseriesAggregation(GDMBaseException):
     """Raises this error if time series data aggregated are inconsistent."""
+
+
+class FolderAlreadyExistsError(GDMBaseException):
+    """Raised if folder already exists which is not suppose to exist."""

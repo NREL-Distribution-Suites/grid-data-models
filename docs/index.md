@@ -56,3 +56,10 @@ cim/index
 
 usage/index
 ```
+
+```{toctree}
+:caption: CLI
+:hidden: true
+
+cli/index
+```
