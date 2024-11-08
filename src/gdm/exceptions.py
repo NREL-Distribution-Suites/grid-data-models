@@ -15,3 +15,7 @@ class GDMIncompatibleInstanceError(GDMBaseException):
 
 class MultipleOrEmptyVsourceFound(GDMBaseException):
     """Raises this error if multiple or no vsource found."""
+
+
+class InconsistentTimeseriesAggregation(GDMBaseException):
+    """Raises this error if time series data aggregated are inconsistent."""

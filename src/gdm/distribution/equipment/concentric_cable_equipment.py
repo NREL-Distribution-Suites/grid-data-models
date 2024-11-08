@@ -1,6 +1,6 @@
 """ This module contains concentric cable equipment."""
 
-from typing import Annotated, Optional
+from typing import Annotated
 
 from infrasys import Component
 from pydantic import Field, PositiveInt, model_validator
@@ -11,7 +11,6 @@ from gdm.quantities import (
     PositiveResistancePULength,
     PositiveVoltage,
 )
-from gdm.distribution.limitset import ThermalLimitSet
 from gdm.constants import PINT_SCHEMA
 
 
@@ -68,10 +67,6 @@ class ConcentricCableEquipment(Component):
     ]
     rated_voltage: Annotated[
         PositiveVoltage, PINT_SCHEMA, Field(..., description="Rated voltage for the cable.")
-    ]
-    loading_limit: Annotated[
-        Optional[ThermalLimitSet],
-        Field(None, description="Loading limit set for this conductor."),
     ]
 
     @model_validator(mode="after")

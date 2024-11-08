@@ -20,7 +20,9 @@ from gdm.distribution.components.distribution_vsource import (
     DistributionVoltageSource,
 )
 from gdm.distribution.distribution_enum import Phase
-from gdm.exceptions import MultipleOrEmptyVsourceFound
+from gdm.exceptions import (
+    MultipleOrEmptyVsourceFound,
+)
 
 
 class DistributionSystem(System):
