@@ -45,7 +45,7 @@ class Angle(BaseQuantity):
     __base_unit__ = "degree"
 
 
-class PositiveAngle(BaseQuantity):
+class PositiveAngle(Angle):
     """Quantity representing positive angle."""
 
     def __init__(self, value, units, **kwargs):
