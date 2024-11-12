@@ -15,6 +15,9 @@ from gdm.distribution.components.distribution_substation import (
     DistributionSubstation,
 )
 from gdm.distribution.components.distribution_bus import DistributionBus
+from gdm.distribution.equipment.bare_conductor_equipment import BareConductorEquipment
+from gdm.distribution.equipment.concentric_cable_equipment import ConcentricCableEquipment
+
 from gdm.distribution.distribution_enum import Phase
 from gdm.quantities import PositiveVoltage, PositiveDistance
 
@@ -22,16 +25,35 @@ from gdm.quantities import PositiveVoltage, PositiveDistance
 class GeometryBranch(DistributionBranchBase):
     """Interface for geometry based lines."""
 
-    equipment: Annotated[
+    conductors: Annotated[
+        list[BareConductorEquipment | ConcentricCableEquipment],
+        Field(..., description="List of overhead wires or cables."),
+    ]
+
+    geometry: Annotated[
         GeometryBranchEquipment,
         Field(..., description="Geometry branch equipment."),
     ]
 
     def validate_fields(self) -> "GeometryBranch":
         """Custom validator for geometry branch fields."""
-        if len(self.phases) != len(self.equipment.conductors):
+        if len(self.phases) != len(self.conductors):
             msg = "Number of phases is not equal to number of wires."
             raise ValueError(msg)
+
+        if not self.conductors:
+            msg = f"Number of wires must be at least 1 {self.conductors=}"
+            raise ValueError(msg)
+
+        if len(self.geometry.horizontal_positions) != len(self.conductors):
+            msg = f"{self.equipment.horizontal_positions} and {self.conductors=} must be equal in length."
+            raise ValueError(msg)
+
+        if len(self.geometry.vertical_positions) != len(self.conductors):
+            msg = f"{self.equipment.vertical_positions} and {self.conductors=} must be equal in length."
+            raise ValueError(msg)
+
+
         return self
 
     @classmethod
@@ -43,6 +65,7 @@ class GeometryBranch(DistributionBranchBase):
             nominal_voltage=PositiveVoltage(400, "volt"),
             substation=DistributionSubstation.example(),
             feeder=DistributionFeeder.example(),
+            conductors=[BareConductorEquipment.example()] * 3,
             name="Branch-DistBus1",
         )
         bus2 = DistributionBus(

@@ -49,12 +49,12 @@ class DistributionBranchBase(DistributionComponentBase, ABC):
             )
             raise ValueError(msg)
 
-        if self.buses[0].nominal_voltage != self.buses[1].nominal_voltage:
-            msg = (
-                f"From bus {self.buses[0].nominal_voltage=}"
-                f"and to bus voltage {self.buses[1].nominal_voltage=} rating should be same."
-            )
-            raise ValueError(msg)
+        #if self.buses[0].nominal_voltage != self.buses[1].nominal_voltage:
+        #    msg = (
+        #        f"From bus {self.buses[0].nominal_voltage=}"
+        #        f"and to bus voltage {self.buses[1].nominal_voltage=} rating should be same."
+        #    )
+        #    raise ValueError(msg)
 
         if len(self.phases) != len(set(self.phases)):
             msg = f"Duplicate phases not allowed for conductors {self.phases=}"
