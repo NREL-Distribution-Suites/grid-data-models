@@ -25,7 +25,8 @@ dependencies = [
   "pydantic~=2.7",
   "infrasys~=0.1.1", 
   "importlib_metadata",
-  "click~=8.1.7"
+  "click~=8.1.7",
+  "pandas~=2.2.3"
 ]
 
 [project.optional-dependencies]
