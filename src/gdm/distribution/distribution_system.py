@@ -3,7 +3,10 @@
 from typing import Type
 
 from infrasys import Component, System
+from infrasys.time_series_models import SingleTimeSeries
+
 import networkx as nx
+import pandas as pd
 
 import gdm
 from gdm.distribution.components.base.distribution_branch_base import (
@@ -22,6 +25,9 @@ from gdm.distribution.components.distribution_vsource import (
 from gdm.distribution.distribution_enum import Phase
 from gdm.exceptions import (
     MultipleOrEmptyVsourceFound,
+    NoComponentsFoundError,
+    NoTimeSeriesDataFound,
+    TimeseriesVariableDoesNotExist,
 )
 
 
@@ -136,3 +142,88 @@ class DistributionSystem(System):
                 for asset in lv_system.get_components(model_type):
                     split_phase_map[asset.uuid] = set(self.get_component_by_uuid(hv_bus).phases)
         return split_phase_map
+
+    def get_combined_timeseries_df(
+        self,
+        component_type: Type[Component],
+        variables: list[str] | None = None,
+        unit_conversion: dict[str, str] | None = None,
+    ) -> pd.DataFrame:
+        """
+        Method for returning combined timeseries dataframe for given component type.
+
+        Parameters
+        ----------
+        component_type: Type[Component]
+            Component type.
+        variables: list[str] | None, optional
+            List of variables to combine. If None, all available variables will be combined.
+        unit_conversion: dict[str, str] | None, optional
+            Optional dictionary to perform unit conversion on data in pint quantities.
+
+        Returns
+        -------
+        pd.DataFrame
+
+        Raises
+        ------
+        NoComponentsFoundError
+            If no components of the specified type are found.
+        NoTimeSeriesDataFound
+            If no timeseries data is found for a component.
+        TypeError
+            If timeseries data is not of type SingleTimeSeries.
+        TimeseriesVariableDoesNotExist
+            If specified variables do not exist for the given component.
+        """
+        dfs = []
+        components = list(self.get_components(component_type))
+        if not components:
+            raise NoComponentsFoundError(
+                f"No components of type {component_type} found in {self.name}"
+            )
+
+        for component in components:
+            ts_metadata = self.list_time_series_metadata(component)
+            if not ts_metadata:
+                msg = f"No timeseries data found for {component=}"
+                raise NoTimeSeriesDataFound(msg)
+            avail_vars = {md.variable_name for md in ts_metadata}
+            selected_vars = variables or avail_vars
+
+            if variables and not set(variables).issubset(avail_vars):
+                missing_vars = set(variables) - avail_vars
+                msg = f"Timeseries variables {missing_vars} do not exist for {component}. Available variables are {avail_vars}."
+                raise TimeseriesVariableDoesNotExist(msg)
+
+            for var in selected_vars:
+                ts_data = self.get_time_series(component, variable_name=var)
+                if not isinstance(ts_data, SingleTimeSeries):
+                    msg = f"Unsupported type for time series data: {type(ts_data)}"
+                    raise TypeError(msg)
+
+                if unit_conversion and var in unit_conversion:
+                    converted_data = ts_data.data.__class__(
+                        ts_data.data.to_numpy(), ts_data.data.units
+                    ).to(unit_conversion[var])
+                    unit = unit_conversion[var]
+                else:
+                    converted_data = ts_data.data
+                    unit = ts_data.data.units if hasattr(ts_data.data, "units") else None
+
+                dfs.append(
+                    pd.DataFrame(
+                        {
+                            "timestamp": [
+                                ts_data.initial_time + idx * ts_data.resolution
+                                for idx in range(ts_data.length)
+                            ],
+                            "variable_name": [var] * ts_data.length,
+                            "component_uuid": [component.uuid] * ts_data.length,
+                            "value": converted_data,
+                            "units": [unit] * ts_data.length,
+                        }
+                    )
+                )
+
+        return pd.concat(dfs, ignore_index=True) if dfs else pd.DataFrame()
