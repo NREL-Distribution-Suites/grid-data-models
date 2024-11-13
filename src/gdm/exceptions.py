@@ -35,3 +35,7 @@ class NoTimeSeriesDataFound(GDMBaseException):
 
 class TimeseriesVariableDoesNotExist(GDMBaseException):
     """Raised if expected time series variable does not exist for a component."""
+
+
+class UnsupportedVariableError(GDMBaseException):
+    """Raised if variable is not supported for some purpose."""

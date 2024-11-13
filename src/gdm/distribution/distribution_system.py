@@ -16,6 +16,8 @@ from gdm.distribution.components.base.distribution_transformer_base import (
     DistributionTransformerBase,
 )
 from gdm.distribution.components.distribution_bus import DistributionBus
+from gdm.distribution.components.distribution_load import DistributionLoad
+from gdm.distribution.components.distribution_solar import DistributionSolar
 from gdm.distribution.components.distribution_transformer import (
     DistributionTransformer,
 )
@@ -28,6 +30,7 @@ from gdm.exceptions import (
     NoComponentsFoundError,
     NoTimeSeriesDataFound,
     TimeseriesVariableDoesNotExist,
+    UnsupportedVariableError,
 )
 
 
@@ -95,7 +98,81 @@ class DistributionSystem(System):
             )
         return graph
 
-    def get_subsystem(self, bus_uuids: list[str], name: str) -> "DistributionSystem":
+    def get_combined_solar_timeseries(
+        self, solars: list[DistributionSolar], var_name: str
+    ) -> SingleTimeSeries:
+        """Method to return combined solar time series data.
+
+        Parameters
+        ----------
+        solars: list[DistributionSolar]
+            List of solar for aggregating timeseries data.
+        var_name: str
+            Name of the time series variable.
+
+        Returns
+        -------
+        SingleTimeSeries
+        """
+
+        if var_name not in ["irradiance"]:
+            msg = f"{var_name=} is not supported for solar timeseries aggregation."
+            raise UnsupportedVariableError(msg)
+        ts_components = [
+            self.get_time_series(solar, var_name) * solar.equipment.rated_capacity
+            for solar in solars
+        ]
+        ts_comp_type = {type(ts_comp) for ts_comp in ts_components}
+        if len(ts_comp_type) != 1:
+            msg = f"Multiple time series data type aggregation not supported: {ts_comp_type}"
+            raise TypeError(msg)
+
+        return ts_comp_type.pop().aggregate(ts_components, "avg")
+
+    def get_combined_load_timeseries(
+        self, loads: list[DistributionLoad], var_name: str
+    ) -> SingleTimeSeries:
+        """Method to return combined load time series data.
+
+        Parameters
+        ----------
+        loads: list[DistributionLoad]
+            List of loads for aggregating timeseries data.
+        var_name: str
+            Name of the time series variable.
+
+        Returns
+        -------
+        SingleTimeSeries
+        """
+        if var_name not in ["active_power", "reactive_power"]:
+            msg = f"{var_name=} is not supported for load timeseries aggregation."
+            raise UnsupportedVariableError(msg)
+        ts_components = [self.get_time_series(load, var_name) for load in loads]
+        ts_comp_type = {type(ts_comp) for ts_comp in ts_components}
+        if len(ts_comp_type) != 1:
+            msg = f"Multiple time series data type aggregation not supported: {ts_comp_type}"
+            raise TypeError(msg)
+        return ts_comp_type.pop().aggregate(ts_components, "sum")
+
+    def get_subsystem(
+        self, bus_uuids: list[str], name: str, keep_timeseries: bool = False
+    ) -> "DistributionSystem":
+        """Method to get subsystem from list of buses.
+
+        Parameters
+        ----------
+        bus_uuids: list[str]
+            List of bus uuids.
+        name: str
+            Name of the subsystem.
+        keep_timeseries: bool
+            Set this flag to retain timeseries data associated with the component.
+
+        Returns
+        -------
+        DistributionSystem
+        """
         tree = self.get_directed_graph()
         subtree = tree.subgraph(bus_uuids)
         bus_uuids = set(bus_uuids)
@@ -114,6 +191,15 @@ class DistributionSystem(System):
                         continue
                 if not subtree_system.has_component(component):
                     subtree_system.add_component(component)
+        if keep_timeseries:
+            for comp in subtree_system.get_components(
+                Component, filter_func=lambda x: self.has_time_series(x)
+            ):
+                ts_metadata = self.list_time_series_metadata(comp)
+                for metadata in ts_metadata:
+                    ts_data = self.get_time_series(comp, metadata.variable_name)
+                    subtree_system.add_time_series(ts_data, comp, **metadata.user_attributes)
+
         return subtree_system
 
     def get_directed_graph(self) -> nx.DiGraph:

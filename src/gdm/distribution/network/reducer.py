@@ -6,6 +6,7 @@ import networkx as nx
 
 from gdm.distribution.components.distribution_bus import DistributionBus
 from gdm.distribution.components.distribution_load import DistributionLoad
+from gdm.distribution.components.distribution_solar import DistributionSolar
 from gdm.distribution.distribution_system import DistributionSystem
 from gdm import Phase
 
@@ -40,19 +41,16 @@ def reduce_to_three_phase_system(
     dist_system: DistributionSystem, name: str, agg_timeseries: bool = False
 ) -> DistributionSystem:
     three_phase_buses = get_three_phase_buses(dist_system)
-    reduced_system = dist_system.get_subsystem(three_phase_buses, name)
-    if agg_timeseries:
-        for comp in reduced_system.get_components(
-            Component, filter_func=lambda x: dist_system.has_time_series(x)
-        ):
-            ts_metadata = dist_system.list_time_series_metadata(comp)
-            for metadata in ts_metadata:
-                ts_data = dist_system.get_time_series(comp, metadata.variable_name)
-                reduced_system.add_time_series(ts_data, comp, **metadata.user_attributes)
-
+    reduced_system = dist_system.get_subsystem(
+        three_phase_buses, name, keep_timeseries=agg_timeseries
+    )
     split_phase_mapping = dist_system.get_split_phase_mapping()
     original_tree = dist_system.get_directed_graph()
     three_phase_tree = original_tree.subgraph(three_phase_buses)
+    ts_agg_func_mapper = {
+        DistributionLoad: dist_system.get_combined_load_timeseries,
+        DistributionSolar: dist_system.get_combined_solar_timeseries,
+    }
     for node in three_phase_tree.nodes():
         if three_phase_tree.out_degree(node) < original_tree.out_degree(node):
             sucessors_diff = set(original_tree.successors(node)) - set(
@@ -80,14 +78,7 @@ def reduce_to_three_phase_system(
                     ts_metadata = dist_system.list_time_series_metadata(comps[0])
                     ts_vars = [ts_var.variable_name for ts_var in ts_metadata]
                     for var_name in ts_vars:
-                        ts_components = [
-                            dist_system.get_time_series(comp, var_name) for comp in comps
-                        ]
-                        ts_comp_type = {type(ts_comp) for ts_comp in ts_components}
-                        if len(ts_comp_type) != 1:
-                            msg = f"Multiple time series data type aggregation not supported: {ts_comp_type}"
-                            raise TypeError(msg)
-                        ts_aggregate = ts_comp_type.pop().aggregate(ts_components)
+                        ts_aggregate = ts_agg_func_mapper[model_type](comps, var_name)
                         # TODO: User attribute aggregation is not supported yet.
                         reduced_system.add_time_series(ts_aggregate, agg_comp)
 
