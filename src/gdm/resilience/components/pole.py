@@ -1,20 +1,46 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 from enum import Enum
 from typing import Annotated
 
 from infrasys import Component
+from infrasys.location import Location
 from pydantic import Field
 
-from gdm.quantities import PositiveAngle, PositiveDistance, PositiveWeight
+from gdm.quantities import PositiveActivePower, PositiveDistance, PositiveWeight
 
 
 class PoleMaterial(str, Enum):
+    ALUMINUM = "ALUMINUM"
+    ALUMINUM_DAVIT = "ALUMINUM_DAVIT"
+    FIBERGLASS = "FIBERGLASS"
+    GALVANIZED_DAVIT = "GALVANIZED_DAVIT"
+    GALVANIZED = "GALVANIZED"
+    STEEL_DAVIT_PRIMED = "STEEL_DAVIT_PRIMED"
+    STEEL_DAVIT = "STEEL_DAVIT"
+    STEEL_STANDARD_PRIMED = "STEEL_STANDARD_PRIMED"
+    WOOD_TREATED = "WOOD_TREATED"
+    WOOD_HARD = "WOOD_HARD"
+    WOOD_SALT_TREATED = "WOOD_SALT_TREATED"
+    WOOD_SOFT = "WOOD_SOFT"
     CONCRETE = "CONCRETE"
     WOOD = "WOOD"
     STEEL = "STEEL"
     COMPOSITE = "COMPOSITE"
     STEEL_TUBULAR = "STEEL_TUBULAR"
     IRON = "IRON"
+    OTHER = "OTHER"
+
+
+class PoleClassification(str, Enum):
+    CLASS_1 = "1"
+    CLASS_2 = "2"
+    CLASS_3 = "3"
+    CLASS_4 = "4"
+    CLASS_5 = "5"
+    CLASS_6 = "6"
+    CLASS_7 = "7"
+    CLASS_H1 = "H1"
+    CLASS_H2 = "H2"
     OTHER = "OTHER"
 
 
@@ -36,56 +62,20 @@ class CrossArmMaterial(str, Enum):
     ALUMINUM = "ALUMINUM"
 
 
+class CrossArmType(str, Enum):
+    HORIZONTAL = "HORIZONTAL"
+    VSHAPED = "VSHAPED"
+    DOUBLE = "DOUBLE"
+    SIDEARM = "SIDEARM"
+
+
 class CrossArm(Component):
     """Interface for cross arm."""
 
     material: Annotated[CrossArmMaterial, Field(..., description="Cross arm material.")]
     weight: Annotated[PositiveWeight, Field(..., description="Weight of cross arm.")]
-
-
-class HorizontalCrossArm(CrossArm):
-    length: Annotated[PositiveDistance, Field(..., description="Length of cross arm.")]
-    width: Annotated[PositiveDistance, Field(..., description="Width of cross arm.")]
-    thickness: Annotated[PositiveDistance, Field(..., description="Thickness of cross arm.")]
-    height: Annotated[
-        PositiveDistance, Field(..., description="Height of cross arm from base of pole.")
-    ]
-
-
-class VShapedCrossArm(HorizontalCrossArm):
-    span_width: Annotated[PositiveDistance, Field(..., description="Distance between arms.")]
-    apex_angle: Annotated[
-        PositiveAngle, Field(..., description="Angle between two v shaped arms.")
-    ]
-
-
-class DoubleCrossArm(CrossArm):
-    upper_arm: Annotated[HorizontalCrossArm, Field(..., description="Upper cross arm.")]
-    lower_arm: Annotated[HorizontalCrossArm, Field(..., description="Lower cross arm.")]
-    separation: Annotated[
-        PositiveDistance, Field(..., description="Separation between cross arms.")
-    ]
-
-
-class SideArmedCrossArm(HorizontalCrossArm):
-    pass
-
-
-class GuyWire(Component):
-    """Interface for Guy wire."""
-
-    anchor_radius: Annotated[
-        PositiveDistance,
-        Field(
-            ...,
-            description="Horizontal distance from base of the pole to anchor.",
-        ),
-    ]
-    attachement_angle: Annotated[
-        PositiveAngle, Field(..., description="Angle relative to the pole.")
-    ]
-    diameter: Annotated[PositiveDistance, Field(..., description="Diameter of the giy wire.")]
-    material: Annotated[GuyWireMaterial, Field(..., description="Material used for guy wire.")]
+    arm_type: Annotated[CrossArmType, Field(..., description="Cross arm type used for the pole.")]
+    height: Annotated[PositiveDistance, Field(..., description="Height from the ground.")]
 
 
 class RoundedPoleDimension(Component):
@@ -107,7 +97,20 @@ class CrossSectionalPoleDimension(Component):
     ground_depth: Annotated[
         PositiveDistance, Field(..., description="Pole ground depth dimension.")
     ]
-    tip_deth: Annotated[PositiveDistance, Field(..., description="Pole tip depth dimension.")]
+    tip_depth: Annotated[PositiveDistance, Field(..., description="Pole tip depth dimension.")]
+
+
+class TreeTrimming(Component):
+    trimming_cycle: Annotated[timedelta, Field(..., description="How often tree is trimmed.")]
+    last_time_trimmed: Annotated[
+        datetime, Field(..., description="Last time tree is trimmed for this pole.")
+    ]
+
+
+class StreetLight(Component):
+    power_rating: Annotated[
+        PositiveActivePower, Field(..., description="Power rating of the light.")
+    ]
 
 
 class ElectricPole(Component):
@@ -116,7 +119,7 @@ class ElectricPole(Component):
     material: Annotated[PoleMaterial, Field(..., description="Pole material type.")]
     height: Annotated[
         PositiveDistance,
-        Field(..., description="Height of the pole from ground."),
+        Field(..., description="Height of the pole including undergrounded portion."),
     ]
     dimension: Annotated[
         RoundedPoleDimension | CrossSectionalPoleDimension,
@@ -125,15 +128,19 @@ class ElectricPole(Component):
     foundation_type: Annotated[FoundationType, Field(..., description="Type of foundation used.")]
     foundation_depth: Annotated[PositiveDistance, Field(..., description="Depth of foundation.")]
     installed_date: Annotated[datetime, Field(..., description="When the pole was installed.")]
+    classification: Annotated[PoleClassification, Field(..., description="Pole class.")]
     weight: Annotated[PositiveWeight, Field(..., description="Total weight of the pole.")]
-    guy_wires: Annotated[
-        list[GuyWire],
-        Field(..., description="List of guy wires used to support pole."),
-    ]
-    guy_wire_spacings: Annotated[
-        list[PositiveAngle],
-        Field(..., description="Angle of separation between guy wires."),
+    num_of_guy_wires: Annotated[
+        int, Field(..., description="Number of guy wires attached to the pole.")
     ]
     cross_arm: Annotated[
         list[CrossArm], Field(..., description="Cross arm model for electric pole.")
     ]
+    trimming: Annotated[
+        TreeTrimming | None, Field(None, description="Tree trimming applicable or not.")
+    ]
+    street_lights: Annotated[
+        list[StreetLight], Field([], description="Street lights attached to this pole.")
+    ]
+    elevation: Annotated[PositiveDistance, Field(..., description="Elevation from sea level.")]
+    location: Annotated[Location, Field(..., description="Location of the pole.")]
