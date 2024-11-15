@@ -69,5 +69,5 @@ def test_temporal_system():
     updated_system.get_component_by_uuid(UUID("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"))
     #  the model below should exist because we do not apply chages in 2025
     updated_system.get_component_by_uuid(UUID("53921e63-896b-40fb-930a-cc59446ba1aa"))
-    # capacitor = updated_system.get_component_by_uuid(UUID("e4e4d756-d52c-4e9a-9110-d3b008cec42a"))
-    # assert capacitor.rated_capacity.to("kilovar").magnitude == 200.0
+    capacitor = updated_system.get_component_by_uuid(UUID("e4e4d756-d52c-4e9a-9110-d3b008cec42a"))
+    assert capacitor.rated_capacity.to("kilovar").magnitude == 200.0
