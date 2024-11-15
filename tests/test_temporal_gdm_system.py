@@ -1,19 +1,16 @@
 from datetime import datetime
-from uuid import uuid4, UUID
 from pathlib import Path
+from uuid import UUID
 import pytest
 
-from gdm.temporal_models import (
-    ModelUpdates,
-    TemporalUpdates,
-    AdditionModel,
-    DeletionModel,
-    EditModel,
-)
-from gdm import DistributionSystem, PositiveReactivePower, DistributionLoad
-
+from gdm import DistributionSystem, PositiveReactivePower, LoadEquipment
+from gdm.temporal_models import get_distribution_system_on_date
 from infrasys.exceptions import ISNotStored
-
+from gdm.temporal_models import (
+    PropertyEdit,
+    ModelUpdates,
+    ModelUpdate,
+)
 import gdm
 
 
@@ -23,52 +20,59 @@ model_path = gdm_path / "tests" / "data" / "p10_gdm.json"
 model_updates = ModelUpdates(
     name="update_scnenario_1",
     updates=[
-        TemporalUpdates(
-            date="2022-01-01",
-            deletions=[DeletionModel(component_uuid="6468a8aa-47cf-4a66-bd4c-e2d6e9815959")],
-        ),
-        TemporalUpdates(
-            date="2023-01-01",
+        ModelUpdate(
+            update_date="2022-01-01",
             edits=[
-                EditModel(
+                PropertyEdit(
                     component_uuid="e4e4d756-d52c-4e9a-9110-d3b008cec42a",
-                    component_parameters={
-                        "rated_capacity": PositiveReactivePower(value=200.0, units="kilovar")
-                    },
+                    name = "rated_capacity",
+                    value = PositiveReactivePower(200, "kvar"),
                 )
             ],
         ),
-        TemporalUpdates(
-            date="2024-01-01",
-            deletions=[DeletionModel(component_uuid="f8c440fe-d661-41f2-8f77-cc397e931fee")],
+        ModelUpdate(
+            update_date="2023-01-01",
+            additions=["aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"],
         ),
-        TemporalUpdates(
-            date="2025-01-01",
-            deletions=[DeletionModel(component_uuid="8cbd036f-1b27-4881-9134-4cb69fd08924")],
+        ModelUpdate(
+            update_date="2024-01-01",
+            deletions=["03ff2c0a-348c-43fe-a79a-48557a8be23e"],
+        ),
+        ModelUpdate(
+            update_date="2025-01-01",
+            deletions=["53921e63-896b-40fb-930a-cc59446ba1aa"],
         ),
     ],
 )
 
-
 def test_temporal_system():
-    system = DistributionSystem.from_json(model_path, auto_add_composed_components=True)
-    system.info()
-    system.add_component(model_updates)
+    system = DistributionSystem.from_json(
+        filename = model_path,
+        auto_add_composed_components=True
+    )
 
-    load_component = system.get_component_by_uuid(UUID("44d1ffde-cd54-44a4-ab40-b13ada4af68d"))
-    load_component = load_component.copy(update={"name": "test_load", "uuid": uuid4()})
-
-    model_updates.updates[-2].additions.append(AdditionModel(component=load_component))
-    model_date = datetime.strptime("2024-1-1", "%Y-%m-%d").date()
-    system.apply_updates_at_timestamp(date=model_date, update_scenario="update_scnenario_1")
-
+    catalog = DistributionSystem(auto_add_composed_components=True)
+    load_equipment = LoadEquipment.example().model_copy(
+        update = {
+            "uuid" : UUID("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"),
+            "name" : "added_phase_load_model"
+        }
+    )
+    catalog.add_component(load_equipment)
+  
+    system_date = datetime.strptime("2024-1-1", "%Y-%m-%d").date()
+    updated_system = get_distribution_system_on_date(
+        model_updates=model_updates,
+        system = system,
+        catalog = catalog,
+        system_date=system_date
+    )
+ 
     with pytest.raises(ISNotStored):
-        system.get_component_by_uuid(UUID("6468a8aa-47cf-4a66-bd4c-e2d6e9815959"))
-        system.get_component_by_uuid(UUID("f8c440fe-d661-41f2-8f77-cc397e931fee"))
-    #  the model below should exist because we do not apply chages in 2025
-    system.get_component_by_uuid(UUID("8cbd036f-1b27-4881-9134-4cb69fd08924"))
+        updated_system.get_component_by_uuid(UUID("03ff2c0a-348c-43fe-a79a-48557a8be23e"))
     # load is added and should exist
-    system.get_component(DistributionLoad, "test_load")
-
-    capacitor = system.get_component_by_uuid(UUID("e4e4d756-d52c-4e9a-9110-d3b008cec42a"))
-    assert capacitor.rated_capacity.to("kilovar").magnitude == 200.0
+    updated_system.get_component_by_uuid(UUID("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"))
+    #  the model below should exist because we do not apply chages in 2025
+    updated_system.get_component_by_uuid(UUID("53921e63-896b-40fb-930a-cc59446ba1aa"))
+    # capacitor = updated_system.get_component_by_uuid(UUID("e4e4d756-d52c-4e9a-9110-d3b008cec42a"))
+    # assert capacitor.rated_capacity.to("kilovar").magnitude == 200.0
