@@ -15,31 +15,43 @@ class PropertyEdit(Component):
     value: Any
     component_uuid: UUID
 
+
 class ModelUpdate(Component):
-    name : str = ""
+    name: str = ""
     update_date: date
-    additions: list[UUID] = [] 
+    additions: list[UUID] = []
     edits: list[PropertyEdit] = []
     deletions: list[UUID] = []
 
+
 class ModelUpdates(Component):
     updates: list[ModelUpdate] = []
-    
+
     @field_validator("updates")
     @classmethod
     def sort_updates_in_chronological_order(cls, v: list[ModelUpdate]) -> str:
         return sorted(v, key=lambda x: x.update_date, reverse=False)
 
-def _update_temporal_table(updates: list, update_date: date, change_type: str, component: Component):
+
+def _update_temporal_table(
+    updates: list, update_date: date, change_type: str, component: Component
+):
     updates.append(
-        [str(update_date), change_type, str(component.uuid), component.label.split(".")[0], component.name]
+        [
+            str(update_date),
+            change_type,
+            str(component.uuid),
+            component.label.split(".")[0],
+            component.name,
+        ]
     )
 
+
 def get_distribution_system_on_date(
-    model_updates: ModelUpdates, 
-    system: DistributionSystem, 
+    model_updates: ModelUpdates,
+    system: DistributionSystem,
     catalog: DistributionSystem,
-    system_date: date
+    system_date: date,
 ) -> DistributionSystem:
     log = []
     for model_update in model_updates.updates:
@@ -57,12 +69,15 @@ def get_distribution_system_on_date(
             for edit_model in model_update.edits:
                 component = system.get_component_by_uuid(edit_model.component_uuid)
                 if not hasattr(component, edit_model.name):
-                    raise AttributeError(f"{component.label} does not have a property called {edit_model.name}")
+                    raise AttributeError(
+                        f"{component.label} does not have a property called {edit_model.name}"
+                    )
                 setattr(component, edit_model.name, edit_model.value)
                 _update_temporal_table(log, model_update.update_date, "Edit", component)
     _system_update_info(model_updates, log)
     return system
-   
+
+
 def _system_update_info(scenario: ModelUpdates, update_log: list[str]):
     table = Table(title=f"Updates applied to system from scenario '{scenario.name}'")
     table.add_column("Timestamp", justify="right", style="cyan", no_wrap=True)

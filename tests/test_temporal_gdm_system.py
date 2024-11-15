@@ -25,8 +25,8 @@ model_updates = ModelUpdates(
             edits=[
                 PropertyEdit(
                     component_uuid="e4e4d756-d52c-4e9a-9110-d3b008cec42a",
-                    name = "rated_capacity",
-                    value = PositiveReactivePower(200, "kvar"),
+                    name="rated_capacity",
+                    value=PositiveReactivePower(200, "kvar"),
                 )
             ],
         ),
@@ -45,29 +45,24 @@ model_updates = ModelUpdates(
     ],
 )
 
+
 def test_temporal_system():
-    system = DistributionSystem.from_json(
-        filename = model_path,
-        auto_add_composed_components=True
-    )
+    system = DistributionSystem.from_json(filename=model_path, auto_add_composed_components=True)
 
     catalog = DistributionSystem(auto_add_composed_components=True)
     load_equipment = LoadEquipment.example().model_copy(
-        update = {
-            "uuid" : UUID("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"),
-            "name" : "added_phase_load_model"
+        update={
+            "uuid": UUID("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"),
+            "name": "added_phase_load_model",
         }
     )
     catalog.add_component(load_equipment)
-  
+
     system_date = datetime.strptime("2024-1-1", "%Y-%m-%d").date()
     updated_system = get_distribution_system_on_date(
-        model_updates=model_updates,
-        system = system,
-        catalog = catalog,
-        system_date=system_date
+        model_updates=model_updates, system=system, catalog=catalog, system_date=system_date
     )
- 
+
     with pytest.raises(ISNotStored):
         updated_system.get_component_by_uuid(UUID("03ff2c0a-348c-43fe-a79a-48557a8be23e"))
     # load is added and should exist

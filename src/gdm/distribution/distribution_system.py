@@ -23,7 +23,6 @@ from gdm.distribution.distribution_enum import Phase
 from gdm.exceptions import MultipleOrEmptyVsourceFound
 
 
-
 class DistributionSystem(System):
     """Class interface for distribution system."""
 
