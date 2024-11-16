@@ -76,6 +76,9 @@ class CrossArm(Component):
     weight: Annotated[PositiveWeight, Field(..., description="Weight of cross arm.")]
     arm_type: Annotated[CrossArmType, Field(..., description="Cross arm type used for the pole.")]
     height: Annotated[PositiveDistance, Field(..., description="Height from the ground.")]
+    power_system_resource_name: Annotated[
+        str, Field(..., description="Name used in power system bus model.")
+    ]
 
 
 class RoundedPoleDimension(Component):
@@ -113,7 +116,7 @@ class StreetLight(Component):
     ]
 
 
-class ElectricPole(Component):
+class Pole(Component):
     """Interface for electric pole."""
 
     material: Annotated[PoleMaterial, Field(..., description="Pole material type.")]
