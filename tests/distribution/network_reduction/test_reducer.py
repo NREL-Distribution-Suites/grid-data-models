@@ -15,6 +15,12 @@ def get_total_kvar(load: DistributionLoad):
     )
 
 
+def test_three_phase_network_reducer_with_timeseries():
+    data_path = Path(__file__).parents[2] / "data/p5r_pv.json"
+    gdm_sys: DistributionSystem = DistributionSystem.from_json(data_path)
+    reduce_to_three_phase_system(gdm_sys, name="reduced_system", agg_timeseries=True)
+
+
 def test_three_phase_network_reducer():
     data_path = Path(__file__).parents[2] / "data/p10_gdm.json"
     gdm_sys: DistributionSystem = DistributionSystem.from_json(data_path)
