@@ -318,4 +318,4 @@ def get_combined_solar_timeseries_df(
         power_function=_get_solar_power,
         unit_conversion=unit_conversion,
     )
-    return solar_df.rename(columns={"irradiance": "active_power"})
+    return solar_df.replace("irradiance", "active_power")
