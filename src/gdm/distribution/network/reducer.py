@@ -9,6 +9,10 @@ from gdm.distribution.components.distribution_load import DistributionLoad
 from gdm.distribution.components.distribution_solar import DistributionSolar
 from gdm.distribution.distribution_system import DistributionSystem, UserAttributes
 from gdm import Phase
+from gdm.distribution.sys_functools import (
+    get_aggregated_load_timeseries,
+    get_aggregated_solar_timeseries,
+)
 
 
 def get_three_phase_buses(dist_system: DistributionSystem) -> list[str]:
@@ -48,8 +52,8 @@ def reduce_to_three_phase_system(
     original_tree = dist_system.get_directed_graph()
     three_phase_tree = original_tree.subgraph(three_phase_buses)
     ts_agg_func_mapper = {
-        DistributionLoad: dist_system.get_combined_load_timeseries,
-        DistributionSolar: dist_system.get_combined_solar_timeseries,
+        DistributionLoad: get_aggregated_load_timeseries,
+        DistributionSolar: get_aggregated_solar_timeseries,
     }
     for node in three_phase_tree.nodes():
         if three_phase_tree.out_degree(node) < original_tree.out_degree(node):
