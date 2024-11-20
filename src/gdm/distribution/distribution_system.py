@@ -1,12 +1,17 @@
 """This module contains distribution system."""
 
-from typing import Type
+from typing import Annotated, Type
 
 from infrasys import Component, System
-from infrasys.time_series_models import SingleTimeSeries
+from infrasys.time_series_models import SingleTimeSeries, SingleTimeSeriesMetadata
+from infrasys.normalization import NormalizationMax, NormalizationByValue
 
 import networkx as nx
 import pandas as pd
+from pint import Quantity
+from pydantic import BaseModel, Field
+import numpy as np
+from numpy.typing import NDArray
 
 import gdm
 from gdm.distribution.components.base.distribution_branch_base import (
@@ -26,12 +31,123 @@ from gdm.distribution.components.distribution_vsource import (
 )
 from gdm.distribution.distribution_enum import Phase
 from gdm.exceptions import (
+    InconsistentTimeseriesAggregation,
     MultipleOrEmptyVsourceFound,
     NoComponentsFoundError,
     NoTimeSeriesDataFound,
     TimeseriesVariableDoesNotExist,
     UnsupportedVariableError,
 )
+from gdm.quantities import PositiveActivePower
+
+
+class UserAttributes(BaseModel):
+    """Interface for single time series data user attributes."""
+
+    profile_name: Annotated[
+        str, Field(..., description="Name of the profile to be used in original powerflow model.")
+    ]
+    profile_type: Annotated[
+        str, Field(..., description="Type of profile could be PMult, QMult etc.")
+    ]
+    use_actual: Annotated[
+        bool,
+        Field(..., description="Boolean flag indicating whether these values are actual or not."),
+    ]
+
+
+def _get_timeseries_actual_data(ts_data: SingleTimeSeries) -> NDArray | Quantity:
+    if ts_data.normalization is None:
+        return ts_data.data
+    elif isinstance(ts_data.normalization, NormalizationMax):
+        return ts_data.data * ts_data.normalization.max_value
+    elif isinstance(ts_data.normalization, NormalizationByValue):
+        return ts_data.data * ts_data.normalization.value
+    else:
+        msg = f"Unspported type of normalization {type(ts_data.normalization)=}"
+        raise TypeError(msg)
+
+
+def _get_load_power(
+    load: DistributionLoad, ts_data: SingleTimeSeries, metadata: SingleTimeSeriesMetadata
+) -> list[float]:
+    """Internal function to return time series data in kw"""
+    user_attr = UserAttributes.model_validate(metadata.user_attributes)
+    denormalized_data = _get_timeseries_actual_data(ts_data)
+    if user_attr.use_actual:
+        return denormalized_data
+
+    match metadata.variable_name:
+        case "active_power":
+            return denormalized_data * sum(
+                [ph_load.real_power for ph_load in load.equipment.phase_loads]
+            )
+        case "reactive_power":
+            return denormalized_data * sum(
+                [ph_load.reactive_power for ph_load in load.equipment.phase_loads]
+            )
+        case _:
+            msg = f"{metadata.variable_name} is not supported for load power calculation."
+            raise UnsupportedVariableError(msg)
+
+
+def _get_solar_power(
+    solar: DistributionSolar, ts_data: SingleTimeSeries, _: SingleTimeSeriesMetadata
+) -> list[float]:
+    """Internal function to return time series data in kw"""
+    denormalized_data = _get_timeseries_actual_data(ts_data)
+    dc_power = denormalized_data.to("kilowatt/m^2").magnitude * solar.equipment.solar_power.to(
+        "kilowatts"
+    )
+    return np.clip(
+        dc_power,
+        a_min=PositiveActivePower(0, dc_power.units),
+        a_max=solar.equipment.rated_capacity.to("kilova"),
+    )
+    # TODO: Looks like GDM is not capturing irradiance which is why user_attr is not used
+    # this will work fine if irradiance=1 however if it is different than 1 then
+    # in case use_actual is false needs to be multiplied with this value.
+
+
+COMPONENT_TO_POWER_MAPPER = {
+    DistributionLoad: _get_load_power,
+    DistributionSolar: _get_solar_power,
+}
+
+
+def _check_for_timeseries_metadata_consistency(ts_metadata: list[SingleTimeSeriesMetadata]):
+    # Extract unique properties from ts_data
+
+    user_attrs = [
+        UserAttributes.model_validate(metadata.user_attributes) for metadata in ts_metadata
+    ]
+    unique_props = {
+        "profile_type": {user_attr.profile_type for user_attr in user_attrs},
+        "profile_name": {user_attr.profile_name for user_attr in user_attrs},
+    }
+
+    # Validate uniformity across properties
+    if any(len(prop) != 1 for prop in unique_props.values()):
+        inconsistent_props = {k: v for k, v in unique_props.items() if len(v) > 1}
+        msg = f"Inconsistent timeseries data: {inconsistent_props}"
+        raise InconsistentTimeseriesAggregation(msg)
+
+
+def _check_for_timeseries_consistency(ts_data: list[SingleTimeSeries]):
+    # Extract unique properties from ts_data
+    unique_props = {
+        "length": {data.length for data in ts_data},
+        "resolution": {data.resolution for data in ts_data},
+        "start_time": {data.initial_time for data in ts_data},
+        "variable": {data.variable_name for data in ts_data},
+        "data_type": {type(data.data) for data in ts_data},
+    }
+
+    # Validate uniformity across properties
+    if any(len(prop) != 1 for prop in unique_props.values()):
+        inconsistent_props = {k: v for k, v in unique_props.items() if len(v) > 1}
+        msg = f"Inconsistent timeseries data: {inconsistent_props}"
+        raise InconsistentTimeseriesAggregation(msg)
 
 
 class DistributionSystem(System):
@@ -108,7 +224,7 @@ class DistributionSystem(System):
         solars: list[DistributionSolar]
             List of solar for aggregating timeseries data.
         var_name: str
-            Name of the time series variable.
+            Variable name for which to combine timeseries data.
 
         Returns
         -------
@@ -118,16 +234,21 @@ class DistributionSystem(System):
         if var_name not in ["irradiance"]:
             msg = f"{var_name=} is not supported for solar timeseries aggregation."
             raise UnsupportedVariableError(msg)
-        ts_components = [
-            self.get_time_series(solar, var_name) * solar.equipment.rated_capacity
-            for solar in solars
+        ts_components: list[SingleTimeSeries] = [
+            self.get_time_series(solar, var_name) for solar in solars
         ]
-        ts_comp_type = {type(ts_comp) for ts_comp in ts_components}
-        if len(ts_comp_type) != 1:
-            msg = f"Multiple time series data type aggregation not supported: {ts_comp_type}"
-            raise TypeError(msg)
-
-        return ts_comp_type.pop().aggregate(ts_components, "avg")
+        _check_for_timeseries_consistency(ts_components)
+        new_data = [
+            _get_timeseries_actual_data(ts_data) * solar.equipment.solar_power
+            for ts_data, solar in zip(ts_components, solars)
+        ]
+        return SingleTimeSeries(
+            data=sum(new_data) / len(new_data),
+            variable_name=var_name,
+            normalization=None,
+            initial_time=ts_components[0].initial_time,
+            resolution=ts_components[0].resolution,
+        )
 
     def get_combined_load_timeseries(
         self, loads: list[DistributionLoad], var_name: str
@@ -139,21 +260,31 @@ class DistributionSystem(System):
         loads: list[DistributionLoad]
             List of loads for aggregating timeseries data.
         var_name: str
-            Name of the time series variable.
+            Variable name used for time series aggregation.
 
         Returns
         -------
         SingleTimeSeries
         """
-        if var_name not in ["active_power", "reactive_power"]:
-            msg = f"{var_name=} is not supported for load timeseries aggregation."
-            raise UnsupportedVariableError(msg)
-        ts_components = [self.get_time_series(load, var_name) for load in loads]
-        ts_comp_type = {type(ts_comp) for ts_comp in ts_components}
-        if len(ts_comp_type) != 1:
-            msg = f"Multiple time series data type aggregation not supported: {ts_comp_type}"
-            raise TypeError(msg)
-        return ts_comp_type.pop().aggregate(ts_components, "sum")
+        ts_components: list[SingleTimeSeries] = [
+            self.get_time_series(load, var_name) for load in loads
+        ]
+        _check_for_timeseries_consistency(ts_components)
+        ts_metadata = list[SingleTimeSeriesMetadata] = [
+            self.list_time_series_metadata(load, var_name)[0] for load in loads
+        ]
+        _check_for_timeseries_metadata_consistency(ts_metadata)
+        ts_load_data = [
+            _get_load_power(load, ts_data, metadata)
+            for load, ts_data, metadata in zip(loads, ts_components, ts_metadata)
+        ]
+        return SingleTimeSeries(
+            data=sum(ts_load_data),
+            variable_name=var_name,
+            normalization=None,
+            initial_time=ts_components[0].initial_time,
+            resolution=ts_components[0].resolution,
+        )
 
     def get_subsystem(
         self, bus_uuids: list[str], name: str, keep_timeseries: bool = False
@@ -263,6 +394,8 @@ class DistributionSystem(System):
             If specified variables do not exist for the given component.
         """
         dfs = []
+        if unit_conversion is None:
+            unit_conversion = {}
         components = list(self.get_components(component_type))
         if not components:
             raise NoComponentsFoundError(
@@ -283,20 +416,11 @@ class DistributionSystem(System):
                 raise TimeseriesVariableDoesNotExist(msg)
 
             for var in selected_vars:
-                ts_data = self.get_time_series(component, variable_name=var)
-                if not isinstance(ts_data, SingleTimeSeries):
-                    msg = f"Unsupported type for time series data: {type(ts_data)}"
-                    raise TypeError(msg)
-
-                if unit_conversion and var in unit_conversion:
-                    converted_data = ts_data.data.__class__(
-                        ts_data.data.to_numpy(), ts_data.data.units
-                    ).to(unit_conversion[var])
-                    unit = unit_conversion[var]
-                else:
-                    converted_data = ts_data.data
-                    unit = ts_data.data.units if hasattr(ts_data.data, "units") else None
-
+                ts_data: SingleTimeSeries = self.get_time_series(component, variable_name=var)
+                metadata = [meta for meta in ts_metadata if meta.variable_name == var][0]
+                power_data = COMPONENT_TO_POWER_MAPPER[type(component)](
+                    component, ts_data, metadata
+                )
                 dfs.append(
                     pd.DataFrame(
                         {
@@ -306,8 +430,17 @@ class DistributionSystem(System):
                             ],
                             "variable_name": [var] * ts_data.length,
                             "component_uuid": [component.uuid] * ts_data.length,
-                            "value": converted_data,
-                            "units": [unit] * ts_data.length,
+                            "value": (
+                                power_data.to(unit_conversion[var])
+                                if var in unit_conversion
+                                else power_data
+                            ),
+                            "units": [
+                                unit_conversion[var]
+                                if var in unit_conversion
+                                else power_data.units
+                            ]
+                            * ts_data.length,
                         }
                     )
                 )

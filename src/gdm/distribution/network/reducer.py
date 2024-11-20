@@ -7,7 +7,7 @@ import networkx as nx
 from gdm.distribution.components.distribution_bus import DistributionBus
 from gdm.distribution.components.distribution_load import DistributionLoad
 from gdm.distribution.components.distribution_solar import DistributionSolar
-from gdm.distribution.distribution_system import DistributionSystem
+from gdm.distribution.distribution_system import DistributionSystem, UserAttributes
 from gdm import Phase
 
 
@@ -76,10 +76,14 @@ def reduce_to_three_phase_system(
                 if agg_timeseries:
                     comps = list(subtree_system.get_components(model_type))
                     ts_metadata = dist_system.list_time_series_metadata(comps[0])
-                    ts_vars = [ts_var.variable_name for ts_var in ts_metadata]
-                    for var_name in ts_vars:
-                        ts_aggregate = ts_agg_func_mapper[model_type](comps, var_name)
-                        # TODO: User attribute aggregation is not supported yet.
-                        reduced_system.add_time_series(ts_aggregate, agg_comp)
+                    for metadata in ts_metadata:
+                        ts_aggregate = ts_agg_func_mapper[model_type](
+                            comps, metadata.variable_name
+                        )
+                        user_attr = UserAttributes.model_validate(metadata.user_attributes)
+                        user_attr.use_actual = True
+                        reduced_system.add_time_series(
+                            ts_aggregate, agg_comp, **user_attr.model_dump()
+                        )
 
     return reduced_system
