@@ -20,4 +20,3 @@ from gdm.structural.components.transformer import (
 )
 from gdm.structural.components.underground_cable import UndergroundCable, UndergroundJunction
 from gdm.structural.components.overhead_line_segment import OverheadLineSegment
-from gdm.structural.structural_system import StructuralSystem
