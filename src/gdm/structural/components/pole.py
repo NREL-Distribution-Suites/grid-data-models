@@ -1,12 +1,12 @@
 from datetime import datetime, timedelta
 from enum import Enum
-from typing import Annotated
+from typing import Annotated, Self
 
-from infrasys import Component
-from infrasys.location import Location
+from infrasys import Component, Location
 from pydantic import Field
 
-from gdm.quantities import PositiveActivePower, PositiveDistance, PositiveWeight
+from gdm.quantities import PositiveActivePower, PositiveDistance
+from gdm.structural.components.base import _GeoLocatedWithInstalledDateComponent
 
 
 class PoleMaterial(str, Enum):
@@ -44,16 +44,6 @@ class PoleClassification(str, Enum):
     OTHER = "OTHER"
 
 
-class FoundationType(str, Enum):
-    DIRECT_EMBEDMENT = "DIRECT_EMBEDMENT"
-    ANCHOR = "ANCHOR"
-
-
-class GuyWireMaterial(str, Enum):
-    GALVANIZED_STEEL = "GALVANIZED_STEEL"
-    STAINLESS_STEEL = "STAINLESS_STEEL"
-
-
 class CrossArmMaterial(str, Enum):
     FIBERGLASS = "FIBERGLASS"
     TREATED_WOOD = "TREATED_WOOD"
@@ -73,26 +63,46 @@ class CrossArm(Component):
     """Interface for cross arm."""
 
     material: Annotated[CrossArmMaterial, Field(..., description="Cross arm material.")]
-    weight: Annotated[PositiveWeight, Field(..., description="Weight of cross arm.")]
-    arm_type: Annotated[CrossArmType, Field(..., description="Cross arm type used for the pole.")]
+    arm_type: Annotated[
+        CrossArmType,
+        Field(..., description="Cross arm type used for the pole."),
+    ]
     height: Annotated[PositiveDistance, Field(..., description="Height from the ground.")]
     power_system_resource_name: Annotated[
         str, Field(..., description="Name used in power system bus model.")
     ]
 
+    @classmethod
+    def example(cls) -> Self:
+        return CrossArm(
+            name="CrossArm-1",
+            material=CrossArmMaterial.ALUMINUM,
+            arm_type=CrossArmType.HORIZONTAL,
+            height=PositiveDistance(7.2, "m"),
+            power_system_resource_name="Bus-1",
+        )
+
 
 class RoundedPoleDimension(Component):
     """Interface for rounded dimension of pole."""
 
+    name: Annotated[str, Field("", description="Name of the dimension.")]
     ground_diameter: Annotated[
         PositiveDistance, Field(..., description="Pole diameter at the ground.")
     ]
     tip_diameter: Annotated[PositiveDistance, Field(..., description="Pole diameter at the tip.")]
 
+    @classmethod
+    def example(cls) -> Self:
+        return RoundedPoleDimension(
+            ground_diameter=PositiveDistance(20, "inch"), tip_diameter=PositiveDistance(14, "inch")
+        )
+
 
 class CrossSectionalPoleDimension(Component):
     """Interface for rounded dimension of pole."""
 
+    name: Annotated[str, Field("", description="Name of the dimension.")]
     ground_width: Annotated[
         PositiveDistance, Field(..., description="Pole ground width dimension.")
     ]
@@ -102,48 +112,83 @@ class CrossSectionalPoleDimension(Component):
     ]
     tip_depth: Annotated[PositiveDistance, Field(..., description="Pole tip depth dimension.")]
 
+    @classmethod
+    def example(cls) -> Self:
+        return CrossSectionalPoleDimension(
+            ground_width=PositiveDistance(10, "inch"),
+            tip_width=PositiveDistance(8, "inch"),
+            ground_depth=PositiveDistance(6, "inch"),
+            tip_depth=PositiveDistance(4, "inch"),
+        )
+
 
 class TreeTrimming(Component):
+    name: Annotated[str, Field("", description="Name of the dimension.")]
     trimming_cycle: Annotated[timedelta, Field(..., description="How often tree is trimmed.")]
     last_time_trimmed: Annotated[
-        datetime, Field(..., description="Last time tree is trimmed for this pole.")
+        datetime,
+        Field(..., description="Last time tree is trimmed for this pole."),
     ]
+
+    @classmethod
+    def example(cls) -> Self:
+        return TreeTrimming(
+            trimming_cycle=timedelta(days=180), last_time_trimmed=datetime(2024, 1, 1, 14, 0, 0)
+        )
 
 
 class StreetLight(Component):
     power_rating: Annotated[
-        PositiveActivePower, Field(..., description="Power rating of the light.")
+        PositiveActivePower,
+        Field(..., description="Power rating of the light."),
     ]
 
+    @classmethod
+    def example(cls) -> Self:
+        return StreetLight(name="StreetLight-1", power_rating=PositiveActivePower(30, "watts"))
 
-class Pole(Component):
+
+class Pole(_GeoLocatedWithInstalledDateComponent):
     """Interface for electric pole."""
 
     material: Annotated[PoleMaterial, Field(..., description="Pole material type.")]
     height: Annotated[
         PositiveDistance,
-        Field(..., description="Height of the pole including undergrounded portion."),
+        Field(
+            ...,
+            description="Height of the pole including undergrounded portion.",
+        ),
     ]
     dimension: Annotated[
         RoundedPoleDimension | CrossSectionalPoleDimension,
         Field(..., description="Pole dimension."),
     ]
-    foundation_type: Annotated[FoundationType, Field(..., description="Type of foundation used.")]
-    foundation_depth: Annotated[PositiveDistance, Field(..., description="Depth of foundation.")]
-    installed_date: Annotated[datetime, Field(..., description="When the pole was installed.")]
     classification: Annotated[PoleClassification, Field(..., description="Pole class.")]
-    weight: Annotated[PositiveWeight, Field(..., description="Total weight of the pole.")]
-    num_of_guy_wires: Annotated[
-        int, Field(..., description="Number of guy wires attached to the pole.")
-    ]
     cross_arm: Annotated[
-        list[CrossArm], Field(..., description="Cross arm model for electric pole.")
+        list[CrossArm],
+        Field(..., description="Cross arm model for electric pole."),
     ]
     trimming: Annotated[
-        TreeTrimming | None, Field(None, description="Tree trimming applicable or not.")
+        TreeTrimming | None,
+        Field(None, description="Tree trimming applicable or not."),
     ]
     street_lights: Annotated[
-        list[StreetLight], Field([], description="Street lights attached to this pole.")
+        list[StreetLight],
+        Field([], description="Street lights attached to this pole."),
     ]
-    elevation: Annotated[PositiveDistance, Field(..., description="Elevation from sea level.")]
-    location: Annotated[Location, Field(..., description="Location of the pole.")]
+
+    @classmethod
+    def example(cls) -> Self:
+        return Pole(
+            name="Pole-P12341",
+            elevation=PositiveDistance(300, "meter"),
+            location=Location(x=141.00, y=30.0),
+            installed_date=datetime(1993, 6, 21, 15, 45, 0),
+            material=PoleMaterial.WOOD_TREATED,
+            height=PositiveDistance(15, "ft"),
+            dimension=RoundedPoleDimension.example(),
+            classification=PoleClassification.CLASS_4,
+            cross_arm=[CrossArm.example()],
+            trimming=TreeTrimming.example(),
+            street_lights=[StreetLight.example()],
+        )

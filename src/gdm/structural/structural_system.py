@@ -3,8 +3,8 @@ from infrasys import System
 import gdm
 
 
-class DistributionResilenceSystem(System):
-    """Class interface for distribution resilience system."""
+class SructuralSystem(System):
+    """Class interface for structural distribution system."""
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
