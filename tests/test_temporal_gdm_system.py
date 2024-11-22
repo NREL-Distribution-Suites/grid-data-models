@@ -4,46 +4,38 @@ from uuid import UUID
 import pytest
 
 from gdm import DistributionSystem, PositiveReactivePower, LoadEquipment
-from gdm.temporal_models import get_distribution_system_on_date
 from infrasys.exceptions import ISNotStored
-from gdm.temporal_models import (
-    PropertyEdit,
-    ModelUpdates,
-    ModelUpdate,
-)
 import gdm
+from gdm.time_travel import get_distribution_system_on_date, ModelChange, PropertyEdit
 
 
 gdm_path = Path(gdm.__file__).parent.parent.parent
 model_path = gdm_path / "tests" / "data" / "p10_gdm.json"
 
-model_updates = ModelUpdates(
-    name="update_scnenario_1",
-    updates=[
-        ModelUpdate(
-            update_date="2022-01-01",
-            edits=[
-                PropertyEdit(
-                    component_uuid="e4e4d756-d52c-4e9a-9110-d3b008cec42a",
-                    name="rated_capacity",
-                    value=PositiveReactivePower(200, "kvar"),
-                )
-            ],
-        ),
-        ModelUpdate(
-            update_date="2023-01-01",
-            additions=["aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"],
-        ),
-        ModelUpdate(
-            update_date="2024-01-01",
-            deletions=["03ff2c0a-348c-43fe-a79a-48557a8be23e"],
-        ),
-        ModelUpdate(
-            update_date="2025-01-01",
-            deletions=["53921e63-896b-40fb-930a-cc59446ba1aa"],
-        ),
-    ],
-)
+model_updates = [
+    ModelChange(
+        update_date="2022-01-01",
+        edits=[
+            PropertyEdit(
+                component_uuid="e4e4d756-d52c-4e9a-9110-d3b008cec42a",
+                name="rated_capacity",
+                value=PositiveReactivePower(200, "kvar"),
+            )
+        ],
+    ),
+    ModelChange(
+        update_date="2023-01-01",
+        additions=["aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"],
+    ),
+    ModelChange(
+        update_date="2024-01-01",
+        deletions=["03ff2c0a-348c-43fe-a79a-48557a8be23e"],
+    ),
+    ModelChange(
+        update_date="2025-01-01",
+        deletions=["53921e63-896b-40fb-930a-cc59446ba1aa"],
+    ),
+]
 
 
 def test_temporal_system():
@@ -60,7 +52,7 @@ def test_temporal_system():
 
     system_date = datetime.strptime("2024-1-1", "%Y-%m-%d").date()
     updated_system = get_distribution_system_on_date(
-        model_updates=model_updates, system=system, catalog=catalog, system_date=system_date
+        model_changes=model_updates, system=system, catalog=catalog, system_date=system_date
     )
 
     with pytest.raises(ISNotStored):

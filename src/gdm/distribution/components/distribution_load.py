@@ -1,7 +1,7 @@
 """ This module contains interface for distribution load."""
 
 from collections import defaultdict
-from typing import Annotated
+from typing import Annotated, Self
 
 from pydantic import model_validator, Field
 
@@ -42,7 +42,7 @@ class DistributionLoad(DistributionComponentBase):
         bus: DistributionBus,
         name: str,
         split_phase_mapping: dict[str, set[Phase]],
-    ) -> "DistributionLoad":
+    ) -> Self:
         phase_loads = defaultdict(list)
         for load in instances:
             if {Phase.S1, Phase.S2} & set(load.phases):

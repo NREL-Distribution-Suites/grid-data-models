@@ -20,10 +20,36 @@ class PositiveResistance(Resistance):
         assert value >= 0, f"Resistance ({value}, {units}) must be positive."
 
 
+class Weight(BaseQuantity):
+    """Quantity representing weight."""
+
+    __base_unit__ = "gram"
+
+
+class PositiveWeight(Weight):
+    """Quantity representing positive weight."""
+
+    def __init__(self, value, units, **kwargs):
+        assert value >= 0, f"Weight ({value}, {units}) must be positive."
+
+
 class ResistancePULength(BaseQuantity):
     """Quantity representing per unit length power system resistance."""
 
     __base_unit__ = "ohm/m"
+
+
+class Angle(BaseQuantity):
+    """Quantity representing angle."""
+
+    __base_unit__ = "degree"
+
+
+class PositiveAngle(Angle):
+    """Quantity representing positive angle."""
+
+    def __init__(self, value, units, **kwargs):
+        assert value >= 0, f"Angle ({value}, {units}) must be positive."
 
 
 class PositiveResistancePULength(ResistancePULength):

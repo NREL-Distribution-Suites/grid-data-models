@@ -1,8 +1,10 @@
 """This module contains distribution system."""
-from typing import Type
+
+from typing import Annotated, Type
 
 from infrasys import Component, System
 import networkx as nx
+from pydantic import BaseModel, Field
 
 
 import gdm
@@ -20,7 +22,24 @@ from gdm.distribution.components.distribution_vsource import (
     DistributionVoltageSource,
 )
 from gdm.distribution.distribution_enum import Phase
-from gdm.exceptions import MultipleOrEmptyVsourceFound
+from gdm.exceptions import (
+    MultipleOrEmptyVsourceFound,
+)
+
+
+class UserAttributes(BaseModel):
+    """Interface for single time series data user attributes."""
+
+    profile_name: Annotated[
+        str, Field(..., description="Name of the profile to be used in original powerflow model.")
+    ]
+    profile_type: Annotated[
+        str, Field(..., description="Type of profile could be PMult, QMult etc.")
+    ]
+    use_actual: Annotated[
+        bool,
+        Field(..., description="Boolean flag indicating whether these values are actual or not."),
+    ]
 
 
 class DistributionSystem(System):
@@ -87,7 +106,24 @@ class DistributionSystem(System):
             )
         return graph
 
-    def get_subsystem(self, bus_uuids: list[str], name: str) -> "DistributionSystem":
+    def get_subsystem(
+        self, bus_uuids: list[str], name: str, keep_timeseries: bool = False
+    ) -> "DistributionSystem":
+        """Method to get subsystem from list of buses.
+
+        Parameters
+        ----------
+        bus_uuids: list[str]
+            List of bus uuids.
+        name: str
+            Name of the subsystem.
+        keep_timeseries: bool
+            Set this flag to retain timeseries data associated with the component.
+
+        Returns
+        -------
+        DistributionSystem
+        """
         tree = self.get_directed_graph()
         subtree = tree.subgraph(bus_uuids)
         bus_uuids = set(bus_uuids)
@@ -106,6 +142,15 @@ class DistributionSystem(System):
                         continue
                 if not subtree_system.has_component(component):
                     subtree_system.add_component(component)
+        if keep_timeseries:
+            for comp in subtree_system.get_components(
+                Component, filter_func=lambda x: self.has_time_series(x)
+            ):
+                ts_metadata = self.list_time_series_metadata(comp)
+                for metadata in ts_metadata:
+                    ts_data = self.get_time_series(comp, metadata.variable_name)
+                    subtree_system.add_time_series(ts_data, comp, **metadata.user_attributes)
+
         return subtree_system
 
     def get_directed_graph(self) -> nx.DiGraph:
