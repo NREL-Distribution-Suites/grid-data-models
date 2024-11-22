@@ -6,6 +6,7 @@ from infrasys import Component, System
 import networkx as nx
 from pydantic import BaseModel, Field
 
+
 import gdm
 from gdm.distribution.components.base.distribution_branch_base import (
     DistributionBranchBase,
