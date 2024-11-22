@@ -80,7 +80,6 @@ def _check_for_timeseries_metadata_consistency(ts_metadata: list[SingleTimeSerie
     ]
     unique_props = {
         "profile_type": {user_attr.profile_type for user_attr in user_attrs},
-        "profile_name": {user_attr.profile_name for user_attr in user_attrs},
     }
 
     # Validate uniformity across properties
@@ -166,7 +165,7 @@ def get_aggregated_load_timeseries(
     """
     ts_components: list[SingleTimeSeries] = [sys.get_time_series(load, var_name) for load in loads]
     _check_for_timeseries_consistency(ts_components)
-    ts_metadata = list[SingleTimeSeriesMetadata] = [
+    ts_metadata: list[SingleTimeSeriesMetadata] = [
         sys.list_time_series_metadata(load, var_name)[0] for load in loads
     ]
     _check_for_timeseries_metadata_consistency(ts_metadata)

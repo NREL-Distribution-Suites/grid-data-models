@@ -82,7 +82,7 @@ def reduce_to_three_phase_system(
                     ts_metadata = dist_system.list_time_series_metadata(comps[0])
                     for metadata in ts_metadata:
                         ts_aggregate = ts_agg_func_mapper[model_type](
-                            comps, metadata.variable_name
+                            dist_system, comps, metadata.variable_name
                         )
                         user_attr = UserAttributes.model_validate(metadata.user_attributes)
                         user_attr.use_actual = True
