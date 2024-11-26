@@ -133,6 +133,7 @@ class PositiveReactivePower(ReactivePower):
             np.array(value).flatten() >= 0
         ), f"Reactive power ({value}, {units}) must be positive."
 
+
 class Frequency(BaseQuantity):
     """Quantity representing reactive power."""
 
@@ -144,6 +145,7 @@ class PositiveFrequency(Frequency):
         assert all(
             np.array(value).flatten() >= 0
         ), f"Frequency({value}, {units}) must be positive."
+
 
 class ApparentPower(BaseQuantity):
     """Quantity representing apparent power."""
