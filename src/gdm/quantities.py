@@ -133,6 +133,17 @@ class PositiveReactivePower(ReactivePower):
             np.array(value).flatten() >= 0
         ), f"Reactive power ({value}, {units}) must be positive."
 
+class Frequency(BaseQuantity):
+    """Quantity representing reactive power."""
+
+    __base_unit__ = "hertz"
+
+
+class PositiveFrequency(Frequency):
+    def __init__(self, value, units, **kwargs):
+        assert all(
+            np.array(value).flatten() >= 0
+        ), f"Frequency({value}, {units}) must be positive."
 
 class ApparentPower(BaseQuantity):
     """Quantity representing apparent power."""
