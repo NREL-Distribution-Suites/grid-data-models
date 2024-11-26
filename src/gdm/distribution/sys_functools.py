@@ -33,8 +33,8 @@ def _get_timeseries_actual_data(ts_data: SingleTimeSeries) -> NDArray | Quantity
 
 def _get_load_power(
     load: DistributionLoad, ts_data: SingleTimeSeries, metadata: SingleTimeSeriesMetadata
-) -> list[float]:
-    """Internal function to return time series data in kw"""
+) -> list[float] | Quantity:
+    """Internal function to return actual load power."""
     user_attr = UserAttributes.model_validate(metadata.user_attributes)
     denormalized_data = _get_timeseries_actual_data(ts_data)
     if user_attr.use_actual:
@@ -42,11 +42,11 @@ def _get_load_power(
 
     match metadata.variable_name:
         case "active_power":
-            return denormalized_data.magnitude * sum(
+            return denormalized_data.magnitude.tolist() * sum(
                 [ph_load.real_power for ph_load in load.equipment.phase_loads]
             )
         case "reactive_power":
-            return denormalized_data.magnitude * sum(
+            return denormalized_data.magnitude.tolist() * sum(
                 [ph_load.reactive_power for ph_load in load.equipment.phase_loads]
             )
         case _:
@@ -59,9 +59,9 @@ def _get_solar_power(
 ) -> list[float]:
     """Internal function to return time series data in kw"""
     denormalized_data = _get_timeseries_actual_data(ts_data)
-    dc_power = denormalized_data.to("kilowatt/m^2").magnitude * solar.equipment.solar_power.to(
-        "kilowatts"
-    )
+    dc_power = denormalized_data.to(
+        "kilowatt/m^2"
+    ).magnitude.tolist() * solar.equipment.solar_power.to("kilowatts")
     return np.clip(
         dc_power,
         a_min=PositiveActivePower(0, dc_power.units),
