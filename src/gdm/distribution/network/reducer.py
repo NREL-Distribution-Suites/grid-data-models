@@ -76,7 +76,7 @@ def reduce_to_three_phase_system(
                     split_phase_mapping=split_phase_mapping,
                 )
                 reduced_system.add_component(agg_component)
-                agg_comp = reduced_system.get_component(DistributionLoad, agg_component.name)
+                agg_comp = reduced_system.get_component(model_type, agg_component.name)
                 if agg_timeseries:
                     comps = list(subtree_system.get_components(model_type))
                     ts_metadata = dist_system.list_time_series_metadata(comps[0])

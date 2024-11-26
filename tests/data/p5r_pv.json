@@ -1,1 +1,3018 @@
-{"name": null, "description": null, "uuid": "f02f2845-1384-4ba4-b357-1cff21466e7b", "data_format_version": "1.0.0", "components": [{"uuid": "6122a7d7-aa6d-4f97-8441-8439b1baffdd", "name": "", "limit_type": "min", "__metadata__": {"fields": {"module": "gdm.distribution.limitset", "type": "VoltageLimitSet", "serialized_type": "base"}}, "value": {"value": 6.839579963954902, "units": "kilovolt", "__metadata__": {"fields": {"module": "gdm.quantities", "type": "PositiveVoltage", "serialized_type": "quantity"}}}}, {"uuid": "ebcdfbc9-0463-41c3-be0d-bf0f00e3033f", "name": "", "limit_type": "max", "__metadata__": {"fields": {"module": "gdm.distribution.limitset", "type": "VoltageLimitSet", "serialized_type": "base"}}, "value": {"value": 7.559535749634366, "units": "kilovolt", "__metadata__": {"fields": {"module": "gdm.quantities", "type": "PositiveVoltage", "serialized_type": "quantity"}}}}, {"uuid": "4651946e-4ab2-4020-8ff6-1db3ede272ff", "name": "", "x": 36.60102672210813, "y": -120.91292875147646, "crs": null, "__metadata__": {"fields": {"module": "infrasys.location", "type": "Location", "serialized_type": "base"}}}, {"uuid": "52b25c35-1cb2-4161-a35a-2a5d194dd677", "name": "p5rdt149-p5rhs0_1247x", "substation": null, "feeder": null, "voltage_type": "line-to-ground", "phases": ["A", "B", "C"], "__metadata__": {"fields": {"module": "gdm.distribution.components.distribution_bus", "type": "DistributionBus", "serialized_type": "base"}}, "voltagelimits": [{"__metadata__": {"fields": {"module": "gdm.distribution.limitset", "type": "VoltageLimitSet", "serialized_type": "composed_component", "uuid": "6122a7d7-aa6d-4f97-8441-8439b1baffdd"}}}, {"__metadata__": {"fields": {"module": "gdm.distribution.limitset", "type": "VoltageLimitSet", "serialized_type": "composed_component", "uuid": "ebcdfbc9-0463-41c3-be0d-bf0f00e3033f"}}}], "nominal_voltage": {"value": 7.199557856794634, "units": "kilovolt", "__metadata__": {"fields": {"module": "gdm.quantities", "type": "PositiveVoltage", "serialized_type": "quantity"}}}, "coordinate": {"__metadata__": {"fields": {"module": "infrasys.location", "type": "Location", "serialized_type": "composed_component", "uuid": "4651946e-4ab2-4020-8ff6-1db3ede272ff"}}}}, {"uuid": "cbcf01ae-a0e9-43b5-8585-ca81ad97dc3a", "name": "", "x": 36.59776619575616, "y": -120.91984825250762, "crs": null, "__metadata__": {"fields": {"module": "infrasys.location", "type": "Location", "serialized_type": "base"}}}, {"uuid": "8d049281-e726-42f4-946e-b6db31507d22", "name": "p5rdt149-p5rhs0_1247x_b1_1", "substation": null, "feeder": null, "voltage_type": "line-to-ground", "phases": ["A", "B", "C"], "__metadata__": {"fields": {"module": "gdm.distribution.components.distribution_bus", "type": "DistributionBus", "serialized_type": "base"}}, "voltagelimits": [{"__metadata__": {"fields": {"module": "gdm.distribution.limitset", "type": "VoltageLimitSet", "serialized_type": "composed_component", "uuid": "6122a7d7-aa6d-4f97-8441-8439b1baffdd"}}}, {"__metadata__": {"fields": {"module": "gdm.distribution.limitset", "type": "VoltageLimitSet", "serialized_type": "composed_component", "uuid": "ebcdfbc9-0463-41c3-be0d-bf0f00e3033f"}}}], "nominal_voltage": {"value": 7.199557856794634, "units": "kilovolt", "__metadata__": {"fields": {"module": "gdm.quantities", "type": "PositiveVoltage", "serialized_type": "quantity"}}}, "coordinate": {"__metadata__": {"fields": {"module": "infrasys.location", "type": "Location", "serialized_type": "composed_component", "uuid": "cbcf01ae-a0e9-43b5-8585-ca81ad97dc3a"}}}}, {"uuid": "f3ade929-9891-4676-a836-988e980214b4", "name": "", "limit_type": "min", "__metadata__": {"fields": {"module": "gdm.distribution.limitset", "type": "VoltageLimitSet", "serialized_type": "base"}}, "value": {"value": 0.26327172275046934, "units": "kilovolt", "__metadata__": {"fields": {"module": "gdm.quantities", "type": "PositiveVoltage", "serialized_type": "quantity"}}}}, {"uuid": "90d3d0fd-24e2-4108-85eb-a6bfd59c72f8", "name": "", "limit_type": "max", "__metadata__": {"fields": {"module": "gdm.distribution.limitset", "type": "VoltageLimitSet", "serialized_type": "base"}}, "value": {"value": 0.2909845356715714, "units": "kilovolt", "__metadata__": {"fields": {"module": "gdm.quantities", "type": "PositiveVoltage", "serialized_type": "quantity"}}}}, {"uuid": "208b0fd2-0a98-403e-8e04-93b17de570e1", "name": "", "x": 36.56885399412164, "y": -120.96155778160369, "crs": null, "__metadata__": {"fields": {"module": "infrasys.location", "type": "Location", "serialized_type": "base"}}}, {"uuid": "dc668a23-7708-48cd-9166-c9dff885f96e", "name": "p5rdt149lv", "substation": null, "feeder": null, "voltage_type": "line-to-ground", "phases": ["A", "B", "C"], "__metadata__": {"fields": {"module": "gdm.distribution.components.distribution_bus", "type": "DistributionBus", "serialized_type": "base"}}, "voltagelimits": [{"__metadata__": {"fields": {"module": "gdm.distribution.limitset", "type": "VoltageLimitSet", "serialized_type": "composed_component", "uuid": "f3ade929-9891-4676-a836-988e980214b4"}}}, {"__metadata__": {"fields": {"module": "gdm.distribution.limitset", "type": "VoltageLimitSet", "serialized_type": "composed_component", "uuid": "90d3d0fd-24e2-4108-85eb-a6bfd59c72f8"}}}], "nominal_voltage": {"value": 0.27712812921102037, "units": "kilovolt", "__metadata__": {"fields": {"module": "gdm.quantities", "type": "PositiveVoltage", "serialized_type": "quantity"}}}, "coordinate": {"__metadata__": {"fields": {"module": "infrasys.location", "type": "Location", "serialized_type": "composed_component", "uuid": "208b0fd2-0a98-403e-8e04-93b17de570e1"}}}}, {"uuid": "d8a2bf67-ffa9-4252-a8bb-c4c4f6e0b709", "name": "", "x": 36.56884369179864, "y": -120.96150686468123, "crs": null, "__metadata__": {"fields": {"module": "infrasys.location", "type": "Location", "serialized_type": "base"}}}, {"uuid": "6063e717-6a28-4840-a60c-211d2083ba36", "name": "p5rlv265", "substation": null, "feeder": null, "voltage_type": "line-to-ground", "phases": ["A", "B", "C"], "__metadata__": {"fields": {"module": "gdm.distribution.components.distribution_bus", "type": "DistributionBus", "serialized_type": "base"}}, "voltagelimits": [{"__metadata__": {"fields": {"module": "gdm.distribution.limitset", "type": "VoltageLimitSet", "serialized_type": "composed_component", "uuid": "f3ade929-9891-4676-a836-988e980214b4"}}}, {"__metadata__": {"fields": {"module": "gdm.distribution.limitset", "type": "VoltageLimitSet", "serialized_type": "composed_component", "uuid": "90d3d0fd-24e2-4108-85eb-a6bfd59c72f8"}}}], "nominal_voltage": {"value": 0.27712812921102037, "units": "kilovolt", "__metadata__": {"fields": {"module": "gdm.quantities", "type": "PositiveVoltage", "serialized_type": "quantity"}}}, "coordinate": {"__metadata__": {"fields": {"module": "infrasys.location", "type": "Location", "serialized_type": "composed_component", "uuid": "d8a2bf67-ffa9-4252-a8bb-c4c4f6e0b709"}}}}, {"uuid": "dba54f14-624c-40ad-9c99-9956171acf91", "name": "", "x": 36.588975013233814, "y": -120.97495604893834, "crs": null, "__metadata__": {"fields": {"module": "infrasys.location", "type": "Location", "serialized_type": "base"}}}, {"uuid": "d6114ce0-bac8-41eb-b4e2-b980f0b068a2", "name": "p5rdt22lv", "substation": null, "feeder": null, "voltage_type": "line-to-ground", "phases": ["A", "B", "C"], "__metadata__": {"fields": {"module": "gdm.distribution.components.distribution_bus", "type": "DistributionBus", "serialized_type": "base"}}, "voltagelimits": [{"__metadata__": {"fields": {"module": "gdm.distribution.limitset", "type": "VoltageLimitSet", "serialized_type": "composed_component", "uuid": "f3ade929-9891-4676-a836-988e980214b4"}}}, {"__metadata__": {"fields": {"module": "gdm.distribution.limitset", "type": "VoltageLimitSet", "serialized_type": "composed_component", "uuid": "90d3d0fd-24e2-4108-85eb-a6bfd59c72f8"}}}], "nominal_voltage": {"value": 0.27712812921102037, "units": "kilovolt", "__metadata__": {"fields": {"module": "gdm.quantities", "type": "PositiveVoltage", "serialized_type": "quantity"}}}, "coordinate": {"__metadata__": {"fields": {"module": "infrasys.location", "type": "Location", "serialized_type": "composed_component", "uuid": "dba54f14-624c-40ad-9c99-9956171acf91"}}}}, {"uuid": "14875738-6852-4ee9-b4be-0db97a68d02d", "name": "", "x": 36.58898169475094, "y": -120.9749855407454, "crs": null, "__metadata__": {"fields": {"module": "infrasys.location", "type": "Location", "serialized_type": "base"}}}, {"uuid": "6bca05db-e164-4c44-a057-7a66bcf9a717", "name": "p5rlv40", "substation": null, "feeder": null, "voltage_type": "line-to-ground", "phases": ["A", "B", "C"], "__metadata__": {"fields": {"module": "gdm.distribution.components.distribution_bus", "type": "DistributionBus", "serialized_type": "base"}}, "voltagelimits": [{"__metadata__": {"fields": {"module": "gdm.distribution.limitset", "type": "VoltageLimitSet", "serialized_type": "composed_component", "uuid": "f3ade929-9891-4676-a836-988e980214b4"}}}, {"__metadata__": {"fields": {"module": "gdm.distribution.limitset", "type": "VoltageLimitSet", "serialized_type": "composed_component", "uuid": "90d3d0fd-24e2-4108-85eb-a6bfd59c72f8"}}}], "nominal_voltage": {"value": 0.27712812921102037, "units": "kilovolt", "__metadata__": {"fields": {"module": "gdm.quantities", "type": "PositiveVoltage", "serialized_type": "quantity"}}}, "coordinate": {"__metadata__": {"fields": {"module": "infrasys.location", "type": "Location", "serialized_type": "composed_component", "uuid": "14875738-6852-4ee9-b4be-0db97a68d02d"}}}}, {"uuid": "b6897371-c3ce-4448-aadf-0651e27e9c00", "name": "", "x": 36.56887241444432, "y": -120.96160511254412, "crs": null, "__metadata__": {"fields": {"module": "infrasys.location", "type": "Location", "serialized_type": "base"}}}, {"uuid": "a9fd8883-f80f-492c-ad7b-6ed9f40c293a", "name": "p5rdt149", "substation": null, "feeder": null, "voltage_type": "line-to-ground", "phases": ["A", "B", "C"], "__metadata__": {"fields": {"module": "gdm.distribution.components.distribution_bus", "type": "DistributionBus", "serialized_type": "base"}}, "voltagelimits": [{"__metadata__": {"fields": {"module": "gdm.distribution.limitset", "type": "VoltageLimitSet", "serialized_type": "composed_component", "uuid": "6122a7d7-aa6d-4f97-8441-8439b1baffdd"}}}, {"__metadata__": {"fields": {"module": "gdm.distribution.limitset", "type": "VoltageLimitSet", "serialized_type": "composed_component", "uuid": "ebcdfbc9-0463-41c3-be0d-bf0f00e3033f"}}}], "nominal_voltage": {"value": 7.199557856794634, "units": "kilovolt", "__metadata__": {"fields": {"module": "gdm.quantities", "type": "PositiveVoltage", "serialized_type": "quantity"}}}, "coordinate": {"__metadata__": {"fields": {"module": "infrasys.location", "type": "Location", "serialized_type": "composed_component", "uuid": "b6897371-c3ce-4448-aadf-0651e27e9c00"}}}}, {"uuid": "ea0a569e-2321-488b-a9c9-0973b8374f46", "name": "", "x": 36.584033672730996, "y": -120.97076724677004, "crs": null, "__metadata__": {"fields": {"module": "infrasys.location", "type": "Location", "serialized_type": "base"}}}, {"uuid": "009db048-f421-46e1-a4a3-01fc3c75c232", "name": "p5rdt149-p5rdt22x", "substation": null, "feeder": null, "voltage_type": "line-to-ground", "phases": ["A", "B", "C"], "__metadata__": {"fields": {"module": "gdm.distribution.components.distribution_bus", "type": "DistributionBus", "serialized_type": "base"}}, "voltagelimits": [{"__metadata__": {"fields": {"module": "gdm.distribution.limitset", "type": "VoltageLimitSet", "serialized_type": "composed_component", "uuid": "6122a7d7-aa6d-4f97-8441-8439b1baffdd"}}}, {"__metadata__": {"fields": {"module": "gdm.distribution.limitset", "type": "VoltageLimitSet", "serialized_type": "composed_component", "uuid": "ebcdfbc9-0463-41c3-be0d-bf0f00e3033f"}}}], "nominal_voltage": {"value": 7.199557856794634, "units": "kilovolt", "__metadata__": {"fields": {"module": "gdm.quantities", "type": "PositiveVoltage", "serialized_type": "quantity"}}}, "coordinate": {"__metadata__": {"fields": {"module": "infrasys.location", "type": "Location", "serialized_type": "composed_component", "uuid": "ea0a569e-2321-488b-a9c9-0973b8374f46"}}}}, {"uuid": "6d086df3-30b3-47a2-96b6-9b15c261278c", "name": "", "x": 36.588933180522076, "y": -120.97494941278845, "crs": null, "__metadata__": {"fields": {"module": "infrasys.location", "type": "Location", "serialized_type": "base"}}}, {"uuid": "8a8cc197-ba59-4fdc-a907-f38d00e3779b", "name": "p5rdt22", "substation": null, "feeder": null, "voltage_type": "line-to-ground", "phases": ["A", "B", "C"], "__metadata__": {"fields": {"module": "gdm.distribution.components.distribution_bus", "type": "DistributionBus", "serialized_type": "base"}}, "voltagelimits": [{"__metadata__": {"fields": {"module": "gdm.distribution.limitset", "type": "VoltageLimitSet", "serialized_type": "composed_component", "uuid": "6122a7d7-aa6d-4f97-8441-8439b1baffdd"}}}, {"__metadata__": {"fields": {"module": "gdm.distribution.limitset", "type": "VoltageLimitSet", "serialized_type": "composed_component", "uuid": "ebcdfbc9-0463-41c3-be0d-bf0f00e3033f"}}}], "nominal_voltage": {"value": 7.199557856794634, "units": "kilovolt", "__metadata__": {"fields": {"module": "gdm.quantities", "type": "PositiveVoltage", "serialized_type": "quantity"}}}, "coordinate": {"__metadata__": {"fields": {"module": "infrasys.location", "type": "Location", "serialized_type": "composed_component", "uuid": "6d086df3-30b3-47a2-96b6-9b15c261278c"}}}}, {"uuid": "5fb6cb11-e914-4eea-b602-2887c05ed721", "name": "", "x": 36.593633797608774, "y": -120.92580511661268, "crs": null, "__metadata__": {"fields": {"module": "infrasys.location", "type": "Location", "serialized_type": "base"}}}, {"uuid": "bffd30fb-5a9a-4d75-8d40-148b60ee87fa", "name": "p5rdt149-p5rhs0_1247x_b2_1", "substation": null, "feeder": null, "voltage_type": "line-to-ground", "phases": ["A", "B", "C"], "__metadata__": {"fields": {"module": "gdm.distribution.components.distribution_bus", "type": "DistributionBus", "serialized_type": "base"}}, "voltagelimits": [{"__metadata__": {"fields": {"module": "gdm.distribution.limitset", "type": "VoltageLimitSet", "serialized_type": "composed_component", "uuid": "6122a7d7-aa6d-4f97-8441-8439b1baffdd"}}}, {"__metadata__": {"fields": {"module": "gdm.distribution.limitset", "type": "VoltageLimitSet", "serialized_type": "composed_component", "uuid": "ebcdfbc9-0463-41c3-be0d-bf0f00e3033f"}}}], "nominal_voltage": {"value": 7.199557856794634, "units": "kilovolt", "__metadata__": {"fields": {"module": "gdm.quantities", "type": "PositiveVoltage", "serialized_type": "quantity"}}}, "coordinate": {"__metadata__": {"fields": {"module": "infrasys.location", "type": "Location", "serialized_type": "composed_component", "uuid": "5fb6cb11-e914-4eea-b602-2887c05ed721"}}}}, {"uuid": "34a0591f-550d-465a-ad41-91fec56bccc3", "name": "b02bee68-b71d-4019-ae73-f3ecb526502f_1", "__metadata__": {"fields": {"module": "gdm.distribution.equipment.phase_voltagesource_equipment", "type": "PhaseVoltageSourceEquipment", "serialized_type": "base"}}, "r0": {"value": 1e-05, "units": "ohm", "__metadata__": {"fields": {"module": "infrasys.quantities", "type": "Resistance", "serialized_type": "quantity"}}}, "r1": {"value": 1e-05, "units": "ohm", "__metadata__": {"fields": {"module": "infrasys.quantities", "type": "Resistance", "serialized_type": "quantity"}}}, "x0": {"value": 1e-05, "units": "ohm", "__metadata__": {"fields": {"module": "gdm.quantities", "type": "Reactance", "serialized_type": "quantity"}}}, "x1": {"value": 1e-05, "units": "ohm", "__metadata__": {"fields": {"module": "gdm.quantities", "type": "Reactance", "serialized_type": "quantity"}}}, "voltage": {"value": 7.415762124711317, "units": "kilovolt", "__metadata__": {"fields": {"module": "infrasys.quantities", "type": "Voltage", "serialized_type": "quantity"}}}, "angle": {"value": 0.0, "units": "degree", "__metadata__": {"fields": {"module": "infrasys.quantities", "type": "Angle", "serialized_type": "quantity"}}}}, {"uuid": "a62d377d-1a05-4d8a-ba6b-fe3cc760dc2a", "name": "b02bee68-b71d-4019-ae73-f3ecb526502f_2", "__metadata__": {"fields": {"module": "gdm.distribution.equipment.phase_voltagesource_equipment", "type": "PhaseVoltageSourceEquipment", "serialized_type": "base"}}, "r0": {"value": 1e-05, "units": "ohm", "__metadata__": {"fields": {"module": "infrasys.quantities", "type": "Resistance", "serialized_type": "quantity"}}}, "r1": {"value": 1e-05, "units": "ohm", "__metadata__": {"fields": {"module": "infrasys.quantities", "type": "Resistance", "serialized_type": "quantity"}}}, "x0": {"value": 1e-05, "units": "ohm", "__metadata__": {"fields": {"module": "gdm.quantities", "type": "Reactance", "serialized_type": "quantity"}}}, "x1": {"value": 1e-05, "units": "ohm", "__metadata__": {"fields": {"module": "gdm.quantities", "type": "Reactance", "serialized_type": "quantity"}}}, "voltage": {"value": 7.415762124711317, "units": "kilovolt", "__metadata__": {"fields": {"module": "infrasys.quantities", "type": "Voltage", "serialized_type": "quantity"}}}, "angle": {"value": 120.0, "units": "degree", "__metadata__": {"fields": {"module": "infrasys.quantities", "type": "Angle", "serialized_type": "quantity"}}}}, {"uuid": "4c5b855a-23a0-40a9-925c-c75f52005c48", "name": "b02bee68-b71d-4019-ae73-f3ecb526502f_3", "__metadata__": {"fields": {"module": "gdm.distribution.equipment.phase_voltagesource_equipment", "type": "PhaseVoltageSourceEquipment", "serialized_type": "base"}}, "r0": {"value": 1e-05, "units": "ohm", "__metadata__": {"fields": {"module": "infrasys.quantities", "type": "Resistance", "serialized_type": "quantity"}}}, "r1": {"value": 1e-05, "units": "ohm", "__metadata__": {"fields": {"module": "infrasys.quantities", "type": "Resistance", "serialized_type": "quantity"}}}, "x0": {"value": 1e-05, "units": "ohm", "__metadata__": {"fields": {"module": "gdm.quantities", "type": "Reactance", "serialized_type": "quantity"}}}, "x1": {"value": 1e-05, "units": "ohm", "__metadata__": {"fields": {"module": "gdm.quantities", "type": "Reactance", "serialized_type": "quantity"}}}, "voltage": {"value": 7.415762124711317, "units": "kilovolt", "__metadata__": {"fields": {"module": "infrasys.quantities", "type": "Voltage", "serialized_type": "quantity"}}}, "angle": {"value": 240.0, "units": "degree", "__metadata__": {"fields": {"module": "infrasys.quantities", "type": "Angle", "serialized_type": "quantity"}}}}, {"uuid": "c9d1917f-eb96-4ad5-9aa6-85d6eced8770", "name": "b02bee68-b71d-4019-ae73-f3ecb526502f", "__metadata__": {"fields": {"module": "gdm.distribution.equipment.voltagesource_equipment", "type": "VoltageSourceEquipment", "serialized_type": "base"}}, "sources": [{"__metadata__": {"fields": {"module": "gdm.distribution.equipment.phase_voltagesource_equipment", "type": "PhaseVoltageSourceEquipment", "serialized_type": "composed_component", "uuid": "34a0591f-550d-465a-ad41-91fec56bccc3"}}}, {"__metadata__": {"fields": {"module": "gdm.distribution.equipment.phase_voltagesource_equipment", "type": "PhaseVoltageSourceEquipment", "serialized_type": "composed_component", "uuid": "a62d377d-1a05-4d8a-ba6b-fe3cc760dc2a"}}}, {"__metadata__": {"fields": {"module": "gdm.distribution.equipment.phase_voltagesource_equipment", "type": "PhaseVoltageSourceEquipment", "serialized_type": "composed_component", "uuid": "4c5b855a-23a0-40a9-925c-c75f52005c48"}}}]}, {"uuid": "4b10ec3d-4b5b-48db-b087-052a542e6ccf", "name": "source", "substation": null, "feeder": null, "phases": ["A", "B", "C"], "__metadata__": {"fields": {"module": "gdm.distribution.components.distribution_vsource", "type": "DistributionVoltageSource", "serialized_type": "base"}}, "bus": {"__metadata__": {"fields": {"module": "gdm.distribution.components.distribution_bus", "type": "DistributionBus", "serialized_type": "composed_component", "uuid": "52b25c35-1cb2-4161-a35a-2a5d194dd677"}}}, "equipment": {"__metadata__": {"fields": {"module": "gdm.distribution.equipment.voltagesource_equipment", "type": "VoltageSourceEquipment", "serialized_type": "composed_component", "uuid": "c9d1917f-eb96-4ad5-9aa6-85d6eced8770"}}}}, {"uuid": "3389fcae-25dc-40bb-a674-941a47eba7c2", "name": "9a87caee-c48a-4a9e-818d-080901cf68f5_1", "num_banks_on": 1, "num_banks": 1, "__metadata__": {"fields": {"module": "gdm.distribution.equipment.phase_capacitor_equipment", "type": "PhaseCapacitorEquipment", "serialized_type": "base"}}, "resistance": {"value": 0, "units": "ohm", "__metadata__": {"fields": {"module": "gdm.quantities", "type": "PositiveResistance", "serialized_type": "quantity"}}}, "reactance": {"value": 0, "units": "ohm", "__metadata__": {"fields": {"module": "gdm.quantities", "type": "PositiveReactance", "serialized_type": "quantity"}}}, "rated_capacity": {"value": 200.0, "units": "kilovar", "__metadata__": {"fields": {"module": "gdm.quantities", "type": "PositiveReactivePower", "serialized_type": "quantity"}}}}, {"uuid": "a2a0f646-11ac-459b-8922-f8fa91487bc7", "name": "9a87caee-c48a-4a9e-818d-080901cf68f5", "connection_type": "STAR", "__metadata__": {"fields": {"module": "gdm.distribution.equipment.capacitor_equipment", "type": "CapacitorEquipment", "serialized_type": "base"}}, "phase_capacitors": [{"__metadata__": {"fields": {"module": "gdm.distribution.equipment.phase_capacitor_equipment", "type": "PhaseCapacitorEquipment", "serialized_type": "composed_component", "uuid": "3389fcae-25dc-40bb-a674-941a47eba7c2"}}}, {"__metadata__": {"fields": {"module": "gdm.distribution.equipment.phase_capacitor_equipment", "type": "PhaseCapacitorEquipment", "serialized_type": "composed_component", "uuid": "3389fcae-25dc-40bb-a674-941a47eba7c2"}}}, {"__metadata__": {"fields": {"module": "gdm.distribution.equipment.phase_capacitor_equipment", "type": "PhaseCapacitorEquipment", "serialized_type": "composed_component", "uuid": "3389fcae-25dc-40bb-a674-941a47eba7c2"}}}]}, {"uuid": "7337f960-4a8f-4e7f-8a49-b46bbb097731", "name": "p5rc2", "substation": null, "feeder": null, "phases": ["A", "B", "C"], "controllers": [], "__metadata__": {"fields": {"module": "gdm.distribution.components.distribution_capacitor", "type": "DistributionCapacitor", "serialized_type": "base"}}, "bus": {"__metadata__": {"fields": {"module": "gdm.distribution.components.distribution_bus", "type": "DistributionBus", "serialized_type": "composed_component", "uuid": "a9fd8883-f80f-492c-ad7b-6ed9f40c293a"}}}, "equipment": {"__metadata__": {"fields": {"module": "gdm.distribution.equipment.capacitor_equipment", "type": "CapacitorEquipment", "serialized_type": "composed_component", "uuid": "a2a0f646-11ac-459b-8922-f8fa91487bc7"}}}}, {"uuid": "0bc3867b-af37-447c-8632-326a5fcf4bf3", "name": "41029e77-0e56-4a01-8b68-d0445c8ea459_1", "z_real": 0.0, "z_imag": 0.0, "i_real": 0.0, "i_imag": 0.0, "p_real": 1.0, "p_imag": 1.0, "num_customers": null, "__metadata__": {"fields": {"module": "gdm.distribution.equipment.phase_load_equipment", "type": "PhaseLoadEquipment", "serialized_type": "base"}}, "real_power": {"value": 1.7112579411992943, "units": "kilowatt", "__metadata__": {"fields": {"module": "infrasys.quantities", "type": "ActivePower", "serialized_type": "quantity"}}}, "reactive_power": {"value": 0.39676444188146887, "units": "kilovar", "__metadata__": {"fields": {"module": "gdm.quantities", "type": "ReactivePower", "serialized_type": "quantity"}}}}, {"uuid": "783ce3f6-c6b9-43ff-85e6-b16088832f0b", "name": "41029e77-0e56-4a01-8b68-d0445c8ea459_2", "z_real": 0.0, "z_imag": 0.0, "i_real": 0.0, "i_imag": 0.0, "p_real": 1.0, "p_imag": 1.0, "num_customers": null, "__metadata__": {"fields": {"module": "gdm.distribution.equipment.phase_load_equipment", "type": "PhaseLoadEquipment", "serialized_type": "base"}}, "real_power": {"value": 1.7112579411992943, "units": "kilowatt", "__metadata__": {"fields": {"module": "infrasys.quantities", "type": "ActivePower", "serialized_type": "quantity"}}}, "reactive_power": {"value": 0.39676444188146887, "units": "kilovar", "__metadata__": {"fields": {"module": "gdm.quantities", "type": "ReactivePower", "serialized_type": "quantity"}}}}, {"uuid": "f80515cb-7e9c-48ee-bbbf-4dd2f6263dc1", "name": "41029e77-0e56-4a01-8b68-d0445c8ea459_3", "z_real": 0.0, "z_imag": 0.0, "i_real": 0.0, "i_imag": 0.0, "p_real": 1.0, "p_imag": 1.0, "num_customers": null, "__metadata__": {"fields": {"module": "gdm.distribution.equipment.phase_load_equipment", "type": "PhaseLoadEquipment", "serialized_type": "base"}}, "real_power": {"value": 1.7112579411992943, "units": "kilowatt", "__metadata__": {"fields": {"module": "infrasys.quantities", "type": "ActivePower", "serialized_type": "quantity"}}}, "reactive_power": {"value": 0.39676444188146887, "units": "kilovar", "__metadata__": {"fields": {"module": "gdm.quantities", "type": "ReactivePower", "serialized_type": "quantity"}}}}, {"uuid": "3414ee0c-4af1-45a2-b998-d443b780439f", "name": "af36023d-cf24-4cfc-93e2-4a28dab99e5c", "connection_type": "STAR", "__metadata__": {"fields": {"module": "gdm.distribution.equipment.load_equipment", "type": "LoadEquipment", "serialized_type": "base"}}, "phase_loads": [{"__metadata__": {"fields": {"module": "gdm.distribution.equipment.phase_load_equipment", "type": "PhaseLoadEquipment", "serialized_type": "composed_component", "uuid": "0bc3867b-af37-447c-8632-326a5fcf4bf3"}}}, {"__metadata__": {"fields": {"module": "gdm.distribution.equipment.phase_load_equipment", "type": "PhaseLoadEquipment", "serialized_type": "composed_component", "uuid": "783ce3f6-c6b9-43ff-85e6-b16088832f0b"}}}, {"__metadata__": {"fields": {"module": "gdm.distribution.equipment.phase_load_equipment", "type": "PhaseLoadEquipment", "serialized_type": "composed_component", "uuid": "f80515cb-7e9c-48ee-bbbf-4dd2f6263dc1"}}}]}, {"uuid": "d4995f03-98dc-45b3-8286-d6d09fc658ad", "name": "load_p5rlv40", "substation": null, "feeder": null, "phases": ["A", "B", "C"], "__metadata__": {"fields": {"module": "gdm.distribution.components.distribution_load", "type": "DistributionLoad", "serialized_type": "base"}}, "bus": {"__metadata__": {"fields": {"module": "gdm.distribution.components.distribution_bus", "type": "DistributionBus", "serialized_type": "composed_component", "uuid": "6bca05db-e164-4c44-a057-7a66bcf9a717"}}}, "equipment": {"__metadata__": {"fields": {"module": "gdm.distribution.equipment.load_equipment", "type": "LoadEquipment", "serialized_type": "composed_component", "uuid": "3414ee0c-4af1-45a2-b998-d443b780439f"}}}}, {"uuid": "74055dd6-a476-40b9-bec2-27a4b9a3b605", "name": "6a6be146-995c-45a8-b8ea-4ad68a7f73ef_1", "z_real": 0.0, "z_imag": 0.0, "i_real": 0.0, "i_imag": 0.0, "p_real": 1.0, "p_imag": 1.0, "num_customers": null, "__metadata__": {"fields": {"module": "gdm.distribution.equipment.phase_load_equipment", "type": "PhaseLoadEquipment", "serialized_type": "base"}}, "real_power": {"value": 1.4061184464862206, "units": "kilowatt", "__metadata__": {"fields": {"module": "infrasys.quantities", "type": "ActivePower", "serialized_type": "quantity"}}}, "reactive_power": {"value": 0.3657795526143532, "units": "kilovar", "__metadata__": {"fields": {"module": "gdm.quantities", "type": "ReactivePower", "serialized_type": "quantity"}}}}, {"uuid": "9f1debd4-718e-4948-97d9-895faadaa32e", "name": "6a6be146-995c-45a8-b8ea-4ad68a7f73ef_2", "z_real": 0.0, "z_imag": 0.0, "i_real": 0.0, "i_imag": 0.0, "p_real": 1.0, "p_imag": 1.0, "num_customers": null, "__metadata__": {"fields": {"module": "gdm.distribution.equipment.phase_load_equipment", "type": "PhaseLoadEquipment", "serialized_type": "base"}}, "real_power": {"value": 1.4061184464862206, "units": "kilowatt", "__metadata__": {"fields": {"module": "infrasys.quantities", "type": "ActivePower", "serialized_type": "quantity"}}}, "reactive_power": {"value": 0.3657795526143532, "units": "kilovar", "__metadata__": {"fields": {"module": "gdm.quantities", "type": "ReactivePower", "serialized_type": "quantity"}}}}, {"uuid": "f02444f0-e7d0-4255-81e5-3422d3f497f9", "name": "6a6be146-995c-45a8-b8ea-4ad68a7f73ef_3", "z_real": 0.0, "z_imag": 0.0, "i_real": 0.0, "i_imag": 0.0, "p_real": 1.0, "p_imag": 1.0, "num_customers": null, "__metadata__": {"fields": {"module": "gdm.distribution.equipment.phase_load_equipment", "type": "PhaseLoadEquipment", "serialized_type": "base"}}, "real_power": {"value": 1.4061184464862206, "units": "kilowatt", "__metadata__": {"fields": {"module": "infrasys.quantities", "type": "ActivePower", "serialized_type": "quantity"}}}, "reactive_power": {"value": 0.3657795526143532, "units": "kilovar", "__metadata__": {"fields": {"module": "gdm.quantities", "type": "ReactivePower", "serialized_type": "quantity"}}}}, {"uuid": "fde355fe-4efc-4785-a011-39f09c08798e", "name": "9362efa3-6fa2-4c68-80bf-fd1f5704d8ee", "connection_type": "STAR", "__metadata__": {"fields": {"module": "gdm.distribution.equipment.load_equipment", "type": "LoadEquipment", "serialized_type": "base"}}, "phase_loads": [{"__metadata__": {"fields": {"module": "gdm.distribution.equipment.phase_load_equipment", "type": "PhaseLoadEquipment", "serialized_type": "composed_component", "uuid": "74055dd6-a476-40b9-bec2-27a4b9a3b605"}}}, {"__metadata__": {"fields": {"module": "gdm.distribution.equipment.phase_load_equipment", "type": "PhaseLoadEquipment", "serialized_type": "composed_component", "uuid": "9f1debd4-718e-4948-97d9-895faadaa32e"}}}, {"__metadata__": {"fields": {"module": "gdm.distribution.equipment.phase_load_equipment", "type": "PhaseLoadEquipment", "serialized_type": "composed_component", "uuid": "f02444f0-e7d0-4255-81e5-3422d3f497f9"}}}]}, {"uuid": "7cbf241d-0199-4b1b-98ff-a88bc8a487f4", "name": "load_p5rlv265", "substation": null, "feeder": null, "phases": ["A", "B", "C"], "__metadata__": {"fields": {"module": "gdm.distribution.components.distribution_load", "type": "DistributionLoad", "serialized_type": "base"}}, "bus": {"__metadata__": {"fields": {"module": "gdm.distribution.components.distribution_bus", "type": "DistributionBus", "serialized_type": "composed_component", "uuid": "6063e717-6a28-4840-a60c-211d2083ba36"}}}, "equipment": {"__metadata__": {"fields": {"module": "gdm.distribution.equipment.load_equipment", "type": "LoadEquipment", "serialized_type": "composed_component", "uuid": "fde355fe-4efc-4785-a011-39f09c08798e"}}}}, {"uuid": "9a75a09f-9a6c-4928-a4fa-917031b929f1", "name": "b4bb7543-35ed-45d0-a897-fe5b37a28f2c", "rise_limit": null, "fall_limit": null, "eff_curve": null, "__metadata__": {"fields": {"module": "gdm.distribution.equipment.inverter_equipment", "type": "InverterEquipment", "serialized_type": "base"}}, "capacity": {"value": 2.5, "units": "kilova", "__metadata__": {"fields": {"module": "gdm.quantities", "type": "PositiveApparentPower", "serialized_type": "quantity"}}}}, {"uuid": "a8f1a69c-855e-407e-aa2f-f84f20868b0c", "name": "e9ccb22e-f8c2-4b8a-9d1b-ac0a4e3d06e2", "power_factor": 1.0, "__metadata__": {"fields": {"module": "gdm.distribution.controllers.distribution_inverter_controller", "type": "PowerfactorInverterController", "serialized_type": "base"}}, "equipment": {"__metadata__": {"fields": {"module": "gdm.distribution.equipment.inverter_equipment", "type": "InverterEquipment", "serialized_type": "composed_component", "uuid": "9a75a09f-9a6c-4928-a4fa-917031b929f1"}}}}, {"uuid": "0e9ce9a5-af39-4295-ba2f-14b278d4b18c", "name": "f821b507-4cbd-4f3f-964e-278ecad2ef39", "resistance": 50.0, "reactance": 0.0, "cutout_percent": 0.1, "cutin_percent": 0.1, "__metadata__": {"fields": {"module": "gdm.distribution.equipment.solar_equipment", "type": "SolarEquipment", "serialized_type": "base"}}, "rated_capacity": {"value": 2.5, "units": "kilova", "__metadata__": {"fields": {"module": "gdm.quantities", "type": "PositiveActivePower", "serialized_type": "quantity"}}}, "solar_power": {"value": 3.0, "units": "kilova", "__metadata__": {"fields": {"module": "gdm.quantities", "type": "PositiveActivePower", "serialized_type": "quantity"}}}}, {"uuid": "aab4d7c4-46cc-4589-9c44-d335c9093ae5", "name": "pv_load_p5rlv40", "substation": null, "feeder": null, "phases": ["A", "B", "C"], "__metadata__": {"fields": {"module": "gdm.distribution.components.distribution_solar", "type": "DistributionSolar", "serialized_type": "base"}}, "bus": {"__metadata__": {"fields": {"module": "gdm.distribution.components.distribution_bus", "type": "DistributionBus", "serialized_type": "composed_component", "uuid": "6bca05db-e164-4c44-a057-7a66bcf9a717"}}}, "controller": {"__metadata__": {"fields": {"module": "gdm.distribution.controllers.distribution_inverter_controller", "type": "PowerfactorInverterController", "serialized_type": "composed_component", "uuid": "a8f1a69c-855e-407e-aa2f-f84f20868b0c"}}}, "equipment": {"__metadata__": {"fields": {"module": "gdm.distribution.equipment.solar_equipment", "type": "SolarEquipment", "serialized_type": "composed_component", "uuid": "0e9ce9a5-af39-4295-ba2f-14b278d4b18c"}}}}, {"uuid": "e53048b2-927c-4cee-b34c-978eb2754207", "name": "a81f46f4-cfec-4369-bff1-6d900dd0e551", "rise_limit": null, "fall_limit": null, "eff_curve": null, "__metadata__": {"fields": {"module": "gdm.distribution.equipment.inverter_equipment", "type": "InverterEquipment", "serialized_type": "base"}}, "capacity": {"value": 2.5, "units": "kilova", "__metadata__": {"fields": {"module": "gdm.quantities", "type": "PositiveApparentPower", "serialized_type": "quantity"}}}}, {"uuid": "df906e52-1f60-439e-9144-157d4575faf6", "name": "d72bce79-5310-4956-beb1-d21e35828bdc", "power_factor": 1.0, "__metadata__": {"fields": {"module": "gdm.distribution.controllers.distribution_inverter_controller", "type": "PowerfactorInverterController", "serialized_type": "base"}}, "equipment": {"__metadata__": {"fields": {"module": "gdm.distribution.equipment.inverter_equipment", "type": "InverterEquipment", "serialized_type": "composed_component", "uuid": "e53048b2-927c-4cee-b34c-978eb2754207"}}}}, {"uuid": "f2d1d2b1-26b3-4e0c-acb1-3d7073967548", "name": "7a446e78-7c91-4f6a-89a6-663680309de6", "resistance": 50.0, "reactance": 0.0, "cutout_percent": 0.1, "cutin_percent": 0.1, "__metadata__": {"fields": {"module": "gdm.distribution.equipment.solar_equipment", "type": "SolarEquipment", "serialized_type": "base"}}, "rated_capacity": {"value": 2.5, "units": "kilova", "__metadata__": {"fields": {"module": "gdm.quantities", "type": "PositiveActivePower", "serialized_type": "quantity"}}}, "solar_power": {"value": 5.0, "units": "kilova", "__metadata__": {"fields": {"module": "gdm.quantities", "type": "PositiveActivePower", "serialized_type": "quantity"}}}}, {"uuid": "10d6279f-aab2-46df-ad83-351d6dbfb367", "name": "pv_load_p5rlv40_1", "substation": null, "feeder": null, "phases": ["A", "B", "C"], "__metadata__": {"fields": {"module": "gdm.distribution.components.distribution_solar", "type": "DistributionSolar", "serialized_type": "base"}}, "bus": {"__metadata__": {"fields": {"module": "gdm.distribution.components.distribution_bus", "type": "DistributionBus", "serialized_type": "composed_component", "uuid": "6bca05db-e164-4c44-a057-7a66bcf9a717"}}}, "controller": {"__metadata__": {"fields": {"module": "gdm.distribution.controllers.distribution_inverter_controller", "type": "PowerfactorInverterController", "serialized_type": "composed_component", "uuid": "df906e52-1f60-439e-9144-157d4575faf6"}}}, "equipment": {"__metadata__": {"fields": {"module": "gdm.distribution.equipment.solar_equipment", "type": "SolarEquipment", "serialized_type": "composed_component", "uuid": "f2d1d2b1-26b3-4e0c-acb1-3d7073967548"}}}}, {"uuid": "d71b9398-be77-4a13-9e84-3ac5fcaf6a3a", "name": "", "resistance": 0.87204, "is_grounded": false, "voltage_type": "line-to-ground", "num_phases": 3, "connection_type": "DELTA", "tap_positions": [1.0, 1.0, 1.0], "total_taps": 32, "min_tap_pu": 0.9, "max_tap_pu": 1.1, "__metadata__": {"fields": {"module": "gdm.distribution.equipment.distribution_transformer_equipment", "type": "WindingEquipment", "serialized_type": "base"}}, "nominal_voltage": {"value": 7.199769053117783, "units": "kilovolt", "__metadata__": {"fields": {"module": "gdm.quantities", "type": "PositiveVoltage", "serialized_type": "quantity"}}}, "rated_power": {"value": 75.0, "units": "kilova", "__metadata__": {"fields": {"module": "gdm.quantities", "type": "PositiveApparentPower", "serialized_type": "quantity"}}}}, {"uuid": "b81a5c5e-b79d-4fa0-a9dd-4c3b3e427a07", "name": "", "resistance": 0.87204, "is_grounded": false, "voltage_type": "line-to-ground", "num_phases": 3, "connection_type": "STAR", "tap_positions": [1.0, 1.0, 1.0], "total_taps": 32, "min_tap_pu": 0.9, "max_tap_pu": 1.1, "__metadata__": {"fields": {"module": "gdm.distribution.equipment.distribution_transformer_equipment", "type": "WindingEquipment", "serialized_type": "base"}}, "nominal_voltage": {"value": 0.27713625866050806, "units": "kilovolt", "__metadata__": {"fields": {"module": "gdm.quantities", "type": "PositiveVoltage", "serialized_type": "quantity"}}}, "rated_power": {"value": 75.0, "units": "kilova", "__metadata__": {"fields": {"module": "gdm.quantities", "type": "PositiveApparentPower", "serialized_type": "quantity"}}}}, {"uuid": "0297004c-3627-4d55-8b04-6fd1eeb5f2c1", "name": "be47fb70-96da-4be2-8955-cfefa3c6f573", "pct_no_load_loss": 0.6, "pct_full_load_loss": 1.74408, "coupling_sequences": [[1, 2]], "winding_reactances": [3.24], "is_center_tapped": false, "__metadata__": {"fields": {"module": "gdm.distribution.equipment.distribution_transformer_equipment", "type": "DistributionTransformerEquipment", "serialized_type": "base"}}, "windings": [{"__metadata__": {"fields": {"module": "gdm.distribution.equipment.distribution_transformer_equipment", "type": "WindingEquipment", "serialized_type": "composed_component", "uuid": "d71b9398-be77-4a13-9e84-3ac5fcaf6a3a"}}}, {"__metadata__": {"fields": {"module": "gdm.distribution.equipment.distribution_transformer_equipment", "type": "WindingEquipment", "serialized_type": "composed_component", "uuid": "b81a5c5e-b79d-4fa0-a9dd-4c3b3e427a07"}}}]}, {"uuid": "f8c08481-31cd-478f-8469-f0b00c4a69c2", "name": "tr(r:p5rdt149-p5rdt149lv)", "substation": null, "feeder": null, "winding_phases": [["A", "B", "C"], ["A", "B", "C"]], "__metadata__": {"fields": {"module": "gdm.distribution.components.distribution_transformer", "type": "DistributionTransformer", "serialized_type": "base"}}, "buses": [{"__metadata__": {"fields": {"module": "gdm.distribution.components.distribution_bus", "type": "DistributionBus", "serialized_type": "composed_component", "uuid": "a9fd8883-f80f-492c-ad7b-6ed9f40c293a"}}}, {"__metadata__": {"fields": {"module": "gdm.distribution.components.distribution_bus", "type": "DistributionBus", "serialized_type": "composed_component", "uuid": "dc668a23-7708-48cd-9166-c9dff885f96e"}}}], "equipment": {"__metadata__": {"fields": {"module": "gdm.distribution.equipment.distribution_transformer_equipment", "type": "DistributionTransformerEquipment", "serialized_type": "composed_component", "uuid": "0297004c-3627-4d55-8b04-6fd1eeb5f2c1"}}}}, {"uuid": "6f700206-e7f0-4f1b-9143-ef28b46304d2", "name": "tr(r:p5rdt22-p5rdt22lv)", "substation": null, "feeder": null, "winding_phases": [["A", "B", "C"], ["A", "B", "C"]], "__metadata__": {"fields": {"module": "gdm.distribution.components.distribution_transformer", "type": "DistributionTransformer", "serialized_type": "base"}}, "buses": [{"__metadata__": {"fields": {"module": "gdm.distribution.components.distribution_bus", "type": "DistributionBus", "serialized_type": "composed_component", "uuid": "8a8cc197-ba59-4fdc-a907-f38d00e3779b"}}}, {"__metadata__": {"fields": {"module": "gdm.distribution.components.distribution_bus", "type": "DistributionBus", "serialized_type": "composed_component", "uuid": "d6114ce0-bac8-41eb-b4e2-b980f0b068a2"}}}], "equipment": {"__metadata__": {"fields": {"module": "gdm.distribution.equipment.distribution_transformer_equipment", "type": "DistributionTransformerEquipment", "serialized_type": "composed_component", "uuid": "0297004c-3627-4d55-8b04-6fd1eeb5f2c1"}}}}, {"uuid": "00c9df40-d9d9-4500-ae0b-1110382484ac", "name": "", "limit_type": "max", "__metadata__": {"fields": {"module": "gdm.distribution.limitset", "type": "ThermalLimitSet", "serialized_type": "base"}}, "value": {"value": 600.0, "units": "ampere", "__metadata__": {"fields": {"module": "gdm.quantities", "type": "PositiveCurrent", "serialized_type": "quantity"}}}}, {"uuid": "b47ffc41-1f5b-4a0c-a0ef-6df36573f6b3", "name": "4b2d3943-3bfd-4ca5-922e-75ee9ba73ce7", "controller": null, "__metadata__": {"fields": {"module": "gdm.distribution.equipment.matrix_impedance_switch_equipment", "type": "MatrixImpedanceSwitchEquipment", "serialized_type": "base"}}, "r_matrix": {"value": [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]], "units": "ohm / meter", "__metadata__": {"fields": {"module": "gdm.quantities", "type": "ResistancePULength", "serialized_type": "quantity"}}}, "x_matrix": {"value": [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]], "units": "ohm / meter", "__metadata__": {"fields": {"module": "gdm.quantities", "type": "ReactancePULength", "serialized_type": "quantity"}}}, "c_matrix": {"value": [[1.0666666666666669, -0.03333333333333336, -0.03333333333333336], [-0.03333333333333336, 1.0666666666666669, -0.03333333333333336], [-0.03333333333333336, -0.03333333333333336, 1.0666666666666669]], "units": "nanofarad / meter", "__metadata__": {"fields": {"module": "gdm.quantities", "type": "CapacitancePULength", "serialized_type": "quantity"}}}, "ampacity": {"value": 325.0, "units": "ampere", "__metadata__": {"fields": {"module": "gdm.quantities", "type": "PositiveCurrent", "serialized_type": "quantity"}}}, "loading_limit": {"__metadata__": {"fields": {"module": "gdm.distribution.limitset", "type": "ThermalLimitSet", "serialized_type": "composed_component", "uuid": "00c9df40-d9d9-4500-ae0b-1110382484ac"}}}}, {"uuid": "1bc7d444-4e57-4075-a58a-c08908331c7e", "name": "3p_oh_al_acsr_4/0_penguin_3", "__metadata__": {"fields": {"module": "gdm.distribution.equipment.matrix_impedance_branch_equipment", "type": "MatrixImpedanceBranchEquipment", "serialized_type": "base"}}, "r_matrix": {"value": [[0.3635667, 0.09006667, 0.09006667], [0.09006667, 0.3635667, 0.09006667], [0.09006667, 0.09006667, 0.3635667]], "units": "ohm / kilometer", "__metadata__": {"fields": {"module": "gdm.quantities", "type": "ResistancePULength", "serialized_type": "quantity"}}}, "x_matrix": {"value": [[0.6385333, 0.2202333, 0.2202333], [0.2202333, 0.6385333, 0.2202333], [0.2202333, 0.2202333, 0.6385333]], "units": "ohm / kilometer", "__metadata__": {"fields": {"module": "gdm.quantities", "type": "ReactancePULength", "serialized_type": "quantity"}}}, "c_matrix": {"value": [[7.4482669999999995, -3.1846329999999994, -3.1846329999999994], [-3.1846329999999994, 7.4482669999999995, -3.1846329999999994], [-3.1846329999999994, -3.1846329999999994, 7.4482669999999995]], "units": "nanofarad / kilometer", "__metadata__": {"fields": {"module": "gdm.quantities", "type": "CapacitancePULength", "serialized_type": "quantity"}}}, "ampacity": {"value": 325.0, "units": "ampere", "__metadata__": {"fields": {"module": "gdm.quantities", "type": "PositiveCurrent", "serialized_type": "quantity"}}}, "loading_limit": {"__metadata__": {"fields": {"module": "gdm.distribution.limitset", "type": "ThermalLimitSet", "serialized_type": "composed_component", "uuid": "00c9df40-d9d9-4500-ae0b-1110382484ac"}}}}, {"uuid": "7648aa1d-06d1-4439-825c-c9891e6ea4c7", "name": "3p_ug_al_3", "__metadata__": {"fields": {"module": "gdm.distribution.equipment.matrix_impedance_branch_equipment", "type": "MatrixImpedanceBranchEquipment", "serialized_type": "base"}}, "r_matrix": {"value": [[0.445, 0.1745, 0.1745], [0.1745, 0.445, 0.1745], [0.1745, 0.1745, 0.445]], "units": "ohm / kilometer", "__metadata__": {"fields": {"module": "gdm.quantities", "type": "ResistancePULength", "serialized_type": "quantity"}}}, "x_matrix": {"value": [[0.5326, 0.2912, 0.2912], [0.2912, 0.5326, 0.2912], [0.2912, 0.2912, 0.5326]], "units": "ohm / kilometer", "__metadata__": {"fields": {"module": "gdm.quantities", "type": "ReactancePULength", "serialized_type": "quantity"}}}, "c_matrix": {"value": [[145.291, -72.088, -72.088], [-72.088, 145.291, -72.088], [-72.088, -72.088, 145.291]], "units": "nanofarad / kilometer", "__metadata__": {"fields": {"module": "gdm.quantities", "type": "CapacitancePULength", "serialized_type": "quantity"}}}, "ampacity": {"value": 285.0, "units": "ampere", "__metadata__": {"fields": {"module": "gdm.quantities", "type": "PositiveCurrent", "serialized_type": "quantity"}}}, "loading_limit": {"__metadata__": {"fields": {"module": "gdm.distribution.limitset", "type": "ThermalLimitSet", "serialized_type": "composed_component", "uuid": "00c9df40-d9d9-4500-ae0b-1110382484ac"}}}}, {"uuid": "40226c46-1c4b-4cf3-a6c5-f8fb251e6cc3", "name": "l(r:p5rdt149-p5rhs0_1247)", "substation": null, "feeder": null, "phases": ["A", "B", "C"], "__metadata__": {"fields": {"module": "gdm.distribution.components.matrix_impedance_branch", "type": "MatrixImpedanceBranch", "serialized_type": "base"}}, "buses": [{"__metadata__": {"fields": {"module": "gdm.distribution.components.distribution_bus", "type": "DistributionBus", "serialized_type": "composed_component", "uuid": "52b25c35-1cb2-4161-a35a-2a5d194dd677"}}}, {"__metadata__": {"fields": {"module": "gdm.distribution.components.distribution_bus", "type": "DistributionBus", "serialized_type": "composed_component", "uuid": "8d049281-e726-42f4-946e-b6db31507d22"}}}], "length": {"value": 0.561451, "units": "kilometer", "__metadata__": {"fields": {"module": "gdm.quantities", "type": "PositiveDistance", "serialized_type": "quantity"}}}, "equipment": {"__metadata__": {"fields": {"module": "gdm.distribution.equipment.matrix_impedance_branch_equipment", "type": "MatrixImpedanceBranchEquipment", "serialized_type": "composed_component", "uuid": "1bc7d444-4e57-4075-a58a-c08908331c7e"}}}}, {"uuid": "eac1e490-1106-45a6-9abe-3e41d1459206", "name": "l(r:p5rdt149lv-p5rlv265)", "substation": null, "feeder": null, "phases": ["A", "B", "C"], "__metadata__": {"fields": {"module": "gdm.distribution.components.matrix_impedance_branch", "type": "MatrixImpedanceBranch", "serialized_type": "base"}}, "buses": [{"__metadata__": {"fields": {"module": "gdm.distribution.components.distribution_bus", "type": "DistributionBus", "serialized_type": "composed_component", "uuid": "dc668a23-7708-48cd-9166-c9dff885f96e"}}}, {"__metadata__": {"fields": {"module": "gdm.distribution.components.distribution_bus", "type": "DistributionBus", "serialized_type": "composed_component", "uuid": "6063e717-6a28-4840-a60c-211d2083ba36"}}}], "length": {"value": 0.001, "units": "kilometer", "__metadata__": {"fields": {"module": "gdm.quantities", "type": "PositiveDistance", "serialized_type": "quantity"}}}, "equipment": {"__metadata__": {"fields": {"module": "gdm.distribution.equipment.matrix_impedance_branch_equipment", "type": "MatrixImpedanceBranchEquipment", "serialized_type": "composed_component", "uuid": "7648aa1d-06d1-4439-825c-c9891e6ea4c7"}}}}, {"uuid": "10db5fb8-2c54-4f54-92ae-b0eadf11962f", "name": "l(r:p5rdt22lv-p5rlv40)", "substation": null, "feeder": null, "phases": ["A", "B", "C"], "__metadata__": {"fields": {"module": "gdm.distribution.components.matrix_impedance_branch", "type": "MatrixImpedanceBranch", "serialized_type": "base"}}, "buses": [{"__metadata__": {"fields": {"module": "gdm.distribution.components.distribution_bus", "type": "DistributionBus", "serialized_type": "composed_component", "uuid": "d6114ce0-bac8-41eb-b4e2-b980f0b068a2"}}}, {"__metadata__": {"fields": {"module": "gdm.distribution.components.distribution_bus", "type": "DistributionBus", "serialized_type": "composed_component", "uuid": "6bca05db-e164-4c44-a057-7a66bcf9a717"}}}], "length": {"value": 0.004450080000000001, "units": "kilometer", "__metadata__": {"fields": {"module": "gdm.quantities", "type": "PositiveDistance", "serialized_type": "quantity"}}}, "equipment": {"__metadata__": {"fields": {"module": "gdm.distribution.equipment.matrix_impedance_branch_equipment", "type": "MatrixImpedanceBranchEquipment", "serialized_type": "composed_component", "uuid": "7648aa1d-06d1-4439-825c-c9891e6ea4c7"}}}}, {"uuid": "ac79bf47-3031-44bc-acd6-c0cc14602b76", "name": "l(r:p5rdt149-p5rdt22)_s0", "substation": null, "feeder": null, "phases": ["A", "B", "C"], "__metadata__": {"fields": {"module": "gdm.distribution.components.matrix_impedance_branch", "type": "MatrixImpedanceBranch", "serialized_type": "base"}}, "buses": [{"__metadata__": {"fields": {"module": "gdm.distribution.components.distribution_bus", "type": "DistributionBus", "serialized_type": "composed_component", "uuid": "a9fd8883-f80f-492c-ad7b-6ed9f40c293a"}}}, {"__metadata__": {"fields": {"module": "gdm.distribution.components.distribution_bus", "type": "DistributionBus", "serialized_type": "composed_component", "uuid": "009db048-f421-46e1-a4a3-01fc3c75c232"}}}], "length": {"value": 0.829829, "units": "kilometer", "__metadata__": {"fields": {"module": "gdm.quantities", "type": "PositiveDistance", "serialized_type": "quantity"}}}, "equipment": {"__metadata__": {"fields": {"module": "gdm.distribution.equipment.matrix_impedance_branch_equipment", "type": "MatrixImpedanceBranchEquipment", "serialized_type": "composed_component", "uuid": "1bc7d444-4e57-4075-a58a-c08908331c7e"}}}}, {"uuid": "327eb09c-b11e-4d56-9057-31124f07039e", "name": "l(r:p5rdt149-p5rdt22)_s1", "substation": null, "feeder": null, "phases": ["A", "B", "C"], "__metadata__": {"fields": {"module": "gdm.distribution.components.matrix_impedance_branch", "type": "MatrixImpedanceBranch", "serialized_type": "base"}}, "buses": [{"__metadata__": {"fields": {"module": "gdm.distribution.components.distribution_bus", "type": "DistributionBus", "serialized_type": "composed_component", "uuid": "009db048-f421-46e1-a4a3-01fc3c75c232"}}}, {"__metadata__": {"fields": {"module": "gdm.distribution.components.distribution_bus", "type": "DistributionBus", "serialized_type": "composed_component", "uuid": "8a8cc197-ba59-4fdc-a907-f38d00e3779b"}}}], "length": {"value": 1.87473, "units": "kilometer", "__metadata__": {"fields": {"module": "gdm.quantities", "type": "PositiveDistance", "serialized_type": "quantity"}}}, "equipment": {"__metadata__": {"fields": {"module": "gdm.distribution.equipment.matrix_impedance_branch_equipment", "type": "MatrixImpedanceBranchEquipment", "serialized_type": "composed_component", "uuid": "1bc7d444-4e57-4075-a58a-c08908331c7e"}}}}, {"uuid": "3f5fb3ed-a79a-4610-8774-d00c25a51584", "name": "l(r:p5rdt149-p5rhs0_1247)_disconnect", "substation": null, "feeder": null, "phases": ["A", "B", "C"], "is_closed": [true, true, true], "__metadata__": {"fields": {"module": "gdm.distribution.components.matrix_impedance_switch", "type": "MatrixImpedanceSwitch", "serialized_type": "base"}}, "buses": [{"__metadata__": {"fields": {"module": "gdm.distribution.components.distribution_bus", "type": "DistributionBus", "serialized_type": "composed_component", "uuid": "8d049281-e726-42f4-946e-b6db31507d22"}}}, {"__metadata__": {"fields": {"module": "gdm.distribution.components.distribution_bus", "type": "DistributionBus", "serialized_type": "composed_component", "uuid": "bffd30fb-5a9a-4d75-8d40-148b60ee87fa"}}}], "length": {"value": 0.001, "units": "meter", "__metadata__": {"fields": {"module": "gdm.quantities", "type": "PositiveDistance", "serialized_type": "quantity"}}}, "equipment": {"__metadata__": {"fields": {"module": "gdm.distribution.equipment.matrix_impedance_switch_equipment", "type": "MatrixImpedanceSwitchEquipment", "serialized_type": "composed_component", "uuid": "b47ffc41-1f5b-4a0c-a0ef-6df36573f6b3"}}}}, {"uuid": "87c701e3-88b8-4946-a642-8c3f7fbe5fb3", "name": "l(r:p5rdt149-p5rhs0_1247)_cont", "substation": null, "feeder": null, "phases": ["A", "B", "C"], "__metadata__": {"fields": {"module": "gdm.distribution.components.matrix_impedance_branch", "type": "MatrixImpedanceBranch", "serialized_type": "base"}}, "buses": [{"__metadata__": {"fields": {"module": "gdm.distribution.components.distribution_bus", "type": "DistributionBus", "serialized_type": "composed_component", "uuid": "bffd30fb-5a9a-4d75-8d40-148b60ee87fa"}}}, {"__metadata__": {"fields": {"module": "gdm.distribution.components.distribution_bus", "type": "DistributionBus", "serialized_type": "composed_component", "uuid": "a9fd8883-f80f-492c-ad7b-6ed9f40c293a"}}}], "length": {"value": 5.0620590000000005, "units": "kilometer", "__metadata__": {"fields": {"module": "gdm.quantities", "type": "PositiveDistance", "serialized_type": "quantity"}}}, "equipment": {"__metadata__": {"fields": {"module": "gdm.distribution.equipment.matrix_impedance_branch_equipment", "type": "MatrixImpedanceBranchEquipment", "serialized_type": "composed_component", "uuid": "1bc7d444-4e57-4075-a58a-c08908331c7e"}}}}], "time_series": {"directory": "p5r_pv_time_series"}}
+{
+    "name": null,
+    "description": null,
+    "uuid": "f02f2845-1384-4ba4-b357-1cff21466e7b",
+    "data_format_version": "1.0.0",
+    "components": [
+        {
+            "uuid": "6122a7d7-aa6d-4f97-8441-8439b1baffdd",
+            "name": "",
+            "limit_type": "min",
+            "__metadata__": {
+                "fields": {
+                    "module": "gdm.distribution.limitset",
+                    "type": "VoltageLimitSet",
+                    "serialized_type": "base"
+                }
+            },
+            "value": {
+                "value": 6.839579963954902,
+                "units": "kilovolt",
+                "__metadata__": {
+                    "fields": {
+                        "module": "gdm.quantities",
+                        "type": "PositiveVoltage",
+                        "serialized_type": "quantity"
+                    }
+                }
+            }
+        },
+        {
+            "uuid": "ebcdfbc9-0463-41c3-be0d-bf0f00e3033f",
+            "name": "",
+            "limit_type": "max",
+            "__metadata__": {
+                "fields": {
+                    "module": "gdm.distribution.limitset",
+                    "type": "VoltageLimitSet",
+                    "serialized_type": "base"
+                }
+            },
+            "value": {
+                "value": 7.559535749634366,
+                "units": "kilovolt",
+                "__metadata__": {
+                    "fields": {
+                        "module": "gdm.quantities",
+                        "type": "PositiveVoltage",
+                        "serialized_type": "quantity"
+                    }
+                }
+            }
+        },
+        {
+            "uuid": "4651946e-4ab2-4020-8ff6-1db3ede272ff",
+            "name": "",
+            "x": 36.60102672210813,
+            "y": -120.91292875147646,
+            "crs": null,
+            "__metadata__": {
+                "fields": {
+                    "module": "infrasys.location",
+                    "type": "Location",
+                    "serialized_type": "base"
+                }
+            }
+        },
+        {
+            "uuid": "52b25c35-1cb2-4161-a35a-2a5d194dd677",
+            "name": "p5rdt149-p5rhs0_1247x",
+            "substation": null,
+            "feeder": null,
+            "voltage_type": "line-to-ground",
+            "phases": [
+                "A",
+                "B",
+                "C"
+            ],
+            "__metadata__": {
+                "fields": {
+                    "module": "gdm.distribution.components.distribution_bus",
+                    "type": "DistributionBus",
+                    "serialized_type": "base"
+                }
+            },
+            "voltagelimits": [
+                {
+                    "__metadata__": {
+                        "fields": {
+                            "module": "gdm.distribution.limitset",
+                            "type": "VoltageLimitSet",
+                            "serialized_type": "composed_component",
+                            "uuid": "6122a7d7-aa6d-4f97-8441-8439b1baffdd"
+                        }
+                    }
+                },
+                {
+                    "__metadata__": {
+                        "fields": {
+                            "module": "gdm.distribution.limitset",
+                            "type": "VoltageLimitSet",
+                            "serialized_type": "composed_component",
+                            "uuid": "ebcdfbc9-0463-41c3-be0d-bf0f00e3033f"
+                        }
+                    }
+                }
+            ],
+            "nominal_voltage": {
+                "value": 7.199557856794634,
+                "units": "kilovolt",
+                "__metadata__": {
+                    "fields": {
+                        "module": "gdm.quantities",
+                        "type": "PositiveVoltage",
+                        "serialized_type": "quantity"
+                    }
+                }
+            },
+            "coordinate": {
+                "__metadata__": {
+                    "fields": {
+                        "module": "infrasys.location",
+                        "type": "Location",
+                        "serialized_type": "composed_component",
+                        "uuid": "4651946e-4ab2-4020-8ff6-1db3ede272ff"
+                    }
+                }
+            }
+        },
+        {
+            "uuid": "cbcf01ae-a0e9-43b5-8585-ca81ad97dc3a",
+            "name": "",
+            "x": 36.59776619575616,
+            "y": -120.91984825250762,
+            "crs": null,
+            "__metadata__": {
+                "fields": {
+                    "module": "infrasys.location",
+                    "type": "Location",
+                    "serialized_type": "base"
+                }
+            }
+        },
+        {
+            "uuid": "8d049281-e726-42f4-946e-b6db31507d22",
+            "name": "p5rdt149-p5rhs0_1247x_b1_1",
+            "substation": null,
+            "feeder": null,
+            "voltage_type": "line-to-ground",
+            "phases": [
+                "A",
+                "B",
+                "C"
+            ],
+            "__metadata__": {
+                "fields": {
+                    "module": "gdm.distribution.components.distribution_bus",
+                    "type": "DistributionBus",
+                    "serialized_type": "base"
+                }
+            },
+            "voltagelimits": [
+                {
+                    "__metadata__": {
+                        "fields": {
+                            "module": "gdm.distribution.limitset",
+                            "type": "VoltageLimitSet",
+                            "serialized_type": "composed_component",
+                            "uuid": "6122a7d7-aa6d-4f97-8441-8439b1baffdd"
+                        }
+                    }
+                },
+                {
+                    "__metadata__": {
+                        "fields": {
+                            "module": "gdm.distribution.limitset",
+                            "type": "VoltageLimitSet",
+                            "serialized_type": "composed_component",
+                            "uuid": "ebcdfbc9-0463-41c3-be0d-bf0f00e3033f"
+                        }
+                    }
+                }
+            ],
+            "nominal_voltage": {
+                "value": 7.199557856794634,
+                "units": "kilovolt",
+                "__metadata__": {
+                    "fields": {
+                        "module": "gdm.quantities",
+                        "type": "PositiveVoltage",
+                        "serialized_type": "quantity"
+                    }
+                }
+            },
+            "coordinate": {
+                "__metadata__": {
+                    "fields": {
+                        "module": "infrasys.location",
+                        "type": "Location",
+                        "serialized_type": "composed_component",
+                        "uuid": "cbcf01ae-a0e9-43b5-8585-ca81ad97dc3a"
+                    }
+                }
+            }
+        },
+        {
+            "uuid": "f3ade929-9891-4676-a836-988e980214b4",
+            "name": "",
+            "limit_type": "min",
+            "__metadata__": {
+                "fields": {
+                    "module": "gdm.distribution.limitset",
+                    "type": "VoltageLimitSet",
+                    "serialized_type": "base"
+                }
+            },
+            "value": {
+                "value": 0.26327172275046934,
+                "units": "kilovolt",
+                "__metadata__": {
+                    "fields": {
+                        "module": "gdm.quantities",
+                        "type": "PositiveVoltage",
+                        "serialized_type": "quantity"
+                    }
+                }
+            }
+        },
+        {
+            "uuid": "90d3d0fd-24e2-4108-85eb-a6bfd59c72f8",
+            "name": "",
+            "limit_type": "max",
+            "__metadata__": {
+                "fields": {
+                    "module": "gdm.distribution.limitset",
+                    "type": "VoltageLimitSet",
+                    "serialized_type": "base"
+                }
+            },
+            "value": {
+                "value": 0.2909845356715714,
+                "units": "kilovolt",
+                "__metadata__": {
+                    "fields": {
+                        "module": "gdm.quantities",
+                        "type": "PositiveVoltage",
+                        "serialized_type": "quantity"
+                    }
+                }
+            }
+        },
+        {
+            "uuid": "208b0fd2-0a98-403e-8e04-93b17de570e1",
+            "name": "",
+            "x": 36.56885399412164,
+            "y": -120.96155778160369,
+            "crs": null,
+            "__metadata__": {
+                "fields": {
+                    "module": "infrasys.location",
+                    "type": "Location",
+                    "serialized_type": "base"
+                }
+            }
+        },
+        {
+            "uuid": "dc668a23-7708-48cd-9166-c9dff885f96e",
+            "name": "p5rdt149lv",
+            "substation": null,
+            "feeder": null,
+            "voltage_type": "line-to-ground",
+            "phases": [
+                "A",
+                "B",
+                "C"
+            ],
+            "__metadata__": {
+                "fields": {
+                    "module": "gdm.distribution.components.distribution_bus",
+                    "type": "DistributionBus",
+                    "serialized_type": "base"
+                }
+            },
+            "voltagelimits": [
+                {
+                    "__metadata__": {
+                        "fields": {
+                            "module": "gdm.distribution.limitset",
+                            "type": "VoltageLimitSet",
+                            "serialized_type": "composed_component",
+                            "uuid": "f3ade929-9891-4676-a836-988e980214b4"
+                        }
+                    }
+                },
+                {
+                    "__metadata__": {
+                        "fields": {
+                            "module": "gdm.distribution.limitset",
+                            "type": "VoltageLimitSet",
+                            "serialized_type": "composed_component",
+                            "uuid": "90d3d0fd-24e2-4108-85eb-a6bfd59c72f8"
+                        }
+                    }
+                }
+            ],
+            "nominal_voltage": {
+                "value": 0.27712812921102037,
+                "units": "kilovolt",
+                "__metadata__": {
+                    "fields": {
+                        "module": "gdm.quantities",
+                        "type": "PositiveVoltage",
+                        "serialized_type": "quantity"
+                    }
+                }
+            },
+            "coordinate": {
+                "__metadata__": {
+                    "fields": {
+                        "module": "infrasys.location",
+                        "type": "Location",
+                        "serialized_type": "composed_component",
+                        "uuid": "208b0fd2-0a98-403e-8e04-93b17de570e1"
+                    }
+                }
+            }
+        },
+        {
+            "uuid": "d8a2bf67-ffa9-4252-a8bb-c4c4f6e0b709",
+            "name": "",
+            "x": 36.56884369179864,
+            "y": -120.96150686468123,
+            "crs": null,
+            "__metadata__": {
+                "fields": {
+                    "module": "infrasys.location",
+                    "type": "Location",
+                    "serialized_type": "base"
+                }
+            }
+        },
+        {
+            "uuid": "6063e717-6a28-4840-a60c-211d2083ba36",
+            "name": "p5rlv265",
+            "substation": null,
+            "feeder": null,
+            "voltage_type": "line-to-ground",
+            "phases": [
+                "A",
+                "B",
+                "C"
+            ],
+            "__metadata__": {
+                "fields": {
+                    "module": "gdm.distribution.components.distribution_bus",
+                    "type": "DistributionBus",
+                    "serialized_type": "base"
+                }
+            },
+            "voltagelimits": [
+                {
+                    "__metadata__": {
+                        "fields": {
+                            "module": "gdm.distribution.limitset",
+                            "type": "VoltageLimitSet",
+                            "serialized_type": "composed_component",
+                            "uuid": "f3ade929-9891-4676-a836-988e980214b4"
+                        }
+                    }
+                },
+                {
+                    "__metadata__": {
+                        "fields": {
+                            "module": "gdm.distribution.limitset",
+                            "type": "VoltageLimitSet",
+                            "serialized_type": "composed_component",
+                            "uuid": "90d3d0fd-24e2-4108-85eb-a6bfd59c72f8"
+                        }
+                    }
+                }
+            ],
+            "nominal_voltage": {
+                "value": 0.27712812921102037,
+                "units": "kilovolt",
+                "__metadata__": {
+                    "fields": {
+                        "module": "gdm.quantities",
+                        "type": "PositiveVoltage",
+                        "serialized_type": "quantity"
+                    }
+                }
+            },
+            "coordinate": {
+                "__metadata__": {
+                    "fields": {
+                        "module": "infrasys.location",
+                        "type": "Location",
+                        "serialized_type": "composed_component",
+                        "uuid": "d8a2bf67-ffa9-4252-a8bb-c4c4f6e0b709"
+                    }
+                }
+            }
+        },
+        {
+            "uuid": "dba54f14-624c-40ad-9c99-9956171acf91",
+            "name": "",
+            "x": 36.588975013233814,
+            "y": -120.97495604893834,
+            "crs": null,
+            "__metadata__": {
+                "fields": {
+                    "module": "infrasys.location",
+                    "type": "Location",
+                    "serialized_type": "base"
+                }
+            }
+        },
+        {
+            "uuid": "d6114ce0-bac8-41eb-b4e2-b980f0b068a2",
+            "name": "p5rdt22lv",
+            "substation": null,
+            "feeder": null,
+            "voltage_type": "line-to-ground",
+            "phases": [
+                "A",
+                "B",
+                "C"
+            ],
+            "__metadata__": {
+                "fields": {
+                    "module": "gdm.distribution.components.distribution_bus",
+                    "type": "DistributionBus",
+                    "serialized_type": "base"
+                }
+            },
+            "voltagelimits": [
+                {
+                    "__metadata__": {
+                        "fields": {
+                            "module": "gdm.distribution.limitset",
+                            "type": "VoltageLimitSet",
+                            "serialized_type": "composed_component",
+                            "uuid": "f3ade929-9891-4676-a836-988e980214b4"
+                        }
+                    }
+                },
+                {
+                    "__metadata__": {
+                        "fields": {
+                            "module": "gdm.distribution.limitset",
+                            "type": "VoltageLimitSet",
+                            "serialized_type": "composed_component",
+                            "uuid": "90d3d0fd-24e2-4108-85eb-a6bfd59c72f8"
+                        }
+                    }
+                }
+            ],
+            "nominal_voltage": {
+                "value": 0.27712812921102037,
+                "units": "kilovolt",
+                "__metadata__": {
+                    "fields": {
+                        "module": "gdm.quantities",
+                        "type": "PositiveVoltage",
+                        "serialized_type": "quantity"
+                    }
+                }
+            },
+            "coordinate": {
+                "__metadata__": {
+                    "fields": {
+                        "module": "infrasys.location",
+                        "type": "Location",
+                        "serialized_type": "composed_component",
+                        "uuid": "dba54f14-624c-40ad-9c99-9956171acf91"
+                    }
+                }
+            }
+        },
+        {
+            "uuid": "14875738-6852-4ee9-b4be-0db97a68d02d",
+            "name": "",
+            "x": 36.58898169475094,
+            "y": -120.9749855407454,
+            "crs": null,
+            "__metadata__": {
+                "fields": {
+                    "module": "infrasys.location",
+                    "type": "Location",
+                    "serialized_type": "base"
+                }
+            }
+        },
+        {
+            "uuid": "6bca05db-e164-4c44-a057-7a66bcf9a717",
+            "name": "p5rlv40",
+            "substation": null,
+            "feeder": null,
+            "voltage_type": "line-to-ground",
+            "phases": [
+                "A",
+                "B",
+                "C"
+            ],
+            "__metadata__": {
+                "fields": {
+                    "module": "gdm.distribution.components.distribution_bus",
+                    "type": "DistributionBus",
+                    "serialized_type": "base"
+                }
+            },
+            "voltagelimits": [
+                {
+                    "__metadata__": {
+                        "fields": {
+                            "module": "gdm.distribution.limitset",
+                            "type": "VoltageLimitSet",
+                            "serialized_type": "composed_component",
+                            "uuid": "f3ade929-9891-4676-a836-988e980214b4"
+                        }
+                    }
+                },
+                {
+                    "__metadata__": {
+                        "fields": {
+                            "module": "gdm.distribution.limitset",
+                            "type": "VoltageLimitSet",
+                            "serialized_type": "composed_component",
+                            "uuid": "90d3d0fd-24e2-4108-85eb-a6bfd59c72f8"
+                        }
+                    }
+                }
+            ],
+            "nominal_voltage": {
+                "value": 0.27712812921102037,
+                "units": "kilovolt",
+                "__metadata__": {
+                    "fields": {
+                        "module": "gdm.quantities",
+                        "type": "PositiveVoltage",
+                        "serialized_type": "quantity"
+                    }
+                }
+            },
+            "coordinate": {
+                "__metadata__": {
+                    "fields": {
+                        "module": "infrasys.location",
+                        "type": "Location",
+                        "serialized_type": "composed_component",
+                        "uuid": "14875738-6852-4ee9-b4be-0db97a68d02d"
+                    }
+                }
+            }
+        },
+        {
+            "uuid": "b6897371-c3ce-4448-aadf-0651e27e9c00",
+            "name": "",
+            "x": 36.56887241444432,
+            "y": -120.96160511254412,
+            "crs": null,
+            "__metadata__": {
+                "fields": {
+                    "module": "infrasys.location",
+                    "type": "Location",
+                    "serialized_type": "base"
+                }
+            }
+        },
+        {
+            "uuid": "a9fd8883-f80f-492c-ad7b-6ed9f40c293a",
+            "name": "p5rdt149",
+            "substation": null,
+            "feeder": null,
+            "voltage_type": "line-to-ground",
+            "phases": [
+                "A",
+                "B",
+                "C"
+            ],
+            "__metadata__": {
+                "fields": {
+                    "module": "gdm.distribution.components.distribution_bus",
+                    "type": "DistributionBus",
+                    "serialized_type": "base"
+                }
+            },
+            "voltagelimits": [
+                {
+                    "__metadata__": {
+                        "fields": {
+                            "module": "gdm.distribution.limitset",
+                            "type": "VoltageLimitSet",
+                            "serialized_type": "composed_component",
+                            "uuid": "6122a7d7-aa6d-4f97-8441-8439b1baffdd"
+                        }
+                    }
+                },
+                {
+                    "__metadata__": {
+                        "fields": {
+                            "module": "gdm.distribution.limitset",
+                            "type": "VoltageLimitSet",
+                            "serialized_type": "composed_component",
+                            "uuid": "ebcdfbc9-0463-41c3-be0d-bf0f00e3033f"
+                        }
+                    }
+                }
+            ],
+            "nominal_voltage": {
+                "value": 7.199557856794634,
+                "units": "kilovolt",
+                "__metadata__": {
+                    "fields": {
+                        "module": "gdm.quantities",
+                        "type": "PositiveVoltage",
+                        "serialized_type": "quantity"
+                    }
+                }
+            },
+            "coordinate": {
+                "__metadata__": {
+                    "fields": {
+                        "module": "infrasys.location",
+                        "type": "Location",
+                        "serialized_type": "composed_component",
+                        "uuid": "b6897371-c3ce-4448-aadf-0651e27e9c00"
+                    }
+                }
+            }
+        },
+        {
+            "uuid": "ea0a569e-2321-488b-a9c9-0973b8374f46",
+            "name": "",
+            "x": 36.584033672730996,
+            "y": -120.97076724677004,
+            "crs": null,
+            "__metadata__": {
+                "fields": {
+                    "module": "infrasys.location",
+                    "type": "Location",
+                    "serialized_type": "base"
+                }
+            }
+        },
+        {
+            "uuid": "009db048-f421-46e1-a4a3-01fc3c75c232",
+            "name": "p5rdt149-p5rdt22x",
+            "substation": null,
+            "feeder": null,
+            "voltage_type": "line-to-ground",
+            "phases": [
+                "A",
+                "B",
+                "C"
+            ],
+            "__metadata__": {
+                "fields": {
+                    "module": "gdm.distribution.components.distribution_bus",
+                    "type": "DistributionBus",
+                    "serialized_type": "base"
+                }
+            },
+            "voltagelimits": [
+                {
+                    "__metadata__": {
+                        "fields": {
+                            "module": "gdm.distribution.limitset",
+                            "type": "VoltageLimitSet",
+                            "serialized_type": "composed_component",
+                            "uuid": "6122a7d7-aa6d-4f97-8441-8439b1baffdd"
+                        }
+                    }
+                },
+                {
+                    "__metadata__": {
+                        "fields": {
+                            "module": "gdm.distribution.limitset",
+                            "type": "VoltageLimitSet",
+                            "serialized_type": "composed_component",
+                            "uuid": "ebcdfbc9-0463-41c3-be0d-bf0f00e3033f"
+                        }
+                    }
+                }
+            ],
+            "nominal_voltage": {
+                "value": 7.199557856794634,
+                "units": "kilovolt",
+                "__metadata__": {
+                    "fields": {
+                        "module": "gdm.quantities",
+                        "type": "PositiveVoltage",
+                        "serialized_type": "quantity"
+                    }
+                }
+            },
+            "coordinate": {
+                "__metadata__": {
+                    "fields": {
+                        "module": "infrasys.location",
+                        "type": "Location",
+                        "serialized_type": "composed_component",
+                        "uuid": "ea0a569e-2321-488b-a9c9-0973b8374f46"
+                    }
+                }
+            }
+        },
+        {
+            "uuid": "6d086df3-30b3-47a2-96b6-9b15c261278c",
+            "name": "",
+            "x": 36.588933180522076,
+            "y": -120.97494941278845,
+            "crs": null,
+            "__metadata__": {
+                "fields": {
+                    "module": "infrasys.location",
+                    "type": "Location",
+                    "serialized_type": "base"
+                }
+            }
+        },
+        {
+            "uuid": "8a8cc197-ba59-4fdc-a907-f38d00e3779b",
+            "name": "p5rdt22",
+            "substation": null,
+            "feeder": null,
+            "voltage_type": "line-to-ground",
+            "phases": [
+                "A",
+                "B",
+                "C"
+            ],
+            "__metadata__": {
+                "fields": {
+                    "module": "gdm.distribution.components.distribution_bus",
+                    "type": "DistributionBus",
+                    "serialized_type": "base"
+                }
+            },
+            "voltagelimits": [
+                {
+                    "__metadata__": {
+                        "fields": {
+                            "module": "gdm.distribution.limitset",
+                            "type": "VoltageLimitSet",
+                            "serialized_type": "composed_component",
+                            "uuid": "6122a7d7-aa6d-4f97-8441-8439b1baffdd"
+                        }
+                    }
+                },
+                {
+                    "__metadata__": {
+                        "fields": {
+                            "module": "gdm.distribution.limitset",
+                            "type": "VoltageLimitSet",
+                            "serialized_type": "composed_component",
+                            "uuid": "ebcdfbc9-0463-41c3-be0d-bf0f00e3033f"
+                        }
+                    }
+                }
+            ],
+            "nominal_voltage": {
+                "value": 7.199557856794634,
+                "units": "kilovolt",
+                "__metadata__": {
+                    "fields": {
+                        "module": "gdm.quantities",
+                        "type": "PositiveVoltage",
+                        "serialized_type": "quantity"
+                    }
+                }
+            },
+            "coordinate": {
+                "__metadata__": {
+                    "fields": {
+                        "module": "infrasys.location",
+                        "type": "Location",
+                        "serialized_type": "composed_component",
+                        "uuid": "6d086df3-30b3-47a2-96b6-9b15c261278c"
+                    }
+                }
+            }
+        },
+        {
+            "uuid": "5fb6cb11-e914-4eea-b602-2887c05ed721",
+            "name": "",
+            "x": 36.593633797608774,
+            "y": -120.92580511661268,
+            "crs": null,
+            "__metadata__": {
+                "fields": {
+                    "module": "infrasys.location",
+                    "type": "Location",
+                    "serialized_type": "base"
+                }
+            }
+        },
+        {
+            "uuid": "bffd30fb-5a9a-4d75-8d40-148b60ee87fa",
+            "name": "p5rdt149-p5rhs0_1247x_b2_1",
+            "substation": null,
+            "feeder": null,
+            "voltage_type": "line-to-ground",
+            "phases": [
+                "A",
+                "B",
+                "C"
+            ],
+            "__metadata__": {
+                "fields": {
+                    "module": "gdm.distribution.components.distribution_bus",
+                    "type": "DistributionBus",
+                    "serialized_type": "base"
+                }
+            },
+            "voltagelimits": [
+                {
+                    "__metadata__": {
+                        "fields": {
+                            "module": "gdm.distribution.limitset",
+                            "type": "VoltageLimitSet",
+                            "serialized_type": "composed_component",
+                            "uuid": "6122a7d7-aa6d-4f97-8441-8439b1baffdd"
+                        }
+                    }
+                },
+                {
+                    "__metadata__": {
+                        "fields": {
+                            "module": "gdm.distribution.limitset",
+                            "type": "VoltageLimitSet",
+                            "serialized_type": "composed_component",
+                            "uuid": "ebcdfbc9-0463-41c3-be0d-bf0f00e3033f"
+                        }
+                    }
+                }
+            ],
+            "nominal_voltage": {
+                "value": 7.199557856794634,
+                "units": "kilovolt",
+                "__metadata__": {
+                    "fields": {
+                        "module": "gdm.quantities",
+                        "type": "PositiveVoltage",
+                        "serialized_type": "quantity"
+                    }
+                }
+            },
+            "coordinate": {
+                "__metadata__": {
+                    "fields": {
+                        "module": "infrasys.location",
+                        "type": "Location",
+                        "serialized_type": "composed_component",
+                        "uuid": "5fb6cb11-e914-4eea-b602-2887c05ed721"
+                    }
+                }
+            }
+        },
+        {
+            "uuid": "34a0591f-550d-465a-ad41-91fec56bccc3",
+            "name": "b02bee68-b71d-4019-ae73-f3ecb526502f_1",
+            "__metadata__": {
+                "fields": {
+                    "module": "gdm.distribution.equipment.phase_voltagesource_equipment",
+                    "type": "PhaseVoltageSourceEquipment",
+                    "serialized_type": "base"
+                }
+            },
+            "r0": {
+                "value": 1e-05,
+                "units": "ohm",
+                "__metadata__": {
+                    "fields": {
+                        "module": "infrasys.quantities",
+                        "type": "Resistance",
+                        "serialized_type": "quantity"
+                    }
+                }
+            },
+            "r1": {
+                "value": 1e-05,
+                "units": "ohm",
+                "__metadata__": {
+                    "fields": {
+                        "module": "infrasys.quantities",
+                        "type": "Resistance",
+                        "serialized_type": "quantity"
+                    }
+                }
+            },
+            "x0": {
+                "value": 1e-05,
+                "units": "ohm",
+                "__metadata__": {
+                    "fields": {
+                        "module": "gdm.quantities",
+                        "type": "Reactance",
+                        "serialized_type": "quantity"
+                    }
+                }
+            },
+            "x1": {
+                "value": 1e-05,
+                "units": "ohm",
+                "__metadata__": {
+                    "fields": {
+                        "module": "gdm.quantities",
+                        "type": "Reactance",
+                        "serialized_type": "quantity"
+                    }
+                }
+            },
+            "voltage": {
+                "value": 7.415762124711317,
+                "units": "kilovolt",
+                "__metadata__": {
+                    "fields": {
+                        "module": "infrasys.quantities",
+                        "type": "Voltage",
+                        "serialized_type": "quantity"
+                    }
+                }
+            },
+            "angle": {
+                "value": 0.0,
+                "units": "degree",
+                "__metadata__": {
+                    "fields": {
+                        "module": "infrasys.quantities",
+                        "type": "Angle",
+                        "serialized_type": "quantity"
+                    }
+                }
+            }
+        },
+        {
+            "uuid": "a62d377d-1a05-4d8a-ba6b-fe3cc760dc2a",
+            "name": "b02bee68-b71d-4019-ae73-f3ecb526502f_2",
+            "__metadata__": {
+                "fields": {
+                    "module": "gdm.distribution.equipment.phase_voltagesource_equipment",
+                    "type": "PhaseVoltageSourceEquipment",
+                    "serialized_type": "base"
+                }
+            },
+            "r0": {
+                "value": 1e-05,
+                "units": "ohm",
+                "__metadata__": {
+                    "fields": {
+                        "module": "infrasys.quantities",
+                        "type": "Resistance",
+                        "serialized_type": "quantity"
+                    }
+                }
+            },
+            "r1": {
+                "value": 1e-05,
+                "units": "ohm",
+                "__metadata__": {
+                    "fields": {
+                        "module": "infrasys.quantities",
+                        "type": "Resistance",
+                        "serialized_type": "quantity"
+                    }
+                }
+            },
+            "x0": {
+                "value": 1e-05,
+                "units": "ohm",
+                "__metadata__": {
+                    "fields": {
+                        "module": "gdm.quantities",
+                        "type": "Reactance",
+                        "serialized_type": "quantity"
+                    }
+                }
+            },
+            "x1": {
+                "value": 1e-05,
+                "units": "ohm",
+                "__metadata__": {
+                    "fields": {
+                        "module": "gdm.quantities",
+                        "type": "Reactance",
+                        "serialized_type": "quantity"
+                    }
+                }
+            },
+            "voltage": {
+                "value": 7.415762124711317,
+                "units": "kilovolt",
+                "__metadata__": {
+                    "fields": {
+                        "module": "infrasys.quantities",
+                        "type": "Voltage",
+                        "serialized_type": "quantity"
+                    }
+                }
+            },
+            "angle": {
+                "value": 120.0,
+                "units": "degree",
+                "__metadata__": {
+                    "fields": {
+                        "module": "infrasys.quantities",
+                        "type": "Angle",
+                        "serialized_type": "quantity"
+                    }
+                }
+            }
+        },
+        {
+            "uuid": "4c5b855a-23a0-40a9-925c-c75f52005c48",
+            "name": "b02bee68-b71d-4019-ae73-f3ecb526502f_3",
+            "__metadata__": {
+                "fields": {
+                    "module": "gdm.distribution.equipment.phase_voltagesource_equipment",
+                    "type": "PhaseVoltageSourceEquipment",
+                    "serialized_type": "base"
+                }
+            },
+            "r0": {
+                "value": 1e-05,
+                "units": "ohm",
+                "__metadata__": {
+                    "fields": {
+                        "module": "infrasys.quantities",
+                        "type": "Resistance",
+                        "serialized_type": "quantity"
+                    }
+                }
+            },
+            "r1": {
+                "value": 1e-05,
+                "units": "ohm",
+                "__metadata__": {
+                    "fields": {
+                        "module": "infrasys.quantities",
+                        "type": "Resistance",
+                        "serialized_type": "quantity"
+                    }
+                }
+            },
+            "x0": {
+                "value": 1e-05,
+                "units": "ohm",
+                "__metadata__": {
+                    "fields": {
+                        "module": "gdm.quantities",
+                        "type": "Reactance",
+                        "serialized_type": "quantity"
+                    }
+                }
+            },
+            "x1": {
+                "value": 1e-05,
+                "units": "ohm",
+                "__metadata__": {
+                    "fields": {
+                        "module": "gdm.quantities",
+                        "type": "Reactance",
+                        "serialized_type": "quantity"
+                    }
+                }
+            },
+            "voltage": {
+                "value": 7.415762124711317,
+                "units": "kilovolt",
+                "__metadata__": {
+                    "fields": {
+                        "module": "infrasys.quantities",
+                        "type": "Voltage",
+                        "serialized_type": "quantity"
+                    }
+                }
+            },
+            "angle": {
+                "value": 240.0,
+                "units": "degree",
+                "__metadata__": {
+                    "fields": {
+                        "module": "infrasys.quantities",
+                        "type": "Angle",
+                        "serialized_type": "quantity"
+                    }
+                }
+            }
+        },
+        {
+            "uuid": "c9d1917f-eb96-4ad5-9aa6-85d6eced8770",
+            "name": "b02bee68-b71d-4019-ae73-f3ecb526502f",
+            "__metadata__": {
+                "fields": {
+                    "module": "gdm.distribution.equipment.voltagesource_equipment",
+                    "type": "VoltageSourceEquipment",
+                    "serialized_type": "base"
+                }
+            },
+            "sources": [
+                {
+                    "__metadata__": {
+                        "fields": {
+                            "module": "gdm.distribution.equipment.phase_voltagesource_equipment",
+                            "type": "PhaseVoltageSourceEquipment",
+                            "serialized_type": "composed_component",
+                            "uuid": "34a0591f-550d-465a-ad41-91fec56bccc3"
+                        }
+                    }
+                },
+                {
+                    "__metadata__": {
+                        "fields": {
+                            "module": "gdm.distribution.equipment.phase_voltagesource_equipment",
+                            "type": "PhaseVoltageSourceEquipment",
+                            "serialized_type": "composed_component",
+                            "uuid": "a62d377d-1a05-4d8a-ba6b-fe3cc760dc2a"
+                        }
+                    }
+                },
+                {
+                    "__metadata__": {
+                        "fields": {
+                            "module": "gdm.distribution.equipment.phase_voltagesource_equipment",
+                            "type": "PhaseVoltageSourceEquipment",
+                            "serialized_type": "composed_component",
+                            "uuid": "4c5b855a-23a0-40a9-925c-c75f52005c48"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "uuid": "4b10ec3d-4b5b-48db-b087-052a542e6ccf",
+            "name": "source",
+            "substation": null,
+            "feeder": null,
+            "phases": [
+                "A",
+                "B",
+                "C"
+            ],
+            "__metadata__": {
+                "fields": {
+                    "module": "gdm.distribution.components.distribution_vsource",
+                    "type": "DistributionVoltageSource",
+                    "serialized_type": "base"
+                }
+            },
+            "bus": {
+                "__metadata__": {
+                    "fields": {
+                        "module": "gdm.distribution.components.distribution_bus",
+                        "type": "DistributionBus",
+                        "serialized_type": "composed_component",
+                        "uuid": "52b25c35-1cb2-4161-a35a-2a5d194dd677"
+                    }
+                }
+            },
+            "equipment": {
+                "__metadata__": {
+                    "fields": {
+                        "module": "gdm.distribution.equipment.voltagesource_equipment",
+                        "type": "VoltageSourceEquipment",
+                        "serialized_type": "composed_component",
+                        "uuid": "c9d1917f-eb96-4ad5-9aa6-85d6eced8770"
+                    }
+                }
+            }
+        },
+        {
+            "uuid": "3389fcae-25dc-40bb-a674-941a47eba7c2",
+            "name": "9a87caee-c48a-4a9e-818d-080901cf68f5_1",
+            "num_banks_on": 1,
+            "num_banks": 1,
+            "__metadata__": {
+                "fields": {
+                    "module": "gdm.distribution.equipment.phase_capacitor_equipment",
+                    "type": "PhaseCapacitorEquipment",
+                    "serialized_type": "base"
+                }
+            },
+            "resistance": {
+                "value": 0,
+                "units": "ohm",
+                "__metadata__": {
+                    "fields": {
+                        "module": "gdm.quantities",
+                        "type": "PositiveResistance",
+                        "serialized_type": "quantity"
+                    }
+                }
+            },
+            "reactance": {
+                "value": 0,
+                "units": "ohm",
+                "__metadata__": {
+                    "fields": {
+                        "module": "gdm.quantities",
+                        "type": "PositiveReactance",
+                        "serialized_type": "quantity"
+                    }
+                }
+            },
+            "rated_capacity": {
+                "value": 200.0,
+                "units": "kilovar",
+                "__metadata__": {
+                    "fields": {
+                        "module": "gdm.quantities",
+                        "type": "PositiveReactivePower",
+                        "serialized_type": "quantity"
+                    }
+                }
+            }
+        },
+        {
+            "uuid": "a2a0f646-11ac-459b-8922-f8fa91487bc7",
+            "name": "9a87caee-c48a-4a9e-818d-080901cf68f5",
+            "connection_type": "STAR",
+            "__metadata__": {
+                "fields": {
+                    "module": "gdm.distribution.equipment.capacitor_equipment",
+                    "type": "CapacitorEquipment",
+                    "serialized_type": "base"
+                }
+            },
+            "phase_capacitors": [
+                {
+                    "__metadata__": {
+                        "fields": {
+                            "module": "gdm.distribution.equipment.phase_capacitor_equipment",
+                            "type": "PhaseCapacitorEquipment",
+                            "serialized_type": "composed_component",
+                            "uuid": "3389fcae-25dc-40bb-a674-941a47eba7c2"
+                        }
+                    }
+                },
+                {
+                    "__metadata__": {
+                        "fields": {
+                            "module": "gdm.distribution.equipment.phase_capacitor_equipment",
+                            "type": "PhaseCapacitorEquipment",
+                            "serialized_type": "composed_component",
+                            "uuid": "3389fcae-25dc-40bb-a674-941a47eba7c2"
+                        }
+                    }
+                },
+                {
+                    "__metadata__": {
+                        "fields": {
+                            "module": "gdm.distribution.equipment.phase_capacitor_equipment",
+                            "type": "PhaseCapacitorEquipment",
+                            "serialized_type": "composed_component",
+                            "uuid": "3389fcae-25dc-40bb-a674-941a47eba7c2"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "uuid": "7337f960-4a8f-4e7f-8a49-b46bbb097731",
+            "name": "p5rc2",
+            "substation": null,
+            "feeder": null,
+            "phases": [
+                "A",
+                "B",
+                "C"
+            ],
+            "controllers": [],
+            "__metadata__": {
+                "fields": {
+                    "module": "gdm.distribution.components.distribution_capacitor",
+                    "type": "DistributionCapacitor",
+                    "serialized_type": "base"
+                }
+            },
+            "bus": {
+                "__metadata__": {
+                    "fields": {
+                        "module": "gdm.distribution.components.distribution_bus",
+                        "type": "DistributionBus",
+                        "serialized_type": "composed_component",
+                        "uuid": "a9fd8883-f80f-492c-ad7b-6ed9f40c293a"
+                    }
+                }
+            },
+            "equipment": {
+                "__metadata__": {
+                    "fields": {
+                        "module": "gdm.distribution.equipment.capacitor_equipment",
+                        "type": "CapacitorEquipment",
+                        "serialized_type": "composed_component",
+                        "uuid": "a2a0f646-11ac-459b-8922-f8fa91487bc7"
+                    }
+                }
+            }
+        },
+        {
+            "uuid": "0bc3867b-af37-447c-8632-326a5fcf4bf3",
+            "name": "41029e77-0e56-4a01-8b68-d0445c8ea459_1",
+            "z_real": 0.0,
+            "z_imag": 0.0,
+            "i_real": 0.0,
+            "i_imag": 0.0,
+            "p_real": 1.0,
+            "p_imag": 1.0,
+            "num_customers": null,
+            "__metadata__": {
+                "fields": {
+                    "module": "gdm.distribution.equipment.phase_load_equipment",
+                    "type": "PhaseLoadEquipment",
+                    "serialized_type": "base"
+                }
+            },
+            "real_power": {
+                "value": 1.7112579411992943,
+                "units": "kilowatt",
+                "__metadata__": {
+                    "fields": {
+                        "module": "infrasys.quantities",
+                        "type": "ActivePower",
+                        "serialized_type": "quantity"
+                    }
+                }
+            },
+            "reactive_power": {
+                "value": 0.39676444188146887,
+                "units": "kilovar",
+                "__metadata__": {
+                    "fields": {
+                        "module": "gdm.quantities",
+                        "type": "ReactivePower",
+                        "serialized_type": "quantity"
+                    }
+                }
+            }
+        },
+        {
+            "uuid": "783ce3f6-c6b9-43ff-85e6-b16088832f0b",
+            "name": "41029e77-0e56-4a01-8b68-d0445c8ea459_2",
+            "z_real": 0.0,
+            "z_imag": 0.0,
+            "i_real": 0.0,
+            "i_imag": 0.0,
+            "p_real": 1.0,
+            "p_imag": 1.0,
+            "num_customers": null,
+            "__metadata__": {
+                "fields": {
+                    "module": "gdm.distribution.equipment.phase_load_equipment",
+                    "type": "PhaseLoadEquipment",
+                    "serialized_type": "base"
+                }
+            },
+            "real_power": {
+                "value": 1.7112579411992943,
+                "units": "kilowatt",
+                "__metadata__": {
+                    "fields": {
+                        "module": "infrasys.quantities",
+                        "type": "ActivePower",
+                        "serialized_type": "quantity"
+                    }
+                }
+            },
+            "reactive_power": {
+                "value": 0.39676444188146887,
+                "units": "kilovar",
+                "__metadata__": {
+                    "fields": {
+                        "module": "gdm.quantities",
+                        "type": "ReactivePower",
+                        "serialized_type": "quantity"
+                    }
+                }
+            }
+        },
+        {
+            "uuid": "f80515cb-7e9c-48ee-bbbf-4dd2f6263dc1",
+            "name": "41029e77-0e56-4a01-8b68-d0445c8ea459_3",
+            "z_real": 0.0,
+            "z_imag": 0.0,
+            "i_real": 0.0,
+            "i_imag": 0.0,
+            "p_real": 1.0,
+            "p_imag": 1.0,
+            "num_customers": null,
+            "__metadata__": {
+                "fields": {
+                    "module": "gdm.distribution.equipment.phase_load_equipment",
+                    "type": "PhaseLoadEquipment",
+                    "serialized_type": "base"
+                }
+            },
+            "real_power": {
+                "value": 1.7112579411992943,
+                "units": "kilowatt",
+                "__metadata__": {
+                    "fields": {
+                        "module": "infrasys.quantities",
+                        "type": "ActivePower",
+                        "serialized_type": "quantity"
+                    }
+                }
+            },
+            "reactive_power": {
+                "value": 0.39676444188146887,
+                "units": "kilovar",
+                "__metadata__": {
+                    "fields": {
+                        "module": "gdm.quantities",
+                        "type": "ReactivePower",
+                        "serialized_type": "quantity"
+                    }
+                }
+            }
+        },
+        {
+            "uuid": "3414ee0c-4af1-45a2-b998-d443b780439f",
+            "name": "af36023d-cf24-4cfc-93e2-4a28dab99e5c",
+            "connection_type": "STAR",
+            "__metadata__": {
+                "fields": {
+                    "module": "gdm.distribution.equipment.load_equipment",
+                    "type": "LoadEquipment",
+                    "serialized_type": "base"
+                }
+            },
+            "phase_loads": [
+                {
+                    "__metadata__": {
+                        "fields": {
+                            "module": "gdm.distribution.equipment.phase_load_equipment",
+                            "type": "PhaseLoadEquipment",
+                            "serialized_type": "composed_component",
+                            "uuid": "0bc3867b-af37-447c-8632-326a5fcf4bf3"
+                        }
+                    }
+                },
+                {
+                    "__metadata__": {
+                        "fields": {
+                            "module": "gdm.distribution.equipment.phase_load_equipment",
+                            "type": "PhaseLoadEquipment",
+                            "serialized_type": "composed_component",
+                            "uuid": "783ce3f6-c6b9-43ff-85e6-b16088832f0b"
+                        }
+                    }
+                },
+                {
+                    "__metadata__": {
+                        "fields": {
+                            "module": "gdm.distribution.equipment.phase_load_equipment",
+                            "type": "PhaseLoadEquipment",
+                            "serialized_type": "composed_component",
+                            "uuid": "f80515cb-7e9c-48ee-bbbf-4dd2f6263dc1"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "uuid": "d4995f03-98dc-45b3-8286-d6d09fc658ad",
+            "name": "load_p5rlv40",
+            "substation": null,
+            "feeder": null,
+            "phases": [
+                "A",
+                "B",
+                "C"
+            ],
+            "__metadata__": {
+                "fields": {
+                    "module": "gdm.distribution.components.distribution_load",
+                    "type": "DistributionLoad",
+                    "serialized_type": "base"
+                }
+            },
+            "bus": {
+                "__metadata__": {
+                    "fields": {
+                        "module": "gdm.distribution.components.distribution_bus",
+                        "type": "DistributionBus",
+                        "serialized_type": "composed_component",
+                        "uuid": "6bca05db-e164-4c44-a057-7a66bcf9a717"
+                    }
+                }
+            },
+            "equipment": {
+                "__metadata__": {
+                    "fields": {
+                        "module": "gdm.distribution.equipment.load_equipment",
+                        "type": "LoadEquipment",
+                        "serialized_type": "composed_component",
+                        "uuid": "3414ee0c-4af1-45a2-b998-d443b780439f"
+                    }
+                }
+            }
+        },
+        {
+            "uuid": "74055dd6-a476-40b9-bec2-27a4b9a3b605",
+            "name": "6a6be146-995c-45a8-b8ea-4ad68a7f73ef_1",
+            "z_real": 0.0,
+            "z_imag": 0.0,
+            "i_real": 0.0,
+            "i_imag": 0.0,
+            "p_real": 1.0,
+            "p_imag": 1.0,
+            "num_customers": null,
+            "__metadata__": {
+                "fields": {
+                    "module": "gdm.distribution.equipment.phase_load_equipment",
+                    "type": "PhaseLoadEquipment",
+                    "serialized_type": "base"
+                }
+            },
+            "real_power": {
+                "value": 1.4061184464862206,
+                "units": "kilowatt",
+                "__metadata__": {
+                    "fields": {
+                        "module": "infrasys.quantities",
+                        "type": "ActivePower",
+                        "serialized_type": "quantity"
+                    }
+                }
+            },
+            "reactive_power": {
+                "value": 0.3657795526143532,
+                "units": "kilovar",
+                "__metadata__": {
+                    "fields": {
+                        "module": "gdm.quantities",
+                        "type": "ReactivePower",
+                        "serialized_type": "quantity"
+                    }
+                }
+            }
+        },
+        {
+            "uuid": "9f1debd4-718e-4948-97d9-895faadaa32e",
+            "name": "6a6be146-995c-45a8-b8ea-4ad68a7f73ef_2",
+            "z_real": 0.0,
+            "z_imag": 0.0,
+            "i_real": 0.0,
+            "i_imag": 0.0,
+            "p_real": 1.0,
+            "p_imag": 1.0,
+            "num_customers": null,
+            "__metadata__": {
+                "fields": {
+                    "module": "gdm.distribution.equipment.phase_load_equipment",
+                    "type": "PhaseLoadEquipment",
+                    "serialized_type": "base"
+                }
+            },
+            "real_power": {
+                "value": 1.4061184464862206,
+                "units": "kilowatt",
+                "__metadata__": {
+                    "fields": {
+                        "module": "infrasys.quantities",
+                        "type": "ActivePower",
+                        "serialized_type": "quantity"
+                    }
+                }
+            },
+            "reactive_power": {
+                "value": 0.3657795526143532,
+                "units": "kilovar",
+                "__metadata__": {
+                    "fields": {
+                        "module": "gdm.quantities",
+                        "type": "ReactivePower",
+                        "serialized_type": "quantity"
+                    }
+                }
+            }
+        },
+        {
+            "uuid": "f02444f0-e7d0-4255-81e5-3422d3f497f9",
+            "name": "6a6be146-995c-45a8-b8ea-4ad68a7f73ef_3",
+            "z_real": 0.0,
+            "z_imag": 0.0,
+            "i_real": 0.0,
+            "i_imag": 0.0,
+            "p_real": 1.0,
+            "p_imag": 1.0,
+            "num_customers": null,
+            "__metadata__": {
+                "fields": {
+                    "module": "gdm.distribution.equipment.phase_load_equipment",
+                    "type": "PhaseLoadEquipment",
+                    "serialized_type": "base"
+                }
+            },
+            "real_power": {
+                "value": 1.4061184464862206,
+                "units": "kilowatt",
+                "__metadata__": {
+                    "fields": {
+                        "module": "infrasys.quantities",
+                        "type": "ActivePower",
+                        "serialized_type": "quantity"
+                    }
+                }
+            },
+            "reactive_power": {
+                "value": 0.3657795526143532,
+                "units": "kilovar",
+                "__metadata__": {
+                    "fields": {
+                        "module": "gdm.quantities",
+                        "type": "ReactivePower",
+                        "serialized_type": "quantity"
+                    }
+                }
+            }
+        },
+        {
+            "uuid": "fde355fe-4efc-4785-a011-39f09c08798e",
+            "name": "9362efa3-6fa2-4c68-80bf-fd1f5704d8ee",
+            "connection_type": "STAR",
+            "__metadata__": {
+                "fields": {
+                    "module": "gdm.distribution.equipment.load_equipment",
+                    "type": "LoadEquipment",
+                    "serialized_type": "base"
+                }
+            },
+            "phase_loads": [
+                {
+                    "__metadata__": {
+                        "fields": {
+                            "module": "gdm.distribution.equipment.phase_load_equipment",
+                            "type": "PhaseLoadEquipment",
+                            "serialized_type": "composed_component",
+                            "uuid": "74055dd6-a476-40b9-bec2-27a4b9a3b605"
+                        }
+                    }
+                },
+                {
+                    "__metadata__": {
+                        "fields": {
+                            "module": "gdm.distribution.equipment.phase_load_equipment",
+                            "type": "PhaseLoadEquipment",
+                            "serialized_type": "composed_component",
+                            "uuid": "9f1debd4-718e-4948-97d9-895faadaa32e"
+                        }
+                    }
+                },
+                {
+                    "__metadata__": {
+                        "fields": {
+                            "module": "gdm.distribution.equipment.phase_load_equipment",
+                            "type": "PhaseLoadEquipment",
+                            "serialized_type": "composed_component",
+                            "uuid": "f02444f0-e7d0-4255-81e5-3422d3f497f9"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "uuid": "7cbf241d-0199-4b1b-98ff-a88bc8a487f4",
+            "name": "load_p5rlv265",
+            "substation": null,
+            "feeder": null,
+            "phases": [
+                "A",
+                "B",
+                "C"
+            ],
+            "__metadata__": {
+                "fields": {
+                    "module": "gdm.distribution.components.distribution_load",
+                    "type": "DistributionLoad",
+                    "serialized_type": "base"
+                }
+            },
+            "bus": {
+                "__metadata__": {
+                    "fields": {
+                        "module": "gdm.distribution.components.distribution_bus",
+                        "type": "DistributionBus",
+                        "serialized_type": "composed_component",
+                        "uuid": "6063e717-6a28-4840-a60c-211d2083ba36"
+                    }
+                }
+            },
+            "equipment": {
+                "__metadata__": {
+                    "fields": {
+                        "module": "gdm.distribution.equipment.load_equipment",
+                        "type": "LoadEquipment",
+                        "serialized_type": "composed_component",
+                        "uuid": "fde355fe-4efc-4785-a011-39f09c08798e"
+                    }
+                }
+            }
+        },
+        {
+            "uuid": "9a75a09f-9a6c-4928-a4fa-917031b929f1",
+            "name": "b4bb7543-35ed-45d0-a897-fe5b37a28f2c",
+            "rise_limit": null,
+            "fall_limit": null,
+            "eff_curve": null,
+            "__metadata__": {
+                "fields": {
+                    "module": "gdm.distribution.equipment.inverter_equipment",
+                    "type": "InverterEquipment",
+                    "serialized_type": "base"
+                }
+            },
+            "capacity": {
+                "value": 2.5,
+                "units": "kilova",
+                "__metadata__": {
+                    "fields": {
+                        "module": "gdm.quantities",
+                        "type": "PositiveApparentPower",
+                        "serialized_type": "quantity"
+                    }
+                }
+            }
+        },
+        {
+            "uuid": "a8f1a69c-855e-407e-aa2f-f84f20868b0c",
+            "name": "e9ccb22e-f8c2-4b8a-9d1b-ac0a4e3d06e2",
+            "power_factor": 1.0,
+            "__metadata__": {
+                "fields": {
+                    "module": "gdm.distribution.controllers.distribution_inverter_controller",
+                    "type": "PowerfactorInverterController",
+                    "serialized_type": "base"
+                }
+            },
+            "equipment": {
+                "__metadata__": {
+                    "fields": {
+                        "module": "gdm.distribution.equipment.inverter_equipment",
+                        "type": "InverterEquipment",
+                        "serialized_type": "composed_component",
+                        "uuid": "9a75a09f-9a6c-4928-a4fa-917031b929f1"
+                    }
+                }
+            }
+        },
+        {
+            "uuid": "0e9ce9a5-af39-4295-ba2f-14b278d4b18c",
+            "name": "f821b507-4cbd-4f3f-964e-278ecad2ef39",
+            "resistance": 50.0,
+            "reactance": 0.0,
+            "cutout_percent": 0.1,
+            "cutin_percent": 0.1,
+            "__metadata__": {
+                "fields": {
+                    "module": "gdm.distribution.equipment.solar_equipment",
+                    "type": "SolarEquipment",
+                    "serialized_type": "base"
+                }
+            },
+            "rated_capacity": {
+                "value": 2.5,
+                "units": "kilova",
+                "__metadata__": {
+                    "fields": {
+                        "module": "gdm.quantities",
+                        "type": "PositiveActivePower",
+                        "serialized_type": "quantity"
+                    }
+                }
+            },
+            "solar_power": {
+                "value": 3.0,
+                "units": "kilova",
+                "__metadata__": {
+                    "fields": {
+                        "module": "gdm.quantities",
+                        "type": "PositiveActivePower",
+                        "serialized_type": "quantity"
+                    }
+                }
+            }
+        },
+        {
+            "uuid": "aab4d7c4-46cc-4589-9c44-d335c9093ae5",
+            "name": "pv_load_p5rlv40",
+            "substation": null,
+            "feeder": null,
+            "phases": [
+                "A",
+                "B",
+                "C"
+            ],
+            "__metadata__": {
+                "fields": {
+                    "module": "gdm.distribution.components.distribution_solar",
+                    "type": "DistributionSolar",
+                    "serialized_type": "base"
+                }
+            },
+            "bus": {
+                "__metadata__": {
+                    "fields": {
+                        "module": "gdm.distribution.components.distribution_bus",
+                        "type": "DistributionBus",
+                        "serialized_type": "composed_component",
+                        "uuid": "6bca05db-e164-4c44-a057-7a66bcf9a717"
+                    }
+                }
+            },
+            "controller": {
+                "__metadata__": {
+                    "fields": {
+                        "module": "gdm.distribution.controllers.distribution_inverter_controller",
+                        "type": "PowerfactorInverterController",
+                        "serialized_type": "composed_component",
+                        "uuid": "a8f1a69c-855e-407e-aa2f-f84f20868b0c"
+                    }
+                }
+            },
+            "equipment": {
+                "__metadata__": {
+                    "fields": {
+                        "module": "gdm.distribution.equipment.solar_equipment",
+                        "type": "SolarEquipment",
+                        "serialized_type": "composed_component",
+                        "uuid": "0e9ce9a5-af39-4295-ba2f-14b278d4b18c"
+                    }
+                }
+            }
+        },
+        {
+            "uuid": "e53048b2-927c-4cee-b34c-978eb2754207",
+            "name": "a81f46f4-cfec-4369-bff1-6d900dd0e551",
+            "rise_limit": null,
+            "fall_limit": null,
+            "eff_curve": null,
+            "__metadata__": {
+                "fields": {
+                    "module": "gdm.distribution.equipment.inverter_equipment",
+                    "type": "InverterEquipment",
+                    "serialized_type": "base"
+                }
+            },
+            "capacity": {
+                "value": 2.5,
+                "units": "kilova",
+                "__metadata__": {
+                    "fields": {
+                        "module": "gdm.quantities",
+                        "type": "PositiveApparentPower",
+                        "serialized_type": "quantity"
+                    }
+                }
+            }
+        },
+        {
+            "uuid": "df906e52-1f60-439e-9144-157d4575faf6",
+            "name": "d72bce79-5310-4956-beb1-d21e35828bdc",
+            "power_factor": 1.0,
+            "__metadata__": {
+                "fields": {
+                    "module": "gdm.distribution.controllers.distribution_inverter_controller",
+                    "type": "PowerfactorInverterController",
+                    "serialized_type": "base"
+                }
+            },
+            "equipment": {
+                "__metadata__": {
+                    "fields": {
+                        "module": "gdm.distribution.equipment.inverter_equipment",
+                        "type": "InverterEquipment",
+                        "serialized_type": "composed_component",
+                        "uuid": "e53048b2-927c-4cee-b34c-978eb2754207"
+                    }
+                }
+            }
+        },
+        {
+            "uuid": "f2d1d2b1-26b3-4e0c-acb1-3d7073967548",
+            "name": "7a446e78-7c91-4f6a-89a6-663680309de6",
+            "resistance": 50.0,
+            "reactance": 0.0,
+            "cutout_percent": 0.1,
+            "cutin_percent": 0.1,
+            "__metadata__": {
+                "fields": {
+                    "module": "gdm.distribution.equipment.solar_equipment",
+                    "type": "SolarEquipment",
+                    "serialized_type": "base"
+                }
+            },
+            "rated_capacity": {
+                "value": 2.5,
+                "units": "kilova",
+                "__metadata__": {
+                    "fields": {
+                        "module": "gdm.quantities",
+                        "type": "PositiveActivePower",
+                        "serialized_type": "quantity"
+                    }
+                }
+            },
+            "solar_power": {
+                "value": 5.0,
+                "units": "kilova",
+                "__metadata__": {
+                    "fields": {
+                        "module": "gdm.quantities",
+                        "type": "PositiveActivePower",
+                        "serialized_type": "quantity"
+                    }
+                }
+            }
+        },
+        {
+            "uuid": "10d6279f-aab2-46df-ad83-351d6dbfb367",
+            "name": "pv_load_p5rlv40_1",
+            "substation": null,
+            "feeder": null,
+            "phases": [
+                "A",
+                "B",
+                "C"
+            ],
+            "__metadata__": {
+                "fields": {
+                    "module": "gdm.distribution.components.distribution_solar",
+                    "type": "DistributionSolar",
+                    "serialized_type": "base"
+                }
+            },
+            "bus": {
+                "__metadata__": {
+                    "fields": {
+                        "module": "gdm.distribution.components.distribution_bus",
+                        "type": "DistributionBus",
+                        "serialized_type": "composed_component",
+                        "uuid": "6bca05db-e164-4c44-a057-7a66bcf9a717"
+                    }
+                }
+            },
+            "controller": {
+                "__metadata__": {
+                    "fields": {
+                        "module": "gdm.distribution.controllers.distribution_inverter_controller",
+                        "type": "PowerfactorInverterController",
+                        "serialized_type": "composed_component",
+                        "uuid": "df906e52-1f60-439e-9144-157d4575faf6"
+                    }
+                }
+            },
+            "equipment": {
+                "__metadata__": {
+                    "fields": {
+                        "module": "gdm.distribution.equipment.solar_equipment",
+                        "type": "SolarEquipment",
+                        "serialized_type": "composed_component",
+                        "uuid": "f2d1d2b1-26b3-4e0c-acb1-3d7073967548"
+                    }
+                }
+            }
+        },
+        {
+            "uuid": "d71b9398-be77-4a13-9e84-3ac5fcaf6a3a",
+            "name": "",
+            "resistance": 0.87204,
+            "is_grounded": false,
+            "voltage_type": "line-to-ground",
+            "num_phases": 3,
+            "connection_type": "DELTA",
+            "tap_positions": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "total_taps": 32,
+            "min_tap_pu": 0.9,
+            "max_tap_pu": 1.1,
+            "__metadata__": {
+                "fields": {
+                    "module": "gdm.distribution.equipment.distribution_transformer_equipment",
+                    "type": "WindingEquipment",
+                    "serialized_type": "base"
+                }
+            },
+            "nominal_voltage": {
+                "value": 7.199769053117783,
+                "units": "kilovolt",
+                "__metadata__": {
+                    "fields": {
+                        "module": "gdm.quantities",
+                        "type": "PositiveVoltage",
+                        "serialized_type": "quantity"
+                    }
+                }
+            },
+            "rated_power": {
+                "value": 75.0,
+                "units": "kilova",
+                "__metadata__": {
+                    "fields": {
+                        "module": "gdm.quantities",
+                        "type": "PositiveApparentPower",
+                        "serialized_type": "quantity"
+                    }
+                }
+            }
+        },
+        {
+            "uuid": "b81a5c5e-b79d-4fa0-a9dd-4c3b3e427a07",
+            "name": "",
+            "resistance": 0.87204,
+            "is_grounded": false,
+            "voltage_type": "line-to-ground",
+            "num_phases": 3,
+            "connection_type": "STAR",
+            "tap_positions": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "total_taps": 32,
+            "min_tap_pu": 0.9,
+            "max_tap_pu": 1.1,
+            "__metadata__": {
+                "fields": {
+                    "module": "gdm.distribution.equipment.distribution_transformer_equipment",
+                    "type": "WindingEquipment",
+                    "serialized_type": "base"
+                }
+            },
+            "nominal_voltage": {
+                "value": 0.27713625866050806,
+                "units": "kilovolt",
+                "__metadata__": {
+                    "fields": {
+                        "module": "gdm.quantities",
+                        "type": "PositiveVoltage",
+                        "serialized_type": "quantity"
+                    }
+                }
+            },
+            "rated_power": {
+                "value": 75.0,
+                "units": "kilova",
+                "__metadata__": {
+                    "fields": {
+                        "module": "gdm.quantities",
+                        "type": "PositiveApparentPower",
+                        "serialized_type": "quantity"
+                    }
+                }
+            }
+        },
+        {
+            "uuid": "0297004c-3627-4d55-8b04-6fd1eeb5f2c1",
+            "name": "be47fb70-96da-4be2-8955-cfefa3c6f573",
+            "pct_no_load_loss": 0.6,
+            "pct_full_load_loss": 1.74408,
+            "coupling_sequences": [
+                [
+                    1,
+                    2
+                ]
+            ],
+            "winding_reactances": [
+                3.24
+            ],
+            "is_center_tapped": false,
+            "__metadata__": {
+                "fields": {
+                    "module": "gdm.distribution.equipment.distribution_transformer_equipment",
+                    "type": "DistributionTransformerEquipment",
+                    "serialized_type": "base"
+                }
+            },
+            "windings": [
+                {
+                    "__metadata__": {
+                        "fields": {
+                            "module": "gdm.distribution.equipment.distribution_transformer_equipment",
+                            "type": "WindingEquipment",
+                            "serialized_type": "composed_component",
+                            "uuid": "d71b9398-be77-4a13-9e84-3ac5fcaf6a3a"
+                        }
+                    }
+                },
+                {
+                    "__metadata__": {
+                        "fields": {
+                            "module": "gdm.distribution.equipment.distribution_transformer_equipment",
+                            "type": "WindingEquipment",
+                            "serialized_type": "composed_component",
+                            "uuid": "b81a5c5e-b79d-4fa0-a9dd-4c3b3e427a07"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "uuid": "f8c08481-31cd-478f-8469-f0b00c4a69c2",
+            "name": "tr(r:p5rdt149-p5rdt149lv)",
+            "substation": null,
+            "feeder": null,
+            "winding_phases": [
+                [
+                    "A",
+                    "B",
+                    "C"
+                ],
+                [
+                    "A",
+                    "B",
+                    "C"
+                ]
+            ],
+            "__metadata__": {
+                "fields": {
+                    "module": "gdm.distribution.components.distribution_transformer",
+                    "type": "DistributionTransformer",
+                    "serialized_type": "base"
+                }
+            },
+            "buses": [
+                {
+                    "__metadata__": {
+                        "fields": {
+                            "module": "gdm.distribution.components.distribution_bus",
+                            "type": "DistributionBus",
+                            "serialized_type": "composed_component",
+                            "uuid": "a9fd8883-f80f-492c-ad7b-6ed9f40c293a"
+                        }
+                    }
+                },
+                {
+                    "__metadata__": {
+                        "fields": {
+                            "module": "gdm.distribution.components.distribution_bus",
+                            "type": "DistributionBus",
+                            "serialized_type": "composed_component",
+                            "uuid": "dc668a23-7708-48cd-9166-c9dff885f96e"
+                        }
+                    }
+                }
+            ],
+            "equipment": {
+                "__metadata__": {
+                    "fields": {
+                        "module": "gdm.distribution.equipment.distribution_transformer_equipment",
+                        "type": "DistributionTransformerEquipment",
+                        "serialized_type": "composed_component",
+                        "uuid": "0297004c-3627-4d55-8b04-6fd1eeb5f2c1"
+                    }
+                }
+            }
+        },
+        {
+            "uuid": "6f700206-e7f0-4f1b-9143-ef28b46304d2",
+            "name": "tr(r:p5rdt22-p5rdt22lv)",
+            "substation": null,
+            "feeder": null,
+            "winding_phases": [
+                [
+                    "A",
+                    "B",
+                    "C"
+                ],
+                [
+                    "A",
+                    "B",
+                    "C"
+                ]
+            ],
+            "__metadata__": {
+                "fields": {
+                    "module": "gdm.distribution.components.distribution_transformer",
+                    "type": "DistributionTransformer",
+                    "serialized_type": "base"
+                }
+            },
+            "buses": [
+                {
+                    "__metadata__": {
+                        "fields": {
+                            "module": "gdm.distribution.components.distribution_bus",
+                            "type": "DistributionBus",
+                            "serialized_type": "composed_component",
+                            "uuid": "8a8cc197-ba59-4fdc-a907-f38d00e3779b"
+                        }
+                    }
+                },
+                {
+                    "__metadata__": {
+                        "fields": {
+                            "module": "gdm.distribution.components.distribution_bus",
+                            "type": "DistributionBus",
+                            "serialized_type": "composed_component",
+                            "uuid": "d6114ce0-bac8-41eb-b4e2-b980f0b068a2"
+                        }
+                    }
+                }
+            ],
+            "equipment": {
+                "__metadata__": {
+                    "fields": {
+                        "module": "gdm.distribution.equipment.distribution_transformer_equipment",
+                        "type": "DistributionTransformerEquipment",
+                        "serialized_type": "composed_component",
+                        "uuid": "0297004c-3627-4d55-8b04-6fd1eeb5f2c1"
+                    }
+                }
+            }
+        },
+        {
+            "uuid": "00c9df40-d9d9-4500-ae0b-1110382484ac",
+            "name": "",
+            "limit_type": "max",
+            "__metadata__": {
+                "fields": {
+                    "module": "gdm.distribution.limitset",
+                    "type": "ThermalLimitSet",
+                    "serialized_type": "base"
+                }
+            },
+            "value": {
+                "value": 600.0,
+                "units": "ampere",
+                "__metadata__": {
+                    "fields": {
+                        "module": "gdm.quantities",
+                        "type": "PositiveCurrent",
+                        "serialized_type": "quantity"
+                    }
+                }
+            }
+        },
+        {
+            "uuid": "b47ffc41-1f5b-4a0c-a0ef-6df36573f6b3",
+            "name": "4b2d3943-3bfd-4ca5-922e-75ee9ba73ce7",
+            "controller": null,
+            "__metadata__": {
+                "fields": {
+                    "module": "gdm.distribution.equipment.matrix_impedance_switch_equipment",
+                    "type": "MatrixImpedanceSwitchEquipment",
+                    "serialized_type": "base"
+                }
+            },
+            "r_matrix": {
+                "value": [
+                    [
+                        1.0,
+                        0.0,
+                        0.0
+                    ],
+                    [
+                        0.0,
+                        1.0,
+                        0.0
+                    ],
+                    [
+                        0.0,
+                        0.0,
+                        1.0
+                    ]
+                ],
+                "units": "ohm / meter",
+                "__metadata__": {
+                    "fields": {
+                        "module": "gdm.quantities",
+                        "type": "ResistancePULength",
+                        "serialized_type": "quantity"
+                    }
+                }
+            },
+            "x_matrix": {
+                "value": [
+                    [
+                        1.0,
+                        0.0,
+                        0.0
+                    ],
+                    [
+                        0.0,
+                        1.0,
+                        0.0
+                    ],
+                    [
+                        0.0,
+                        0.0,
+                        1.0
+                    ]
+                ],
+                "units": "ohm / meter",
+                "__metadata__": {
+                    "fields": {
+                        "module": "gdm.quantities",
+                        "type": "ReactancePULength",
+                        "serialized_type": "quantity"
+                    }
+                }
+            },
+            "c_matrix": {
+                "value": [
+                    [
+                        1.0666666666666669,
+                        -0.03333333333333336,
+                        -0.03333333333333336
+                    ],
+                    [
+                        -0.03333333333333336,
+                        1.0666666666666669,
+                        -0.03333333333333336
+                    ],
+                    [
+                        -0.03333333333333336,
+                        -0.03333333333333336,
+                        1.0666666666666669
+                    ]
+                ],
+                "units": "nanofarad / meter",
+                "__metadata__": {
+                    "fields": {
+                        "module": "gdm.quantities",
+                        "type": "CapacitancePULength",
+                        "serialized_type": "quantity"
+                    }
+                }
+            },
+            "ampacity": {
+                "value": 325.0,
+                "units": "ampere",
+                "__metadata__": {
+                    "fields": {
+                        "module": "gdm.quantities",
+                        "type": "PositiveCurrent",
+                        "serialized_type": "quantity"
+                    }
+                }
+            },
+            "loading_limit": {
+                "__metadata__": {
+                    "fields": {
+                        "module": "gdm.distribution.limitset",
+                        "type": "ThermalLimitSet",
+                        "serialized_type": "composed_component",
+                        "uuid": "00c9df40-d9d9-4500-ae0b-1110382484ac"
+                    }
+                }
+            }
+        },
+        {
+            "uuid": "1bc7d444-4e57-4075-a58a-c08908331c7e",
+            "name": "3p_oh_al_acsr_4/0_penguin_3",
+            "__metadata__": {
+                "fields": {
+                    "module": "gdm.distribution.equipment.matrix_impedance_branch_equipment",
+                    "type": "MatrixImpedanceBranchEquipment",
+                    "serialized_type": "base"
+                }
+            },
+            "r_matrix": {
+                "value": [
+                    [
+                        0.3635667,
+                        0.09006667,
+                        0.09006667
+                    ],
+                    [
+                        0.09006667,
+                        0.3635667,
+                        0.09006667
+                    ],
+                    [
+                        0.09006667,
+                        0.09006667,
+                        0.3635667
+                    ]
+                ],
+                "units": "ohm / kilometer",
+                "__metadata__": {
+                    "fields": {
+                        "module": "gdm.quantities",
+                        "type": "ResistancePULength",
+                        "serialized_type": "quantity"
+                    }
+                }
+            },
+            "x_matrix": {
+                "value": [
+                    [
+                        0.6385333,
+                        0.2202333,
+                        0.2202333
+                    ],
+                    [
+                        0.2202333,
+                        0.6385333,
+                        0.2202333
+                    ],
+                    [
+                        0.2202333,
+                        0.2202333,
+                        0.6385333
+                    ]
+                ],
+                "units": "ohm / kilometer",
+                "__metadata__": {
+                    "fields": {
+                        "module": "gdm.quantities",
+                        "type": "ReactancePULength",
+                        "serialized_type": "quantity"
+                    }
+                }
+            },
+            "c_matrix": {
+                "value": [
+                    [
+                        7.4482669999999995,
+                        -3.1846329999999994,
+                        -3.1846329999999994
+                    ],
+                    [
+                        -3.1846329999999994,
+                        7.4482669999999995,
+                        -3.1846329999999994
+                    ],
+                    [
+                        -3.1846329999999994,
+                        -3.1846329999999994,
+                        7.4482669999999995
+                    ]
+                ],
+                "units": "nanofarad / kilometer",
+                "__metadata__": {
+                    "fields": {
+                        "module": "gdm.quantities",
+                        "type": "CapacitancePULength",
+                        "serialized_type": "quantity"
+                    }
+                }
+            },
+            "ampacity": {
+                "value": 325.0,
+                "units": "ampere",
+                "__metadata__": {
+                    "fields": {
+                        "module": "gdm.quantities",
+                        "type": "PositiveCurrent",
+                        "serialized_type": "quantity"
+                    }
+                }
+            },
+            "loading_limit": {
+                "__metadata__": {
+                    "fields": {
+                        "module": "gdm.distribution.limitset",
+                        "type": "ThermalLimitSet",
+                        "serialized_type": "composed_component",
+                        "uuid": "00c9df40-d9d9-4500-ae0b-1110382484ac"
+                    }
+                }
+            }
+        },
+        {
+            "uuid": "7648aa1d-06d1-4439-825c-c9891e6ea4c7",
+            "name": "3p_ug_al_3",
+            "__metadata__": {
+                "fields": {
+                    "module": "gdm.distribution.equipment.matrix_impedance_branch_equipment",
+                    "type": "MatrixImpedanceBranchEquipment",
+                    "serialized_type": "base"
+                }
+            },
+            "r_matrix": {
+                "value": [
+                    [
+                        0.445,
+                        0.1745,
+                        0.1745
+                    ],
+                    [
+                        0.1745,
+                        0.445,
+                        0.1745
+                    ],
+                    [
+                        0.1745,
+                        0.1745,
+                        0.445
+                    ]
+                ],
+                "units": "ohm / kilometer",
+                "__metadata__": {
+                    "fields": {
+                        "module": "gdm.quantities",
+                        "type": "ResistancePULength",
+                        "serialized_type": "quantity"
+                    }
+                }
+            },
+            "x_matrix": {
+                "value": [
+                    [
+                        0.5326,
+                        0.2912,
+                        0.2912
+                    ],
+                    [
+                        0.2912,
+                        0.5326,
+                        0.2912
+                    ],
+                    [
+                        0.2912,
+                        0.2912,
+                        0.5326
+                    ]
+                ],
+                "units": "ohm / kilometer",
+                "__metadata__": {
+                    "fields": {
+                        "module": "gdm.quantities",
+                        "type": "ReactancePULength",
+                        "serialized_type": "quantity"
+                    }
+                }
+            },
+            "c_matrix": {
+                "value": [
+                    [
+                        145.291,
+                        -72.088,
+                        -72.088
+                    ],
+                    [
+                        -72.088,
+                        145.291,
+                        -72.088
+                    ],
+                    [
+                        -72.088,
+                        -72.088,
+                        145.291
+                    ]
+                ],
+                "units": "nanofarad / kilometer",
+                "__metadata__": {
+                    "fields": {
+                        "module": "gdm.quantities",
+                        "type": "CapacitancePULength",
+                        "serialized_type": "quantity"
+                    }
+                }
+            },
+            "ampacity": {
+                "value": 285.0,
+                "units": "ampere",
+                "__metadata__": {
+                    "fields": {
+                        "module": "gdm.quantities",
+                        "type": "PositiveCurrent",
+                        "serialized_type": "quantity"
+                    }
+                }
+            },
+            "loading_limit": {
+                "__metadata__": {
+                    "fields": {
+                        "module": "gdm.distribution.limitset",
+                        "type": "ThermalLimitSet",
+                        "serialized_type": "composed_component",
+                        "uuid": "00c9df40-d9d9-4500-ae0b-1110382484ac"
+                    }
+                }
+            }
+        },
+        {
+            "uuid": "40226c46-1c4b-4cf3-a6c5-f8fb251e6cc3",
+            "name": "l(r:p5rdt149-p5rhs0_1247)",
+            "substation": null,
+            "feeder": null,
+            "phases": [
+                "A",
+                "B",
+                "C"
+            ],
+            "__metadata__": {
+                "fields": {
+                    "module": "gdm.distribution.components.matrix_impedance_branch",
+                    "type": "MatrixImpedanceBranch",
+                    "serialized_type": "base"
+                }
+            },
+            "buses": [
+                {
+                    "__metadata__": {
+                        "fields": {
+                            "module": "gdm.distribution.components.distribution_bus",
+                            "type": "DistributionBus",
+                            "serialized_type": "composed_component",
+                            "uuid": "52b25c35-1cb2-4161-a35a-2a5d194dd677"
+                        }
+                    }
+                },
+                {
+                    "__metadata__": {
+                        "fields": {
+                            "module": "gdm.distribution.components.distribution_bus",
+                            "type": "DistributionBus",
+                            "serialized_type": "composed_component",
+                            "uuid": "8d049281-e726-42f4-946e-b6db31507d22"
+                        }
+                    }
+                }
+            ],
+            "length": {
+                "value": 0.561451,
+                "units": "kilometer",
+                "__metadata__": {
+                    "fields": {
+                        "module": "gdm.quantities",
+                        "type": "PositiveDistance",
+                        "serialized_type": "quantity"
+                    }
+                }
+            },
+            "equipment": {
+                "__metadata__": {
+                    "fields": {
+                        "module": "gdm.distribution.equipment.matrix_impedance_branch_equipment",
+                        "type": "MatrixImpedanceBranchEquipment",
+                        "serialized_type": "composed_component",
+                        "uuid": "1bc7d444-4e57-4075-a58a-c08908331c7e"
+                    }
+                }
+            }
+        },
+        {
+            "uuid": "eac1e490-1106-45a6-9abe-3e41d1459206",
+            "name": "l(r:p5rdt149lv-p5rlv265)",
+            "substation": null,
+            "feeder": null,
+            "phases": [
+                "A",
+                "B",
+                "C"
+            ],
+            "__metadata__": {
+                "fields": {
+                    "module": "gdm.distribution.components.matrix_impedance_branch",
+                    "type": "MatrixImpedanceBranch",
+                    "serialized_type": "base"
+                }
+            },
+            "buses": [
+                {
+                    "__metadata__": {
+                        "fields": {
+                            "module": "gdm.distribution.components.distribution_bus",
+                            "type": "DistributionBus",
+                            "serialized_type": "composed_component",
+                            "uuid": "dc668a23-7708-48cd-9166-c9dff885f96e"
+                        }
+                    }
+                },
+                {
+                    "__metadata__": {
+                        "fields": {
+                            "module": "gdm.distribution.components.distribution_bus",
+                            "type": "DistributionBus",
+                            "serialized_type": "composed_component",
+                            "uuid": "6063e717-6a28-4840-a60c-211d2083ba36"
+                        }
+                    }
+                }
+            ],
+            "length": {
+                "value": 0.001,
+                "units": "kilometer",
+                "__metadata__": {
+                    "fields": {
+                        "module": "gdm.quantities",
+                        "type": "PositiveDistance",
+                        "serialized_type": "quantity"
+                    }
+                }
+            },
+            "equipment": {
+                "__metadata__": {
+                    "fields": {
+                        "module": "gdm.distribution.equipment.matrix_impedance_branch_equipment",
+                        "type": "MatrixImpedanceBranchEquipment",
+                        "serialized_type": "composed_component",
+                        "uuid": "7648aa1d-06d1-4439-825c-c9891e6ea4c7"
+                    }
+                }
+            }
+        },
+        {
+            "uuid": "10db5fb8-2c54-4f54-92ae-b0eadf11962f",
+            "name": "l(r:p5rdt22lv-p5rlv40)",
+            "substation": null,
+            "feeder": null,
+            "phases": [
+                "A",
+                "B",
+                "C"
+            ],
+            "__metadata__": {
+                "fields": {
+                    "module": "gdm.distribution.components.matrix_impedance_branch",
+                    "type": "MatrixImpedanceBranch",
+                    "serialized_type": "base"
+                }
+            },
+            "buses": [
+                {
+                    "__metadata__": {
+                        "fields": {
+                            "module": "gdm.distribution.components.distribution_bus",
+                            "type": "DistributionBus",
+                            "serialized_type": "composed_component",
+                            "uuid": "d6114ce0-bac8-41eb-b4e2-b980f0b068a2"
+                        }
+                    }
+                },
+                {
+                    "__metadata__": {
+                        "fields": {
+                            "module": "gdm.distribution.components.distribution_bus",
+                            "type": "DistributionBus",
+                            "serialized_type": "composed_component",
+                            "uuid": "6bca05db-e164-4c44-a057-7a66bcf9a717"
+                        }
+                    }
+                }
+            ],
+            "length": {
+                "value": 0.004450080000000001,
+                "units": "kilometer",
+                "__metadata__": {
+                    "fields": {
+                        "module": "gdm.quantities",
+                        "type": "PositiveDistance",
+                        "serialized_type": "quantity"
+                    }
+                }
+            },
+            "equipment": {
+                "__metadata__": {
+                    "fields": {
+                        "module": "gdm.distribution.equipment.matrix_impedance_branch_equipment",
+                        "type": "MatrixImpedanceBranchEquipment",
+                        "serialized_type": "composed_component",
+                        "uuid": "7648aa1d-06d1-4439-825c-c9891e6ea4c7"
+                    }
+                }
+            }
+        },
+        {
+            "uuid": "ac79bf47-3031-44bc-acd6-c0cc14602b76",
+            "name": "l(r:p5rdt149-p5rdt22)_s0",
+            "substation": null,
+            "feeder": null,
+            "phases": [
+                "A",
+                "B",
+                "C"
+            ],
+            "__metadata__": {
+                "fields": {
+                    "module": "gdm.distribution.components.matrix_impedance_branch",
+                    "type": "MatrixImpedanceBranch",
+                    "serialized_type": "base"
+                }
+            },
+            "buses": [
+                {
+                    "__metadata__": {
+                        "fields": {
+                            "module": "gdm.distribution.components.distribution_bus",
+                            "type": "DistributionBus",
+                            "serialized_type": "composed_component",
+                            "uuid": "a9fd8883-f80f-492c-ad7b-6ed9f40c293a"
+                        }
+                    }
+                },
+                {
+                    "__metadata__": {
+                        "fields": {
+                            "module": "gdm.distribution.components.distribution_bus",
+                            "type": "DistributionBus",
+                            "serialized_type": "composed_component",
+                            "uuid": "009db048-f421-46e1-a4a3-01fc3c75c232"
+                        }
+                    }
+                }
+            ],
+            "length": {
+                "value": 0.829829,
+                "units": "kilometer",
+                "__metadata__": {
+                    "fields": {
+                        "module": "gdm.quantities",
+                        "type": "PositiveDistance",
+                        "serialized_type": "quantity"
+                    }
+                }
+            },
+            "equipment": {
+                "__metadata__": {
+                    "fields": {
+                        "module": "gdm.distribution.equipment.matrix_impedance_branch_equipment",
+                        "type": "MatrixImpedanceBranchEquipment",
+                        "serialized_type": "composed_component",
+                        "uuid": "1bc7d444-4e57-4075-a58a-c08908331c7e"
+                    }
+                }
+            }
+        },
+        {
+            "uuid": "327eb09c-b11e-4d56-9057-31124f07039e",
+            "name": "l(r:p5rdt149-p5rdt22)_s1",
+            "substation": null,
+            "feeder": null,
+            "phases": [
+                "A",
+                "B",
+                "C"
+            ],
+            "__metadata__": {
+                "fields": {
+                    "module": "gdm.distribution.components.matrix_impedance_branch",
+                    "type": "MatrixImpedanceBranch",
+                    "serialized_type": "base"
+                }
+            },
+            "buses": [
+                {
+                    "__metadata__": {
+                        "fields": {
+                            "module": "gdm.distribution.components.distribution_bus",
+                            "type": "DistributionBus",
+                            "serialized_type": "composed_component",
+                            "uuid": "009db048-f421-46e1-a4a3-01fc3c75c232"
+                        }
+                    }
+                },
+                {
+                    "__metadata__": {
+                        "fields": {
+                            "module": "gdm.distribution.components.distribution_bus",
+                            "type": "DistributionBus",
+                            "serialized_type": "composed_component",
+                            "uuid": "8a8cc197-ba59-4fdc-a907-f38d00e3779b"
+                        }
+                    }
+                }
+            ],
+            "length": {
+                "value": 1.87473,
+                "units": "kilometer",
+                "__metadata__": {
+                    "fields": {
+                        "module": "gdm.quantities",
+                        "type": "PositiveDistance",
+                        "serialized_type": "quantity"
+                    }
+                }
+            },
+            "equipment": {
+                "__metadata__": {
+                    "fields": {
+                        "module": "gdm.distribution.equipment.matrix_impedance_branch_equipment",
+                        "type": "MatrixImpedanceBranchEquipment",
+                        "serialized_type": "composed_component",
+                        "uuid": "1bc7d444-4e57-4075-a58a-c08908331c7e"
+                    }
+                }
+            }
+        },
+        {
+            "uuid": "3f5fb3ed-a79a-4610-8774-d00c25a51584",
+            "name": "l(r:p5rdt149-p5rhs0_1247)_disconnect",
+            "substation": null,
+            "feeder": null,
+            "phases": [
+                "A",
+                "B",
+                "C"
+            ],
+            "is_closed": [
+                true,
+                true,
+                true
+            ],
+            "__metadata__": {
+                "fields": {
+                    "module": "gdm.distribution.components.matrix_impedance_switch",
+                    "type": "MatrixImpedanceSwitch",
+                    "serialized_type": "base"
+                }
+            },
+            "buses": [
+                {
+                    "__metadata__": {
+                        "fields": {
+                            "module": "gdm.distribution.components.distribution_bus",
+                            "type": "DistributionBus",
+                            "serialized_type": "composed_component",
+                            "uuid": "8d049281-e726-42f4-946e-b6db31507d22"
+                        }
+                    }
+                },
+                {
+                    "__metadata__": {
+                        "fields": {
+                            "module": "gdm.distribution.components.distribution_bus",
+                            "type": "DistributionBus",
+                            "serialized_type": "composed_component",
+                            "uuid": "bffd30fb-5a9a-4d75-8d40-148b60ee87fa"
+                        }
+                    }
+                }
+            ],
+            "length": {
+                "value": 0.001,
+                "units": "meter",
+                "__metadata__": {
+                    "fields": {
+                        "module": "gdm.quantities",
+                        "type": "PositiveDistance",
+                        "serialized_type": "quantity"
+                    }
+                }
+            },
+            "equipment": {
+                "__metadata__": {
+                    "fields": {
+                        "module": "gdm.distribution.equipment.matrix_impedance_switch_equipment",
+                        "type": "MatrixImpedanceSwitchEquipment",
+                        "serialized_type": "composed_component",
+                        "uuid": "b47ffc41-1f5b-4a0c-a0ef-6df36573f6b3"
+                    }
+                }
+            }
+        },
+        {
+            "uuid": "87c701e3-88b8-4946-a642-8c3f7fbe5fb3",
+            "name": "l(r:p5rdt149-p5rhs0_1247)_cont",
+            "substation": null,
+            "feeder": null,
+            "phases": [
+                "A",
+                "B",
+                "C"
+            ],
+            "__metadata__": {
+                "fields": {
+                    "module": "gdm.distribution.components.matrix_impedance_branch",
+                    "type": "MatrixImpedanceBranch",
+                    "serialized_type": "base"
+                }
+            },
+            "buses": [
+                {
+                    "__metadata__": {
+                        "fields": {
+                            "module": "gdm.distribution.components.distribution_bus",
+                            "type": "DistributionBus",
+                            "serialized_type": "composed_component",
+                            "uuid": "bffd30fb-5a9a-4d75-8d40-148b60ee87fa"
+                        }
+                    }
+                },
+                {
+                    "__metadata__": {
+                        "fields": {
+                            "module": "gdm.distribution.components.distribution_bus",
+                            "type": "DistributionBus",
+                            "serialized_type": "composed_component",
+                            "uuid": "a9fd8883-f80f-492c-ad7b-6ed9f40c293a"
+                        }
+                    }
+                }
+            ],
+            "length": {
+                "value": 5.0620590000000005,
+                "units": "kilometer",
+                "__metadata__": {
+                    "fields": {
+                        "module": "gdm.quantities",
+                        "type": "PositiveDistance",
+                        "serialized_type": "quantity"
+                    }
+                }
+            },
+            "equipment": {
+                "__metadata__": {
+                    "fields": {
+                        "module": "gdm.distribution.equipment.matrix_impedance_branch_equipment",
+                        "type": "MatrixImpedanceBranchEquipment",
+                        "serialized_type": "composed_component",
+                        "uuid": "1bc7d444-4e57-4075-a58a-c08908331c7e"
+                    }
+                }
+            }
+        }
+    ],
+    "time_series": {
+        "directory": "p5r_pv_time_series"
+    }
+}

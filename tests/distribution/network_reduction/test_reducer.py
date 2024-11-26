@@ -1,6 +1,3 @@
-from pathlib import Path
-
-
 from gdm.distribution.network.reducer import reduce_to_three_phase_system
 from gdm import DistributionSystem, DistributionLoad, DistributionBus
 
@@ -15,15 +12,13 @@ def get_total_kvar(load: DistributionLoad):
     )
 
 
-def test_three_phase_network_reducer_with_timeseries():
-    data_path = Path(__file__).parents[2] / "data/p5r_pv.json"
-    gdm_sys: DistributionSystem = DistributionSystem.from_json(data_path)
+def test_three_phase_network_reducer_with_timeseries(sample_distribution_system_with_timeseries):
+    gdm_sys: DistributionSystem = sample_distribution_system_with_timeseries
     reduce_to_three_phase_system(gdm_sys, name="reduced_system", agg_timeseries=True)
 
 
-def test_three_phase_network_reducer():
-    data_path = Path(__file__).parents[2] / "data/p10_gdm.json"
-    gdm_sys: DistributionSystem = DistributionSystem.from_json(data_path)
+def test_three_phase_network_reducer(sample_distribution_system_with_timeseries):
+    gdm_sys: DistributionSystem = sample_distribution_system_with_timeseries
     reducer = reduce_to_three_phase_system(gdm_sys, name="reduced_system", agg_timeseries=False)
     bus = list(reducer.get_components(DistributionBus))[0]
 
@@ -40,12 +35,10 @@ def test_three_phase_network_reducer():
         "gdm_total",
         split_phase_mapping,
     )
-    print(
-        f"""Active power Reduced: {get_total_kw(reducer_total_load)} MW,
+    assert get_total_kw(reducer_total_load) == get_total_kw(gdm_total_load), f"""Active power Reduced: {get_total_kw(reducer_total_load)} MW,
         Original: {get_total_kw(gdm_total_load)} MW"""
-    )
+    
 
-    print(
-        f"""Reactive power Reduced: {get_total_kvar(reducer_total_load)} Mvar,
+    assert get_total_kvar(reducer_total_load) == get_total_kvar(gdm_total_load), f"""Reactive power Reduced: {get_total_kvar(reducer_total_load)} Mvar,
         Original: {get_total_kvar(gdm_total_load)} Mvar"""
-    )
+    

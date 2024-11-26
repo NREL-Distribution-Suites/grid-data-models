@@ -37,6 +37,6 @@ class InverterEquipment(Component):
         """Example for load model."""
         return InverterEquipment(
             capacity=PositiveApparentPower(3.8, "kva"),
-            rise_limit=ActivePowerPUTime(1.1, "kW/minute"),
-            fall_limit=ActivePowerPUTime(1.1, "kW/minute"),
+            rise_limit=ActivePowerPUTime(1.1, "kW/second"),
+            fall_limit=ActivePowerPUTime(1.1, "kW/second"),
         )
