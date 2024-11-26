@@ -57,6 +57,6 @@ class InverterEquipment(Component):
             capacity=PositiveApparentPower(3.8, "kva"),
             rise_limit=ActivePowerPUTime(1.1, "kW/second"),
             fall_limit=ActivePowerPUTime(1.1, "kW/second"),
-            cutout_percent =10,
-            cutin_percent =10
+            cutout_percent=10,
+            cutin_percent=10,
         )

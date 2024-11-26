@@ -321,7 +321,7 @@ def build_split_phase_solar(bus: DistributionBus, bus_number: int):
             rated_capacity=ActivePower(bus_number + 1, "kilowatt"),
             solar_power=ActivePower(bus_number + 1, "kilowatt"),
             resistance=1,
-            reactance=1,  
+            reactance=1,
         ),
         inverter=DistrbutionInverter(
             name=f"pv_inverter_{bus_number}",

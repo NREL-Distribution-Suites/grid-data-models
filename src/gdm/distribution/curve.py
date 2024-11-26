@@ -27,9 +27,13 @@ class Curve(Component):
     """
 
     name: Annotated[str, Field("", description="Name of the curve.")]
-    curve_x: Annotated[list[float] | BaseQuantity, Field(..., description="The x values of the curve")]
+    curve_x: Annotated[
+        list[float] | BaseQuantity, Field(..., description="The x values of the curve")
+    ]
 
-    curve_y: Annotated[list[float] | BaseQuantity, Field(..., description="The y values of the curve")]
+    curve_y: Annotated[
+        list[float] | BaseQuantity, Field(..., description="The y values of the curve")
+    ]
 
     @model_validator(mode="after")
     def validate_fields(self) -> "Curve":
