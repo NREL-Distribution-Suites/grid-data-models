@@ -45,24 +45,6 @@ class SolarEquipment(Component):
         ),
     ]
 
-    cutout_percent: Annotated[
-        float,
-        Field(
-            ge=0,
-            le=100,
-            description="If the per-unit power drops below this value the PV output is turned off.",
-        ),
-    ]
-
-    cutin_percent: Annotated[
-        float,
-        Field(
-            ge=0,
-            le=100,
-            description="If the per-unit power rises above this value the PV output is turned on.",
-        ),
-    ]
-
     @classmethod
     def example(cls) -> "SolarEquipment":
         "Example for a solar Equipment"
@@ -72,6 +54,4 @@ class SolarEquipment(Component):
             solar_power=PositiveActivePower(3.2, "kW"),
             resistance=50,
             reactance=0,
-            cutin_percent=25,
-            cutout_percent=20,
         )

@@ -5,7 +5,7 @@ from typing import Annotated
 from pydantic import model_validator, Field
 from infrasys import Component
 from infrasys.quantities import Time, Current
-
+from infrasys.base_quantity import BaseQuantity
 from gdm.constants import PINT_SCHEMA
 
 
@@ -27,9 +27,9 @@ class Curve(Component):
     """
 
     name: Annotated[str, Field("", description="Name of the curve.")]
-    curve_x: Annotated[list[float], Field(..., description="The x values of the curve")]
+    curve_x: Annotated[list[float] | BaseQuantity, Field(..., description="The x values of the curve")]
 
-    curve_y: Annotated[list[float], Field(..., description="The y values of the curve")]
+    curve_y: Annotated[list[float] | BaseQuantity, Field(..., description="The y values of the curve")]
 
     @model_validator(mode="after")
     def validate_fields(self) -> "Curve":

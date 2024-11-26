@@ -85,10 +85,7 @@ class DistributionSolar(DistributionComponentBase):
                     (1 / inst.equipment.reactance if inst.equipment.reactance else 0)
                     for inst in instances
                 ),
-                cutin_percent=sum(inst.equipment.cutin_percent for inst in instances)
-                / len(instances),
-                cutout_percent=sum(inst.equipment.cutout_percent for inst in instances)
-                / len(instances),
+                
             ),
             inverter=DistrbutionInverter(
                 name=f"{name}_inverter",
@@ -98,6 +95,10 @@ class DistributionSolar(DistributionComponentBase):
                     rise_limit=None,
                     fall_limit=None,
                     eff_curve=None,
+                    cutin_percent=sum(inst.inverter.equipment.cutin_percent for inst in instances)
+                        / len(instances),
+                    cutout_percent=sum(inst.inverter.equipment.cutout_percent for inst in instances)
+                        / len(instances),
                 ),
                 controller=PowerfactorInverterController.example(),
             ),

@@ -30,6 +30,24 @@ class InverterEquipment(Component):
         PINT_SCHEMA,
         Field(..., description="The fall in power output allowed per unit of time"),
     ]
+    cutout_percent: Annotated[
+        float,
+        Field(
+            ge=0,
+            le=100,
+            description="If the per-unit power drops below this value the PV output is turned off.",
+        ),
+    ]
+
+    cutin_percent: Annotated[
+        float,
+        Field(
+            ge=0,
+            le=100,
+            description="If the per-unit power rises above this value the PV output is turned on.",
+        ),
+    ]
+
     eff_curve: Annotated[Optional[Curve], Field(None, description="Efficency curve for inverter.")]
 
     @classmethod
@@ -39,4 +57,6 @@ class InverterEquipment(Component):
             capacity=PositiveApparentPower(3.8, "kva"),
             rise_limit=ActivePowerPUTime(1.1, "kW/second"),
             fall_limit=ActivePowerPUTime(1.1, "kW/second"),
+            cutout_percent =10,
+            cutin_percent =10
         )

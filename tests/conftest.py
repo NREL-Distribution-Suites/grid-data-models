@@ -321,9 +321,7 @@ def build_split_phase_solar(bus: DistributionBus, bus_number: int):
             rated_capacity=ActivePower(bus_number + 1, "kilowatt"),
             solar_power=ActivePower(bus_number + 1, "kilowatt"),
             resistance=1,
-            reactance=1,
-            cutin_percent=10,
-            cutout_percent=10,
+            reactance=1,  
         ),
         inverter=DistrbutionInverter(
             name=f"pv_inverter_{bus_number}",
@@ -332,6 +330,8 @@ def build_split_phase_solar(bus: DistributionBus, bus_number: int):
                 capacity=PositiveApparentPower(3.8, "kva"),
                 rise_limit=ActivePowerPUTime(1.1, "kW/second"),
                 fall_limit=ActivePowerPUTime(1.1, "kW/second"),
+                cutin_percent=10,
+                cutout_percent=10,
             ),
         ),
     )
