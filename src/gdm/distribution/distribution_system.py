@@ -179,11 +179,3 @@ class DistributionSystem(System):
                 for asset in lv_system.get_components(model_type):
                     split_phase_map[asset.uuid] = set(self.get_component_by_uuid(hv_bus).phases)
         return split_phase_map
-
-    @classmethod
-    def merge(cls, subsystems: list["DistributionSystem"]) -> "DistributionSystem":
-        system = DistributionSystem(auto_add_composed_components=True)
-        for subsystem in subsystems:
-            components = list(subsystem.iter_all_components())
-            system.add_components(*components)
-        return system
