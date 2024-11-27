@@ -6,8 +6,8 @@ from infrasys import Component
 from pydantic import Field
 
 from gdm.distribution.equipment.phase_capacitor_equipment import PhaseCapacitorEquipment
-from gdm.distribution.distribution_enum import ConnectionType
-
+from gdm.distribution.distribution_enum import ConnectionType, VoltageTypes
+from gdm.quantities import PositiveFrequency, PositiveVoltage
 
 class CapacitorEquipment(Component):
     """Interface for capacitor model."""
@@ -23,6 +23,18 @@ class CapacitorEquipment(Component):
         ConnectionType,
         Field(ConnectionType.STAR, description="Connection type for this capacitor."),
     ]
+    nominal_frequency: Annotated[
+        PositiveFrequency,
+        Field(..., description="Nominal frequency for this capacitor."),
+    ]
+    nominal_voltage: Annotated[
+        PositiveVoltage,
+        Field(..., description="Nominal voltage for this capacitor."),
+    ]
+    voltage_type: Annotated[
+        VoltageTypes,
+        Field(..., description="Rated volgage is line to line or line to neutral."),
+    ]
 
     @classmethod
     def example(cls) -> "CapacitorEquipment":
@@ -31,4 +43,7 @@ class CapacitorEquipment(Component):
             name="capacitor-equipment-1",
             phase_capacitors=[PhaseCapacitorEquipment.example()] * 3,
             connection_type=ConnectionType.STAR,
+            nominal_voltage=PositiveVoltage(12.47, "volt"),
+            voltage_type=VoltageTypes.LINE_TO_LINE,
+            nominal_frequency=PositiveFrequency(50, "hertz"),
         )
