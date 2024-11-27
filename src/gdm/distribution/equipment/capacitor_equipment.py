@@ -7,7 +7,7 @@ from pydantic import Field
 
 from gdm.distribution.equipment.phase_capacitor_equipment import PhaseCapacitorEquipment
 from gdm.distribution.distribution_enum import ConnectionType, VoltageTypes
-from gdm.quantities import PositiveFrequency, PositiveVoltage
+from gdm.quantities import PositiveVoltage
 
 
 class CapacitorEquipment(Component):
