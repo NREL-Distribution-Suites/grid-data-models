@@ -25,3 +25,12 @@ jobs:
       run: |
         python -m build
         twine upload dist/*
+  dispatch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Repository Dispatch
+        uses: peter-evans/repository-dispatch@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          repository: NREL-Distribution-Suites/gdm-cases
+          event-type: trigger-action
