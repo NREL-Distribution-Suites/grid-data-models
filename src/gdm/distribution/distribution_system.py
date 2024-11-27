@@ -8,7 +8,6 @@ import networkx as nx
 from pydantic import BaseModel, Field
 
 
-import gdm
 from gdm.distribution.components.base.distribution_branch_base import (
     DistributionBranchBase,
 )
@@ -48,7 +47,7 @@ class DistributionSystem(System):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.data_format_version = importlib.metadata.version('grid-data-models')
+        self.data_format_version = importlib.metadata.version("grid-data-models")
 
     def get_bus_connected_components(
         self, bus_name: str, component_type: Component
