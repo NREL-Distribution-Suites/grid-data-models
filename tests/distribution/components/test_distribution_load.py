@@ -68,9 +68,5 @@ def test_timeseries_load_aggregation():
         for j in range(10)
     ]
 
-    for load in loads:
-        load.pprint()
-        break
-
     aggregate_load = DistributionLoad.aggregate(loads, DistributionBus.example(), "total_load", {})
     aggregate_load.pprint()

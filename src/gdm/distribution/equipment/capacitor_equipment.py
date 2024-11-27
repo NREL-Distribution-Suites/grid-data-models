@@ -24,10 +24,6 @@ class CapacitorEquipment(Component):
         ConnectionType,
         Field(ConnectionType.STAR, description="Connection type for this capacitor."),
     ]
-    nominal_frequency: Annotated[
-        PositiveFrequency,
-        Field(..., description="Nominal frequency for this capacitor."),
-    ]
     nominal_voltage: Annotated[
         PositiveVoltage,
         Field(..., description="Nominal voltage for this capacitor."),
@@ -46,5 +42,4 @@ class CapacitorEquipment(Component):
             connection_type=ConnectionType.STAR,
             nominal_voltage=PositiveVoltage(12.47, "volt"),
             voltage_type=VoltageTypes.LINE_TO_LINE,
-            nominal_frequency=PositiveFrequency(50, "hertz"),
         )
