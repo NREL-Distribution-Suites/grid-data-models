@@ -5,7 +5,6 @@ from typing import Annotated
 from pydantic import Field
 
 from gdm.distribution.curve import Curve
-from gdm.distribution.equipment.inverter_equipment import InverterEquipment
 from gdm.distribution.controllers.base.inverter_controller_base import InverterControllerBase
 
 
@@ -20,7 +19,6 @@ class PowerfactorInverterController(InverterControllerBase):
     def example(cls) -> "PowerfactorInverterController":
         "Example of a Power Factor based Inverter controller"
         return PowerfactorInverterController(
-            equipment=InverterEquipment.example(),
             power_factor=0.95,
         )
 
@@ -44,7 +42,6 @@ class VoltVarInverterController(InverterControllerBase):
     def example(cls) -> "VoltVarInverterController":
         "Example of a Volt-Var Inverter Controller"
         return VoltVarInverterController(
-            equipment=InverterEquipment.example(),
             volt_var_curve=Curve.example(),
             var_follow=False,
         )
@@ -61,7 +58,6 @@ class VoltWattInverterController(InverterControllerBase):
     def example(cls) -> "VoltWattInverterController":
         "Example of a Volt-Watt Inverter Controller"
         return VoltWattInverterController(
-            equipment=InverterEquipment.example(),
             volt_watt_curve=Curve(curve_x=[0.5, 1.06, 1.1, 1.5], curve_y=[1.0, 1.0, 0.0, 0.0]),
         )
 
@@ -84,7 +80,6 @@ class VoltVarVoltWattInverterController(VoltVarInverterController):
     def example(cls) -> "VoltVarVoltWattInverterController":
         "Example of a Volt-Var Volt-Watt Inverter Controller"
         return VoltVarVoltWattInverterController(
-            equipment=InverterEquipment.example(),
             volt_var_curve=Curve.example(),
             volt_watt_curve=Curve(curve_x=[0.5, 1.06, 1.1, 1.5], curve_y=[1.0, 1.0, 0.0, 0.0]),
             var_priority=True,

@@ -4,23 +4,22 @@ from typing import Annotated
 
 from pydantic import Field
 
-from gdm.quantities import PositiveVoltage
-from gdm.distribution.distribution_enum import Phase
-from gdm.distribution.components.distribution_bus import DistributionBus
+from gdm.distribution.components.distribution_inverter import DistrbutionInverter
+from gdm.distribution.components.distribution_feeder import DistributionFeeder
 from gdm.distribution.components.base.distribution_component_base import (
     DistributionComponentBase,
 )
-from gdm.distribution.components.distribution_feeder import DistributionFeeder
+from gdm.distribution.equipment.inverter_equipment import InverterEquipment
+from gdm.distribution.controllers.distribution_inverter_controller import (
+    PowerfactorInverterController,
+)
+from gdm.distribution.components.distribution_bus import DistributionBus
+from gdm.distribution.equipment.solar_equipment import SolarEquipment
 from gdm.distribution.components.distribution_substation import (
     DistributionSubstation,
 )
-from gdm.distribution.controllers.distribution_inverter_controller import (
-    VoltVarInverterController,
-)
-from gdm.distribution.controllers.base.inverter_controller_base import (
-    InverterControllerBase,
-)
-from gdm.distribution.equipment.solar_equipment import SolarEquipment
+from gdm.distribution.distribution_enum import Phase
+from gdm.quantities import PositiveVoltage
 
 
 class DistributionSolar(DistributionComponentBase):
@@ -42,11 +41,11 @@ class DistributionSolar(DistributionComponentBase):
             ),
         ),
     ]
-    controller: Annotated[
-        InverterControllerBase,
+    inverter: Annotated[
+        DistrbutionInverter,
         Field(
             ...,
-            description="The controller which is used for the PV array.",
+            description="Inverter model for the Distribution Solar PV system.",
         ),
     ]
 
@@ -86,10 +85,23 @@ class DistributionSolar(DistributionComponentBase):
                     (1 / inst.equipment.reactance if inst.equipment.reactance else 0)
                     for inst in instances
                 ),
-                cutin_percent=sum(inst.equipment.cutin_percent for inst in instances)
-                / len(instances),
-                cutout_percent=sum(inst.equipment.cutout_percent for inst in instances)
-                / len(instances),
+            ),
+            inverter=DistrbutionInverter(
+                name=f"{name}_inverter",
+                equipment=InverterEquipment(
+                    capacity=sum(inst.inverter.equipment.capacity for inst in instances)
+                    / len(instances),
+                    rise_limit=None,
+                    fall_limit=None,
+                    eff_curve=None,
+                    cutin_percent=sum(inst.inverter.equipment.cutin_percent for inst in instances)
+                    / len(instances),
+                    cutout_percent=sum(
+                        inst.inverter.equipment.cutout_percent for inst in instances
+                    )
+                    / len(instances),
+                ),
+                controller=PowerfactorInverterController.example(),
             ),
         )
 
@@ -110,5 +122,5 @@ class DistributionSolar(DistributionComponentBase):
             feeder=DistributionFeeder.example(),
             phases=[Phase.A, Phase.B, Phase.C],
             equipment=SolarEquipment.example(),
-            controller=VoltVarInverterController.example(),
+            inverter=DistrbutionInverter.example(),
         )
