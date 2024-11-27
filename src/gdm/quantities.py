@@ -133,6 +133,7 @@ class PositiveReactivePower(ReactivePower):
             np.array(value).flatten() >= 0
         ), f"Reactive power ({value}, {units}) must be positive."
 
+
 class ApparentPower(BaseQuantity):
     """Quantity representing apparent power."""
 
