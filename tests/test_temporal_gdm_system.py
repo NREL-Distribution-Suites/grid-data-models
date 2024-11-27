@@ -1,29 +1,24 @@
 from datetime import datetime
-from pathlib import Path
 from uuid import UUID
 import pytest
 
 from gdm import (
-    PhaseCapacitorEquipment, 
-    PositiveReactivePower, 
-    DistributionSystem, 
+    PhaseCapacitorEquipment,
+    PositiveReactivePower,
+    DistributionSystem,
     DistributionLoad,
-    PhaseLoadEquipment,
-    LoadEquipment
+    LoadEquipment,
 )
 from infrasys.exceptions import ISNotStored
-import gdm
 from gdm.time_travel import get_distribution_system_on_date, ModelChange, PropertyEdit
 
 
-
-
-def build_model_updates(system: DistributionSystem)-> list[ModelChange]:
-    capacitors =  system.get_components(PhaseCapacitorEquipment)
+def build_model_updates(system: DistributionSystem) -> list[ModelChange]:
+    capacitors = system.get_components(PhaseCapacitorEquipment)
     capacitor = next(capacitors)
 
-    load1, load2 =  list(system.get_components(DistributionLoad))[:2]
-    
+    load1, load2 = list(system.get_components(DistributionLoad))[:2]
+
     model_changes = [
         ModelChange(
             update_date="2022-01-01",
@@ -47,19 +42,18 @@ def build_model_updates(system: DistributionSystem)-> list[ModelChange]:
             update_date="2025-01-01",
             deletions=[load2.uuid],
         ),
-         
     ]
     return model_changes, capacitor.uuid, load1.uuid, load2.uuid
 
 
 def test_temporal_system(sample_distribution_system_with_timeseries):
     system: DistributionSystem = sample_distribution_system_with_timeseries
-    capacitors =  system.get_components(PhaseCapacitorEquipment)
+    capacitors = system.get_components(PhaseCapacitorEquipment)
     for capacitor in capacitors:
         capacitor.pprint()
         print(capacitor.uuid)
         break
-    
+
     model_updates, cap_uuid, load_1_uuid, load_2_uuid = build_model_updates(system)
 
     catalog = DistributionSystem(auto_add_composed_components=True)
