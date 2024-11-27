@@ -14,8 +14,7 @@ from gdm.time_travel import get_distribution_system_on_date, ModelChange, Proper
 
 
 def build_model_updates(system: DistributionSystem) -> list[ModelChange]:
-    capacitors = system.get_components(PhaseCapacitorEquipment)
-    capacitor = next(capacitors)
+    capacitor = next(system.get_components(PhaseCapacitorEquipment))
 
     load1, load2 = list(system.get_components(DistributionLoad))[:2]
 
@@ -48,11 +47,6 @@ def build_model_updates(system: DistributionSystem) -> list[ModelChange]:
 
 def test_temporal_system(sample_distribution_system_with_timeseries):
     system: DistributionSystem = sample_distribution_system_with_timeseries
-    capacitors = system.get_components(PhaseCapacitorEquipment)
-    for capacitor in capacitors:
-        capacitor.pprint()
-        print(capacitor.uuid)
-        break
 
     model_updates, cap_uuid, load_1_uuid, load_2_uuid = build_model_updates(system)
 
@@ -72,9 +66,9 @@ def test_temporal_system(sample_distribution_system_with_timeseries):
 
     with pytest.raises(ISNotStored):
         updated_system.get_component_by_uuid(load_1_uuid)
-    # # load is added and should exist
+    # load is added and should exist
     updated_system.get_component_by_uuid(load_2_uuid)
-    # #  the model below should exist because we do not apply chages in 2025
-    # updated_system.get_component_by_uuid(UUID("53921e63-896b-40fb-930a-cc59446ba1aa"))
+    #  the model below should exist because we do not apply chages in 2025
+    updated_system.get_component_by_uuid(UUID("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"))
     capacitor = updated_system.get_component_by_uuid(cap_uuid)
     assert capacitor.rated_capacity.to("kilovar").magnitude == 200.0
