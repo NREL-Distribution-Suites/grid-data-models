@@ -1,6 +1,7 @@
 """This module contains distribution system."""
 
 from typing import Annotated, Type
+import importlib.metadata
 
 from infrasys import Component, System
 import networkx as nx
@@ -47,7 +48,7 @@ class DistributionSystem(System):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.data_format_version = gdm.distribution.__version__
+        self.data_format_version = importlib.metadata.version('grid-data-models')
 
     def get_bus_connected_components(
         self, bus_name: str, component_type: Component
