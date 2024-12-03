@@ -62,7 +62,7 @@ class DistributionSolar(DistributionComponentBase):
         phases = set()
         for solar in instances:
             if {Phase.S1, Phase.S2} & set(solar.phases):
-                parent_phase = split_phase_mapping[solar.uuid]
+                parent_phase = split_phase_mapping[solar.name]
                 phases = phases.union(set(parent_phase))
             else:
                 phases = phases.union(set(solar.phases))

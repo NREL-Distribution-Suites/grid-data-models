@@ -46,7 +46,7 @@ class DistributionLoad(DistributionComponentBase):
         phase_loads = defaultdict(list)
         for load in instances:
             if {Phase.S1, Phase.S2} & set(load.phases):
-                parent_phase = split_phase_mapping[load.uuid]
+                parent_phase = split_phase_mapping[load.name]
                 split_load = PhaseLoadEquipment.split(
                     PhaseLoadEquipment.aggregate(load.equipment.phase_loads, name=""),
                     len(parent_phase),

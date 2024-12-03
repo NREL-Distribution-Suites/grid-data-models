@@ -7,7 +7,10 @@ import networkx as nx
 from gdm.distribution.components.distribution_bus import DistributionBus
 from gdm.distribution.components.distribution_load import DistributionLoad
 from gdm.distribution.components.distribution_solar import DistributionSolar
-from gdm.distribution.distribution_system import DistributionSystem, UserAttributes
+from gdm.distribution.distribution_system import (
+    DistributionSystem,
+    UserAttributes,
+)
 from gdm import Phase
 from gdm.distribution.sys_functools import (
     get_aggregated_load_timeseries,
@@ -15,9 +18,11 @@ from gdm.distribution.sys_functools import (
 )
 
 
-def get_three_phase_buses(dist_system: DistributionSystem) -> list[str]:
+def get_three_phase_buses(
+    dist_system: DistributionSystem,
+) -> list[str]:
     return [
-        bus.uuid
+        bus.name
         for bus in dist_system.get_components(
             DistributionBus,
             filter_func=lambda x: set((Phase.A, Phase.B, Phase.C)).issubset(x.phases),
@@ -46,7 +51,9 @@ def reduce_to_three_phase_system(
 ) -> DistributionSystem:
     three_phase_buses = get_three_phase_buses(dist_system)
     reduced_system = dist_system.get_subsystem(
-        three_phase_buses, name, keep_timeseries=agg_timeseries
+        three_phase_buses,
+        name,
+        keep_timeseries=agg_timeseries,
     )
     split_phase_mapping = dist_system.get_split_phase_mapping()
     original_tree = dist_system.get_directed_graph()
@@ -71,7 +78,7 @@ def reduce_to_three_phase_system(
             for model_type in model_types:
                 agg_component = get_aggregated_bus_component(
                     subtree_system,
-                    reduced_system.get_component_by_uuid(node),
+                    reduced_system.get_component(DistributionBus, node),
                     model_type=model_type,
                     split_phase_mapping=split_phase_mapping,
                 )
