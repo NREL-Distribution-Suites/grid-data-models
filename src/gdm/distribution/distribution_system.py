@@ -92,7 +92,7 @@ class DistributionSystem(System):
         graph = nx.Graph()
         node: DistributionBus
         for node in self.get_components(DistributionBus):
-            graph.add_node(node.uuid)
+            graph.add_node(node.name)
 
         edges: list[DistributionBranchBase | DistributionTransformerBase] = list(
             self.get_components(DistributionBranchBase)
@@ -100,21 +100,21 @@ class DistributionSystem(System):
 
         for edge in edges:
             graph.add_edge(
-                edge.buses[0].uuid,
-                edge.buses[1].uuid,
+                edge.buses[0].name,
+                edge.buses[1].name,
                 **{"name": edge.name, "type": edge.__class__},
             )
         return graph
 
     def get_subsystem(
-        self, bus_uuids: list[str], name: str, keep_timeseries: bool = False
+        self, bus_names: list[str], name: str, keep_timeseries: bool = False
     ) -> "DistributionSystem":
         """Method to get subsystem from list of buses.
 
         Parameters
         ----------
-        bus_uuids: list[str]
-            List of bus uuids.
+        bus_names: list[str]
+            List of bus names
         name: str
             Name of the subsystem.
         keep_timeseries: bool
@@ -125,20 +125,19 @@ class DistributionSystem(System):
         DistributionSystem
         """
         tree = self.get_directed_graph()
-        subtree = tree.subgraph(bus_uuids)
-        bus_uuids = set(bus_uuids)
+        subtree = tree.subgraph(bus_names)
         subtree_system = DistributionSystem(auto_add_composed_components=True, name=name)
         for u, v, _ in subtree.edges(data=True):
             parent_components = self.list_parent_components(
-                self.get_component_by_uuid(u)
-            ) + self.list_parent_components(self.get_component_by_uuid(v))
+                self.get_component(DistributionBus, u)
+            ) + self.list_parent_components(self.get_component(DistributionBus, v))
             for component in parent_components:
                 if isinstance(
                     component,
                     (DistributionBranchBase, DistributionTransformerBase),
                 ):
-                    nodes = {bus.uuid for bus in component.buses}
-                    if not nodes.issubset(bus_uuids):
+                    nodes = {bus.name for bus in component.buses}
+                    if not nodes.issubset(set(bus_names)):
                         continue
                 if not subtree_system.has_component(component):
                     subtree_system.add_component(component)
@@ -155,7 +154,7 @@ class DistributionSystem(System):
 
     def get_directed_graph(self) -> nx.DiGraph:
         ugraph = self.get_undirected_graph()
-        return nx.dfs_tree(ugraph, source=self.get_source_bus().uuid)
+        return nx.dfs_tree(ugraph, source=self.get_source_bus().name)
 
     def get_split_phase_mapping(self) -> dict[str, set[Phase]]:
         split_phase_map = {}
@@ -168,14 +167,16 @@ class DistributionSystem(System):
         )
         for tr in split_phase_trs:
             lv_bus = {
-                bus.uuid for bus in tr.buses if Phase.S1 in bus.phases or Phase.S2 in bus.phases
+                bus.name for bus in tr.buses if Phase.S1 in bus.phases or Phase.S2 in bus.phases
             }.pop()
-            hv_bus = (set([bus.uuid for bus in tr.buses]) - set([lv_bus])).pop()
+            hv_bus = (set([bus.name for bus in tr.buses]) - set([lv_bus])).pop()
             lv_system = self.get_subsystem(
                 list(nx.descendants(original_tree, lv_bus)) + [lv_bus], name=""
             )
             bus_model_types = self.get_model_types_with_field_type(DistributionBus)
             for model_type in bus_model_types:
                 for asset in lv_system.get_components(model_type):
-                    split_phase_map[asset.uuid] = set(self.get_component_by_uuid(hv_bus).phases)
+                    split_phase_map[asset.name] = set(
+                        self.get_component(DistributionBus, hv_bus).phases
+                    )
         return split_phase_map
