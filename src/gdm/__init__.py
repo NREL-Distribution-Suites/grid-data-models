@@ -165,3 +165,7 @@ from gdm.distribution.distribution_graph import build_graph_from_system
 from gdm.distribution.curve import Curve, TimeCurrentCurve
 
 from gdm.distribution.network.reducer import reduce_to_three_phase_system
+from gdm.distribution.components.distribution_inverter import (
+    DistributionInverter,
+)
+from gdm.distribution.catalog_system import CatalogSystem

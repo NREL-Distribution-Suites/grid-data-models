@@ -14,11 +14,11 @@ from gdm.distribution.controllers.base.inverter_controller_base import (
 )
 
 
-class DistrbutionInverter(DistributionComponentBase):
+class DistributionInverter(DistributionComponentBase):
     controller: Annotated[
         InverterControllerBase,
         Field(
-            ...,
+            PowerfactorInverterController.example(),
             description="The controller which is used for the PV array.",
         ),
     ]
@@ -27,10 +27,10 @@ class DistrbutionInverter(DistributionComponentBase):
     ]
 
     @classmethod
-    def example(cls) -> "DistrbutionInverter":
+    def example(cls) -> "DistributionInverter":
         """Example of a Distribution Inverter with a predefined controller and equipment."""
 
-        return DistrbutionInverter(
+        return DistributionInverter(
             name="inverter1",
             controller=PowerfactorInverterController.example(),
             equipment=InverterEquipment.example(),
