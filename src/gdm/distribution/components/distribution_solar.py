@@ -4,7 +4,7 @@ from typing import Annotated
 
 from pydantic import Field
 
-from gdm.distribution.components.distribution_inverter import DistrbutionInverter
+from gdm.distribution.components.distribution_inverter import DistributionInverter
 from gdm.distribution.components.distribution_feeder import DistributionFeeder
 from gdm.distribution.components.base.distribution_component_base import (
     DistributionComponentBase,
@@ -42,7 +42,7 @@ class DistributionSolar(DistributionComponentBase):
         ),
     ]
     inverter: Annotated[
-        DistrbutionInverter,
+        DistributionInverter,
         Field(
             ...,
             description="Inverter model for the Distribution Solar PV system.",
@@ -86,7 +86,7 @@ class DistributionSolar(DistributionComponentBase):
                     for inst in instances
                 ),
             ),
-            inverter=DistrbutionInverter(
+            inverter=DistributionInverter(
                 name=f"{name}_inverter",
                 equipment=InverterEquipment(
                     capacity=sum(inst.inverter.equipment.capacity for inst in instances)
@@ -122,5 +122,5 @@ class DistributionSolar(DistributionComponentBase):
             feeder=DistributionFeeder.example(),
             phases=[Phase.A, Phase.B, Phase.C],
             equipment=SolarEquipment.example(),
-            inverter=DistrbutionInverter.example(),
+            inverter=DistributionInverter.example(),
         )
