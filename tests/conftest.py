@@ -1,7 +1,6 @@
 from datetime import datetime, timedelta
 from uuid import uuid4
 
-from gdm.distribution.components.distribution_inverter import DistrbutionInverter
 from gdm.distribution.equipment.inverter_equipment import InverterEquipment
 from gdm.distribution.equipment.solar_equipment import SolarEquipment
 from gdm.distribution.controllers.distribution_inverter_controller import (
@@ -17,6 +16,7 @@ from gdm import (
     MatrixImpedanceBranch,
     PositiveReactivePower,
     PositiveApparentPower,
+    DistributionInverter,
     PositiveActivePower,
     CapacitancePULength,
     DistributionSystem,
@@ -87,7 +87,7 @@ def build_distribution_solar(bus: DistributionBus, bus_number: int):
             "uuid": uuid4(),
             "name": f"solar_{bus_number}",
             "bus": bus,
-            "inverter": DistrbutionInverter.example().model_copy(
+            "inverter": DistributionInverter.example().model_copy(
                 update={
                     "uuid": uuid4(),
                     "name": f"inverter_{bus_number}",
@@ -323,7 +323,7 @@ def build_split_phase_solar(bus: DistributionBus, bus_number: int):
             resistance=1,
             reactance=1,
         ),
-        inverter=DistrbutionInverter(
+        inverter=DistributionInverter(
             name=f"pv_inverter_{bus_number}",
             controller=PowerfactorInverterController.example(),
             equipment=InverterEquipment(
