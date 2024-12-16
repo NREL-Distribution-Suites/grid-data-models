@@ -2,6 +2,7 @@ from datetime import date
 from typing import Any
 
 from gdm.distribution.distribution_system import DistributionSystem
+
 from rich.console import Console
 from infrasys import Component
 from rich.table import Table
@@ -15,12 +16,17 @@ class PropertyEdit(Component):
     component_uuid: UUID
 
 
-class ModelChange(Component):
+class SystemModification(Component):
     name: str = ""
     update_date: date
     additions: list[UUID] = []
     edits: list[PropertyEdit] = []
     deletions: list[UUID] = []
+
+
+class UpdateScenario(Component):
+    name: str
+    modifications: list[SystemModification]
 
 
 def _update_temporal_table(
@@ -38,7 +44,7 @@ def _update_temporal_table(
 
 
 def get_distribution_system_on_date(
-    model_changes: list[ModelChange],
+    update_scenario: UpdateScenario,
     system: DistributionSystem,
     catalog: DistributionSystem,
     system_date: date,
@@ -48,7 +54,7 @@ def get_distribution_system_on_date(
 
     Parameters
     ----------
-    model_changes : list[ModelChange]
+    update_scenario : UpdateScenario
         List of changes to apply to the system.
     system : DistributionSystem
         The system to update.
@@ -62,9 +68,10 @@ def get_distribution_system_on_date(
     DistributionSystem
         Updated distribution system.
     """
-    log = []  # Initialize a log for tracking updates.
-    # Sort model changes by update date in ascending order.
+    # Initialize a log for tracking updates.
     log = []
+    model_changes = update_scenario.modifications
+    # Sort model changes by update date in ascending order.
     model_changes = sorted(model_changes, key=lambda x: x.update_date, reverse=False)
     # Filter changes that occurred on or before the specified date.
     filtered_model_changes = list(filter(lambda x: x.update_date <= system_date, model_changes))
@@ -96,7 +103,7 @@ def get_distribution_system_on_date(
             _update_temporal_table(log, model_update.update_date, "Edit", component)
 
     # Log the system updates.
-    _system_update_info("", log)
+    _system_update_info(update_scenario.name, log)
     return system
 
 
