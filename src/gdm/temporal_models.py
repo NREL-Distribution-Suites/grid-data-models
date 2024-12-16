@@ -2,12 +2,12 @@ from datetime import date
 from typing import Any
 
 from gdm.distribution.distribution_system import DistributionSystem
+
 from rich.console import Console
 from infrasys import Component
 from rich.table import Table
 from loguru import logger
 from uuid import UUID
-
 
 class PropertyEdit(Component):
     name: str

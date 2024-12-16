@@ -10,7 +10,7 @@ from gdm import (
     LoadEquipment,
 )
 from infrasys.exceptions import ISNotStored
-from gdm.time_travel import get_distribution_system_on_date, ModelChange, PropertyEdit
+from gdm.temporal_models import get_distribution_system_on_date, ModelChange, PropertyEdit
 
 
 def build_model_updates(system: DistributionSystem) -> list[ModelChange]:
