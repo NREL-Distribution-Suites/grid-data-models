@@ -16,7 +16,7 @@ class PropertyEdit(Component):
     component_uuid: UUID
 
 
-class SystemModifiaction(Component):
+class SystemModification(Component):
     name: str = ""
     update_date: date
     additions: list[UUID] = []
@@ -26,7 +26,7 @@ class SystemModifiaction(Component):
 
 class UpdateScenario(Component):
     name: str
-    system_modifications: list[SystemModifiaction]
+    modifications: list[SystemModification]
 
 
 def _update_temporal_table(
@@ -70,7 +70,7 @@ def get_distribution_system_on_date(
     """
     # Initialize a log for tracking updates.
     log = []
-    model_changes = update_scenario.system_modifications
+    model_changes = update_scenario.modifications
     # Sort model changes by update date in ascending order.
     model_changes = sorted(model_changes, key=lambda x: x.update_date, reverse=False)
     # Filter changes that occurred on or before the specified date.

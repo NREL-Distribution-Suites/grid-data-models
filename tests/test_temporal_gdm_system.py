@@ -12,7 +12,7 @@ from gdm import (
 from infrasys.exceptions import ISNotStored
 from gdm.temporal_models import (
     get_distribution_system_on_date,
-    SystemModifiaction,
+    SystemModification,
     PropertyEdit,
     UpdateScenario,
 )
@@ -24,8 +24,8 @@ def build_model_updates(system: DistributionSystem) -> UpdateScenario:
     load1, load2 = list(system.get_components(DistributionLoad))[:2]
     update_scenario = UpdateScenario(
         name="Test scenario",
-        system_modifications=[
-            SystemModifiaction(
+        modifications=[
+            SystemModification(
                 update_date="2022-01-01",
                 edits=[
                     PropertyEdit(
@@ -35,15 +35,15 @@ def build_model_updates(system: DistributionSystem) -> UpdateScenario:
                     )
                 ],
             ),
-            SystemModifiaction(
+            SystemModification(
                 update_date="2023-01-01",
                 additions=["aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"],
             ),
-            SystemModifiaction(
+            SystemModification(
                 update_date="2024-01-01",
                 deletions=[load1.uuid],
             ),
-            SystemModifiaction(
+            SystemModification(
                 update_date="2025-01-01",
                 deletions=[load2.uuid],
             ),

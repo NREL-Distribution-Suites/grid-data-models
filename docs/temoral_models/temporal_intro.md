@@ -50,7 +50,7 @@ load_model_to_delete_in_2025 = base_model.get_component(DistributionLoad, "fdr3_
 ```
 
 
-4. The `UpdateScenario` model in GDM represents a collection of system modifications. Each scenario object has a unique scenario name and a list of `SystemModifiaction` objects, which represent individual modifications to be applied to a system. Each `SystemModifiaction` object has an idientifier for the date when the modification was made along with a list of system additions, edits and deletions to be applied on the date.
+4. The `UpdateScenario` model in GDM represents a collection of system modifications. Each scenario object has a unique scenario name and a list of `SystemModification` objects, which represent individual modifications to be applied to a system. Each `SystemModification` object has an idientifier for the date when the modification was made along with a list of system additions, edits and deletions to be applied on the date.
   **additions**: This is a list attribute that holds the UUIDs of the components that were added in this modification. These UUIDs should exist in the `catalog`.
   **deletions**: This is a list attribute that holds the UUIDs of the components that were deleted in this modification. These UUIDs should exist in the `base system model`
   **edits**: This is a list attribute that holds the `PropertyEdit` objects that represent the edits made in this modification. `PropertyEdit` requires **name** of the property to be edited, the new **value** of the property and the **component_uuid** that maps to the modified component. 
@@ -58,12 +58,12 @@ load_model_to_delete_in_2025 = base_model.get_component(DistributionLoad, "fdr3_
 NOTE: When editing property of an existing component, make sure to use the same quantity / component type as defined in the model defination. For example when modifing the length property of a distribution branch, PositiveDistance is used to the define the new value in the example below
 
 ```python 
-from gdm.temporal_models import UpdateScenario, PropertyEdit, SystemModifiaction
+from gdm.temporal_models import UpdateScenario, PropertyEdit, SystemModification
 
 model_scenario =UpdateScenario(
     name = "Test scenario",
-    system_modifications = [
-        SystemModifiaction(
+    modifications = [
+        SystemModification(
             update_date="2022-01-01",
             edits=[
                 PropertyEdit(
@@ -73,15 +73,15 @@ model_scenario =UpdateScenario(
                 )
             ],
         ),
-        SystemModifiaction(
+        SystemModification(
             update_date="2023-01-01",
             additions=["aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"],
         ),
-        SystemModifiaction(
+        SystemModification(
             update_date="2024-01-01",
             deletions=[load_model_to_delete_in_2024.uuid],
         ),
-        SystemModifiaction(
+        SystemModification(
             update_date="2025-01-01",
             deletions=[load_model_to_delete_in_2025.uuid],
         ),
