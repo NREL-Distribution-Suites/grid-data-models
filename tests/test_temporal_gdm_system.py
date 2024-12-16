@@ -10,45 +10,48 @@ from gdm import (
     LoadEquipment,
 )
 from infrasys.exceptions import ISNotStored
-from gdm.temporal_models import get_distribution_system_on_date, ModelChange, PropertyEdit
+from gdm.temporal_models import get_distribution_system_on_date, SystemModifiaction, PropertyEdit, UpdateScenario
 
 
-def build_model_updates(system: DistributionSystem) -> list[ModelChange]:
+def build_model_updates(system: DistributionSystem) -> UpdateScenario:
     capacitor = next(system.get_components(PhaseCapacitorEquipment))
 
     load1, load2 = list(system.get_components(DistributionLoad))[:2]
-
-    model_changes = [
-        ModelChange(
-            update_date="2022-01-01",
-            edits=[
-                PropertyEdit(
-                    component_uuid=capacitor.uuid,
-                    name="rated_capacity",
-                    value=PositiveReactivePower(200, "kvar"),
-                )
-            ],
-        ),
-        ModelChange(
-            update_date="2023-01-01",
-            additions=["aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"],
-        ),
-        ModelChange(
-            update_date="2024-01-01",
-            deletions=[load1.uuid],
-        ),
-        ModelChange(
-            update_date="2025-01-01",
-            deletions=[load2.uuid],
-        ),
-    ]
-    return model_changes, capacitor.uuid, load1.uuid, load2.uuid
+    update_scenario = UpdateScenario(
+        name = "Test scenario",
+        system_modifications = [
+            SystemModifiaction(
+                update_date="2022-01-01",
+                edits=[
+                    PropertyEdit(
+                        component_uuid=capacitor.uuid,
+                        name="rated_capacity",
+                        value=PositiveReactivePower(200, "kvar"),
+                    )
+                ],
+            ),
+            SystemModifiaction(
+                update_date="2023-01-01",
+                additions=["aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"],
+            ),
+            SystemModifiaction(
+                update_date="2024-01-01",
+                deletions=[load1.uuid],
+            ),
+            SystemModifiaction(
+                update_date="2025-01-01",
+                deletions=[load2.uuid],
+            ),
+        ]
+    )
+    
+    return update_scenario, capacitor.uuid, load1.uuid, load2.uuid
 
 
 def test_temporal_system(sample_distribution_system_with_timeseries):
     system: DistributionSystem = sample_distribution_system_with_timeseries
 
-    model_updates, cap_uuid, load_1_uuid, load_2_uuid = build_model_updates(system)
+    update_scenario, cap_uuid, load_1_uuid, load_2_uuid = build_model_updates(system)
 
     catalog = DistributionSystem(auto_add_composed_components=True)
     load_equipment = LoadEquipment.example().model_copy(
@@ -61,7 +64,7 @@ def test_temporal_system(sample_distribution_system_with_timeseries):
 
     system_date = datetime.strptime("2024-1-1", "%Y-%m-%d").date()
     updated_system = get_distribution_system_on_date(
-        model_changes=model_updates, system=system, catalog=catalog, system_date=system_date
+        update_scenario=update_scenario, system=system, catalog=catalog, system_date=system_date
     )
 
     with pytest.raises(ISNotStored):
