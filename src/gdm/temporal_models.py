@@ -29,7 +29,6 @@ class UpdateScenario(Component):
     system_modifications: list[SystemModifiaction]
 
 
-
 def _update_temporal_table(
     updates: list, update_date: date, change_type: str, component: Component
 ):
@@ -70,7 +69,7 @@ def get_distribution_system_on_date(
         Updated distribution system.
     """
     # Initialize a log for tracking updates.
-    log = []  
+    log = []
     model_changes = update_scenario.system_modifications
     # Sort model changes by update date in ascending order.
     model_changes = sorted(model_changes, key=lambda x: x.update_date, reverse=False)

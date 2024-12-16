@@ -10,7 +10,12 @@ from gdm import (
     LoadEquipment,
 )
 from infrasys.exceptions import ISNotStored
-from gdm.temporal_models import get_distribution_system_on_date, SystemModifiaction, PropertyEdit, UpdateScenario
+from gdm.temporal_models import (
+    get_distribution_system_on_date,
+    SystemModifiaction,
+    PropertyEdit,
+    UpdateScenario,
+)
 
 
 def build_model_updates(system: DistributionSystem) -> UpdateScenario:
@@ -18,8 +23,8 @@ def build_model_updates(system: DistributionSystem) -> UpdateScenario:
 
     load1, load2 = list(system.get_components(DistributionLoad))[:2]
     update_scenario = UpdateScenario(
-        name = "Test scenario",
-        system_modifications = [
+        name="Test scenario",
+        system_modifications=[
             SystemModifiaction(
                 update_date="2022-01-01",
                 edits=[
@@ -42,9 +47,9 @@ def build_model_updates(system: DistributionSystem) -> UpdateScenario:
                 update_date="2025-01-01",
                 deletions=[load2.uuid],
             ),
-        ]
+        ],
     )
-    
+
     return update_scenario, capacitor.uuid, load1.uuid, load2.uuid
 
 
