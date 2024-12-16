@@ -16,9 +16,15 @@ pip install grid-data-models
 In an effort to reduce code duplication and provide client packages a standard interface to interact with power system data, a group of research engineers at NREL is working on developing standard data models. Features:
 
 - **Built-in validation layer:** Use of [pydantic](https://docs.pydantic.dev/latest/) allows us to validate model fields.
+- **Connectivity Validation**: Ensures logical consistency in grid design, e.g.:
+  - Three-phase equipment cannot connect to single-phase buses.
+  - Transformer low-voltage sides cannot connect to high-voltage buses.
 - **Time series data management:** GDM uses [infrasys](https://github.nrel.gov/CADET/infrastructure_systems) package which enables [efficient time series data management](https://nrel.github.io/infrasys/explanation/time_series.html) by sharing arrays across components and offloading system memory. For example, we can attach time series power consumption data to a load profile.
 - **Built-in unit conversion:** GDM leverages [pint](https://pint.readthedocs.io/en/stable/) for unit conversion for power system quantities. For e.g power, voltage, time etc.
 - **JSON serialization/deserialization:** GDM uses [infrasys](https://github.nrel.gov/CADET/infrastructure_systems) to serialize and deserialize distribution system components to/from JSON.
+- **Temporal Modeling**: Supports temporal changes within a distribution model, enabling dynamic analyses over time.
+- **Graph-Based Analysis**: Exposes a connectivity graph using **NetworkX**, allowing advanced graph-based algorithms and visualizations.
+- **Interoperability**: Easily integrates with existing tools.
 
 ## How to get started ?
 
