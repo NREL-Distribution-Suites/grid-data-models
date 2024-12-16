@@ -9,6 +9,7 @@ from rich.table import Table
 from loguru import logger
 from uuid import UUID
 
+
 class PropertyEdit(Component):
     name: str
     value: Any
