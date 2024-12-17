@@ -1,3 +1,4 @@
+(temporal-changes)=
 ## Tracking temporal changes in `grid-data-models`
 
 The `grid-data-models` (GDM) package includes comprehensive support for modeling temporal changes within a distribution system. This functionality allows users to effectively manage time-dependent modifications to a base grid model, enabling dynamic analysis and scenario planning. All temporal changes are built upon a single base GDM model, ensuring a consistent foundation for analysis. The system enables edits, additions, and deletions to a base GDM model at specific timestamps. Each modification is tracked and stored, ensuring a clear history of changes over time.
@@ -51,9 +52,10 @@ load_model_to_delete_in_2025 = base_model.get_component(DistributionLoad, "fdr3_
 
 
 4. The `UpdateScenario` model in GDM represents a collection of system modifications. Each scenario object has a unique scenario name and a list of `SystemModification` objects, which represent individual modifications to be applied to a system. Each `SystemModification` object has an idientifier for the date when the modification was made along with a list of system additions, edits and deletions to be applied on the date.
-  **additions**: This is a list attribute that holds the UUIDs of the components that were added in this modification. These UUIDs should exist in the `catalog`.
-  **deletions**: This is a list attribute that holds the UUIDs of the components that were deleted in this modification. These UUIDs should exist in the `base system model`
-  **edits**: This is a list attribute that holds the `PropertyEdit` objects that represent the edits made in this modification. `PropertyEdit` requires **name** of the property to be edited, the new **value** of the property and the **component_uuid** that maps to the modified component. 
+
+* **additions**: This is a list attribute that holds the UUIDs of the components that were added in this modification. These UUIDs should exist in the `catalog`.
+*  **deletions**: This is a list attribute that holds the UUIDs of the components that were deleted in this modification. These UUIDs should exist in the `base system model`
+* **edits**: This is a list attribute that holds the `PropertyEdit` objects that represent the edits made in this modification. `PropertyEdit` requires **name** of the property to be edited, the new **value** of the property and the **component_uuid** that maps to the modified component. 
 
 NOTE: When editing property of an existing component, make sure to use the same quantity / component type as defined in the model defination. For example when modifing the length property of a distribution branch, PositiveDistance is used to the define the new value in the example below
 
