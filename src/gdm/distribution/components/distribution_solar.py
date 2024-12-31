@@ -7,7 +7,7 @@ from pydantic import Field
 from gdm.distribution.components.distribution_inverter import DistributionInverter
 from gdm.distribution.components.distribution_feeder import DistributionFeeder
 from gdm.distribution.components.base.distribution_component_base import (
-    DistributionComponentBase,
+    InServiceDistributionComponentBase,
 )
 from gdm.distribution.equipment.inverter_equipment import InverterEquipment
 from gdm.distribution.controllers.distribution_inverter_controller import (
@@ -22,7 +22,7 @@ from gdm.distribution.distribution_enum import Phase
 from gdm.quantities import PositiveVoltage
 
 
-class DistributionSolar(DistributionComponentBase):
+class DistributionSolar(InServiceDistributionComponentBase):
     """Interface for Solar PV system in distribution system models."""
 
     bus: Annotated[

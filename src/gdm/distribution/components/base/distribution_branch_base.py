@@ -8,14 +8,16 @@ from pydantic import model_validator, Field
 
 from gdm.distribution.components.distribution_bus import DistributionBus
 from gdm.distribution.distribution_enum import Phase
-from gdm.distribution.components.base.distribution_component_base import DistributionComponentBase
+from gdm.distribution.components.base.distribution_component_base import (
+    InServiceDistributionComponentBase,
+)
 from gdm.quantities import (
     PositiveDistance,
 )
 from gdm.constants import PINT_SCHEMA
 
 
-class DistributionBranchBase(DistributionComponentBase, ABC):
+class DistributionBranchBase(InServiceDistributionComponentBase, ABC):
     """Interface for abstract base distribution branch."""
 
     buses: Annotated[
