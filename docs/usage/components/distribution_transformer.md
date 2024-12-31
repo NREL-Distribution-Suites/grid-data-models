@@ -95,6 +95,7 @@ DistributionTransformer(
         feeders=[DistributionFeeder(name='Test Feeder')]
     ),
     feeder=DistributionFeeder(name='Test Feeder'),
+    in_service=True,
     buses=[
         DistributionBus(
             name='PrimaryBus',
@@ -242,6 +243,7 @@ DistributionTransformer(
         feeders=[DistributionFeeder(name='Test Feeder')]
     ),
     feeder=DistributionFeeder(name='Test Feeder'),
+    in_service=True,
     buses=[
         DistributionBus(
             name='PrimaryBus-3P',
@@ -399,6 +401,7 @@ DistributionTransformer(
     name='Transformer-1',
     substation=None,
     feeder=None,
+    in_service=True,
     buses=[
         DistributionBus(
             name='Bus-1',

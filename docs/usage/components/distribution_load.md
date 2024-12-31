@@ -47,6 +47,7 @@ DistributionLoad(
     name='Load-1',
     substation=None,
     feeder=None,
+    in_service=True,
     bus=DistributionBus(
         name='Bus-1',
         substation=None,
@@ -155,6 +156,7 @@ DistributionLoad(
     name='Load-Delta',
     substation=None,
     feeder=None,
+    in_service=True,
     bus=DistributionBus(
         name='Bus-2',
         substation=None,

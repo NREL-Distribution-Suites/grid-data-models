@@ -88,6 +88,7 @@ DistributionRegulator(
     name='Regulator-1',
     substation=None,
     feeder=None,
+    in_service=True,
     buses=[
         DistributionBus(
             name='Bus-1',
