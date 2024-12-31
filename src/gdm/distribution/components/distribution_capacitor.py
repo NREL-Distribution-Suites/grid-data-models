@@ -7,7 +7,9 @@ from pydantic import Field, model_validator
 
 from gdm.distribution.components.distribution_bus import DistributionBus
 from gdm.distribution.equipment.capacitor_equipment import CapacitorEquipment
-from gdm.distribution.components.base.distribution_component_base import DistributionComponentBase
+from gdm.distribution.components.base.distribution_component_base import (
+    InServiceDistributionComponentBase,
+)
 from gdm.distribution.components.distribution_feeder import DistributionFeeder
 from gdm.distribution.components.distribution_substation import DistributionSubstation
 from gdm.distribution.equipment.phase_capacitor_equipment import PhaseCapacitorEquipment
@@ -19,7 +21,7 @@ from gdm.distribution.controllers.distribution_capacitor_controller import (
 from gdm.distribution.controllers.base.capacitor_controller_base import CapacitorControllerBase
 
 
-class DistributionCapacitor(DistributionComponentBase):
+class DistributionCapacitor(InServiceDistributionComponentBase):
     """Interface for capacitor present in distribution system models."""
 
     bus: Annotated[

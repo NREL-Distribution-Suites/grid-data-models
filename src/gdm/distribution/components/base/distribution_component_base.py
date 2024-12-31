@@ -18,3 +18,7 @@ class DistributionComponentBase(Component, ABC):
         Optional[DistributionSubstation], Field(None, description="Name of the substation.")
     ]
     feeder: Annotated[Optional[DistributionFeeder], Field(None, description="Name of the feeder.")]
+
+
+class InServiceDistributionComponentBase(DistributionComponentBase, ABC):
+    in_service: Annotated[bool, Field(True, description="Is the component in service?")]

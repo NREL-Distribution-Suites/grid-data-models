@@ -4,7 +4,7 @@ from pydantic import Field
 
 from gdm.distribution.equipment.inverter_equipment import InverterEquipment
 from gdm.distribution.components.base.distribution_component_base import (
-    DistributionComponentBase,
+    InServiceDistributionComponentBase,
 )
 from gdm.distribution.controllers.distribution_inverter_controller import (
     PowerfactorInverterController,
@@ -14,7 +14,7 @@ from gdm.distribution.controllers.base.inverter_controller_base import (
 )
 
 
-class DistributionInverter(DistributionComponentBase):
+class DistributionInverter(InServiceDistributionComponentBase):
     controller: Annotated[
         InverterControllerBase,
         Field(

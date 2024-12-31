@@ -9,7 +9,9 @@ from pydantic import Field, model_validator
 
 from gdm.distribution.distribution_enum import Phase, VoltageTypes
 from gdm.distribution.components.distribution_bus import DistributionBus
-from gdm.distribution.components.base.distribution_component_base import DistributionComponentBase
+from gdm.distribution.components.base.distribution_component_base import (
+    InServiceDistributionComponentBase,
+)
 from gdm.distribution.equipment.distribution_transformer_equipment import (
     DistributionTransformerEquipment,
 )
@@ -24,7 +26,7 @@ def get_phase_voltage_in_kv(
     return kv_voltage / factor if voltage_type == VoltageTypes.LINE_TO_LINE else kv_voltage
 
 
-class DistributionTransformerBase(DistributionComponentBase, ABC):
+class DistributionTransformerBase(InServiceDistributionComponentBase, ABC):
     """Interface for distribution transformer."""
 
     buses: Annotated[

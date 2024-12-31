@@ -6,13 +6,15 @@ from pydantic import Field
 
 from gdm.distribution.components.distribution_bus import DistributionBus
 from gdm.distribution.distribution_enum import Phase
-from gdm.distribution.components.base.distribution_component_base import DistributionComponentBase
+from gdm.distribution.components.base.distribution_component_base import (
+    InServiceDistributionComponentBase,
+)
 from gdm.distribution.components.distribution_feeder import DistributionFeeder
 from gdm.distribution.components.distribution_substation import DistributionSubstation
 from gdm.distribution.equipment.voltagesource_equipment import VoltageSourceEquipment
 
 
-class DistributionVoltageSource(DistributionComponentBase):
+class DistributionVoltageSource(InServiceDistributionComponentBase):
     """Interface for distribution substation."""
 
     bus: Annotated[
