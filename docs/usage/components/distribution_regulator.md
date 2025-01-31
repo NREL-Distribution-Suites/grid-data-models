@@ -67,11 +67,17 @@
 >>> regulator_controller = RegulatorController(
 ...     name="RegulatorController-1",
 ...     delay=Time(10, "seconds"),  # seconds
-...     vsetpoint=120,  # volts
+...     v_setpoint=PositiveVoltage(120, "volts"),  # volts
+...     min_v_limit=PositiveVoltage(124, "volts"),
+...     max_v_limit=PositiveVoltage(118, "volts"),
+...     use_ldc=True,
+...     is_reversible=False,
 ...     pt_ratio=60.0,
-...     ldc_R=None,
-...     ldc_X=None,
-...     ct_primary=None,
+...     ldc_R=9,
+...     ldc_X=3,
+...     controlled_bus = bus_1,
+...     controlled_phase = Phase.A,
+...     ct_primary=700,
 ...     max_step=16,
 ...     bandwidth=3,  # volts
 ... )
@@ -154,13 +160,28 @@ DistributionRegulator(
         RegulatorController(
             name='RegulatorController-1',
             delay=<Quantity(10, 'second')>,
-            vsetpoint=<Quantity(120, 'volt')>,
+            v_setpoint=<Quantity(120, 'volt')>,
+            min_v_limit=<Quantity(124, 'volt')>,
+            max_v_limit=<Quantity(118, 'volt')>,
             pt_ratio=60.0,
-            ldc_R=None,
-            ldc_X=None,
-            ct_primary=None,
+            use_ldc=True,
+            is_reversible=False,
+            ldc_R=<Quantity(9, 'volt')>,
+            ldc_X=<Quantity(3, 'volt')>,
+            ct_primary=<Quantity(700, 'ampere')>,
             max_step=16,
-            bandwidth=<Quantity(3, 'volt')>
+            bandwidth=<Quantity(3, 'volt')>,
+            controlled_bus=DistributionBus(
+                name='Bus-1',
+                substation=None,
+                feeder=None,
+                voltage_type=<VoltageTypes.LINE_TO_GROUND: 'line-to-ground'>,
+                phases=[<Phase.A: 'A'>],
+                voltagelimits=[],
+                nominal_voltage=<Quantity(12.47, 'kilovolt')>,
+                coordinate=None
+            ),
+            controlled_phase=<Phase.A: 'A'>
         )
     ]
 )

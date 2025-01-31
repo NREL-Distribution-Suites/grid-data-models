@@ -273,7 +273,7 @@ DistributionTransformer(
         )
     ],
     winding_phases=[
-        [<Phase.A: 'A'>, <Phase.B: 'B'>, <Phase.C: 'C'>], 
+        [<Phase.A: 'A'>, <Phase.B: 'B'>, <Phase.C: 'C'>],
         [<Phase.A: 'A'>, <Phase.B: 'B'>, <Phase.C: 'C'>]
     ],
     equipment=DistributionTransformerEquipment(
@@ -435,8 +435,8 @@ DistributionTransformer(
         )
     ],
     winding_phases=[
-        [<Phase.A: 'A'>, <Phase.B: 'B'>], 
-        [<Phase.S1: 'S1'>, <Phase.N: 'N'>], 
+        [<Phase.A: 'A'>, <Phase.B: 'B'>],
+        [<Phase.S1: 'S1'>, <Phase.N: 'N'>],
         [<Phase.N: 'N'>, <Phase.S2: 'S2'>]
     ],
     equipment=DistributionTransformerEquipment(
