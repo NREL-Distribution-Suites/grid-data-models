@@ -82,15 +82,16 @@ def get_distribution_system_on_date(
         # Process additions: Add new components from the catalog to the system.
         for model_uuid in model_update.additions:
             component = catalog.get_component_by_uuid(model_uuid)
-            system.add_component(component)
-            _update_temporal_table(log, model_update.update_date, "Addition", component)
+            if not system.has_component(component):
+                system.add_component(component)
+                _update_temporal_table(log, model_update.update_date, "Addition", component)
 
         # Process deletions: Remove components from the system.
         for model_uuid in model_update.deletions:
             component = system.get_component_by_uuid(model_uuid)
-            system.remove_component(component)
-            print(f"Deletion: {model_uuid}")
-            _update_temporal_table(log, model_update.update_date, "Deletion", component)
+            if system.has_component(component):
+                system.remove_component(component)
+                _update_temporal_table(log, model_update.update_date, "Deletion", component)
 
         # Process edits: Update component attributes.
         for edit_model in model_update.edits:
