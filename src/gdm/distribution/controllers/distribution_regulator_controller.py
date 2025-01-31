@@ -62,14 +62,14 @@ class RegulatorController(Component):
         Field(
             ...,
             description="Boolean value representing whether the line drop compensator is used or not.",
-        )
+        ),
     ]
     is_reversible: Annotated[
         bool,
         Field(
             ...,
             description="Boolean value representing whether the tap change is reversible or not.",
-        )        
+        ),
     ]
     ldc_R: Annotated[
         Optional[PositiveVoltage],
@@ -116,7 +116,6 @@ class RegulatorController(Component):
         Phase,
         Field(..., description="The phase that is being controlled by the controller."),
     ]
-    
 
     @classmethod
     def example(cls) -> "RegulatorController":
