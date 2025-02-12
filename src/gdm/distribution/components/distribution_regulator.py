@@ -37,6 +37,7 @@ class DistributionRegulator(DistributionTransformerBase):
                     f"should be equal to the number of controllers {self.controllers=}."
                 )
                 raise ValueError(msg)
+        return self
 
     @classmethod
     def example(cls) -> "DistributionRegulator":
