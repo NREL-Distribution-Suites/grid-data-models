@@ -39,9 +39,10 @@ def _update_temporal_table(
             str(component.uuid),
             component.label.split(".")[0],
             component.name,
-            bus_names
+            bus_names,
         ]
     )
+
 
 def _get_bus_names(component):
     if hasattr(component, "bus"):
@@ -51,6 +52,7 @@ def _get_bus_names(component):
     else:
         bus_names = "None"
     return bus_names
+
 
 def get_distribution_system_on_date(
     update_scenario: UpdateScenario,
@@ -94,7 +96,9 @@ def get_distribution_system_on_date(
             if not system.has_component(component):
                 system.add_component(component)
                 bus_names = _get_bus_names(component)
-                _update_temporal_table(log, model_update.update_date, "Addition", component, bus_names)
+                _update_temporal_table(
+                    log, model_update.update_date, "Addition", component, bus_names
+                )
 
         # Process deletions: Remove components from the system.
         for model_uuid in model_update.deletions:
@@ -102,7 +106,9 @@ def get_distribution_system_on_date(
             if system.has_component(component):
                 system.remove_component(component)
                 bus_names = _get_bus_names(component)
-                _update_temporal_table(log, model_update.update_date, "Deletion", component, bus_names)
+                _update_temporal_table(
+                    log, model_update.update_date, "Deletion", component, bus_names
+                )
 
         # Process edits: Update component attributes.
         for edit_model in model_update.edits:
