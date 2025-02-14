@@ -30,7 +30,7 @@ class UpdateScenario(Component):
 
 
 def _update_temporal_table(
-    updates: list, update_date: date, change_type: str, component: Component
+    updates: list, update_date: date, change_type: str, component: Component, bus_names: str
 ):
     updates.append(
         [
@@ -39,8 +39,19 @@ def _update_temporal_table(
             str(component.uuid),
             component.label.split(".")[0],
             component.name,
+            bus_names,
         ]
     )
+
+
+def _get_bus_names(component):
+    if hasattr(component, "bus"):
+        bus_names = component.bus.name
+    elif hasattr(component, "buses"):
+        bus_names = "\n".join([bus.name for bus in component.buses])
+    else:
+        bus_names = "None"
+    return bus_names
 
 
 def get_distribution_system_on_date(
@@ -84,14 +95,20 @@ def get_distribution_system_on_date(
             component = catalog.get_component_by_uuid(model_uuid)
             if not system.has_component(component):
                 system.add_component(component)
-                _update_temporal_table(log, model_update.update_date, "Addition", component)
+                bus_names = _get_bus_names(component)
+                _update_temporal_table(
+                    log, model_update.update_date, "Addition", component, bus_names
+                )
 
         # Process deletions: Remove components from the system.
         for model_uuid in model_update.deletions:
             component = system.get_component_by_uuid(model_uuid)
             if system.has_component(component):
                 system.remove_component(component)
-                _update_temporal_table(log, model_update.update_date, "Deletion", component)
+                bus_names = _get_bus_names(component)
+                _update_temporal_table(
+                    log, model_update.update_date, "Deletion", component, bus_names
+                )
 
         # Process edits: Update component attributes.
         for edit_model in model_update.edits:
@@ -101,7 +118,8 @@ def get_distribution_system_on_date(
                     f"{component.label} does not have a property called {edit_model.name}"
                 )
             setattr(component, edit_model.name, edit_model.value)
-            _update_temporal_table(log, model_update.update_date, "Edit", component)
+            bus_names = _get_bus_names(component)
+            _update_temporal_table(log, model_update.update_date, "Edit", component, bus_names)
 
     # Log the system updates.
     _system_update_info(update_scenario.name, log)
@@ -115,6 +133,7 @@ def _system_update_info(scenario_name: str, update_log: list[str]):
     table.add_column("UUID", justify="right", style="bright_magenta")
     table.add_column("Component Type", justify="right", style="cyan")
     table.add_column("Component Name", justify="right", style="green")
+    table.add_column("Connected bus", justify="right", style="bright_red")
 
     for log in update_log:
         table.add_row(*log)
