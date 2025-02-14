@@ -1,0 +1,663 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Wire Equipment &#8212; Grid Data Models  documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/autodoc_pydantic.css" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api/equipment/distribution_wires';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Fuse Equipment" href="fuse_equipment.html" />
+    <link rel="prev" title="Voltage Source Equipment" href="vsource_equipment.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Grid Data Models  documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../index.html">
+    References
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../cim/index.html">
+    CIM & GDM
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../usage/index.html">
+    Usage
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../cli/index.html">
+    CLI
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../index.html">
+    References
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../cim/index.html">
+    CIM & GDM
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../usage/index.html">
+    Usage
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../cli/index.html">
+    CLI
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Distribution Components</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../components/distribution_bus.html">Distribution Bus</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../components/distribution_branch.html">Distribution Branch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../components/distribution_capacitor.html">Distribution Capacitor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../components/distribution_feeder.html">Distribution Feeder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../components/distribution_substation.html">Distribution Substation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../components/distribution_load.html">Distribution Load</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../components/distribution_transformer.html">Distribution Transformer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../components/distribution_regulator.html">Distribution Regulator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../components/distribution_fuse.html">Distribution Fuse</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../components/distribution_switch.html">Distribution Switch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../components/distribution_recloser.html">Distribution Recloser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../components/distribution_vsource.html">Distribution Voltage Sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../components/distribution_solar.html">Distribution Solar</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Distribution Equipment</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="branch_equipment.html">Distribution Branch Equipment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="capacitor_equipment.html">Capacitor Equipment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="load_equipment.html">Load Equipment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="distribution_transformer_equipment.html">Distribution Transformer Equipment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vsource_equipment.html">Voltage Source Equipment</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Wire Equipment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fuse_equipment.html">Fuse Equipment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="switch_equipment.html">Switch Equipment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="recloser_equipment.html">Recloser Equipment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="solar_equipment.html">Solar Equipment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="inverter_equipment.html">Inverter Equipment</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Controllers</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../controllers/capacitor_controllers.html">Capacitor Controllers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../controllers/regulator_controllers.html">Regulator Controller</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../controllers/inverter_controllers.html">Inverter Controller</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../controllers/switch_controllers.html">Switch Controller</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../controllers/recloser_controllers.html">Recloser Controller</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Extra Models</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../distribution_enum.html">Distribution Enumerations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../limitset.html">Distribution Limitsets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quantities.html">Quantities</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">References</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Wire Equipment</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="wire-equipment">
+<h1>Wire Equipment<a class="headerlink" href="#wire-equipment" title="Link to this heading">#</a></h1>
+<dl class="py class pydantic_model">
+<dt class="sig sig-object py" id="gdm.BareConductorEquipment">
+<em class="property"><span class="pre">pydantic</span> <span class="pre">model</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gdm.</span></span><span class="sig-name descname"><span class="pre">BareConductorEquipment</span></span><a class="headerlink" href="#gdm.BareConductorEquipment" title="Link to this definition">#</a></dt>
+<dd><p>Interface for conductor catalaog.</p>
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="gdm.BareConductorEquipment.ac_resistance">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ac_resistance</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">')]</span></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#gdm.BareConductorEquipment.ac_resistance" title="Link to this definition">#</a></dt>
+<dd><p>Per unit length positive alternating current resistance of the conductor.</p>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="gdm.BareConductorEquipment.ampacity">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ampacity</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">')]</span></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#gdm.BareConductorEquipment.ampacity" title="Link to this definition">#</a></dt>
+<dd><p>Ampacity of the conductor.</p>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="gdm.BareConductorEquipment.conductor_diameter">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">conductor_diameter</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">')]</span></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#gdm.BareConductorEquipment.conductor_diameter" title="Link to this definition">#</a></dt>
+<dd><p>Diameter of the conductor.</p>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="gdm.BareConductorEquipment.conductor_gmr">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">conductor_gmr</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">')]</span></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#gdm.BareConductorEquipment.conductor_gmr" title="Link to this definition">#</a></dt>
+<dd><p>Geometric mean radius of the conductor.</p>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="gdm.BareConductorEquipment.dc_resistance">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">dc_resistance</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">')]</span></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#gdm.BareConductorEquipment.dc_resistance" title="Link to this definition">#</a></dt>
+<dd><p>Per unit length positive direct current resistance of the conductor.</p>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="gdm.BareConductorEquipment.emergency_ampacity">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">emergency_ampacity</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">')]</span></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#gdm.BareConductorEquipment.emergency_ampacity" title="Link to this definition">#</a></dt>
+<dd><p>Emergency ampacity for this conductor.</p>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="gdm.BareConductorEquipment.loading_limit">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">loading_limit</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Annotated</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../limitset.html#gdm.ThermalLimitSet" title="gdm.distribution.limitset.ThermalLimitSet"><span class="pre">ThermalLimitSet</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">FieldInfo</span><span class="p"><span class="pre">(</span></span><span class="n"><span class="pre">annotation</span></span><span class="o"><span class="pre">=</span></span><span class="pre">NoneType</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">required</span></span><span class="o"><span class="pre">=</span></span><span class="k"><span class="pre">False</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">default</span></span><span class="o"><span class="pre">=</span></span><span class="pre">None</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">description</span></span><span class="o"><span class="pre">=</span></span><span class="s"><span class="pre">'Loading</span> <span class="pre">limit</span> <span class="pre">set</span> <span class="pre">for</span> <span class="pre">this</span> <span class="pre">conductor.'</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#gdm.BareConductorEquipment.loading_limit" title="Link to this definition">#</a></dt>
+<dd><p>Loading limit set for this conductor.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class pydantic_model">
+<dt class="sig sig-object py" id="gdm.ConcentricCableEquipment">
+<em class="property"><span class="pre">pydantic</span> <span class="pre">model</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gdm.</span></span><span class="sig-name descname"><span class="pre">ConcentricCableEquipment</span></span><a class="headerlink" href="#gdm.ConcentricCableEquipment" title="Link to this definition">#</a></dt>
+<dd><p>Interface for cable catalog.</p>
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="gdm.ConcentricCableEquipment.ampacity">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ampacity</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">')]</span></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#gdm.ConcentricCableEquipment.ampacity" title="Link to this definition">#</a></dt>
+<dd><p>Ampacity of the conductor.</p>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="gdm.ConcentricCableEquipment.cable_diameter">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">cable_diameter</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">')]</span></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#gdm.ConcentricCableEquipment.cable_diameter" title="Link to this definition">#</a></dt>
+<dd><p>Diameter of the cable.</p>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="gdm.ConcentricCableEquipment.conductor_diameter">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">conductor_diameter</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">')]</span></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#gdm.ConcentricCableEquipment.conductor_diameter" title="Link to this definition">#</a></dt>
+<dd><p>Diameter of the conductor inside cable.</p>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="gdm.ConcentricCableEquipment.conductor_gmr">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">conductor_gmr</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">')]</span></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#gdm.ConcentricCableEquipment.conductor_gmr" title="Link to this definition">#</a></dt>
+<dd><p>Geometric mean radius of the conductor.</p>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="gdm.ConcentricCableEquipment.emergency_ampacity">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">emergency_ampacity</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">')]</span></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#gdm.ConcentricCableEquipment.emergency_ampacity" title="Link to this definition">#</a></dt>
+<dd><p>Emergency ampacity of the conductor.</p>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="gdm.ConcentricCableEquipment.insulation_diameter">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">insulation_diameter</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">')]</span></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#gdm.ConcentricCableEquipment.insulation_diameter" title="Link to this definition">#</a></dt>
+<dd><p>Diameter of the insulation.</p>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="gdm.ConcentricCableEquipment.insulation_thickness">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">insulation_thickness</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">')]</span></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#gdm.ConcentricCableEquipment.insulation_thickness" title="Link to this definition">#</a></dt>
+<dd><p>Thickness of insulation.</p>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="gdm.ConcentricCableEquipment.num_neutral_strands">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">num_neutral_strands</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Annotated</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Gt</span><span class="p"><span class="pre">(</span></span><span class="n"><span class="pre">gt</span></span><span class="o"><span class="pre">=</span></span><span class="m"><span class="pre">0</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">FieldInfo</span><span class="p"><span class="pre">(</span></span><span class="n"><span class="pre">annotation</span></span><span class="o"><span class="pre">=</span></span><span class="pre">NoneType</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">required</span></span><span class="o"><span class="pre">=</span></span><span class="k"><span class="pre">True</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">description</span></span><span class="o"><span class="pre">=</span></span><span class="s"><span class="pre">'Number</span> <span class="pre">of</span> <span class="pre">neutral</span> <span class="pre">strands</span> <span class="pre">in</span> <span class="pre">the</span> <span class="pre">cable.'</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#gdm.ConcentricCableEquipment.num_neutral_strands" title="Link to this definition">#</a></dt>
+<dd><p>Number of neutral strands in the cable.</p>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="gdm.ConcentricCableEquipment.phase_ac_resistance">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">phase_ac_resistance</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">')]</span></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#gdm.ConcentricCableEquipment.phase_ac_resistance" title="Link to this definition">#</a></dt>
+<dd><p>Per unit length conductor ac resistance.</p>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="gdm.ConcentricCableEquipment.rated_voltage">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">rated_voltage</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">')]</span></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#gdm.ConcentricCableEquipment.rated_voltage" title="Link to this definition">#</a></dt>
+<dd><p>Rated voltage for the cable.</p>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="gdm.ConcentricCableEquipment.strand_ac_resistance">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">strand_ac_resistance</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">')]</span></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#gdm.ConcentricCableEquipment.strand_ac_resistance" title="Link to this definition">#</a></dt>
+<dd><p>Per unit length ac resistance of the strand.</p>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="gdm.ConcentricCableEquipment.strand_diameter">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">strand_diameter</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">')]</span></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#gdm.ConcentricCableEquipment.strand_diameter" title="Link to this definition">#</a></dt>
+<dd><p>Diameter of the cable strand.</p>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="gdm.ConcentricCableEquipment.strand_gmr">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">strand_gmr</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">')]</span></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#gdm.ConcentricCableEquipment.strand_gmr" title="Link to this definition">#</a></dt>
+<dd><p>Geometric mean radius of the strand.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="vsource_equipment.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Voltage Source Equipment</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="fuse_equipment.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Fuse Equipment</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gdm.BareConductorEquipment"><code class="docutils literal notranslate"><span class="pre">BareConductorEquipment</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gdm.BareConductorEquipment.ac_resistance"><code class="docutils literal notranslate"><span class="pre">BareConductorEquipment.ac_resistance</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gdm.BareConductorEquipment.ampacity"><code class="docutils literal notranslate"><span class="pre">BareConductorEquipment.ampacity</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gdm.BareConductorEquipment.conductor_diameter"><code class="docutils literal notranslate"><span class="pre">BareConductorEquipment.conductor_diameter</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gdm.BareConductorEquipment.conductor_gmr"><code class="docutils literal notranslate"><span class="pre">BareConductorEquipment.conductor_gmr</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gdm.BareConductorEquipment.dc_resistance"><code class="docutils literal notranslate"><span class="pre">BareConductorEquipment.dc_resistance</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gdm.BareConductorEquipment.emergency_ampacity"><code class="docutils literal notranslate"><span class="pre">BareConductorEquipment.emergency_ampacity</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gdm.BareConductorEquipment.loading_limit"><code class="docutils literal notranslate"><span class="pre">BareConductorEquipment.loading_limit</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gdm.ConcentricCableEquipment"><code class="docutils literal notranslate"><span class="pre">ConcentricCableEquipment</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gdm.ConcentricCableEquipment.ampacity"><code class="docutils literal notranslate"><span class="pre">ConcentricCableEquipment.ampacity</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gdm.ConcentricCableEquipment.cable_diameter"><code class="docutils literal notranslate"><span class="pre">ConcentricCableEquipment.cable_diameter</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gdm.ConcentricCableEquipment.conductor_diameter"><code class="docutils literal notranslate"><span class="pre">ConcentricCableEquipment.conductor_diameter</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gdm.ConcentricCableEquipment.conductor_gmr"><code class="docutils literal notranslate"><span class="pre">ConcentricCableEquipment.conductor_gmr</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gdm.ConcentricCableEquipment.emergency_ampacity"><code class="docutils literal notranslate"><span class="pre">ConcentricCableEquipment.emergency_ampacity</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gdm.ConcentricCableEquipment.insulation_diameter"><code class="docutils literal notranslate"><span class="pre">ConcentricCableEquipment.insulation_diameter</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gdm.ConcentricCableEquipment.insulation_thickness"><code class="docutils literal notranslate"><span class="pre">ConcentricCableEquipment.insulation_thickness</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gdm.ConcentricCableEquipment.num_neutral_strands"><code class="docutils literal notranslate"><span class="pre">ConcentricCableEquipment.num_neutral_strands</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gdm.ConcentricCableEquipment.phase_ac_resistance"><code class="docutils literal notranslate"><span class="pre">ConcentricCableEquipment.phase_ac_resistance</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gdm.ConcentricCableEquipment.rated_voltage"><code class="docutils literal notranslate"><span class="pre">ConcentricCableEquipment.rated_voltage</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gdm.ConcentricCableEquipment.strand_ac_resistance"><code class="docutils literal notranslate"><span class="pre">ConcentricCableEquipment.strand_ac_resistance</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gdm.ConcentricCableEquipment.strand_diameter"><code class="docutils literal notranslate"><span class="pre">ConcentricCableEquipment.strand_diameter</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gdm.ConcentricCableEquipment.strand_gmr"><code class="docutils literal notranslate"><span class="pre">ConcentricCableEquipment.strand_gmr</span></code></a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/api/equipment/distribution_wires.md.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2024, Kapil Duwadi, Tarek Elgindy, Aadil Latif, Daniel Thom, Pedro Andres Sanchez Perez.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>
