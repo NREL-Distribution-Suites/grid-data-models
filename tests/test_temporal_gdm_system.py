@@ -53,8 +53,8 @@ def build_model_updates(system: DistributionSystem) -> UpdateScenario:
     return update_scenario, capacitor.uuid, load1.uuid, load2.uuid
 
 
-def test_temporal_system(sample_distribution_system_with_timeseries):
-    system: DistributionSystem = sample_distribution_system_with_timeseries
+def test_temporal_system(distribution_system_with_single_timeseries):
+    system: DistributionSystem = distribution_system_with_single_timeseries
 
     update_scenario, cap_uuid, load_1_uuid, load_2_uuid = build_model_updates(system)
 

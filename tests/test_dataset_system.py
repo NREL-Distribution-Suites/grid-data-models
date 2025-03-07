@@ -1,17 +1,16 @@
 """Module testing dataset system."""
 
-from datetime import datetime
-from gdm.quantities import PositiveCurrent, PositiveDistance, PositiveResistancePULength
-
+import datetime
 import pytest
 
+from gdm.quantities import PositiveCurrent, PositiveDistance, PositiveResistancePULength
 from gdm.dataset.dataset_system import DatasetSystem
 from gdm.dataset.cost_model import CostModel
 from gdm import BareConductorEquipment
 
 
-@pytest.fixture
-def dataset_system(tmp_path):
+@pytest.fixture(name="dataset_system")
+def sample_dataset_system(tmp_path):
     """Pytest fixture for creating dataset system."""
     sys = DatasetSystem()
     yield sys
@@ -24,7 +23,11 @@ def dataset_system(tmp_path):
 def test_dataset_system(dataset_system):
     """Test dataset system."""
 
-    new_cost1 = CostModel(name="cost-1", purchase_date=datetime.utcnow(), capital_dollars=2345.5)
+    new_cost1 = CostModel(
+        name="cost-1",
+        purchase_date=datetime.datetime.now(datetime.timezone.utc),
+        capital_dollars=2345.5,
+    )
     new_conductor = BareConductorEquipment(
         name="24_AWGSLD_Copper",
         conductor_diameter=PositiveDistance(0.0201, "in"),

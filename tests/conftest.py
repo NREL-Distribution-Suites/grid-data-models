@@ -1,6 +1,10 @@
 from datetime import datetime, timedelta
 from uuid import uuid4
 
+import pytest
+
+from infrasys import SingleTimeSeries, NonSequentialTimeSeries
+
 from gdm.distribution.equipment.inverter_equipment import InverterEquipment
 from gdm.distribution.equipment.solar_equipment import SolarEquipment
 from gdm.distribution.controllers.distribution_inverter_controller import (
@@ -41,8 +45,6 @@ from gdm import (
     Irradiance,
     Phase,
 )
-from infrasys import SingleTimeSeries
-import pytest
 
 
 def build_distribution_buses():
@@ -394,8 +396,8 @@ def sample_distribution_system() -> DistributionSystem:
     return system
 
 
-@pytest.fixture()
-def sample_distribution_system_with_timeseries() -> DistributionSystem:
+@pytest.fixture(name="distribution_system_with_single_timeseries")
+def sample_distribution_system_with_single_timeseries() -> DistributionSystem:
     system = sample_distribution_system()
     load_profile_kw = SingleTimeSeries.from_array(
         data=ActivePower([1, 2, 3, 4, 5], "kilowatt"),
@@ -433,6 +435,65 @@ def sample_distribution_system_with_timeseries() -> DistributionSystem:
     )
     pvs: list[DistributionSolar] = list(system.get_components(DistributionSolar))
     system.add_time_series(
-        irradiance_profile, *pvs, profile_type="PMult", profile_name="pv_profile", use_actual=True
+        irradiance_profile, *pvs, profile_type="PMult", profile_name="pv_profile", use_actual=False
+    )
+    return system
+
+
+@pytest.fixture(name="distribution_system_with_nonsequential_timeseries")
+def sample_distribution_system_with_nonsequential_timeseries() -> DistributionSystem:
+    system = sample_distribution_system()
+    load_profile_kw = NonSequentialTimeSeries.from_array(
+        data=ActivePower([1, 2, 3, 4, 5], "kilowatt"),
+        timestamps=[
+            datetime(2020, 1, 1),
+            datetime(2020, 1, 3),
+            datetime(2020, 2, 1),
+            datetime(2020, 2, 3),
+            datetime(2020, 3, 1),
+        ],
+        variable_name="active_power",
+    )
+    load_profile_kvar = NonSequentialTimeSeries.from_array(
+        data=ActivePower([1, 2, 3, 4, 5], "kilovar"),
+        timestamps=[
+            datetime(2020, 1, 1),
+            datetime(2020, 1, 3),
+            datetime(2020, 2, 1),
+            datetime(2020, 2, 3),
+            datetime(2020, 3, 1),
+        ],
+        variable_name="reactive_power",
+    )
+    loads: list[DistributionLoad] = list(system.get_components(DistributionLoad))
+    system.add_time_series(
+        load_profile_kw,
+        *loads,
+        profile_type="PMult",
+        profile_name="load_profile_kw",
+        use_actual=True,
+    )
+    system.add_time_series(
+        load_profile_kvar,
+        *loads,
+        profile_type="QMult",
+        profile_name="load_profile_kvar",
+        use_actual=False,
+    )
+
+    irradiance_profile = NonSequentialTimeSeries.from_array(
+        data=Irradiance([0, 0.5, 1, 0.5, 0], "kilowatt / meter ** 2"),
+        timestamps=[
+            datetime(2020, 1, 1),
+            datetime(2020, 1, 3),
+            datetime(2020, 2, 1),
+            datetime(2020, 2, 3),
+            datetime(2020, 3, 1),
+        ],
+        variable_name="irradiance",
+    )
+    pvs: list[DistributionSolar] = list(system.get_components(DistributionSolar))
+    system.add_time_series(
+        irradiance_profile, *pvs, profile_type="PMult", profile_name="pv_profile", use_actual=False
     )
     return system
