@@ -53,12 +53,8 @@ def test_three_phase_network_reducer(distribution_system_with_single_timeseries)
         "gdm_total",
         split_phase_mapping,
     )
-    assert get_total_kw(reducer_total_load) == get_total_kw(
-        gdm_total_load
-    ), f"""Active power Reduced: {get_total_kw(reducer_total_load)} MW,
+    assert get_total_kw(reducer_total_load) == get_total_kw(gdm_total_load), f"""Active power Reduced: {get_total_kw(reducer_total_load)} MW,
         Original: {get_total_kw(gdm_total_load)} MW"""
 
-    assert get_total_kvar(reducer_total_load) == get_total_kvar(
-        gdm_total_load
-    ), f"""Reactive power Reduced: {get_total_kvar(reducer_total_load)} Mvar,
+    assert get_total_kvar(reducer_total_load) == get_total_kvar(gdm_total_load), f"""Reactive power Reduced: {get_total_kvar(reducer_total_load)} Mvar,
         Original: {get_total_kvar(gdm_total_load)} Mvar"""

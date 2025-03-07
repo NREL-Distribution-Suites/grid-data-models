@@ -4,6 +4,7 @@ from typing import Annotated, Type
 import importlib.metadata
 
 from infrasys import Component, System
+from infrasys.time_series_models import TimeSeriesData, SingleTimeSeries
 import networkx as nx
 from pydantic import BaseModel, Field
 
@@ -107,7 +108,11 @@ class DistributionSystem(System):
         return graph
 
     def get_subsystem(
-        self, bus_names: list[str], name: str, keep_timeseries: bool = False
+        self,
+        bus_names: list[str],
+        name: str,
+        keep_timeseries: bool = False,
+        time_series_type: Type[TimeSeriesData] = SingleTimeSeries,
     ) -> "DistributionSystem":
         """Method to get subsystem from list of buses.
 
@@ -119,7 +124,8 @@ class DistributionSystem(System):
             Name of the subsystem.
         keep_timeseries: bool
             Set this flag to retain timeseries data associated with the component.
-
+        time_series_type: Type[TimeSeriesData]
+            Type of time series data. Defaults to: SingleTimeSeries
         Returns
         -------
         DistributionSystem
@@ -145,9 +151,13 @@ class DistributionSystem(System):
             for comp in subtree_system.get_components(
                 Component, filter_func=lambda x: self.has_time_series(x)
             ):
-                ts_metadata = self.list_time_series_metadata(comp)
+                ts_metadata = self.list_time_series_metadata(
+                    comp, time_series_type=time_series_type
+                )
                 for metadata in ts_metadata:
-                    ts_data = self.get_time_series(comp, metadata.variable_name)
+                    ts_data = self.get_time_series(
+                        comp, metadata.variable_name, time_series_type=time_series_type
+                    )
                     subtree_system.add_time_series(ts_data, comp, **metadata.user_attributes)
 
         return subtree_system

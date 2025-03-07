@@ -1,7 +1,8 @@
 import uuid
-from typing import Type
+from typing import Type, Union, Callable
 
 from infrasys import Component
+from infrasys.time_series_models import SingleTimeSeries, NonSequentialTimeSeries, TimeSeriesData
 import networkx as nx
 
 from gdm.distribution.components.distribution_bus import DistributionBus
@@ -47,18 +48,19 @@ def get_aggregated_bus_component(
 
 
 def reduce_to_three_phase_system(
-    dist_system: DistributionSystem, name: str, agg_timeseries: bool = False
+    dist_system: DistributionSystem,
+    name: str,
+    agg_timeseries: bool = False,
+    time_series_type: Type[TimeSeriesData] = SingleTimeSeries,
 ) -> DistributionSystem:
     three_phase_buses = get_three_phase_buses(dist_system)
     reduced_system = dist_system.get_subsystem(
-        three_phase_buses,
-        name,
-        keep_timeseries=agg_timeseries,
+        three_phase_buses, name, keep_timeseries=agg_timeseries, time_series_type=time_series_type
     )
     split_phase_mapping = dist_system.get_split_phase_mapping()
     original_tree = dist_system.get_directed_graph()
     three_phase_tree = original_tree.subgraph(three_phase_buses)
-    ts_agg_func_mapper = {
+    ts_agg_func_mapper: dict[Union[Type[DistributionLoad], Type[DistributionSolar]], Callable] = {
         DistributionLoad: get_aggregated_load_timeseries,
         DistributionSolar: get_aggregated_solar_timeseries,
     }
@@ -86,15 +88,22 @@ def reduce_to_three_phase_system(
                 agg_comp = reduced_system.get_component(model_type, agg_component.name)
                 if agg_timeseries:
                     comps = list(subtree_system.get_components(model_type))
-                    ts_metadata = dist_system.list_time_series_metadata(comps[0])
+                    ts_metadata = dist_system.list_time_series_metadata(
+                        comps[0], time_series_type=time_series_type
+                    )
                     for metadata in ts_metadata:
                         ts_aggregate = ts_agg_func_mapper[model_type](
-                            dist_system, comps, metadata.variable_name
+                            dist_system, comps, metadata.variable_name, time_series_type
                         )
                         user_attr = UserAttributes.model_validate(metadata.user_attributes)
                         user_attr.use_actual = True
                         reduced_system.add_time_series(
                             ts_aggregate, agg_comp, **user_attr.model_dump()
                         )
+                        if (
+                            metadata.variable_name == "irradiance"
+                            and time_series_type == NonSequentialTimeSeries
+                        ):
+                            breakpoint()
 
     return reduced_system
