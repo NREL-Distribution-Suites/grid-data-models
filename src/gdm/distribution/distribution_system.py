@@ -4,7 +4,7 @@ from typing import Annotated, Type
 import importlib.metadata
 
 from infrasys import Component, System
-from infrasys.time_series_models import TimeSeriesData, SingleTimeSeries, NonSequentialTimeSeries
+from infrasys.time_series_models import TimeSeriesData, SingleTimeSeries
 import networkx as nx
 from pydantic import BaseModel, Field
 
