@@ -96,7 +96,7 @@ def test_serialization_deserialization_single_time_series_with_reduction(
     gdm_system: DistributionSystem = distribution_system_with_single_timeseries
     system = reduce_to_three_phase_system(
         gdm_system,
-        name="reduced_system",
+        name="reduced_system_single_ts",
         agg_timeseries=True,
         time_series_type=SingleTimeSeries,
     )
@@ -126,7 +126,6 @@ def test_serialization_deserialization_single_time_series_with_reduction(
             )
             assert ts1_active == ts2_active
             assert ts1_reactive == ts2_reactive
-            print("done for component", component.name)
 
         if isinstance(component, (DistributionSolar)):
             component2 = system2.get_component_by_uuid(component.uuid)
@@ -145,7 +144,7 @@ def test_serialization_deserialization_non_sequential_time_series_with_reduction
     gdm_system: DistributionSystem = distribution_system_with_nonsequential_timeseries
     system = reduce_to_three_phase_system(
         gdm_system,
-        name="reduced_system",
+        name="reduced_system_nonsequential_ts",
         agg_timeseries=True,
         time_series_type=NonSequentialTimeSeries,
     )

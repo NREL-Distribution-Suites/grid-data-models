@@ -4,7 +4,7 @@ from typing import Annotated, Type
 import importlib.metadata
 
 from infrasys import Component, System
-from infrasys.time_series_models import TimeSeriesData, SingleTimeSeries
+from infrasys.time_series_models import TimeSeriesData, SingleTimeSeries, NonSequentialTimeSeries
 import networkx as nx
 from pydantic import BaseModel, Field
 
@@ -149,7 +149,8 @@ class DistributionSystem(System):
                     subtree_system.add_component(component)
         if keep_timeseries:
             for comp in subtree_system.get_components(
-                Component, filter_func=lambda x: self.has_time_series(x)
+                Component,
+                filter_func=lambda x: self.has_time_series(x, time_series_type=time_series_type),
             ):
                 ts_metadata = self.list_time_series_metadata(
                     comp, time_series_type=time_series_type

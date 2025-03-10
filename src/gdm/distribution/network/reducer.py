@@ -1,5 +1,5 @@
 import uuid
-from typing import Type, Union, Callable
+from typing import Type, Union, Callable, Iterable
 
 from infrasys import Component
 from infrasys.time_series_models import SingleTimeSeries, NonSequentialTimeSeries, TimeSeriesData
@@ -34,11 +34,10 @@ def get_three_phase_buses(
 def get_aggregated_bus_component(
     subtree_system: DistributionSystem,
     bus: DistributionBus,
-    model_type: Type[Component],
+    model_type: DistributionLoad | DistributionSolar,
     split_phase_mapping: dict[str, set[Phase]],
-) -> Type[Component]:
+) -> DistributionLoad | DistributionSolar:
     model_components = subtree_system.get_components(model_type)
-
     return model_type.aggregate(
         instances=list(model_components),
         bus=bus,
@@ -55,7 +54,10 @@ def reduce_to_three_phase_system(
 ) -> DistributionSystem:
     three_phase_buses = get_three_phase_buses(dist_system)
     reduced_system = dist_system.get_subsystem(
-        three_phase_buses, name, keep_timeseries=agg_timeseries, time_series_type=time_series_type
+        three_phase_buses,
+        name,
+        keep_timeseries=agg_timeseries,
+        time_series_type=time_series_type,
     )
     split_phase_mapping = dist_system.get_split_phase_mapping()
     original_tree = dist_system.get_directed_graph()
@@ -100,10 +102,4 @@ def reduce_to_three_phase_system(
                         reduced_system.add_time_series(
                             ts_aggregate, agg_comp, **user_attr.model_dump()
                         )
-                        if (
-                            metadata.variable_name == "irradiance"
-                            and time_series_type == NonSequentialTimeSeries
-                        ):
-                            breakpoint()
-
     return reduced_system
