@@ -9,9 +9,7 @@ from gdm.distribution.components.base.distribution_component_base import (
     InServiceDistributionComponentBase,
 )
 from gdm.distribution.equipment.inverter_equipment import InverterEquipment
-from gdm.distribution.controllers.distribution_inverter_controller import (
-    InverterController
-)
+from gdm.distribution.controllers.distribution_inverter_controller import InverterController
 from gdm.distribution.components.distribution_bus import DistributionBus
 from gdm.distribution.equipment.solar_equipment import SolarEquipment
 from gdm.distribution.components.distribution_substation import (
@@ -19,8 +17,6 @@ from gdm.distribution.components.distribution_substation import (
 )
 from gdm.distribution.distribution_enum import Phase
 from gdm.quantities import PositiveVoltage
-
-
 
 
 class DistributionSolar(InServiceDistributionComponentBase):
@@ -45,13 +41,17 @@ class DistributionSolar(InServiceDistributionComponentBase):
 
     controller: Annotated[
         InverterController | None,
-        Field(None, description="Controller settings to control output of the inverter",),
+        Field(
+            None,
+            description="Controller settings to control output of the inverter",
+        ),
     ]
 
     inverter: Annotated[
-        InverterEquipment, Field(..., description="Inverter equipment for the Distribution Solar PV system.")
+        InverterEquipment,
+        Field(..., description="Inverter equipment for the Distribution Solar PV system."),
     ]
-    
+
     equipment: Annotated[SolarEquipment, Field(..., description="Solar PV model.")]
 
     @classmethod
@@ -94,10 +94,10 @@ class DistributionSolar(InServiceDistributionComponentBase):
                 rise_limit=None,
                 fall_limit=None,
                 eff_curve=None,
-                cutin_percent=sum(inst.inverter.cutin_percent for inst in instances) / len(instances),
-                cutout_percent=sum(
-                    inst.inverter.cutout_percent for inst in instances
-                ) / len(instances),
+                cutin_percent=sum(inst.inverter.cutin_percent for inst in instances)
+                / len(instances),
+                cutout_percent=sum(inst.inverter.cutout_percent for inst in instances)
+                / len(instances),
             ),
             controller=None,
         )

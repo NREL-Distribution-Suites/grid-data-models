@@ -10,15 +10,14 @@ from gdm.distribution.components.base.distribution_component_base import (
 )
 from gdm.distribution.equipment.inverter_equipment import InverterEquipment
 from gdm.distribution.components.distribution_bus import DistributionBus
-from gdm.distribution.controllers.distribution_inverter_controller import (
-    InverterController
-)
+from gdm.distribution.controllers.distribution_inverter_controller import InverterController
 from gdm.distribution.equipment.battery_equipment import BatteryEquipment
 from gdm.distribution.components.distribution_substation import (
     DistributionSubstation,
 )
 from gdm.distribution.distribution_enum import Phase
 from gdm.quantities import PositiveVoltage
+
 
 class DistributionBattery(InServiceDistributionComponentBase):
     """Interface for battery system in distribution system models."""
@@ -42,13 +41,17 @@ class DistributionBattery(InServiceDistributionComponentBase):
 
     controller: Annotated[
         InverterController | None,
-        Field(None, description="Controller settings to control output of the inverter",),
+        Field(
+            None,
+            description="Controller settings to control output of the inverter",
+        ),
     ]
 
     inverter: Annotated[
-        InverterEquipment, Field(..., description="Inverter equipment for the distribution battery system.")
+        InverterEquipment,
+        Field(..., description="Inverter equipment for the distribution battery system."),
     ]
-    
+
     equipment: Annotated[BatteryEquipment, Field(..., description="Battery model.")]
 
     @classmethod
@@ -75,19 +78,24 @@ class DistributionBattery(InServiceDistributionComponentBase):
                 name=f"{name}_battery_equipment",
                 rated_energy=sum(inst.equipment.rated_energy for inst in instances),
                 rated_power=sum(inst.equipment.rated_power for inst in instances),
-                charging_efficiency=sum(inst.equipment.charging_efficiency for inst in instances) / len(instances),
-                discharging_efficiency=sum(inst.equipment.discharging_efficiency for inst in instances) / len(instances),
-                idling_efficiency=sum(inst.equipment.idling_efficiency for inst in instances) / len(instances),
+                charging_efficiency=sum(inst.equipment.charging_efficiency for inst in instances)
+                / len(instances),
+                discharging_efficiency=sum(
+                    inst.equipment.discharging_efficiency for inst in instances
+                )
+                / len(instances),
+                idling_efficiency=sum(inst.equipment.idling_efficiency for inst in instances)
+                / len(instances),
             ),
             inverter=InverterEquipment(
                 capacity=sum(inst.inverter.capacity for inst in instances) / len(instances),
                 rise_limit=None,
                 fall_limit=None,
                 eff_curve=None,
-                cutin_percent=sum(inst.inverter.cutin_percent for inst in instances) / len(instances),
-                cutout_percent=sum(
-                    inst.inverter.cutout_percent for inst in instances
-                ) / len(instances),
+                cutin_percent=sum(inst.inverter.cutin_percent for inst in instances)
+                / len(instances),
+                cutout_percent=sum(inst.inverter.cutout_percent for inst in instances)
+                / len(instances),
             ),
             controller=None,
         )

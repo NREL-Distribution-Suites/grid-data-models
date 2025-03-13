@@ -108,7 +108,7 @@ def build_distribution_solar(bus: DistributionBus, bus_number: int):
                     "uuid": uuid4(),
                     "name": f"inverter_controller_{bus_number}",
                 }
-            )
+            ),
         }
     )
 

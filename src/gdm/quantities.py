@@ -193,6 +193,7 @@ class EnergyDC(BaseQuantity):
 
     __base_unit__ = "kilowatt*hour"
 
+
 class PositiveEnergyDC(EnergyDC):
     """Quantity representing positive DC energy of a storage device."""
 
@@ -215,6 +216,7 @@ class PositiveEnergyAC(EnergyAC):
         assert all(
             np.array(value).flatten() >= 0
         ), f"Distance ({value}, {units}) must be positive."
+
 
 class Irradiance(BaseQuantity):
     """Quantity representing irradiance in kilowatt per meter**2"""

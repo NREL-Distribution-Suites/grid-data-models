@@ -5,8 +5,7 @@ from typing import Annotated
 from infrasys import Component
 from pydantic import Field, confloat
 
-from gdm.quantities import PositiveActivePower, PositiveEnergyAC, PositiveEnergyDC, ActivePower
-from gdm.distribution.distribution_enum import BatteryState
+from gdm.quantities import PositiveActivePower, PositiveEnergyDC
 from gdm.constants import PINT_SCHEMA
 
 
@@ -24,7 +23,7 @@ class BatteryEquipment(Component):
         PINT_SCHEMA,
         Field(..., description="Rated power of the battery"),
     ]
-   
+
     charging_efficiency: Annotated[
         float,
         Field(..., ge=0, le=100, description="Charging efficiency of the battery."),

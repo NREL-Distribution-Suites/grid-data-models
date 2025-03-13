@@ -42,7 +42,7 @@ class BatteryState(str, Enum):
     """Interface for battery state."""
 
     CHARGING = "charging"
-    DISCHARGING = "discharging" 
+    DISCHARGING = "discharging"
     IDLING = "idling"
 
 

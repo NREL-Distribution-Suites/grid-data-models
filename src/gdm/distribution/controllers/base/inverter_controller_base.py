@@ -4,6 +4,7 @@ from abc import ABC
 from infrasys import Component
 from pydantic import Field
 
+
 class ActivePowerInverterControllerBase(Component, ABC):
     """Interface for Inverter controllers that control active power."""
 
@@ -14,6 +15,3 @@ class ReactivePowerInverterControllerBase(Component, ABC):
     """Interface for Inverter controllers that control reactive power."""
 
     name: Annotated[str, Field("", description="Name of the inverter controller.")]
-
-
-

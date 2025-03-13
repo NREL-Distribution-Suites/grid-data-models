@@ -19,7 +19,9 @@ class PowerfactorInverterController(ReactivePowerInverterControllerBase):
     power_factor: Annotated[
         float, Field(ge=-1, le=1, description="The power factor used for the controller.")
     ]
-    supported_by : Literal[ControllerSupport.BATTERY_AND_SOLAR] = ControllerSupport.BATTERY_AND_SOLAR
+    supported_by: Literal[
+        ControllerSupport.BATTERY_AND_SOLAR
+    ] = ControllerSupport.BATTERY_AND_SOLAR
 
     @classmethod
     def example(cls) -> "PowerfactorInverterController":
@@ -43,7 +45,9 @@ class VoltVarInverterController(ReactivePowerInverterControllerBase):
                         generation absorption to respect inverter status""",
         ),
     ]
-    supported_by: Literal[ControllerSupport.BATTERY_AND_SOLAR] = ControllerSupport.BATTERY_AND_SOLAR
+    supported_by: Literal[
+        ControllerSupport.BATTERY_AND_SOLAR
+    ] = ControllerSupport.BATTERY_AND_SOLAR
 
     @classmethod
     def example(cls) -> "VoltVarInverterController":
@@ -74,15 +78,21 @@ class InverterController(Component):
     """Interface for Inverter controllers that control active and reactive power."""
 
     name: Annotated[str, Field("", description="Name of the inverter controller.")]
-    
+
     active_power_control: Annotated[
         ActivePowerInverterControllerBase | None,
-        Field(None, description="Controller settings to control active power output of the inverter",),
+        Field(
+            None,
+            description="Controller settings to control active power output of the inverter",
+        ),
     ]
-    
+
     reactive_power_control: Annotated[
         ReactivePowerInverterControllerBase | None,
-        Field(None, description="Controller settings to control reactive power output of the inverter",),
+        Field(
+            None,
+            description="Controller settings to control reactive power output of the inverter",
+        ),
     ]
 
     prioritize_active_power: Annotated[
@@ -90,7 +100,11 @@ class InverterController(Component):
     ]
 
     night_mode: Annotated[
-        bool, Field(..., description="If True, the controller controls reactive power even when there is no active power.")
+        bool,
+        Field(
+            ...,
+            description="If True, the controller controls reactive power even when there is no active power.",
+        ),
     ]
 
     @classmethod
@@ -100,7 +114,6 @@ class InverterController(Component):
             name="inv1",
             active_power_control=VoltWattInverterController.example(),
             reactive_power_control=PowerfactorInverterController.example(),
-            prioritize_active_power=False,        
+            prioritize_active_power=False,
             night_mode=True,
         )
-    
