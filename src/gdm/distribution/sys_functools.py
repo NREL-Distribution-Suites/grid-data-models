@@ -240,7 +240,7 @@ def _get_combined_timeseries_df(
             raise TimeseriesVariableDoesNotExist(msg)
 
         for var in var_of_interest & avail_vars:
-            ts_data: SingleTimeSeries = sys.get_time_series(component=component, variable_name=var)
+            ts_data: SingleTimeSeries = sys.get_time_series(owner=component, variable_name=var)
             metadata = [meta for meta in ts_metadata if meta.variable_name == var][0]
             power_data = power_function(component, ts_data, metadata)
             dfs.append(

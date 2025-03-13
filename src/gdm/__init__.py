@@ -127,7 +127,6 @@ from gdm.distribution.equipment.phase_voltagesource_equipment import PhaseVoltag
 
 
 from gdm.distribution.controllers.base.capacitor_controller_base import CapacitorControllerBase
-from gdm.distribution.controllers.base.inverter_controller_base import InverterControllerBase
 from gdm.distribution.controllers.distribution_capacitor_controller import (
     VoltageCapacitorController,
     ActivePowerCapacitorController,
@@ -138,7 +137,6 @@ from gdm.distribution.controllers.distribution_capacitor_controller import (
 from gdm.distribution.controllers.distribution_inverter_controller import (
     PowerfactorInverterController,
     VoltVarInverterController,
-    VoltVarVoltWattInverterController,
     VoltWattInverterController,
 )
 from gdm.distribution.controllers.distribution_recloser_controller import (
@@ -165,7 +163,14 @@ from gdm.distribution.distribution_graph import build_graph_from_system
 from gdm.distribution.curve import Curve, TimeCurrentCurve
 
 from gdm.distribution.network.reducer import reduce_to_three_phase_system
-from gdm.distribution.components.distribution_inverter import (
-    DistributionInverter,
+from gdm.distribution.components.distribution_battery import (
+    DistributionBattery,
 )
+from gdm.distribution.equipment.battery_equipment import (
+    BatteryEquipment,
+)
+from gdm.distribution.controllers.distribution_inverter_controller import (
+    InverterController,
+)
+
 from gdm.distribution.catalog_system import CatalogSystem

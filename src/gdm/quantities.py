@@ -188,6 +188,34 @@ class ActivePowerPUTime(BaseQuantity):
     __base_unit__ = "watt/minute"
 
 
+class EnergyDC(BaseQuantity):
+    """Quantity representing DC energy of a storage device"""
+
+    __base_unit__ = "kilowatt*hour"
+
+class PositiveEnergyDC(EnergyDC):
+    """Quantity representing positive DC energy of a storage device."""
+
+    def __init__(self, value, units, **kwargs):
+        assert all(
+            np.array(value).flatten() >= 0
+        ), f"Distance ({value}, {units}) must be positive."
+
+
+class EnergyAC(BaseQuantity):
+    """Quantity representing AC energy of a storage device"""
+
+    __base_unit__ = "kilova*hour"
+
+
+class PositiveEnergyAC(EnergyAC):
+    """Quantity representing positive AC energy of a storage device."""
+
+    def __init__(self, value, units, **kwargs):
+        assert all(
+            np.array(value).flatten() >= 0
+        ), f"Distance ({value}, {units}) must be positive."
+
 class Irradiance(BaseQuantity):
     """Quantity representing irradiance in kilowatt per meter**2"""
 
