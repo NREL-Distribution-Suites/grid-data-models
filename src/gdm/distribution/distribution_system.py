@@ -104,8 +104,13 @@ class DistributionSystem(System):
                 **{"name": edge.name, "type": edge.__class__},
             )
         return graph
-    
-    def _add_to_subsystem(self, subtree_system: 'DistributionSystem', parent_components: list[Component], bus_names: list[DistributionBus]):
+
+    def _add_to_subsystem(
+        self,
+        subtree_system: "DistributionSystem",
+        parent_components: list[Component],
+        bus_names: list[DistributionBus],
+    ):
         for component in parent_components:
             if isinstance(
                 component,
