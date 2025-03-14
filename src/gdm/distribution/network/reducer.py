@@ -56,6 +56,7 @@ def get_aggregated_bus_component(
         split_phase_mapping=split_phase_mapping,
     )
 
+
 def _reduce_system(
     dist_system: DistributionSystem,
     bus_subset: list[DistributionBus],
@@ -73,8 +74,7 @@ def _reduce_system(
     split_phase_mapping = dist_system.get_split_phase_mapping()
     original_tree = dist_system.get_directed_graph()
     reduced_network_tree = original_tree.subgraph(bus_subset)
-    ts_agg_func_mapper dict[Union[Type[DistributionLoad], Type[DistributionSolar]], Callable] = {
-
+    ts_agg_func_mapper: dict[Union[Type[DistributionLoad], Type[DistributionSolar]], Callable] = {
         DistributionLoad: get_aggregated_load_timeseries,
         DistributionSolar: get_aggregated_solar_timeseries,
         DistributionBattery: get_aggregated_battery_timeseries,
@@ -120,14 +120,20 @@ def _reduce_system(
 
 
 def reduce_to_three_phase_system(
-    dist_system: DistributionSystem, name: str, agg_timeseries: bool = False
+    dist_system: DistributionSystem,
+    name: str,
+    agg_timeseries: bool = False,
+    time_series_type: Type[TimeSeriesData] = SingleTimeSeries,
 ) -> DistributionSystem:
     three_phase_buses = get_three_phase_buses(dist_system)
-    return _reduce_system(dist_system, three_phase_buses, name, agg_timeseries)
+    return _reduce_system(dist_system, three_phase_buses, name, agg_timeseries, time_series_type)
 
 
 def reduce_to_primary_system(
-    dist_system: DistributionSystem, name: str, agg_timeseries: bool = False
+    dist_system: DistributionSystem,
+    name: str,
+    agg_timeseries: bool = False,
+    time_series_type: Type[TimeSeriesData] = SingleTimeSeries,
 ) -> DistributionSystem:
     primary_buses = get_primary_buses(dist_system)
-    return _reduce_system(dist_system, primary_buses, name, agg_timeseries)
+    return _reduce_system(dist_system, primary_buses, name, agg_timeseries, time_series_type)

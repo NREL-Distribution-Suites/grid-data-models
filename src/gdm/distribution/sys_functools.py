@@ -4,9 +4,10 @@ from functools import singledispatch
 import pandas as pd
 
 from infrasys.time_series_models import (
-    SingleTimeSeries,
+    SingleTimeSeriesMetadata,
     NonSequentialTimeSeries,
     TimeSeriesMetadata,
+    SingleTimeSeries,
     TimeSeriesData,
 )
 from infrasys.normalization import NormalizationMax, NormalizationByValue
@@ -103,9 +104,9 @@ def _get_solar_power(
             msg = f"Invalid unit for use_actual: {denormalized_data.units}"
             raise GDMQuantityUnitsError(msg)
         return denormalized_data
-    dc_power = denormalized_data.to(
-        "kilowatt/m^2"
-    ).magnitude.tolist() * solar.equipment.solar_power.to("kilowatts")
+    dc_power = denormalized_data.to("kilowatt/m^2").magnitude.tolist() * solar.active_power.to(
+        "kilowatts"
+    )
     return ActivePower(
         np.clip(
             dc_power,
@@ -113,7 +114,6 @@ def _get_solar_power(
             a_max=solar.equipment.rated_power.to("kilova"),
         ).magnitude,
         dc_power.units,
-
     )
     # TODO: Looks like GDM is not capturing irradiance which is why user_attr is not used
     # this will work fine if irradiance=1 however if it is different than 1 then
@@ -402,7 +402,6 @@ def _get_combined_single_time_series_df(
             raise TimeseriesVariableDoesNotExist(msg)
 
         for var in var_of_interest & avail_vars:
-
             ts_data: SingleTimeSeries = sys.get_time_series(
                 owner=component, variable_name=var, time_series_type=time_series_type
             )

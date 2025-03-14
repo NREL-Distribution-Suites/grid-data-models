@@ -3,7 +3,7 @@ import pytest
 
 from infrasys.time_series_models import SingleTimeSeries, NonSequentialTimeSeries
 
-from gdm.distribution.network.reducer import reduce_to_three_phase_system
+from gdm.distribution.network.reducer import reduce_to_three_phase_system, reduce_to_primary_system
 from gdm.distribution.sys_functools import (
     get_aggregated_load_timeseries,
     get_aggregated_solar_timeseries,
@@ -76,6 +76,7 @@ def test_three_phase_network_reducer(distribution_system_with_single_timeseries)
 
     assert get_total_kvar(reducer_total_load) == get_total_kvar(gdm_total_load), f"""Reactive power Reduced: {get_total_kvar(reducer_total_load)} Mvar,
         Original: {get_total_kvar(gdm_total_load)} Mvar"""
+
 
 def test_incompatible_timeseries_and_unsupported_variable_error(
     distribution_system_with_nonsequential_timeseries,
@@ -286,8 +287,9 @@ def test_time_series_unsupported_var(simple_distribution_system):
             time_series_type=SingleTimeSeries,
         )
 
-def test_reduce_to_primary_system(sample_distribution_system_with_timeseries):
-    gdm_sys: DistributionSystem = sample_distribution_system_with_timeseries
+
+def test_reduce_to_primary_system(distribution_system_with_single_timeseries):
+    gdm_sys: DistributionSystem = distribution_system_with_single_timeseries
     reducer = reduce_to_primary_system(gdm_sys, name="reduced_system", agg_timeseries=False)
     bus = list(reducer.get_components(DistributionBus))[0]
 
@@ -309,4 +311,3 @@ def test_reduce_to_primary_system(sample_distribution_system_with_timeseries):
 
     assert get_total_kvar(reducer_total_load) == get_total_kvar(gdm_total_load), f"""Reactive power Reduced: {get_total_kvar(reducer_total_load)} Mvar,
         Original: {get_total_kvar(gdm_total_load)} Mvar"""
-
