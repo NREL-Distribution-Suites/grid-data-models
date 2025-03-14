@@ -1,7 +1,7 @@
 import uuid
-from typing import Type
+from typing import Type, Union, Callable
 
-from infrasys import Component
+from infrasys.time_series_models import SingleTimeSeries, TimeSeriesData
 import networkx as nx
 
 from gdm.distribution.components.distribution_bus import DistributionBus
@@ -45,11 +45,10 @@ def get_primary_buses(dist_system: DistributionSystem) -> list[str]:
 def get_aggregated_bus_component(
     subtree_system: DistributionSystem,
     bus: DistributionBus,
-    model_type: Type[Component],
+    model_type: DistributionLoad | DistributionSolar,
     split_phase_mapping: dict[str, set[Phase]],
-) -> Type[Component]:
+) -> DistributionLoad | DistributionSolar:
     model_components = subtree_system.get_components(model_type)
-
     return model_type.aggregate(
         instances=list(model_components),
         bus=bus,
@@ -57,23 +56,25 @@ def get_aggregated_bus_component(
         split_phase_mapping=split_phase_mapping,
     )
 
-
 def _reduce_system(
     dist_system: DistributionSystem,
     bus_subset: list[DistributionBus],
     name: str,
     agg_timeseries: bool = False,
+    time_series_type: Type[TimeSeriesData] = SingleTimeSeries,
 ) -> DistributionSystem:
     reduced_system = dist_system.get_subsystem(
         bus_subset,
         name,
         keep_timeseries=agg_timeseries,
+        time_series_type=time_series_type,
     )
 
     split_phase_mapping = dist_system.get_split_phase_mapping()
     original_tree = dist_system.get_directed_graph()
     reduced_network_tree = original_tree.subgraph(bus_subset)
-    ts_agg_func_mapper = {
+    ts_agg_func_mapper dict[Union[Type[DistributionLoad], Type[DistributionSolar]], Callable] = {
+
         DistributionLoad: get_aggregated_load_timeseries,
         DistributionSolar: get_aggregated_solar_timeseries,
         DistributionBattery: get_aggregated_battery_timeseries,
@@ -103,17 +104,18 @@ def _reduce_system(
                 agg_comp = reduced_system.get_component(model_type, agg_component.name)
                 if agg_timeseries:
                     comps = list(subtree_system.get_components(model_type))
-                    ts_metadata = dist_system.list_time_series_metadata(comps[0])
+                    ts_metadata = dist_system.list_time_series_metadata(
+                        comps[0], time_series_type=time_series_type
+                    )
                     for metadata in ts_metadata:
                         ts_aggregate = ts_agg_func_mapper[model_type](
-                            dist_system, comps, metadata.variable_name
+                            dist_system, comps, metadata.variable_name, time_series_type
                         )
                         user_attr = UserAttributes.model_validate(metadata.user_attributes)
                         user_attr.use_actual = True
                         reduced_system.add_time_series(
                             ts_aggregate, agg_comp, **user_attr.model_dump()
                         )
-
     return reduced_system
 
 

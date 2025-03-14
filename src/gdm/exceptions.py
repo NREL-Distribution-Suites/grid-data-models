@@ -1,4 +1,4 @@
-""" This module contains all exceptions raised by this package."""
+"""This module contains all exceptions raised by this package."""
 
 
 class GDMBaseException(Exception):
@@ -11,6 +11,14 @@ class GDMNotAttachedToSystemError(GDMBaseException):
 
 class GDMIncompatibleInstanceError(GDMBaseException):
     """Raises this error if incompatible instance is passed."""
+
+
+class GDMQuantityError(GDMBaseException):
+    """Raises this error if the data is not a GDM quantity."""
+
+
+class GDMQuantityUnitsError(GDMBaseException):
+    """Raises this error if the GDM quantity does not have proper unit."""
 
 
 class MultipleOrEmptyVsourceFound(GDMBaseException):
@@ -27,6 +35,10 @@ class FolderAlreadyExistsError(GDMBaseException):
 
 class NoComponentsFoundError(GDMBaseException):
     """Raised if no components are found when it is expected to present in the system."""
+
+
+class IncompatibleTimeSeries(GDMBaseException):
+    """Raised if incompatible timeseries is passed as time_series_type."""
 
 
 class NoTimeSeriesDataFound(GDMBaseException):
