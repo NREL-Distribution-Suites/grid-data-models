@@ -1,11 +1,12 @@
 import pandas as pd
 import numpy as np
+
 from gdm.distribution.distribution_system import DistributionSystem
-from gdm.distribution.sys_functools import (
-    get_combined_load_timeseries_df,
-    get_combined_solar_timeseries_df,
-)
 from gdm import DistributionLoad, DistributionSolar
+from gdm.distribution.sys_functools import (
+    get_combined_solar_timeseries_df,
+    get_combined_load_timeseries_df,
+)
 
 
 def process_timeseries(df: pd.DataFrame, value_column: str) -> pd.DataFrame:
@@ -47,7 +48,7 @@ def test_combined_timeseries_on_smartds(sample_distribution_system_with_timeseri
     solar_df = solar_df.rename(columns={"active_power": "solar_active_power"})
 
     pvs: list[DistributionSolar] = list(gdm_sys.get_components(DistributionSolar))
-    pv_powers_dc = [pv.equipment.solar_power.to("kilowatts").magnitude for pv in pvs]
+    pv_powers_dc = [pv.active_power.to("kilowatts").magnitude for pv in pvs]
     assert np.array_equal(
         solar_df["solar_active_power"].values, np.array([0, 0.5, 1, 0.5, 0]) * sum(pv_powers_dc)
     )

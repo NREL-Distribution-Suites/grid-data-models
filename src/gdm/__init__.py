@@ -170,6 +170,11 @@ from gdm.distribution.equipment.battery_equipment import (
     BatteryEquipment,
 )
 from gdm.distribution.controllers.distribution_inverter_controller import (
+    BatteryPeakShavingBaseLoadingController,
+    BatteryCapacityFirmingController,
+    BatteryDemandChargeController,
+    BatteryTimeOfUseController,
+    BatteryTimeBaseController,
     InverterController,
 )
 

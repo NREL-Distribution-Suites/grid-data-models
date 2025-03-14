@@ -21,6 +21,8 @@ from gdm import (
     DistributionSystem,
     CapacitorEquipment,
     PhaseLoadEquipment,
+    PositiveResistance,
+    PositiveReactance,
     ResistancePULength,
     DistributionSolar,
     ActivePowerPUTime,
@@ -90,15 +92,14 @@ def build_distribution_solar(bus: DistributionBus, bus_number: int):
                 update={
                     "uuid": uuid4(),
                     "name": f"inverter_equipment_{bus_number}",
-                    "capacity": PositiveApparentPower(bus_number + 1, "kilowatt"),
+                    "rated_apparent_power": PositiveApparentPower(bus_number + 1, "kilowatt"),
                 }
             ),
             "equipment": SolarEquipment.example().model_copy(
                 update={
                     "uuid": uuid4(),
                     "name": f"solar_equipment_{bus_number}",
-                    "solar_capacity": ActivePower(bus_number + 1, "kilowatt"),
-                    "rated_capacity": PositiveActivePower(bus_number + 1, "kilowatt"),
+                    "rated_power": PositiveActivePower(1000, "kilowatt"),
                     "resistance": 1,
                     "reactance": 1,
                 }
@@ -109,6 +110,10 @@ def build_distribution_solar(bus: DistributionBus, bus_number: int):
                     "name": f"inverter_controller_{bus_number}",
                 }
             ),
+            "array_power": PositiveActivePower(1001, "watt"),
+            "active_power": PositiveActivePower(1001, "watt"),
+            "reactive_power": ReactivePower(1001, "watt"),
+            "irradiance": Irradiance(1000, "watt/m^2"),
         }
     )
 
@@ -133,12 +138,18 @@ def build_distribution_capacitor(bus: DistributionBus, bus_number: int):
                 update={
                     "uuid": uuid4(),
                     "name": f"capacitor_equipment_{bus_number}",
+                    "nominal_voltage": PositiveVoltage(120, "volt"),
+                    "voltage_type": VoltageTypes.LINE_TO_GROUND,
                     "phase_capacitors": [
                         PhaseCapacitorEquipment.example().model_copy(
                             update={
                                 "uuid": uuid4(),
                                 "name": f"phase_capacitor_{i}_{bus_number}",
-                                "rated_capacity": PositiveReactivePower(bus_number + 1, "kvar"),
+                                "rated_reactive_power": PositiveReactivePower(
+                                    bus_number + 1, "kvar"
+                                ),
+                                "resistance": PositiveResistance(1, "ohm"),
+                                "reactance": PositiveReactance(1, "ohm"),
                             }
                         )
                         for i in range(3)
@@ -316,19 +327,22 @@ def build_split_phase_solar(bus: DistributionBus, bus_number: int):
         phases=[Phase.S1, Phase.S2],
         equipment=SolarEquipment(
             name=f"pv_equipment_{bus_number}",
-            rated_capacity=ActivePower(bus_number + 1, "kilowatt"),
-            solar_power=ActivePower(bus_number + 1, "kilowatt"),
+            rated_power=ActivePower(bus_number + 1, "kilowatt"),
             resistance=1,
             reactance=1,
         ),
         inverter=InverterEquipment(
-            capacity=PositiveApparentPower(3.8, "kva"),
+            rated_apparent_power=PositiveApparentPower(3.8, "kva"),
             rise_limit=ActivePowerPUTime(1.1, "kW/second"),
             fall_limit=ActivePowerPUTime(1.1, "kW/second"),
+            dc_to_ac_efficiency=100,
             cutin_percent=10,
             cutout_percent=10,
         ),
         controller=None,
+        active_power=PositiveActivePower(bus_number + 1, "kilowatt"),
+        reactive_power=ReactivePower(bus_number + 1, "kilowatt"),
+        irradiance=Irradiance(1000, "watt/m^2"),
     )
 
 

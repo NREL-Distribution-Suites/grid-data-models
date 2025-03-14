@@ -7,6 +7,7 @@ import networkx as nx
 from gdm.distribution.components.distribution_bus import DistributionBus
 from gdm.distribution.components.distribution_load import DistributionLoad
 from gdm.distribution.components.distribution_solar import DistributionSolar
+from gdm.distribution.components.distribution_battery import DistributionBattery
 from gdm.distribution.distribution_system import (
     DistributionSystem,
     UserAttributes,
@@ -15,6 +16,7 @@ from gdm import Phase
 from gdm.distribution.sys_functools import (
     get_aggregated_load_timeseries,
     get_aggregated_solar_timeseries,
+    get_aggregated_battery_timeseries,
 )
 
 
@@ -26,6 +28,16 @@ def get_three_phase_buses(
         for bus in dist_system.get_components(
             DistributionBus,
             filter_func=lambda x: set((Phase.A, Phase.B, Phase.C)).issubset(x.phases),
+        )
+    ]
+
+
+def get_primary_buses(dist_system: DistributionSystem) -> list[str]:
+    return [
+        bus.name
+        for bus in dist_system.get_components(
+            DistributionBus,
+            filter_func=lambda x: x.nominal_voltage.to("kilovolt").magnitude > 1.0,
         )
     ]
 
@@ -46,26 +58,30 @@ def get_aggregated_bus_component(
     )
 
 
-def reduce_to_three_phase_system(
-    dist_system: DistributionSystem, name: str, agg_timeseries: bool = False
+def _reduce_system(
+    dist_system: DistributionSystem,
+    bus_subset: list[DistributionBus],
+    name: str,
+    agg_timeseries: bool = False,
 ) -> DistributionSystem:
-    three_phase_buses = get_three_phase_buses(dist_system)
     reduced_system = dist_system.get_subsystem(
-        three_phase_buses,
+        bus_subset,
         name,
         keep_timeseries=agg_timeseries,
     )
+
     split_phase_mapping = dist_system.get_split_phase_mapping()
     original_tree = dist_system.get_directed_graph()
-    three_phase_tree = original_tree.subgraph(three_phase_buses)
+    reduced_network_tree = original_tree.subgraph(bus_subset)
     ts_agg_func_mapper = {
         DistributionLoad: get_aggregated_load_timeseries,
         DistributionSolar: get_aggregated_solar_timeseries,
+        DistributionBattery: get_aggregated_battery_timeseries,
     }
-    for node in three_phase_tree.nodes():
-        if three_phase_tree.out_degree(node) < original_tree.out_degree(node):
+    for node in reduced_network_tree.nodes():
+        if reduced_network_tree.out_degree(node) < original_tree.out_degree(node):
             sucessors_diff = set(original_tree.successors(node)) - set(
-                three_phase_tree.successors(node)
+                reduced_network_tree.successors(node)
             )
             successors_descendants = [
                 snode
@@ -82,6 +98,7 @@ def reduce_to_three_phase_system(
                     model_type=model_type,
                     split_phase_mapping=split_phase_mapping,
                 )
+                # print(model_type.__name__, agg_component)
                 reduced_system.add_component(agg_component)
                 agg_comp = reduced_system.get_component(model_type, agg_component.name)
                 if agg_timeseries:
@@ -98,3 +115,17 @@ def reduce_to_three_phase_system(
                         )
 
     return reduced_system
+
+
+def reduce_to_three_phase_system(
+    dist_system: DistributionSystem, name: str, agg_timeseries: bool = False
+) -> DistributionSystem:
+    three_phase_buses = get_three_phase_buses(dist_system)
+    return _reduce_system(dist_system, three_phase_buses, name, agg_timeseries)
+
+
+def reduce_to_primary_system(
+    dist_system: DistributionSystem, name: str, agg_timeseries: bool = False
+) -> DistributionSystem:
+    primary_buses = get_primary_buses(dist_system)
+    return _reduce_system(dist_system, primary_buses, name, agg_timeseries)

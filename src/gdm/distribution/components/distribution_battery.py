@@ -2,21 +2,26 @@
 
 from typing import Annotated
 
-from pydantic import Field
+from pydantic import Field, model_validator
 
 from gdm.distribution.components.distribution_feeder import DistributionFeeder
+from gdm.distribution.equipment.inverter_equipment import InverterEquipment
+from gdm.distribution.controllers.distribution_inverter_controller import (
+    BatteryPeakShavingBaseLoadingController,
+    VoltVarInverterController,
+    InverterController,
+)
 from gdm.distribution.components.base.distribution_component_base import (
     InServiceDistributionComponentBase,
 )
-from gdm.distribution.equipment.inverter_equipment import InverterEquipment
-from gdm.distribution.components.distribution_bus import DistributionBus
-from gdm.distribution.controllers.distribution_inverter_controller import InverterController
 from gdm.distribution.equipment.battery_equipment import BatteryEquipment
+from gdm.distribution.components.distribution_bus import DistributionBus
+from gdm.quantities import PositiveVoltage, ActivePower, ReactivePower
 from gdm.distribution.components.distribution_substation import (
     DistributionSubstation,
 )
+from gdm.distribution.distribution_enum import ControllerSupport
 from gdm.distribution.distribution_enum import Phase
-from gdm.quantities import PositiveVoltage
 
 
 class DistributionBattery(InServiceDistributionComponentBase):
@@ -38,7 +43,14 @@ class DistributionBattery(InServiceDistributionComponentBase):
             ),
         ),
     ]
-
+    active_power: Annotated[
+        ActivePower,
+        Field(..., description="Current active power output of the battery."),
+    ]
+    reactive_power: Annotated[
+        ReactivePower,
+        Field(..., description="Current reactive power output of the battery."),
+    ]
     controller: Annotated[
         InverterController | None,
         Field(
@@ -53,6 +65,30 @@ class DistributionBattery(InServiceDistributionComponentBase):
     ]
 
     equipment: Annotated[BatteryEquipment, Field(..., description="Battery model.")]
+
+    @model_validator(mode="after")
+    def validate_controller_types(self) -> "DistributionBattery":
+        valid_controller_types = [
+            ControllerSupport.BATTERY_ONLY,
+            ControllerSupport.BATTERY_AND_SOLAR,
+        ]
+        if self.controller is not None:
+            if self.controller.active_power_control is not None:
+                if self.controller.active_power_control.supported_by not in valid_controller_types:
+                    raise ValueError(
+                        f"Controller type '{self.controller.active_power_control.supported_by}' is not supported by DistributionSolar. Supported Controller types: {valid_controller_types}"
+                    )
+
+            if self.controller.reactive_power_control is not None:
+                if (
+                    self.controller.reactive_power_control.supported_by
+                    not in valid_controller_types
+                ):
+                    raise ValueError(
+                        f"Controller type '{self.controller.reactive_power_control.supported_by}' is not supported by DistributionSolar. Supported Controller types: {valid_controller_types}"
+                    )
+
+        return self
 
     @classmethod
     def aggregate(
@@ -97,6 +133,8 @@ class DistributionBattery(InServiceDistributionComponentBase):
                 cutout_percent=sum(inst.inverter.cutout_percent for inst in instances)
                 / len(instances),
             ),
+            reactive_power=sum(inst.reactive_power for inst in instances),
+            active_power=sum(inst.active_power for inst in instances),
             controller=None,
         )
 
@@ -118,5 +156,13 @@ class DistributionBattery(InServiceDistributionComponentBase):
             phases=[Phase.A, Phase.B, Phase.C],
             equipment=BatteryEquipment.example(),
             inverter=InverterEquipment.example(),
-            controller=None,
+            reactive_power=ReactivePower(1000, "watt"),
+            active_power=ActivePower(1000, "watt"),
+            controller=InverterController(
+                name="inv1",
+                active_power_control=BatteryPeakShavingBaseLoadingController.example(),
+                reactive_power_control=VoltVarInverterController.example(),
+                prioritize_active_power=False,
+                night_mode=True,
+            ),
         )

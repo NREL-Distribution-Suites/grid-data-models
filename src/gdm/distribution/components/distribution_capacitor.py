@@ -84,6 +84,8 @@ class DistributionCapacitor(InServiceDistributionComponentBase):
                     for caps in phase_caps.values()
                 ],
                 connection_type=set([item.equipment.connection_type for item in instances]).pop(),
+                nominal_voltage=bus.nominal_voltage,
+                voltage_type=bus.voltage_type,
             ),
         )
 

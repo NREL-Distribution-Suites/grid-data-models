@@ -3,6 +3,8 @@
 import pytest
 
 from gdm import (
+    BatteryEquipment,
+    DistributionBattery,
     DistributionBus,
     VoltageSourceEquipment,
     DistributionVoltageSource,
@@ -47,9 +49,21 @@ from gdm import (
     MatrixImpedanceSwitchEquipment,
     VoltWattInverterController,
     InverterEquipment,
+    BatteryPeakShavingBaseLoadingController,
+    BatteryCapacityFirmingController,
+    BatteryDemandChargeController,
+    BatteryTimeOfUseController,
+    BatteryTimeBaseController,
 )
 
 DIST_INTERFACES = [
+    BatteryPeakShavingBaseLoadingController,
+    BatteryCapacityFirmingController,
+    BatteryDemandChargeController,
+    BatteryTimeOfUseController,
+    BatteryTimeBaseController,
+    BatteryEquipment,
+    DistributionBattery,
     DistributionBus,
     VoltageSourceEquipment,
     DistributionVoltageSource,
@@ -73,7 +87,6 @@ DIST_INTERFACES = [
     SolarEquipment,
     DistributionSolar,
     DistributionRegulator,
-    DistributionSolar,
     DistributionRegulator,
     VoltageCapacitorController,
     ActivePowerCapacitorController,

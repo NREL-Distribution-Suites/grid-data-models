@@ -7,7 +7,6 @@ from infrasys import Component, System
 import networkx as nx
 from pydantic import BaseModel, Field
 
-
 from gdm.distribution.components.base.distribution_branch_base import (
     DistributionBranchBase,
 )
@@ -105,6 +104,18 @@ class DistributionSystem(System):
                 **{"name": edge.name, "type": edge.__class__},
             )
         return graph
+    
+    def _add_to_subsystem(self, subtree_system: 'DistributionSystem', parent_components: list[Component], bus_names: list[DistributionBus]):
+        for component in parent_components:
+            if isinstance(
+                component,
+                (DistributionBranchBase, DistributionTransformerBase),
+            ):
+                nodes = {bus.name for bus in component.buses}
+                if not nodes.issubset(set(bus_names)):
+                    continue
+            if not subtree_system.has_component(component):
+                subtree_system.add_component(component)
 
     def get_subsystem(
         self, bus_names: list[str], name: str, keep_timeseries: bool = False
@@ -131,16 +142,12 @@ class DistributionSystem(System):
             parent_components = self.list_parent_components(
                 self.get_component(DistributionBus, u)
             ) + self.list_parent_components(self.get_component(DistributionBus, v))
-            for component in parent_components:
-                if isinstance(
-                    component,
-                    (DistributionBranchBase, DistributionTransformerBase),
-                ):
-                    nodes = {bus.name for bus in component.buses}
-                    if not nodes.issubset(set(bus_names)):
-                        continue
-                if not subtree_system.has_component(component):
-                    subtree_system.add_component(component)
+            self._add_to_subsystem(subtree_system, parent_components, bus_names)
+
+        for u in subtree.nodes():
+            parent_components = self.list_parent_components(self.get_component(DistributionBus, u))
+            self._add_to_subsystem(subtree_system, parent_components, bus_names)
+
         if keep_timeseries:
             for comp in subtree_system.get_components(
                 Component, filter_func=lambda x: self.has_time_series(x)

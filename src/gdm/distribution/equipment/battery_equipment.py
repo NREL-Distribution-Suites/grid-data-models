@@ -3,7 +3,7 @@
 from typing import Annotated
 
 from infrasys import Component
-from pydantic import Field, confloat
+from pydantic import Field
 
 from gdm.quantities import PositiveActivePower, PositiveEnergyDC
 from gdm.constants import PINT_SCHEMA
@@ -46,7 +46,7 @@ class BatteryEquipment(Component):
             name="battery-install1",
             rated_energy=PositiveEnergyDC(4000, "kWh"),
             rated_power=PositiveActivePower(1000, "kW"),
-            charging_efficiency=confloat(98),
-            discharging_efficiency=confloat(98),
-            idling_efficiency=confloat(99),
+            charging_efficiency=98,
+            discharging_efficiency=98,
+            idling_efficiency=99,
         )

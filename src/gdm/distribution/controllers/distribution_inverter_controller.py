@@ -1,16 +1,18 @@
 """ This module contains interface for distribution inverter controllers."""
 
 from typing import Annotated, Literal
+from datetime import time
 
 from infrasys import Component
 from pydantic import Field
 
-from gdm.distribution.curve import Curve
 from gdm.distribution.controllers.base.inverter_controller_base import (
     ReactivePowerInverterControllerBase,
     ActivePowerInverterControllerBase,
 )
 from gdm.distribution.distribution_enum import ControllerSupport
+from gdm.distribution.curve import Curve
+from gdm.quantities import ActivePower, ActivePowerPUTime
 
 
 class PowerfactorInverterController(ReactivePowerInverterControllerBase):
@@ -74,6 +76,123 @@ class VoltWattInverterController(ActivePowerInverterControllerBase):
         )
 
 
+class BatteryPeakShavingBaseLoadingController(ActivePowerInverterControllerBase):
+    """Interface for battery peak shaving base loading controller."""
+
+    supported_by: Literal[ControllerSupport.BATTERY_ONLY] = ControllerSupport.BATTERY_ONLY
+    peak_shaving_target: Annotated[ActivePower, Field(..., description="The peak shaving target.")]
+    base_loading_target: Annotated[ActivePower, Field(..., description="The base loading target.")]
+
+    @classmethod
+    def example(cls) -> "BatteryPeakShavingBaseLoadingController":
+        "Example of a battery peak shaving base loading controller"
+        return BatteryPeakShavingBaseLoadingController(
+            peak_shaving_target=ActivePower(1000, "watt"),
+            base_loading_target=ActivePower(2000, "watt"),
+        )
+
+
+class BatteryCapacityFirmingController(ActivePowerInverterControllerBase):
+    """Interface for battery capacity firming controller."""
+
+    supported_by: Literal[ControllerSupport.BATTERY_ONLY] = ControllerSupport.BATTERY_ONLY
+    max_active_power_roc: Annotated[
+        ActivePowerPUTime,
+        Field(..., description="Maximum allowable rate of charge for active power."),
+    ]
+    min_active_power_roc: Annotated[
+        ActivePowerPUTime,
+        Field(..., description="Minimum allowable rate of charge for active power."),
+    ]
+
+    @classmethod
+    def example(cls) -> "BatteryCapacityFirmingController":
+        "Example of a battery capacity firming controller"
+        return BatteryCapacityFirmingController(
+            max_active_power_roc=ActivePowerPUTime(1000, "kilowatt/second"),
+            min_active_power_roc=ActivePowerPUTime(1000, "kilowatt/second"),
+        )
+
+
+class BatteryTimeBaseController(ActivePowerInverterControllerBase):
+    """Interface for battery capacity firming controller."""
+
+    supported_by: Literal[ControllerSupport.BATTERY_ONLY] = ControllerSupport.BATTERY_ONLY
+    charging_start_time: Annotated[
+        time, Field(..., description="The time at which the battery starts charging.")
+    ]
+    charging_end_time: Annotated[
+        time, Field(..., description="The time at which the battery stops charging.")
+    ]
+    discharging_start_time: Annotated[
+        time, Field(..., description="The time at which the battery starts discharging.")
+    ]
+    discharging_end_time: Annotated[
+        time, Field(..., description="The time at which the battery stops discharging.")
+    ]
+    charging_power: Annotated[
+        ActivePower, Field(..., description="The power to charge the battery.")
+    ]
+    discharging_power: Annotated[
+        ActivePower, Field(..., description="The power to discharge the battery.")
+    ]
+
+    @classmethod
+    def example(cls) -> "BatteryTimeBaseController":
+        "Example of a battery capacity firming controller"
+        return BatteryTimeBaseController(
+            charging_start_time=time(hour=10, minute=0),
+            charging_end_time=time(hour=11, minute=0),
+            discharging_start_time=time(hour=21, minute=0),
+            discharging_end_time=time(hour=22, minute=0),
+            charging_power=ActivePower(1000, "watt"),
+            discharging_power=ActivePower(1000, "watt"),
+        )
+
+
+class BatterySelfConsumptionController(ActivePowerInverterControllerBase):
+
+    """Interface for battery self consumption controller."""
+
+    supported_by: Literal[ControllerSupport.BATTERY_ONLY] = ControllerSupport.BATTERY_ONLY
+
+    @classmethod
+    def example(cls) -> "BatterySelfConsumptionController":
+        "Example of a battery self consumption controller"
+        return BatterySelfConsumptionController()
+
+
+class BatteryTimeOfUseController(ActivePowerInverterControllerBase):
+    """Interface for battery time of use controller."""
+
+    supported_by: Literal[ControllerSupport.BATTERY_ONLY] = ControllerSupport.BATTERY_ONLY
+    tarriff: ...
+    charging_power: Annotated[
+        ActivePower, Field(..., description="The power to charge the battery after TOU window.")
+    ]
+
+    @classmethod
+    def example(cls) -> "BatteryTimeOfUseController":
+        "Example of a battery time of use controller"
+        return BatteryTimeOfUseController(charging_power=ActivePower(1000, "watt"), tarriff=...)
+
+
+class BatteryDemandChargeController(ActivePowerInverterControllerBase):
+    """Interface for battery demand charge controller."""
+
+    supported_by: Literal[ControllerSupport.BATTERY_ONLY] = ControllerSupport.BATTERY_ONLY
+    tarriff: ...
+    charging_power: Annotated[
+        ActivePower,
+        Field(..., description="The power to charge the battery after demand change window."),
+    ]
+
+    @classmethod
+    def example(cls) -> "BatteryDemandChargeController":
+        "Example of a battery demand charge controller"
+        return BatteryDemandChargeController(charging_power=ActivePower(1000, "watt"), tarriff=...)
+
+
 class InverterController(Component):
     """Interface for Inverter controllers that control active and reactive power."""
 
@@ -113,7 +232,7 @@ class InverterController(Component):
         return InverterController(
             name="inv1",
             active_power_control=VoltWattInverterController.example(),
-            reactive_power_control=PowerfactorInverterController.example(),
+            reactive_power_control=VoltVarInverterController.example(),
             prioritize_active_power=False,
             night_mode=True,
         )
