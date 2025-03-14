@@ -14,7 +14,7 @@ class InverterEquipment(Component):
     """Interface for inverter equipment."""
 
     name: Annotated[str, Field("", description="Name of the inverter controller.")]
-    capacity: Annotated[
+    rated_apparent_power: Annotated[
         PositiveApparentPower,
         PINT_SCHEMA,
         Field(..., description="Apparent power rating for the inverter."),
@@ -38,7 +38,6 @@ class InverterEquipment(Component):
             description="If the per-unit power drops below this value the PV output is turned off.",
         ),
     ]
-
     cutin_percent: Annotated[
         float,
         Field(
@@ -47,16 +46,19 @@ class InverterEquipment(Component):
             description="If the per-unit power rises above this value the PV output is turned on.",
         ),
     ]
-
+    dc_to_ac_efficiency: Annotated[
+        float, Field(..., ge=0, le=100, description="DC to AC efficiency of the inverter.")
+    ]
     eff_curve: Annotated[Optional[Curve], Field(None, description="Efficency curve for inverter.")]
 
     @classmethod
     def example(cls) -> "InverterEquipment":
         """Example for load model."""
         return InverterEquipment(
-            capacity=PositiveApparentPower(3.8, "kva"),
+            rated_apparent_power=PositiveApparentPower(3.8, "kva"),
             rise_limit=ActivePowerPUTime(1.1, "kW/second"),
             fall_limit=ActivePowerPUTime(1.1, "kW/second"),
+            dc_to_ac_efficiency=100,
             cutout_percent=10,
             cutin_percent=10,
         )

@@ -8,7 +8,7 @@ from infrasys import SingleTimeSeries, NonSequentialTimeSeries
 from gdm.distribution.equipment.inverter_equipment import InverterEquipment
 from gdm.distribution.equipment.solar_equipment import SolarEquipment
 from gdm.distribution.controllers.distribution_inverter_controller import (
-    PowerfactorInverterController,
+    InverterController,
 )
 from gdm import (
     DistributionTransformerEquipment,
@@ -20,12 +20,13 @@ from gdm import (
     MatrixImpedanceBranch,
     PositiveReactivePower,
     PositiveApparentPower,
-    DistributionInverter,
     PositiveActivePower,
     CapacitancePULength,
     DistributionSystem,
     CapacitorEquipment,
     PhaseLoadEquipment,
+    PositiveResistance,
+    PositiveReactance,
     ResistancePULength,
     DistributionSolar,
     ActivePowerPUTime,
@@ -89,30 +90,32 @@ def build_distribution_solar(bus: DistributionBus, bus_number: int):
             "uuid": uuid4(),
             "name": f"solar_{bus_number}",
             "bus": bus,
-            "inverter": DistributionInverter.example().model_copy(
+            "inverter": InverterEquipment.example().model_copy(
                 update={
                     "uuid": uuid4(),
-                    "name": f"inverter_{bus_number}",
-                    "controller": PowerfactorInverterController.example(),
-                    "equipment": InverterEquipment.example().model_copy(
-                        update={
-                            "uuid": uuid4(),
-                            "name": f"inverter_equipment_{bus_number}",
-                            "capacity": PositiveApparentPower(bus_number + 1, "kilowatt"),
-                        }
-                    ),
+                    "name": f"inverter_equipment_{bus_number}",
+                    "rated_apparent_power": PositiveApparentPower(bus_number + 1, "kilowatt"),
                 }
             ),
             "equipment": SolarEquipment.example().model_copy(
                 update={
                     "uuid": uuid4(),
                     "name": f"solar_equipment_{bus_number}",
-                    "solar_capacity": ActivePower(bus_number + 1, "kilowatt"),
-                    "rated_capacity": PositiveActivePower(bus_number + 1, "kilowatt"),
+                    "rated_power": PositiveActivePower(1000, "kilowatt"),
                     "resistance": 1,
                     "reactance": 1,
                 }
             ),
+            "controller": InverterController.example().model_copy(
+                update={
+                    "uuid": uuid4(),
+                    "name": f"inverter_controller_{bus_number}",
+                }
+            ),
+            "array_power": PositiveActivePower(1001, "watt"),
+            "active_power": PositiveActivePower(1001, "watt"),
+            "reactive_power": ReactivePower(1001, "watt"),
+            "irradiance": Irradiance(1000, "watt/m^2"),
         }
     )
 
@@ -137,12 +140,18 @@ def build_distribution_capacitor(bus: DistributionBus, bus_number: int):
                 update={
                     "uuid": uuid4(),
                     "name": f"capacitor_equipment_{bus_number}",
+                    "nominal_voltage": PositiveVoltage(120, "volt"),
+                    "voltage_type": VoltageTypes.LINE_TO_GROUND,
                     "phase_capacitors": [
                         PhaseCapacitorEquipment.example().model_copy(
                             update={
                                 "uuid": uuid4(),
                                 "name": f"phase_capacitor_{i}_{bus_number}",
-                                "rated_capacity": PositiveReactivePower(bus_number + 1, "kvar"),
+                                "rated_reactive_power": PositiveReactivePower(
+                                    bus_number + 1, "kvar"
+                                ),
+                                "resistance": PositiveResistance(1, "ohm"),
+                                "reactance": PositiveReactance(1, "ohm"),
                             }
                         )
                         for i in range(3)
@@ -320,22 +329,22 @@ def build_split_phase_solar(bus: DistributionBus, bus_number: int):
         phases=[Phase.S1, Phase.S2],
         equipment=SolarEquipment(
             name=f"pv_equipment_{bus_number}",
-            rated_capacity=ActivePower(bus_number + 1, "kilowatt"),
-            solar_power=ActivePower(bus_number + 1, "kilowatt"),
+            rated_power=ActivePower(bus_number + 1, "kilowatt"),
             resistance=1,
             reactance=1,
         ),
-        inverter=DistributionInverter(
-            name=f"pv_inverter_{bus_number}",
-            controller=PowerfactorInverterController.example(),
-            equipment=InverterEquipment(
-                capacity=PositiveApparentPower(3.8, "kva"),
-                rise_limit=ActivePowerPUTime(1.1, "kW/second"),
-                fall_limit=ActivePowerPUTime(1.1, "kW/second"),
-                cutin_percent=10,
-                cutout_percent=10,
-            ),
+        inverter=InverterEquipment(
+            rated_apparent_power=PositiveApparentPower(3.8, "kva"),
+            rise_limit=ActivePowerPUTime(1.1, "kW/second"),
+            fall_limit=ActivePowerPUTime(1.1, "kW/second"),
+            dc_to_ac_efficiency=100,
+            cutin_percent=10,
+            cutout_percent=10,
         ),
+        controller=None,
+        active_power=PositiveActivePower(bus_number + 1, "kilowatt"),
+        reactive_power=ReactivePower(bus_number + 1, "kilowatt"),
+        irradiance=Irradiance(1000, "watt/m^2"),
     )
 
 

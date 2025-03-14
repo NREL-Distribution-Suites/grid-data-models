@@ -16,6 +16,7 @@ import numpy as np
 
 from gdm.distribution.components.distribution_load import DistributionLoad
 from gdm.distribution.components.distribution_solar import DistributionSolar
+from gdm.distribution.components.distribution_battery import DistributionBattery
 from gdm.distribution.distribution_system import DistributionSystem, UserAttributes
 from gdm.exceptions import (
     InconsistentTimeseriesAggregation,
@@ -90,7 +91,6 @@ def _get_solar_power(
     solar: DistributionSolar, ts_data: TimeSeriesData, metadata: TimeSeriesMetadata
 ) -> Quantity:
     """Internal function to return time series data in kw"""
-
     if metadata.quantity_metadata is None:
         msg = f"The {metadata.type} data is not a GDM quantity: {type(ts_data.data)}"
         raise GDMQuantityError(msg)
@@ -110,9 +110,10 @@ def _get_solar_power(
         np.clip(
             dc_power,
             a_min=PositiveActivePower(0, dc_power.units),
-            a_max=solar.equipment.rated_capacity.to("kilova"),
+            a_max=solar.equipment.rated_power.to("kilova"),
         ).magnitude,
         dc_power.units,
+
     )
     # TODO: Looks like GDM is not capturing irradiance which is why user_attr is not used
     # this will work fine if irradiance=1 however if it is different than 1 then
@@ -241,6 +242,45 @@ def get_aggregated_solar_timeseries(
         )
 
 
+def get_aggregated_battery_timeseries(
+    sys: DistributionSystem, batteries: list[DistributionBattery], var_name: str
+) -> SingleTimeSeries:
+    """Method to return combined battery time series data.
+
+    Parameters
+    ----------
+    sys: DistributionSystem
+        Instance of the DistributionSystem
+    batteries: list[DistributionBattery]
+        List of battery for aggregating timeseries data.
+    var_name: str
+        Variable name used for time series aggregation.
+
+    Returns
+    -------
+    SingleTimeSeries
+    """
+    ts_components: list[SingleTimeSeries] = [
+        sys.get_time_series(battery, var_name) for battery in batteries
+    ]
+    _check_for_timeseries_consistency(ts_components)
+    ts_metadata: list[SingleTimeSeriesMetadata] = [
+        sys.list_time_series_metadata(battery, var_name)[0] for battery in batteries
+    ]
+    _check_for_timeseries_metadata_consistency(ts_metadata)
+    ts_battery_data = [
+        _get_load_power(battery, ts_data, metadata)
+        for battery, ts_data, metadata in zip(batteries, ts_components, ts_metadata)
+    ]
+    return SingleTimeSeries(
+        data=sum(ts_battery_data),
+        variable_name=var_name,
+        normalization=None,
+        initial_time=ts_components[0].initial_time,
+        resolution=ts_components[0].resolution,
+    )
+
+
 def get_aggregated_load_timeseries(
     sys: DistributionSystem,
     loads: list[DistributionLoad],
@@ -362,6 +402,7 @@ def _get_combined_single_time_series_df(
             raise TimeseriesVariableDoesNotExist(msg)
 
         for var in var_of_interest & avail_vars:
+
             ts_data: SingleTimeSeries = sys.get_time_series(
                 owner=component, variable_name=var, time_series_type=time_series_type
             )

@@ -33,7 +33,7 @@ class PhaseCapacitorEquipment(Component):
             description="Positive reactance for the capacitor.",
         ),
     ]
-    rated_capacity: Annotated[
+    rated_reactive_power: Annotated[
         PositiveReactivePower,
         PINT_SCHEMA,
         Field(..., description="Capacity of this capacitor."),
@@ -50,7 +50,7 @@ class PhaseCapacitorEquipment(Component):
         return instance.model_copy(
             update={
                 "name": str(uuid.uuid4()),
-                "rated_capacity": instance.rated_capacity / num_splits,
+                "rated_reactive_power": instance.rated_reactive_power / num_splits,
                 "resistance": instance.resistance * num_splits,
                 "reactance": instance.reactance * num_splits,
             }
@@ -62,7 +62,7 @@ class PhaseCapacitorEquipment(Component):
     ) -> "PhaseCapacitorEquipment":
         return PhaseCapacitorEquipment(
             name=name,
-            rated_capacity=sum(inst.rated_capacity for inst in instances),
+            rated_reactive_power=sum(inst.rated_reactive_power for inst in instances),
             resistance=1
             / sum(1 / inst.resistance if inst.resistance.magnitude else 0 for inst in instances),
             reactance=1
@@ -86,7 +86,7 @@ class PhaseCapacitorEquipment(Component):
         """Example for phase capacitor equipment."""
         return PhaseCapacitorEquipment(
             name="Phase-Cap-1",
-            rated_capacity=PositiveReactivePower(200, "kvar"),
+            rated_reactive_power=PositiveReactivePower(200, "kvar"),
             num_banks=1,
             num_banks_on=1,
         )

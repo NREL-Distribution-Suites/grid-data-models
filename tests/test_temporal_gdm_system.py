@@ -30,7 +30,7 @@ def build_model_updates(system: DistributionSystem) -> UpdateScenario:
                 edits=[
                     PropertyEdit(
                         component_uuid=capacitor.uuid,
-                        name="rated_capacity",
+                        name="rated_reactive_power",
                         value=PositiveReactivePower(200, "kvar"),
                     )
                 ],
@@ -79,4 +79,4 @@ def test_temporal_system(distribution_system_with_single_timeseries):
     #  the model below should exist because we do not apply chages in 2025
     updated_system.get_component_by_uuid(UUID("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"))
     capacitor = updated_system.get_component_by_uuid(cap_uuid)
-    assert capacitor.rated_capacity.to("kilovar").magnitude == 200.0
+    assert capacitor.rated_reactive_power.to("kilovar").magnitude == 200.0
