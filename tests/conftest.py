@@ -339,6 +339,7 @@ def build_split_phase_solar(bus: DistributionBus, bus_number: int):
     )
 
 
+@pytest.fixture(name="simple_distribution_system")
 def sample_distribution_system() -> DistributionSystem:
     """Tests the DistributionSystem class."""
 
@@ -397,8 +398,10 @@ def sample_distribution_system() -> DistributionSystem:
 
 
 @pytest.fixture(name="distribution_system_with_single_timeseries")
-def sample_distribution_system_with_single_timeseries() -> DistributionSystem:
-    system = sample_distribution_system()
+def sample_distribution_system_with_single_timeseries(
+    simple_distribution_system,
+) -> DistributionSystem:
+    system = simple_distribution_system
     load_profile_kw = SingleTimeSeries.from_array(
         data=ActivePower([1, 2, 3, 4, 5], "kilowatt"),
         variable_name="active_power",
@@ -441,8 +444,10 @@ def sample_distribution_system_with_single_timeseries() -> DistributionSystem:
 
 
 @pytest.fixture(name="distribution_system_with_nonsequential_timeseries")
-def sample_distribution_system_with_nonsequential_timeseries() -> DistributionSystem:
-    system = sample_distribution_system()
+def sample_distribution_system_with_nonsequential_timeseries(
+    simple_distribution_system,
+) -> DistributionSystem:
+    system = simple_distribution_system
     load_profile_kw = NonSequentialTimeSeries.from_array(
         data=ActivePower([1, 2, 3, 4, 5], "kilowatt"),
         timestamps=[

@@ -3,6 +3,8 @@
 import datetime
 import pytest
 
+from pydantic import ValidationError
+
 from gdm.quantities import PositiveCurrent, PositiveDistance, PositiveResistancePULength
 from gdm.dataset.dataset_system import DatasetSystem
 from gdm.dataset.cost_model import CostModel
@@ -47,3 +49,12 @@ def test_dataset_system(dataset_system):
     )
     assert len(costs) == 1, f"Length of costs {costs=} must be 1"
     assert isinstance(costs[0], CostModel), f"Cost instance must be of type CostModel {costs=}"
+    assert isinstance(
+        CostModel.example(), CostModel
+    ), "CostModel must return an istance of a CostModel"
+    with pytest.raises(ValidationError):
+        CostModel(
+            purchase_date=datetime.datetime.now(datetime.timezone.utc),
+            capital_dollars=234.45,
+            operating_dollars=10.0,
+        )
