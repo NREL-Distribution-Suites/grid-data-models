@@ -44,8 +44,8 @@ class BatteryEquipment(Component):
         "Example for a battery Equipment"
         return BatteryEquipment(
             name="battery-install1",
-            rated_energy=PositiveEnergyDC(4000, "kWh"),
-            rated_power=PositiveActivePower(1000, "kW"),
+            rated_energy=PositiveEnergyDC(4, "kWh"),
+            rated_power=PositiveActivePower(1, "kW"),
             charging_efficiency=98,
             discharging_efficiency=98,
             idling_efficiency=99,

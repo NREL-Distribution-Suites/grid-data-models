@@ -124,13 +124,15 @@ class DistributionBattery(InServiceDistributionComponentBase):
                 / len(instances),
             ),
             inverter=InverterEquipment(
-                capacity=sum(inst.inverter.capacity for inst in instances) / len(instances),
+                rated_apparent_power=sum(inst.inverter.rated_apparent_power for inst in instances),
                 rise_limit=None,
                 fall_limit=None,
                 eff_curve=None,
                 cutin_percent=sum(inst.inverter.cutin_percent for inst in instances)
                 / len(instances),
                 cutout_percent=sum(inst.inverter.cutout_percent for inst in instances)
+                / len(instances),
+                dc_to_ac_efficiency=sum(inst.inverter.dc_to_ac_efficiency for inst in instances)
                 / len(instances),
             ),
             reactive_power=sum(inst.reactive_power for inst in instances),
