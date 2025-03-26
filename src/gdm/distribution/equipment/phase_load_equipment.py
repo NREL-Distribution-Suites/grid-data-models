@@ -11,8 +11,7 @@ from gdm.constants import PINT_SCHEMA
 
 
 class PhaseLoadEquipment(Component):
-    """Interface for single phase load equipment.
-    """
+    """Interface for single phase load equipment."""
 
     real_power: Annotated[
         ActivePower,

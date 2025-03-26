@@ -48,7 +48,9 @@ class PydanticDocBuilder:
         md_file_path = folder_path / md_filename
         md_file = MdUtils(file_name=str(md_file_path))
         md_file.new_header(level=1, title="Library data models")
-        md_file.new_paragraph("This page provides details on the data models part of the GDM library.")
+        md_file.new_paragraph(
+            "This page provides details on the data models part of the GDM library."
+        )
 
         md_file.new_paragraph()
         for asset_name, asset_schema_path in asset_list.items():

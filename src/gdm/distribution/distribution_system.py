@@ -26,6 +26,7 @@ from gdm.exceptions import (
     MultipleOrEmptyVsourceFound,
 )
 
+
 class UserAttributes(BaseModel):
     """Interface for single time series data user attributes."""
 
