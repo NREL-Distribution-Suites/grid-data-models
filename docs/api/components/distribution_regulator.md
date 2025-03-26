@@ -1,5 +1,8 @@
 # Distribution Regulator
 
+
+[![](../../models/DistributionRegulator.svg)](../../models/DistributionRegulator.svg)
+
 ```{eval-rst}
 .. autopydantic_model:: gdm.DistributionRegulator
    :members: __init__

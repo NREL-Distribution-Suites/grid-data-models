@@ -3,6 +3,6 @@
 
 ```{eval-rst}
 .. automodule:: gdm
-    :members: Phase, ConnectionType, VoltageTypes, LimitType
+    :members: Phase, ConnectionType, VoltageTypes, LimitType, BatteryState, ControllerSupport
 
 ```

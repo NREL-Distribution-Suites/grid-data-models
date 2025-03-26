@@ -1,5 +1,7 @@
 # Regulator Controller
 
+[![](../../models/RegulatorController.svg)](../../models/RegulatorController.svg)
+
 ```{eval-rst}
 .. autopydantic_model:: gdm.RegulatorController
    :members: __init__

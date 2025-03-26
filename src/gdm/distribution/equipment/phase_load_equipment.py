@@ -11,12 +11,7 @@ from gdm.constants import PINT_SCHEMA
 
 
 class PhaseLoadEquipment(Component):
-    """Interface for single phase load equipment.
-    Uses ZIP model where real power is:
-    P = P_0[ a_p (|V|/V_0)^2 + b_p (|V|/V_0) + c_p]
-    and reactive power is:
-    Q = Q_0[ a_q (|V|/V_0)^2 + b_q (|V|/V_0) + c_q]
-    """
+    """Interface for single phase load equipment."""
 
     real_power: Annotated[
         ActivePower,

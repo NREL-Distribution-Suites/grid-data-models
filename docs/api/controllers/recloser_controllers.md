@@ -1,5 +1,6 @@
 # Recloser Controller
 
+[![](../../models/DistributionRecloserController.svg)](../../models/DistributionRecloserController.svg)
 
 ```{eval-rst}
 .. autopydantic_model:: gdm.DistributionRecloserController

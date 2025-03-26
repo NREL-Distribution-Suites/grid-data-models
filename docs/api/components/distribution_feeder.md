@@ -1,5 +1,6 @@
 # Distribution Feeder
 
+[![](../../models/DistributionFeeder.svg)](../../models/DistributionFeeder.svg)
 
 ```{eval-rst}
 .. autopydantic_model:: gdm.DistributionFeeder

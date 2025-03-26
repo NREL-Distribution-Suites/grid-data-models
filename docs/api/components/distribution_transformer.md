@@ -1,6 +1,6 @@
 # Distribution Transformer
 
-
+[![](../../models/DistributionTransformer.svg)](../../models/DistributionTransformer.svg)
 
 ```{eval-rst}
 .. autopydantic_model:: gdm.DistributionTransformer

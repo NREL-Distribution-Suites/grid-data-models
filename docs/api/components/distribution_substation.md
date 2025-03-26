@@ -1,5 +1,7 @@
 # Distribution Substation
 
+[![](../../models/DistributionSubstation.svg)](../../models/DistributionSubstation.svg)
+
 ```{eval-rst}
 .. autopydantic_model:: gdm.DistributionSubstation
    :members: __init__

@@ -3,10 +3,10 @@
 from typing import Annotated, Type
 import importlib.metadata
 
+from infrasys.time_series_models import TimeSeriesData, SingleTimeSeries
 from infrasys import Component, System
-import networkx as nx
 from pydantic import BaseModel, Field
-
+import networkx as nx
 
 from gdm.distribution.components.base.distribution_branch_base import (
     DistributionBranchBase,
@@ -106,8 +106,29 @@ class DistributionSystem(System):
             )
         return graph
 
+    def _add_to_subsystem(
+        self,
+        subtree_system: "DistributionSystem",
+        parent_components: list[Component],
+        bus_names: list[DistributionBus],
+    ):
+        for component in parent_components:
+            if isinstance(
+                component,
+                (DistributionBranchBase, DistributionTransformerBase),
+            ):
+                nodes = {bus.name for bus in component.buses}
+                if not nodes.issubset(set(bus_names)):
+                    continue
+            if not subtree_system.has_component(component):
+                subtree_system.add_component(component)
+
     def get_subsystem(
-        self, bus_names: list[str], name: str, keep_timeseries: bool = False
+        self,
+        bus_names: list[str],
+        name: str,
+        keep_timeseries: bool = False,
+        time_series_type: Type[TimeSeriesData] = SingleTimeSeries,
     ) -> "DistributionSystem":
         """Method to get subsystem from list of buses.
 
@@ -119,7 +140,8 @@ class DistributionSystem(System):
             Name of the subsystem.
         keep_timeseries: bool
             Set this flag to retain timeseries data associated with the component.
-
+        time_series_type: Type[TimeSeriesData]
+            Type of time series data. Defaults to: SingleTimeSeries
         Returns
         -------
         DistributionSystem
@@ -131,23 +153,24 @@ class DistributionSystem(System):
             parent_components = self.list_parent_components(
                 self.get_component(DistributionBus, u)
             ) + self.list_parent_components(self.get_component(DistributionBus, v))
-            for component in parent_components:
-                if isinstance(
-                    component,
-                    (DistributionBranchBase, DistributionTransformerBase),
-                ):
-                    nodes = {bus.name for bus in component.buses}
-                    if not nodes.issubset(set(bus_names)):
-                        continue
-                if not subtree_system.has_component(component):
-                    subtree_system.add_component(component)
+            self._add_to_subsystem(subtree_system, parent_components, bus_names)
+
+        for u in subtree.nodes():
+            parent_components = self.list_parent_components(self.get_component(DistributionBus, u))
+            self._add_to_subsystem(subtree_system, parent_components, bus_names)
+
         if keep_timeseries:
             for comp in subtree_system.get_components(
-                Component, filter_func=lambda x: self.has_time_series(x)
+                Component,
+                filter_func=lambda x: self.has_time_series(x, time_series_type=time_series_type),
             ):
-                ts_metadata = self.list_time_series_metadata(comp)
+                ts_metadata = self.list_time_series_metadata(
+                    comp, time_series_type=time_series_type
+                )
                 for metadata in ts_metadata:
-                    ts_data = self.get_time_series(comp, metadata.variable_name)
+                    ts_data = self.get_time_series(
+                        comp, metadata.variable_name, time_series_type=time_series_type
+                    )
                     subtree_system.add_time_series(ts_data, comp, **metadata.user_attributes)
 
         return subtree_system

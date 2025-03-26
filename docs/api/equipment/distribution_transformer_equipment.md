@@ -1,6 +1,7 @@
 # Distribution Transformer Equipment
 
 
+[![](../../models/WindingEquipment.svg)](../../models/WindingEquipment.svg) 
 
 ```{eval-rst}
 .. autopydantic_model:: gdm.WindingEquipment
@@ -8,6 +9,9 @@
    :inherited-members: Component
    :exclude-members: example, validate_fields
 ```
+
+
+[![](../../models/DistributionTransformerEquipment.svg)](../../models/DistributionTransformerEquipment.svg) 
 
 ```{eval-rst}
 .. autopydantic_model:: gdm.DistributionTransformerEquipment
