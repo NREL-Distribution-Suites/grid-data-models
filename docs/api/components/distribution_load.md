@@ -1,6 +1,6 @@
 # Distribution Load
 
-
+[![](../../models/DistributionLoad.svg)](../../models/DistributionLoad.svg)
 
 ```{eval-rst}
 .. autopydantic_model:: gdm.DistributionLoad

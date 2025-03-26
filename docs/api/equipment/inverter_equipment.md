@@ -1,5 +1,7 @@
 # Inverter Equipment
 
+[![](../../models/InverterEquipment.svg)](../../models/InverterEquipment.svg)
+
 ```{eval-rst}
 .. autopydantic_model:: gdm.InverterEquipment
    :members: __init__

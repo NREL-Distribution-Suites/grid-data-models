@@ -1,5 +1,6 @@
 # Distribution Voltage Sources
 
+[![](../../models/DistributionVoltageSource.svg)](../../models/DistributionVoltageSource.svg)
 
 ```{eval-rst}
 .. autopydantic_model:: gdm.DistributionVoltageSource

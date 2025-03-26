@@ -1,5 +1,6 @@
 # Distribution Recloser
 
+[![](../../models/MatrixImpedanceRecloser.svg)](../../models/MatrixImpedanceRecloser.svg)
 
 ```{eval-rst}
 .. autopydantic_model:: gdm.MatrixImpedanceRecloser

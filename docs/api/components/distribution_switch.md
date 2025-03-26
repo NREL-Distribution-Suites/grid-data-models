@@ -1,5 +1,6 @@
 # Distribution Switch
 
+[![](../../models/MatrixImpedanceSwitch.svg)](../../models/MatrixImpedanceSwitch.svg)
 
 ```{eval-rst}
 .. autopydantic_model:: gdm.MatrixImpedanceSwitch

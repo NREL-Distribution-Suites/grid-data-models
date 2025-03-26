@@ -1,5 +1,7 @@
 # Fuse Equipment
 
+[![](../../models/MatrixImpedanceFuseEquipment.svg)](../../models/MatrixImpedanceFuseEquipment.svg)
+
 ```{eval-rst}
 .. autopydantic_model:: gdm.MatrixImpedanceFuseEquipment
    :members: __init__

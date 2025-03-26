@@ -3,10 +3,10 @@
 from typing import Annotated, Type
 import importlib.metadata
 
-from infrasys import Component, System
 from infrasys.time_series_models import TimeSeriesData, SingleTimeSeries
-import networkx as nx
+from infrasys import Component, System
 from pydantic import BaseModel, Field
+import networkx as nx
 
 from gdm.distribution.components.base.distribution_branch_base import (
     DistributionBranchBase,
@@ -25,7 +25,6 @@ from gdm.distribution.distribution_enum import Phase
 from gdm.exceptions import (
     MultipleOrEmptyVsourceFound,
 )
-
 
 class UserAttributes(BaseModel):
     """Interface for single time series data user attributes."""

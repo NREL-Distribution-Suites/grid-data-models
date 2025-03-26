@@ -1,5 +1,7 @@
 # Switch Controller
 
+[![](../../models/DistributionSwitchController.svg)](../../models/DistributionSwitchController.svg)
+
 ```{eval-rst}
 .. autopydantic_model:: gdm.DistributionSwitchController
    :members: __init__

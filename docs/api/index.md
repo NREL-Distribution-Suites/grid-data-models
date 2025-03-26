@@ -4,6 +4,7 @@
 :caption: Distribution Components
 :hidden: true
 
+components/distribution_battery
 components/distribution_bus
 components/distribution_branch
 components/distribution_capacitor
@@ -23,6 +24,7 @@ components/distribution_solar
 :caption: Distribution Equipment
 :hidden: true
 
+equipment/battery_equipment
 equipment/branch_equipment
 equipment/capacitor_equipment
 equipment/load_equipment
@@ -51,7 +53,6 @@ controllers/recloser_controllers
 :caption: Extra Models
 :hidden: true
 
-distribution_component
 distribution_enum
 limitset
 quantities

@@ -1,5 +1,6 @@
 # Distribution Bus
 
+[![](../../models/DistributionBus.svg)](../../models/DistributionBus.svg)
 
 ```{eval-rst}
 .. autopydantic_model:: gdm.DistributionBus

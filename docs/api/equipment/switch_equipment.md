@@ -1,5 +1,7 @@
 # Switch Equipment
 
+[![](../../models/MatrixImpedanceSwitchEquipment.svg)](../../models/MatrixImpedanceSwitchEquipment.svg)
+
 ```{eval-rst}
 .. autopydantic_model:: gdm.MatrixImpedanceSwitchEquipment
    :members: __init__

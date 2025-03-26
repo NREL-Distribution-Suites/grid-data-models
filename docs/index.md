@@ -25,6 +25,7 @@ In an effort to reduce code duplication and provide client packages a standard i
 - **Temporal Modeling**: Supports [temporal changes](#temporal-changes)  within a distribution model, enabling enhanced scenaio management capabilities.
 - **Graph-Based Analysis**: Exposes a connectivity graph using **NetworkX**, allowing advanced graph-based algorithms and visualizations.
 - **Interoperability**: Easily integrates with existing tools.
+- **Model reduction**: Built-in support for multiple model reduction algorithms.
 
 ## How to get started ?
 
