@@ -37,12 +37,14 @@ class LimitType(str, Enum):
     MIN = "min"
     MAX = "max"
 
+
 class ColorNodeBy(str, Enum):
     """Interface for thermal limit types."""
 
     PHASE = "Phases"
     TYPE = "Type"
     VOLTAGE_LEVEL = "kV"
+
 
 class ColorLineBy(str, Enum):
     """Interface for thermal limit types."""

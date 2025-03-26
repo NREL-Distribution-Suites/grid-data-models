@@ -45,7 +45,6 @@ def test_system_gdf_failure(sample_distribution_system_with_timeseries, tmp_path
         model.plot(tmp_path / "test_model_plot.html", zoom_level=1, show=False)
 
 
-
 def test_system_plotting(sample_distribution_system_with_timeseries, tmp_path):
     model: DistributionSystem = sample_distribution_system_with_timeseries
     buses = model.get_components(DistributionBus)

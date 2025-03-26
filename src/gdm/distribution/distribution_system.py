@@ -207,9 +207,12 @@ class DistributionSystem(System):
         return nodes_gdf, edges_gdf
 
     def plot(
-        self, export_path: Path | None = None, zoom_level: int = 24, show: bool = True,
-        color_node_by: ColorNodeBy = ColorNodeBy.PHASE, 
-        color_line_by:ColorLineBy = ColorLineBy.TYPE
+        self,
+        export_path: Path | None = None,
+        zoom_level: int = 24,
+        show: bool = True,
+        color_node_by: ColorNodeBy = ColorNodeBy.PHASE,
+        color_line_by: ColorLineBy = ColorLineBy.TYPE,
     ) -> None:
         nodes_gdf, edges_gdf = self.to_gdf()
         center = nodes_gdf.unary_union.centroid
@@ -217,10 +220,10 @@ class DistributionSystem(System):
         nodes_gdf["lat"] = nodes_gdf.geometry.x
 
         fig = go.Figure()
-        
+
         self._add_node_traces(fig, nodes_gdf, color_node_by)
         self._add_edge_traces(fig, edges_gdf, color_line_by)
-    
+
         fig.update_layout(
             title=f"GDM plot for {self.name} distribution system",
             geo=dict(
@@ -261,7 +264,7 @@ class DistributionSystem(System):
                     name=f"Nodes - {color_node_by.value} - {option}",
                 )
             )
-    
+
     def _add_edge_traces(self, fig, edges_gdf, color_line_by):
         edge_options = set(edges_gdf[color_line_by.value])
         for edge_option in edge_options:
@@ -299,7 +302,6 @@ class DistributionSystem(System):
                     name=f"Edges -{color_line_by.value} - {edge_option}",
                 )
             )
-
 
     @staticmethod
     def _map_strings_to_colors(strings):
