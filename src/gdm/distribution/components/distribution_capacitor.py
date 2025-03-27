@@ -19,6 +19,7 @@ from gdm.distribution.controllers.distribution_capacitor_controller import (
     VoltageCapacitorController,
 )
 from gdm.distribution.controllers.base.capacitor_controller_base import CapacitorControllerBase
+from gdm.distribution.distribution_enum import VoltageTypes
 
 
 class DistributionCapacitor(InServiceDistributionComponentBase):
@@ -84,6 +85,8 @@ class DistributionCapacitor(InServiceDistributionComponentBase):
                     for caps in phase_caps.values()
                 ],
                 connection_type=set([item.equipment.connection_type for item in instances]).pop(),
+                voltage_type=VoltageTypes.LINE_TO_GROUND,
+                nominal_voltage=max([item.equipment.nominal_voltage for item in instances]),
             ),
         )
 

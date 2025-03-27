@@ -1,27 +1,30 @@
 """This module contains distribution system."""
 
+from collections import defaultdict
 from typing import Annotated, Type
 import importlib.metadata
 from pathlib import Path
 
 from infrasys import Component, System
 from pydantic import BaseModel, Field
+from shapely import Point, LineString
 import plotly.graph_objects as go
 import plotly.colors as pc
 from loguru import logger
 import geopandas as gpd
 import networkx as nx
-import shapely
+import pandas as pd
 import numpy as np
+import shapely
 
-
-from gdm.distribution.components.base.distribution_branch_base import (
-    DistributionBranchBase,
-)
 from gdm.distribution.components.base.distribution_transformer_base import (
     DistributionTransformerBase,
 )
 from gdm.distribution.components.distribution_bus import DistributionBus
+from gdm.distribution.distribution_enum import ColorNodeBy, ColorLineBy
+from gdm.distribution.components.base.distribution_branch_base import (
+    DistributionBranchBase,
+)
 from gdm.distribution.components.distribution_transformer import (
     DistributionTransformer,
 )
@@ -29,12 +32,9 @@ from gdm.distribution.components.distribution_vsource import (
     DistributionVoltageSource,
 )
 from gdm.distribution.distribution_enum import Phase
-from gdm.distribution.system_to_gdf import Converter
 from gdm.exceptions import (
     MultipleOrEmptyVsourceFound,
 )
-from gdm.distribution.distribution_enum import ColorNodeBy, ColorLineBy
-
 
 class UserAttributes(BaseModel):
     """Interface for single time series data user attributes."""
@@ -190,12 +190,81 @@ class DistributionSystem(System):
                     )
         return split_phase_map
 
+    def _build_edge_geodataframe(self, graph) -> gpd.GeoDataFrame:
+        """Returns geo dataframes for the edges
+
+        Returns
+        -------
+        gpd.GeoDataFrame
+           geodataframe with edge info
+        """
+        edge_data = defaultdict(list)
+        for u, v, data in graph.edges(data=True):
+            bus1 = self.get_component(DistributionBus, u)
+            bus2 = self.get_component(DistributionBus, v)
+            x1, x2 = bus1.coordinate.x, bus2.coordinate.x
+            y1, y2 = bus1.coordinate.y, bus2.coordinate.y
+
+            if not ((x1 == 0 and y1 == 0) or (x2 == 0 and y2 == 0)):
+                component = self.get_component(data["type"], data["name"])
+                if isinstance(component, DistributionTransformer):
+                    phases = [",".join([phs.value for phs in w]) for w in component.winding_phases]
+                    phases = "\n".join(phases)
+                    length = 15.0
+                else:
+                    phases = ",".join([phs.value for phs in component.phases])
+                    length = component.length.to("foot").magnitude
+                edge_data["Phases"].append(phases)
+                edge_data["Name"].append(data["name"])
+                edge_data["Length"].append(length)
+                edge_data["Type"].append(data["type"].__name__)
+                edge_data["Latitude"].append([x1, x2])
+                edge_data["Longitude"].append([bus1.coordinate.y, bus2.coordinate.y])
+
+        edge_df = pd.DataFrame(edge_data)
+        geometry = [
+            LineString([Point(xy) for xy in zip(*xys)])
+            for xys in zip(edge_df["Longitude"], edge_df["Latitude"])
+        ]
+        gdf_edges = gpd.GeoDataFrame(edge_df, geometry=geometry, crs="EPSG:4326")
+        return gdf_edges
+
+    def _build_node_geodataframe(self) -> gpd.GeoDataFrame:
+        """Returns geo dataframes for the edges
+
+        Returns
+        -------
+        gpd.GeoDataFrame
+            geodataframe with node info
+        """
+        node_data = defaultdict(list)
+        system_crs = None
+        for bus in self.get_components(DistributionBus):
+            if bus.coordinate.x != 0 and bus.coordinate.y != 0:
+                node_data["Name"].append(bus.name)
+                node_data["Type"].append(DistributionBus.__name__)
+                node_data["kV"].append(bus.nominal_voltage.to("kilovolt").magnitude)
+                node_data["Phases"].append(",".join([phs.value for phs in bus.phases]))
+                node_data["Latitude"].append(bus.coordinate.y)
+                node_data["Longitude"].append(bus.coordinate.x)
+                system_crs = bus.coordinate.crs
+
+        nodes_df = pd.DataFrame(node_data)
+        gdf_nodes = gpd.GeoDataFrame(
+            nodes_df,
+            geometry=gpd.points_from_xy(nodes_df.Longitude, nodes_df.Latitude),
+            crs="EPSG:4326" if system_crs is None else system_crs,
+        )
+        return gdf_nodes
+
     def to_gdf(self, export_path: Path | None = None) -> gpd.GeoDataFrame:
         if export_path:
             export_path = Path(export_path)
 
-        converter = Converter(self)
-        nodes_gdf, edges_gdf = converter.build_dataframes()
+        graph = self.get_undirected_graph()
+        nodes_gdf = self._build_node_geodataframe()
+        edges_gdf = self._build_edge_geodataframe(graph)
+
         if export_path and export_path.exists() and export_path.is_dir():
             nodes_gdf.to_csv(export_path / f"{self.name}_nodes_gdf.csv")
             edges_gdf.to_csv(export_path / f"{self.name}_edges_gdf.csv")
@@ -212,7 +281,8 @@ class DistributionSystem(System):
         zoom_level: int = 24,
         show: bool = True,
         color_node_by: ColorNodeBy = ColorNodeBy.PHASE,
-        color_line_by: ColorLineBy = ColorLineBy.TYPE,
+        color_line_by: ColorLineBy = ColorLineBy.EQUIPMENT_TYPE,
+        **kwargs,
     ) -> None:
         nodes_gdf, edges_gdf = self.to_gdf()
         center = nodes_gdf.unary_union.centroid
@@ -229,8 +299,8 @@ class DistributionSystem(System):
             geo=dict(
                 center=dict(lat=center.x, lon=center.y),  # Set center
                 projection_scale=zoom_level,  # Adjust zoom (lower value = more zoomed-in)
-                showland=True,
-                landcolor="lightgray",
+                showland=kwargs.get("showland", True),
+                landcolor=kwargs.get("landcolor", "lightgray"),
             ),
         )
 
@@ -247,9 +317,15 @@ class DistributionSystem(System):
                 raise FileNotFoundError("Provided path does not exist")
 
     def _add_node_traces(self, fig, nodes_gdf, color_node_by):
-        options = set(nodes_gdf[color_node_by.value])
+        if color_node_by == ColorNodeBy.DEFAULT:
+            options = ["default"]
+        else:
+            options = set(nodes_gdf[color_node_by.value])
         for option in options:
-            filt_gdf = nodes_gdf[nodes_gdf[color_node_by.value] == option]
+            if option == "default":
+                filt_gdf = nodes_gdf
+            else:
+                filt_gdf = nodes_gdf[nodes_gdf[color_node_by.value] == option]
             text = [
                 f"Name: {n} \nType: {t} \nPhases: {p} \nkV: {v}"
                 for n, t, p, v in zip(filt_gdf.Name, filt_gdf.Type, filt_gdf.Phases, filt_gdf.kV)
@@ -266,9 +342,16 @@ class DistributionSystem(System):
             )
 
     def _add_edge_traces(self, fig, edges_gdf, color_line_by):
-        edge_options = set(edges_gdf[color_line_by.value])
+        if color_line_by == ColorLineBy.DEFAULT:
+            edge_options = ["default"]
+        else:
+            edge_options = set(edges_gdf[color_line_by.value])
+
         for edge_option in edge_options:
-            filt_gdf = edges_gdf[edges_gdf[color_line_by.value] == edge_option]
+            if edge_option == "default":
+                filt_gdf = edges_gdf
+            else:
+                filt_gdf = edges_gdf[edges_gdf[color_line_by.value] == edge_option]
 
             lats = []
             lons = []

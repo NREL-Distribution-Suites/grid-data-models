@@ -39,15 +39,17 @@ class LimitType(str, Enum):
 
 
 class ColorNodeBy(str, Enum):
-    """Interface for thermal limit types."""
+    """Color choices for the distribution system plot"""
 
     PHASE = "Phases"
-    TYPE = "Type"
+    DEFAULT = "Default"
+    EQUIPMENT_TYPE = "Type"
     VOLTAGE_LEVEL = "kV"
 
 
 class ColorLineBy(str, Enum):
-    """Interface for thermal limit types."""
+    """Line color choices for the distribution system plot"""
 
     PHASE = "Phases"
-    TYPE = "Type"
+    DEFAULT = "Default"
+    EQUIPMENT_TYPE = "Type"

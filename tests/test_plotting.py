@@ -1,3 +1,4 @@
+from pathlib import Path
 import random
 
 from gdm import DistributionSystem, DistributionBus
@@ -52,29 +53,40 @@ def test_system_plotting(sample_distribution_system_with_timeseries, tmp_path):
     for bus in buses:
         bus.coordinate.x, bus.coordinate.y = random_lat_lon()
         bus.coordinate.crs = "epsg:4326"
-
-    model.plot(tmp_path, zoom_level=1, show=False, color_node_by=ColorNodeBy.PHASE)
+    tmp_path = Path(r"C:\Users\alatif\Desktop\test_plot")
+    model.plot(tmp_path, zoom_level=1, show=True, color_node_by=ColorNodeBy.PHASE)
     export_path = tmp_path / "test_model_plot.html"
     assert export_path.exists()
 
     model.name = "test_model_1"
-    model.plot(tmp_path, zoom_level=1, show=False, color_node_by=ColorNodeBy.TYPE)
+    model.plot(tmp_path, zoom_level=1, show=True, color_node_by=ColorNodeBy.EQUIPMENT_TYPE)
     export_path = tmp_path / "test_model_1_plot.html"
     assert export_path.exists()
 
     model.name = "test_model_2"
-    model.plot(tmp_path, zoom_level=1, show=False, color_node_by=ColorNodeBy.VOLTAGE_LEVEL)
+    model.plot(tmp_path, zoom_level=1, show=True, color_node_by=ColorNodeBy.VOLTAGE_LEVEL)
     export_path = tmp_path / "test_model_2_plot.html"
     assert export_path.exists()
 
     model.name = "test_model_3"
-    model.plot(tmp_path, zoom_level=1, show=False, color_line_by=ColorLineBy.TYPE)
+    model.plot(tmp_path, zoom_level=1, show=True, color_line_by=ColorLineBy.EQUIPMENT_TYPE)
     export_path = tmp_path / "test_model_3_plot.html"
     assert export_path.exists()
 
     model.name = "test_model_4"
-    model.plot(tmp_path, zoom_level=1, show=False, color_line_by=ColorLineBy.PHASE)
+    model.plot(tmp_path, zoom_level=1, show=True, color_line_by=ColorLineBy.PHASE)
     export_path = tmp_path / "test_model_4_plot.html"
+    assert export_path.exists()
+
+    model.name = "test_model_5"
+    model.plot(
+        tmp_path,
+        zoom_level=1,
+        show=True,
+        color_line_by=ColorLineBy.DEFAULT,
+        color_node_by=ColorNodeBy.DEFAULT,
+    )
+    export_path = tmp_path / "test_model_5_plot.html"
     assert export_path.exists()
 
     with pytest.raises(NotADirectoryError):
