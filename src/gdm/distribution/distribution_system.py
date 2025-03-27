@@ -9,7 +9,6 @@ from infrasys import Component, System
 from pydantic import BaseModel, Field
 from shapely import Point, LineString, union_all
 import plotly.graph_objects as go
-import plotly.colors as pc
 from loguru import logger
 import geopandas as gpd
 import networkx as nx
@@ -386,4 +385,3 @@ class DistributionSystem(System):
                     name=f"Edges -{color_line_by.value} - {edge_option}",
                 )
             )
-
