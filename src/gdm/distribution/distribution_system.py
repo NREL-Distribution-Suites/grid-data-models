@@ -387,11 +387,3 @@ class DistributionSystem(System):
                 )
             )
 
-    @staticmethod
-    def _map_strings_to_colors(strings):
-        """Maps a list of strings to unique colors."""
-        unique_strings = list(set(strings))  # Ensure uniqueness
-        named_colors = pc.DEFAULT_PLOTLY_COLORS
-        colors = {s: named_colors[i] for i, s in enumerate(unique_strings)}
-        color_list = [colors[s] for s in strings]
-        return color_list
