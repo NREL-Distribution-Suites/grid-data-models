@@ -36,3 +36,20 @@ class LimitType(str, Enum):
 
     MIN = "min"
     MAX = "max"
+
+
+class ColorNodeBy(str, Enum):
+    """Color choices for the distribution system plot"""
+
+    PHASE = "Phases"
+    DEFAULT = "Default"
+    EQUIPMENT_TYPE = "Type"
+    VOLTAGE_LEVEL = "kV"
+
+
+class ColorLineBy(str, Enum):
+    """Line color choices for the distribution system plot"""
+
+    PHASE = "Phases"
+    DEFAULT = "Default"
+    EQUIPMENT_TYPE = "Type"

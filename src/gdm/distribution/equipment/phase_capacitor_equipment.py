@@ -63,10 +63,8 @@ class PhaseCapacitorEquipment(Component):
         return PhaseCapacitorEquipment(
             name=name,
             rated_capacity=sum(inst.rated_capacity for inst in instances),
-            resistance=1
-            / sum(1 / inst.resistance if inst.resistance.magnitude else 0 for inst in instances),
-            reactance=1
-            / sum(1 / inst.reactance if inst.reactance.magnitude else 0 for inst in instances),
+            resistance=0,
+            reactance=0,
             num_banks=sum(inst.num_banks for inst in instances),
             num_banks_on=sum(inst.num_banks_on for inst in instances),
         )
