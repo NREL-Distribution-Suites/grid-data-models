@@ -1,4 +1,3 @@
-from pathlib import Path
 import random
 
 from gdm import DistributionSystem, DistributionBus
@@ -53,7 +52,6 @@ def test_system_plotting(sample_distribution_system_with_timeseries, tmp_path):
     for bus in buses:
         bus.coordinate.x, bus.coordinate.y = random_lat_lon()
         bus.coordinate.crs = "epsg:4326"
-    tmp_path = Path(r"C:\Users\alatif\Desktop\test_plot")
     model.plot(tmp_path, zoom_level=1, show=True, color_node_by=ColorNodeBy.PHASE)
     export_path = tmp_path / "test_model_plot.html"
     assert export_path.exists()
