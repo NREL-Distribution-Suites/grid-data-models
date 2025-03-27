@@ -7,7 +7,7 @@ from pathlib import Path
 
 from infrasys import Component, System
 from pydantic import BaseModel, Field
-from shapely import Point, LineString
+from shapely import Point, LineString, union_all
 import plotly.graph_objects as go
 import plotly.colors as pc
 from loguru import logger
@@ -286,7 +286,7 @@ class DistributionSystem(System):
         **kwargs,
     ) -> None:
         nodes_gdf, edges_gdf = self.to_gdf()
-        center = nodes_gdf.unary_union.centroid
+        center = union_all(nodes_gdf.geometry).centroid
         nodes_gdf["lon"] = nodes_gdf.geometry.y
         nodes_gdf["lat"] = nodes_gdf.geometry.x
 
