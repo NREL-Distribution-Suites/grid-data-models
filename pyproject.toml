@@ -26,7 +26,9 @@ dependencies = [
   "infrasys~=0.4.0", 
   "importlib_metadata",
   "click~=8.1.7",
-  "pandas~=2.2.3"
+  "pandas~=2.2.3",
+  "geopandas",
+  "plotly",
 ]
 
 [project.optional-dependencies]

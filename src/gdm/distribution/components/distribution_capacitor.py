@@ -19,6 +19,7 @@ from gdm.distribution.controllers.distribution_capacitor_controller import (
     VoltageCapacitorController,
 )
 from gdm.distribution.controllers.base.capacitor_controller_base import CapacitorControllerBase
+from gdm.distribution.distribution_enum import VoltageTypes
 
 
 class DistributionCapacitor(InServiceDistributionComponentBase):
