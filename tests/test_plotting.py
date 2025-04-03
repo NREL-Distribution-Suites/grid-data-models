@@ -1,7 +1,8 @@
 import random
 
-from gdm import DistributionSystem, DistributionBus
-from gdm.distribution.distribution_enum import ColorNodeBy, ColorLineBy
+from gdm.distribution.distribution_enum import ColorNodeBy, ColorLineBy, GdfExportFileFormat
+from gdm.distribution.components import DistributionBus
+from gdm.distribution import DistributionSystem
 import pytest
 
 
@@ -11,30 +12,38 @@ def random_lat_lon():
     return lat, lon
 
 
-def test_gdf_conversion(sample_distribution_system_with_timeseries, tmp_path):
-    model: DistributionSystem = sample_distribution_system_with_timeseries
+def test_gdf_conversion(distribution_system_with_single_timeseries, tmp_path):
+    model: DistributionSystem = distribution_system_with_single_timeseries
     buses = model.get_components(DistributionBus)
     model.name = "test_model"
     for bus in buses:
         bus.coordinate.x, bus.coordinate.y = random_lat_lon()
         bus.coordinate.crs = "epsg:4326"
 
-    nodes_gdf, edges_gdf = model.to_gdf(tmp_path)
-    assert not nodes_gdf.empty
-    assert not edges_gdf.empty
-    assert edges_gdf.shape == (20, 7), "Expected 20 rows and 7 columns. Got {}".format(
-        edges_gdf.shape
+    exported_file = tmp_path / f"{model.name}_gdf.csv"
+    system_gdf = model.to_gdf()
+    
+    assert not exported_file.exists()
+
+    assert not system_gdf.empty
+    assert system_gdf.shape == (41, 8), "Expected 41 rows and 8 columns. Got {}".format(
+        system_gdf.shape
     )
-    assert nodes_gdf.shape == (21, 7), "Expected 21 rows and 7 columns. Got {}".format(
-        nodes_gdf.shape
-    )
+
+    model.to_gdf(tmp_path, GdfExportFileFormat.CSV)
+    assert (tmp_path / f"{model.name}_gdf.csv").exists()
+    model.to_gdf(tmp_path, GdfExportFileFormat.JSON)
+    assert (tmp_path / f"{model.name}_gdf.geojson").exists()
+    with pytest.raises(ValueError):
+        model.to_gdf(tmp_path, "excel")
+
 
     with pytest.raises(NotADirectoryError):
-        model.to_gdf(tmp_path / "test_model_edges_gdf.csv")
+        model.to_gdf(tmp_path / "test_model_gdf.csv")
 
 
-def test_system_gdf_failure(sample_distribution_system_with_timeseries, tmp_path):
-    model: DistributionSystem = sample_distribution_system_with_timeseries
+def test_system_gdf_failure(distribution_system_with_single_timeseries, tmp_path):
+    model: DistributionSystem = distribution_system_with_single_timeseries
     buses = model.get_components(DistributionBus)
     model.name = "test_model"
     for bus in buses:
@@ -45,34 +54,34 @@ def test_system_gdf_failure(sample_distribution_system_with_timeseries, tmp_path
         model.plot(tmp_path / "test_model_plot.html", zoom_level=1, show=False)
 
 
-def test_system_plotting(sample_distribution_system_with_timeseries, tmp_path):
-    model: DistributionSystem = sample_distribution_system_with_timeseries
+def test_system_plotting(distribution_system_with_single_timeseries, tmp_path):
+    model: DistributionSystem = distribution_system_with_single_timeseries
     buses = model.get_components(DistributionBus)
     model.name = "test_model"
     for bus in buses:
         bus.coordinate.x, bus.coordinate.y = random_lat_lon()
         bus.coordinate.crs = "epsg:4326"
-    model.plot(tmp_path, zoom_level=1, show=True, color_node_by=ColorNodeBy.PHASE)
+    model.plot(tmp_path, zoom_level=1, show=False, color_node_by=ColorNodeBy.PHASE)
     export_path = tmp_path / "test_model_plot.html"
     assert export_path.exists()
 
     model.name = "test_model_1"
-    model.plot(tmp_path, zoom_level=1, show=True, color_node_by=ColorNodeBy.EQUIPMENT_TYPE)
+    model.plot(tmp_path, zoom_level=1, show=False, color_node_by=ColorNodeBy.EQUIPMENT_TYPE)
     export_path = tmp_path / "test_model_1_plot.html"
     assert export_path.exists()
 
     model.name = "test_model_2"
-    model.plot(tmp_path, zoom_level=1, show=True, color_node_by=ColorNodeBy.VOLTAGE_LEVEL)
+    model.plot(tmp_path, zoom_level=1, show=False, color_node_by=ColorNodeBy.VOLTAGE_LEVEL)
     export_path = tmp_path / "test_model_2_plot.html"
     assert export_path.exists()
 
     model.name = "test_model_3"
-    model.plot(tmp_path, zoom_level=1, show=True, color_line_by=ColorLineBy.EQUIPMENT_TYPE)
+    model.plot(tmp_path, zoom_level=1, show=False, color_line_by=ColorLineBy.EQUIPMENT_TYPE)
     export_path = tmp_path / "test_model_3_plot.html"
     assert export_path.exists()
 
     model.name = "test_model_4"
-    model.plot(tmp_path, zoom_level=1, show=True, color_line_by=ColorLineBy.PHASE)
+    model.plot(tmp_path, zoom_level=1, show=False, color_line_by=ColorLineBy.PHASE)
     export_path = tmp_path / "test_model_4_plot.html"
     assert export_path.exists()
 
@@ -80,7 +89,7 @@ def test_system_plotting(sample_distribution_system_with_timeseries, tmp_path):
     model.plot(
         tmp_path,
         zoom_level=1,
-        show=True,
+        show=False,
         color_line_by=ColorLineBy.DEFAULT,
         color_node_by=ColorNodeBy.DEFAULT,
     )
@@ -91,8 +100,8 @@ def test_system_plotting(sample_distribution_system_with_timeseries, tmp_path):
         model.plot(tmp_path / "test_model_plot.html", zoom_level=1, show=False)
 
 
-def test_system_plotting_failure(sample_distribution_system_with_timeseries, tmp_path):
-    model: DistributionSystem = sample_distribution_system_with_timeseries
+def test_system_plotting_failure(distribution_system_with_single_timeseries, tmp_path):
+    model: DistributionSystem = distribution_system_with_single_timeseries
     buses = model.get_components(DistributionBus)
     model.name = "test_model"
     for bus in buses:

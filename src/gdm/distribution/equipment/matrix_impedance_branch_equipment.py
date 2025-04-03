@@ -1,15 +1,14 @@
 """ This module contains matrix impedance branch equipment."""
 
-from gdm.quantities import (
-    ResistancePULength,
-    ReactancePULength,
-    CapacitancePULength,
-    PositiveCurrent,
-)
 from gdm.distribution.equipment.base.matrix_impedance_branch_equipment_base import (
     MatrixImpedanceBranchEquipmentBase,
 )
-
+from gdm.quantities import (
+    CapacitancePULength,
+    ResistancePULength,
+    ReactancePULength,
+    PositiveCurrent,
+)
 
 class MatrixImpedanceBranchEquipment(MatrixImpedanceBranchEquipmentBase):
     @classmethod

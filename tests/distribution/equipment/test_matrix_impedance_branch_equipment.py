@@ -1,6 +1,6 @@
 import pytest
 
-from gdm import MatrixImpedanceBranchEquipment
+from gdm.distribution.equipment import MatrixImpedanceBranchEquipment
 
 
 def test_matrix_impedance_branch_equipment():

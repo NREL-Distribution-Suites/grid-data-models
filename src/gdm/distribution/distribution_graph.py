@@ -5,7 +5,7 @@ import warnings
 import networkx as nx
 from infrasys import System
 
-from gdm import (
+from gdm.distribution.components import (
     DistributionTransformerBase,
     DistributionBranchBase,
     DistributionBus,

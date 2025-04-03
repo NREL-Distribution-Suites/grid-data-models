@@ -1,16 +1,23 @@
 import pytest
 
-from gdm import (
-    BatteryPeakShavingBaseLoadingController,
-    VoltVarInverterController,
+from gdm.distribution.components import (
     DistributionBattery,
-    InverterController,
+    DistributionSolar,
+    DistributionBus,
+)
+from gdm.distribution.equipment import(
     InverterEquipment,
     BatteryEquipment,
-    DistributionBus,
+)
+from gdm.distribution.controllers import(
+    PeakShavingBaseLoadingControlSetting,
+    VoltVarControlSetting,
+    InverterController,
+)
+from gdm.distribution import Phase
+from gdm.quantities import (
     ReactivePower,
     ActivePower,
-    Phase,
 )
 
 
@@ -29,10 +36,12 @@ def test_distribution_battery_without_controller():
     # No exception should be raised
 
 
-def test_distribution_battery_with_invalid_controller():
+def test_distribution_solar_with_invalid_controller():
     # InverterController example should raise an excention given the controller uses SolarOnly control algorithm
     with pytest.raises(ValueError):
-        DistributionBattery(
+        inverter_control =  InverterController.example()
+        inverter_control.active_power_control = PeakShavingBaseLoadingControlSetting.example()
+        DistributionSolar(
             name="test_battery",
             bus=DistributionBus.example(),
             phases=[Phase.A],
@@ -40,7 +49,7 @@ def test_distribution_battery_with_invalid_controller():
             inverter=InverterEquipment.example(),
             reactive_power=ReactivePower(1000, "var"),
             active_power=ActivePower(1000, "watt"),
-            controller=InverterController.example(),
+            controller=inverter_control,
         )
 
 
@@ -55,8 +64,8 @@ def test_distribution_battery_with_controller():
         active_power=ActivePower(1000, "watt"),
         controller=InverterController(
             name="inv1",
-            active_power_control=BatteryPeakShavingBaseLoadingController.example(),
-            reactive_power_control=VoltVarInverterController.example(),
+            active_power_control=PeakShavingBaseLoadingControlSetting.example(),
+            reactive_power_control=VoltVarControlSetting.example(),
             prioritize_active_power=False,
             night_mode=True,
         ),

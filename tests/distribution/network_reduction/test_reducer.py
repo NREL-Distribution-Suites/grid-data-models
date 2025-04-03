@@ -3,12 +3,13 @@ import pytest
 
 from infrasys.time_series_models import SingleTimeSeries, NonSequentialTimeSeries
 
-from gdm.distribution.network.reducer import reduce_to_three_phase_system, reduce_to_primary_system
+from gdm.distribution.model_reduction import reduce_to_three_phase_system, reduce_to_primary_system
 from gdm.distribution.sys_functools import (
     get_aggregated_load_timeseries,
     get_aggregated_solar_timeseries,
 )
-from gdm import DistributionSystem, DistributionLoad, DistributionBus, DistributionSolar
+from gdm.distribution.components import DistributionLoad, DistributionBus, DistributionSolar
+from gdm.distribution import DistributionSystem
 
 from gdm.exceptions import (
     IncompatibleTimeSeries,

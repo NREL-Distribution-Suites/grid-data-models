@@ -1,6 +1,6 @@
 import pytest
 
-from gdm import DistributionRegulator
+from gdm.distribution.components import DistributionRegulator
 
 
 def test_regulator_with_unequal_windings_and_contollers():

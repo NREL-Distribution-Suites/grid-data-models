@@ -7,8 +7,8 @@ from pydantic import Field, model_validator
 from gdm.distribution.components.distribution_feeder import DistributionFeeder
 from gdm.distribution.equipment.inverter_equipment import InverterEquipment
 from gdm.distribution.controllers.distribution_inverter_controller import (
-    BatteryPeakShavingBaseLoadingController,
-    VoltVarInverterController,
+    PeakShavingBaseLoadingControlSetting,
+    VoltVarControlSetting,
     InverterController,
 )
 from gdm.distribution.components.base.distribution_component_base import (
@@ -164,8 +164,8 @@ class DistributionBattery(InServiceDistributionComponentBase):
             active_power=ActivePower(1000, "watt"),
             controller=InverterController(
                 name="inv1",
-                active_power_control=BatteryPeakShavingBaseLoadingController.example(),
-                reactive_power_control=VoltVarInverterController.example(),
+                active_power_control=PeakShavingBaseLoadingControlSetting.example(),
+                reactive_power_control=VoltVarControlSetting.example(),
                 prioritize_active_power=False,
                 night_mode=True,
             ),

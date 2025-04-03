@@ -1,7 +1,7 @@
 import pytest
 import networkx as nx
 
-from gdm import DistributionLoad
+from gdm.distribution.components import DistributionLoad
 from .get_sample_system import get_three_bus_system
 
 

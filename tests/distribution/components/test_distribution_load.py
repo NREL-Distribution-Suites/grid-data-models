@@ -1,11 +1,15 @@
 import pytest
 from uuid import uuid4
 
-from gdm import (
-    PhaseLoadEquipment,
+from gdm.distribution.components import (
     DistributionLoad,
     DistributionBus,
+)
+from gdm.distribution.equipment import (
+    PhaseLoadEquipment,
     LoadEquipment,
+)
+from gdm.quantities import (
     ReactivePower,
     ActivePower,
 )

@@ -6,9 +6,9 @@ import pytest
 from pydantic import ValidationError
 
 from gdm.quantities import PositiveCurrent, PositiveDistance, PositiveResistancePULength
+from gdm.distribution.equipment import BareConductorEquipment
 from gdm.dataset.dataset_system import DatasetSystem
 from gdm.dataset.cost_model import CostModel
-from gdm import BareConductorEquipment
 
 
 @pytest.fixture(name="dataset_system")

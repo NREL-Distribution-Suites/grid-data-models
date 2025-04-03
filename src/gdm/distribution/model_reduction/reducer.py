@@ -12,7 +12,7 @@ from gdm.distribution.distribution_system import (
     DistributionSystem,
     UserAttributes,
 )
-from gdm import Phase
+from gdm.distribution import Phase
 from gdm.distribution.sys_functools import (
     get_aggregated_load_timeseries,
     get_aggregated_solar_timeseries,
@@ -20,7 +20,7 @@ from gdm.distribution.sys_functools import (
 )
 
 
-def get_three_phase_buses(
+def _get_three_phase_buses(
     dist_system: DistributionSystem,
 ) -> list[str]:
     return [
@@ -32,7 +32,7 @@ def get_three_phase_buses(
     ]
 
 
-def get_primary_buses(dist_system: DistributionSystem) -> list[str]:
+def _get_primary_buses(dist_system: DistributionSystem) -> list[str]:
     return [
         bus.name
         for bus in dist_system.get_components(
@@ -42,7 +42,7 @@ def get_primary_buses(dist_system: DistributionSystem) -> list[str]:
     ]
 
 
-def get_aggregated_bus_component(
+def _get_aggregated_bus_component(
     subtree_system: DistributionSystem,
     bus: DistributionBus,
     model_type: DistributionLoad | DistributionSolar,
@@ -93,7 +93,7 @@ def _reduce_system(
             subtree_system = dist_system.get_subsystem(subtree.nodes, "")
             model_types = subtree_system.get_model_types_with_field_type(DistributionBus)
             for model_type in model_types:
-                agg_component = get_aggregated_bus_component(
+                agg_component = _get_aggregated_bus_component(
                     subtree_system,
                     reduced_system.get_component(DistributionBus, node),
                     model_type=model_type,
@@ -125,7 +125,7 @@ def reduce_to_three_phase_system(
     agg_timeseries: bool = False,
     time_series_type: Type[TimeSeriesData] = SingleTimeSeries,
 ) -> DistributionSystem:
-    three_phase_buses = get_three_phase_buses(dist_system)
+    three_phase_buses = _get_three_phase_buses(dist_system)
     return _reduce_system(dist_system, three_phase_buses, name, agg_timeseries, time_series_type)
 
 
@@ -135,5 +135,5 @@ def reduce_to_primary_system(
     agg_timeseries: bool = False,
     time_series_type: Type[TimeSeriesData] = SingleTimeSeries,
 ) -> DistributionSystem:
-    primary_buses = get_primary_buses(dist_system)
+    primary_buses = _get_primary_buses(dist_system)
     return _reduce_system(dist_system, primary_buses, name, agg_timeseries, time_series_type)

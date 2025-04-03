@@ -20,6 +20,7 @@ import shapely
 from gdm.distribution.components.base.distribution_transformer_base import (
     DistributionTransformerBase,
 )
+from gdm.distribution.distribution_enum import Phase, GdfExportFileFormat
 from gdm.distribution.components.distribution_bus import DistributionBus
 from gdm.distribution.distribution_enum import ColorNodeBy, ColorLineBy
 from gdm.distribution.components.base.distribution_branch_base import (
@@ -31,7 +32,6 @@ from gdm.distribution.components.distribution_transformer import (
 from gdm.distribution.components.distribution_vsource import (
     DistributionVoltageSource,
 )
-from gdm.distribution.distribution_enum import Phase
 from gdm.exceptions import (
     MultipleOrEmptyVsourceFound,
 )
@@ -254,12 +254,17 @@ class DistributionSystem(System):
         return gdf_edges
 
     def _build_node_geodataframe(self) -> gpd.GeoDataFrame:
-        """Returns geo dataframes for the edges
+        """
+        Builds a GeoDataFrame containing node information for distribution buses.
 
-        Returns
-        -------
-        gpd.GeoDataFrame
-            geodataframe with node info
+        This method collects data from all distribution bus components, including
+        their names, types, rated voltages, phases, and coordinates. It constructs
+        a GeoDataFrame with this information, using the bus coordinates to create
+        point geometries. The coordinate reference system (CRS) is determined from
+        the bus data, defaulting to EPSG:4326 if not specified.
+
+        Returns:
+            gpd.GeoDataFrame: A GeoDataFrame with node information and geometries.
         """
         node_data = defaultdict(list)
         system_crs = None
@@ -267,7 +272,7 @@ class DistributionSystem(System):
             if bus.coordinate.x != 0 and bus.coordinate.y != 0:
                 node_data["Name"].append(bus.name)
                 node_data["Type"].append(DistributionBus.__name__)
-                node_data["kV"].append(bus.nominal_voltage.to("kilovolt").magnitude)
+                node_data["kV"].append(bus.rated_voltage.to("kilovolt").magnitude)
                 node_data["Phases"].append(",".join([phs.value for phs in bus.phases]))
                 node_data["Latitude"].append(bus.coordinate.y)
                 node_data["Longitude"].append(bus.coordinate.x)
@@ -281,23 +286,49 @@ class DistributionSystem(System):
         )
         return gdf_nodes
 
-    def to_gdf(self, export_path: Path | None = None) -> gpd.GeoDataFrame:
+    def to_gdf(self, export_path: Path | None = None, file_format:GdfExportFileFormat=GdfExportFileFormat.CSV) -> gpd.GeoDataFrame:
+        """
+        Converts the distribution system's graph data into a GeoDataFrame and optionally exports it.
+
+        Parameters:
+            export_path (Path | None): The directory path where the GeoDataFrame should be exported.
+                                    If None, the data is not exported.
+            file_format (GdfExportFileFormat): The format for exporting the GeoDataFrame. 
+                                            Defaults to CSV. Supported formats are 'csv' and 'json'.
+
+        Returns:
+            gpd.GeoDataFrame: A GeoDataFrame containing the nodes and edges of the distribution system.
+
+        Raises:
+            ValueError: If an unsupported file format is specified.
+            NotADirectoryError: If the provided export path is not a directory.
+            FileNotFoundError: If the provided export path does not exist.
+        """
+
         if export_path:
             export_path = Path(export_path)
 
         graph = self.get_undirected_graph()
         nodes_gdf = self._build_node_geodataframe()
         edges_gdf = self._build_edge_geodataframe(graph)
+        final_gdf = gpd.pd.concat([nodes_gdf, edges_gdf], ignore_index=True)
 
         if export_path and export_path.exists() and export_path.is_dir():
-            nodes_gdf.to_csv(export_path / f"{self.name}_nodes_gdf.csv")
-            edges_gdf.to_csv(export_path / f"{self.name}_edges_gdf.csv")
+            if file_format == GdfExportFileFormat.CSV:
+                final_gdf.to_csv(export_path / f"{self.name}_gdf.csv")
+            elif file_format == GdfExportFileFormat.JSON:
+                with open(export_path / f"{self.name}_gdf.geojson", "w") as f:
+                    f.write(final_gdf.to_json())
+                print(export_path / f"{self.name}_gdf.geojson")   
+            else:
+                raise ValueError("Unsupported file format. Supported formats are 'csv' and 'json'")
+           
         elif export_path and export_path.exists() and not export_path.is_dir():
             raise NotADirectoryError("Provided path is not a directory")
         elif export_path and not export_path.exists():
             raise FileNotFoundError("Provided path does not exist")
 
-        return nodes_gdf, edges_gdf
+        return final_gdf
 
     def plot(
         self,
@@ -308,7 +339,10 @@ class DistributionSystem(System):
         color_line_by: ColorLineBy = ColorLineBy.EQUIPMENT_TYPE,
         **kwargs,
     ) -> None:
-        nodes_gdf, edges_gdf = self.to_gdf()
+        system_gdf = self.to_gdf()
+
+        nodes_gdf = system_gdf[system_gdf.Type == "DistributionBus"]
+        edges_gdf = system_gdf[system_gdf.Type != "DistributionBus"]
         center = union_all(nodes_gdf.geometry).centroid
         nodes_gdf["lon"] = nodes_gdf.geometry.y
         nodes_gdf["lat"] = nodes_gdf.geometry.x

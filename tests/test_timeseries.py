@@ -7,7 +7,7 @@ import numpy as np
 from infrasys import NonSequentialTimeSeries, SingleTimeSeries
 
 from gdm.distribution.distribution_system import DistributionSystem
-from gdm import DistributionLoad, DistributionSolar
+from gdm.distribution.components import DistributionLoad, DistributionSolar
 from gdm.distribution.sys_functools import (
     get_combined_solar_timeseries_df,
     get_combined_load_timeseries_df,

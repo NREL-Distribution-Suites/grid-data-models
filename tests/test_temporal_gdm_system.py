@@ -2,19 +2,19 @@ from datetime import datetime
 from uuid import UUID
 import pytest
 
-from gdm import (
+from gdm.distribution.components import DistributionLoad
+from gdm.quantities import PositiveReactivePower
+from gdm.distribution import DistributionSystem
+from gdm.distribution.equipment import (
     PhaseCapacitorEquipment,
-    PositiveReactivePower,
-    DistributionSystem,
-    DistributionLoad,
     LoadEquipment,
 )
 from infrasys.exceptions import ISNotStored
 from gdm.temporal_models import (
     get_distribution_system_on_date,
     SystemModification,
-    PropertyEdit,
     UpdateScenario,
+    PropertyEdit,
 )
 
 

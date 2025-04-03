@@ -1,7 +1,8 @@
 import pytest
 
-from gdm import MatrixImpedanceBranch, DistributionBus, Phase, PositiveVoltage
-
+from gdm.distribution.components import MatrixImpedanceBranch, DistributionBus
+from gdm.quantities import PositiveVoltage
+from gdm.distribution import Phase 
 
 def test_wrong_number_of_buses():
     branch = MatrixImpedanceBranch.example()

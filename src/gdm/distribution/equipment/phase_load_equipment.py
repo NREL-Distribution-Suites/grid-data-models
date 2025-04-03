@@ -6,7 +6,7 @@ from infrasys import Component
 
 from pydantic import model_validator, PositiveInt, Field
 
-from gdm import ActivePower, ReactivePower
+from gdm.quantities import ActivePower, ReactivePower
 from gdm.constants import PINT_SCHEMA
 
 

@@ -52,3 +52,25 @@ class ControllerSupport(str, Enum):
     BATTERY_ONLY = "battery-only"
     SOLAR_ONLY = "solar-only"
     BATTERY_AND_SOLAR = "battery-and-solar"
+
+class ColorNodeBy(str, Enum):
+    """Color choices for the distribution system plot"""
+
+    PHASE = "Phases"
+    DEFAULT = "Default"
+    EQUIPMENT_TYPE = "Type"
+    VOLTAGE_LEVEL = "kV"
+
+
+class ColorLineBy(str, Enum):
+    """Line color choices for the distribution system plot"""
+
+    PHASE = "Phases"
+    DEFAULT = "Default"
+    EQUIPMENT_TYPE = "Type"
+
+class GdfExportFileFormat(str, Enum):
+    """Supported file formats for GDM distribution system GDF export """
+
+    CSV = "csv"
+    JSON = "json"

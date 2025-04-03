@@ -1,4 +1,4 @@
-from gdm import DistributionSystem
+from gdm.distribution import DistributionSystem
 
 
 def test_distribution_system_with_timeseries(distribution_system_with_single_timeseries):

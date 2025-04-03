@@ -6,17 +6,22 @@ from datetime import time
 from infrasys import Component
 from pydantic import Field
 
+
 from gdm.distribution.controllers.base.inverter_controller_base import (
-    ReactivePowerInverterControllerBase,
-    ActivePowerInverterControllerBase,
+    ReactivePowerInverterControllerBase, 
+    ActivePowerInverterControllerBase
 )
 from gdm.distribution.distribution_enum import ControllerSupport
-from gdm.distribution.curve import Curve
 from gdm.quantities import ActivePower, ActivePowerPUTime
+from gdm.distribution.curve import Curve
 
 
-class PowerfactorInverterController(ReactivePowerInverterControllerBase):
-    """Interface for an Inverter Controller using powerfactor to determine power output."""
+class PowerfactorControlSetting(ReactivePowerInverterControllerBase):
+    """
+    Control settings for the  Inverter Controller to represent power factor control.
+    Works with both battery and solar systems. Controls reactive power output of the 
+    connected inverter
+    """
 
     power_factor: Annotated[
         float, Field(ge=-1, le=1, description="The power factor used for the controller.")
@@ -26,15 +31,19 @@ class PowerfactorInverterController(ReactivePowerInverterControllerBase):
     ] = ControllerSupport.BATTERY_AND_SOLAR
 
     @classmethod
-    def example(cls) -> "PowerfactorInverterController":
-        "Example of a Power Factor based Inverter controller"
-        return PowerfactorInverterController(
+    def example(cls) -> "PowerfactorControlSetting":
+        "Example of a Power Factor setting for the Inverter reactive power control option"
+        return PowerfactorControlSetting(
             power_factor=0.95,
         )
 
 
-class VoltVarInverterController(ReactivePowerInverterControllerBase):
-    """Interface for a Volt-Var Inverter Controller."""
+class VoltVarControlSetting(ReactivePowerInverterControllerBase):
+    """
+    Control settings for the Inverter Controller to represent volt / var control settings.
+    Works with both battery and solar systems. Controls reactive power output of the 
+    connected inverter
+    """
 
     volt_var_curve: Annotated[
         Curve, Field(..., description="The volt-var curve that is being applied.")
@@ -52,48 +61,60 @@ class VoltVarInverterController(ReactivePowerInverterControllerBase):
     ] = ControllerSupport.BATTERY_AND_SOLAR
 
     @classmethod
-    def example(cls) -> "VoltVarInverterController":
+    def example(cls) -> "VoltVarControlSetting":
         "Example of a Volt-Var Inverter Controller"
-        return VoltVarInverterController(
+        return VoltVarControlSetting(
             volt_var_curve=Curve.example(),
             var_follow=False,
         )
 
 
-class VoltWattInverterController(ActivePowerInverterControllerBase):
-    """Interface for a Volt-Var Inverter Controller."""
+class VoltWattControlSetting(ActivePowerInverterControllerBase):
+    """
+    Control settings for the Inverter Controller to represent volt / watt control settings.
+    Works with both battery and solar systems. Controls active power output of the 
+    connected inverter
+    """
 
     volt_watt_curve: Annotated[
         Curve, Field(..., description="The volt-watt curve that is being applied.")
     ]
-    supported_by: Literal[ControllerSupport.SOLAR_ONLY] = ControllerSupport.SOLAR_ONLY
+    supported_by: Literal[ControllerSupport.BATTERY_AND_SOLAR] = ControllerSupport.BATTERY_AND_SOLAR
 
     @classmethod
-    def example(cls) -> "VoltWattInverterController":
+    def example(cls) -> "VoltWattControlSetting":
         "Example of a Volt-Watt Inverter Controller"
-        return VoltWattInverterController(
+        return VoltWattControlSetting(
             volt_watt_curve=Curve(curve_x=[0.5, 1.06, 1.1, 1.5], curve_y=[1.0, 1.0, 0.0, 0.0]),
         )
 
 
-class BatteryPeakShavingBaseLoadingController(ActivePowerInverterControllerBase):
-    """Interface for battery peak shaving base loading controller."""
+class PeakShavingBaseLoadingControlSetting(ActivePowerInverterControllerBase):
+    """
+    Control settings for the Inverter Controller to represent peak shaving / base loading
+    control settings. Works with battery systems only. Controls active power output of the 
+    connected inverter
+    """
 
     supported_by: Literal[ControllerSupport.BATTERY_ONLY] = ControllerSupport.BATTERY_ONLY
     peak_shaving_target: Annotated[ActivePower, Field(..., description="The peak shaving target.")]
     base_loading_target: Annotated[ActivePower, Field(..., description="The base loading target.")]
 
     @classmethod
-    def example(cls) -> "BatteryPeakShavingBaseLoadingController":
+    def example(cls) -> "PeakShavingBaseLoadingControlSetting":
         "Example of a battery peak shaving base loading controller"
-        return BatteryPeakShavingBaseLoadingController(
+        return PeakShavingBaseLoadingControlSetting(
             peak_shaving_target=ActivePower(1000, "watt"),
             base_loading_target=ActivePower(2000, "watt"),
         )
 
 
-class BatteryCapacityFirmingController(ActivePowerInverterControllerBase):
-    """Interface for battery capacity firming controller."""
+class CapacityFirmingControlSetting(ActivePowerInverterControllerBase):
+    """
+    Control settings for the Inverter Controller to represent capacity firming
+    control settings. Works with battery systems only. Controls active power output of the 
+    connected inverter
+    """
 
     supported_by: Literal[ControllerSupport.BATTERY_ONLY] = ControllerSupport.BATTERY_ONLY
     max_active_power_roc: Annotated[
@@ -106,16 +127,20 @@ class BatteryCapacityFirmingController(ActivePowerInverterControllerBase):
     ]
 
     @classmethod
-    def example(cls) -> "BatteryCapacityFirmingController":
+    def example(cls) -> "CapacityFirmingControlSetting":
         "Example of a battery capacity firming controller"
-        return BatteryCapacityFirmingController(
+        return CapacityFirmingControlSetting(
             max_active_power_roc=ActivePowerPUTime(1000, "kilowatt/second"),
             min_active_power_roc=ActivePowerPUTime(1000, "kilowatt/second"),
         )
 
 
-class BatteryTimeBaseController(ActivePowerInverterControllerBase):
-    """Interface for battery capacity firming controller."""
+class TimeBasedControlSetting(ActivePowerInverterControllerBase):
+    """
+    Control settings for the Inverter Controller to represent time based charge / discharge
+    control settings. Works with battery systems only. Controls active power output of the 
+    connected inverter
+    """
 
     supported_by: Literal[ControllerSupport.BATTERY_ONLY] = ControllerSupport.BATTERY_ONLY
     charging_start_time: Annotated[
@@ -138,9 +163,9 @@ class BatteryTimeBaseController(ActivePowerInverterControllerBase):
     ]
 
     @classmethod
-    def example(cls) -> "BatteryTimeBaseController":
+    def example(cls) -> "TimeBasedControlSetting":
         "Example of a battery capacity firming controller"
-        return BatteryTimeBaseController(
+        return TimeBasedControlSetting(
             charging_start_time=time(hour=10, minute=0),
             charging_end_time=time(hour=11, minute=0),
             discharging_start_time=time(hour=21, minute=0),
@@ -150,20 +175,27 @@ class BatteryTimeBaseController(ActivePowerInverterControllerBase):
         )
 
 
-class BatterySelfConsumptionController(ActivePowerInverterControllerBase):
-
-    """Interface for battery self consumption controller."""
+class SelfConsumptionControlSetting(ActivePowerInverterControllerBase):
+    """
+    Control settings for the Inverter Controller to represent self comsumption
+    control settings. Works with battery systems only. Controls active power output of the 
+    connected inverter
+    """
 
     supported_by: Literal[ControllerSupport.BATTERY_ONLY] = ControllerSupport.BATTERY_ONLY
 
     @classmethod
-    def example(cls) -> "BatterySelfConsumptionController":
+    def example(cls) -> "SelfConsumptionControlSetting":
         "Example of a battery self consumption controller"
-        return BatterySelfConsumptionController()
+        return SelfConsumptionControlSetting()
 
 
-class BatteryTimeOfUseController(ActivePowerInverterControllerBase):
-    """Interface for battery time of use controller."""
+class TimeOfUseControlSetting(ActivePowerInverterControllerBase):
+    """
+    Control settings for the Inverter Controller to represent time of use 
+    control settings. Works with battery systems only. Controls active power output of the 
+    connected inverter
+    """
 
     supported_by: Literal[ControllerSupport.BATTERY_ONLY] = ControllerSupport.BATTERY_ONLY
     tarriff: ...
@@ -172,13 +204,17 @@ class BatteryTimeOfUseController(ActivePowerInverterControllerBase):
     ]
 
     @classmethod
-    def example(cls) -> "BatteryTimeOfUseController":
+    def example(cls) -> "TimeOfUseControlSetting":
         "Example of a battery time of use controller"
-        return BatteryTimeOfUseController(charging_power=ActivePower(1000, "watt"), tarriff=...)
+        return TimeOfUseControlSetting(charging_power=ActivePower(1000, "watt"), tarriff=...)
 
 
-class BatteryDemandChargeController(ActivePowerInverterControllerBase):
-    """Interface for battery demand charge controller."""
+class DemandChargeControlSetting(ActivePowerInverterControllerBase):
+    """
+    Control settings for the Inverter Controller to represent demand charge focused
+    control settings. Works with battery systems only. Controls active power output of the 
+    connected inverter
+    """
 
     supported_by: Literal[ControllerSupport.BATTERY_ONLY] = ControllerSupport.BATTERY_ONLY
     tarriff: ...
@@ -188,13 +224,16 @@ class BatteryDemandChargeController(ActivePowerInverterControllerBase):
     ]
 
     @classmethod
-    def example(cls) -> "BatteryDemandChargeController":
+    def example(cls) -> "DemandChargeControlSetting":
         "Example of a battery demand charge controller"
-        return BatteryDemandChargeController(charging_power=ActivePower(1000, "watt"), tarriff=...)
+        return DemandChargeControlSetting(charging_power=ActivePower(1000, "watt"), tarriff=...)
 
 
 class InverterController(Component):
-    """Interface for Inverter controllers that control active and reactive power."""
+    """Inverter contoller represent the complete control settings for a given 
+    InverterEquipment. This model is may be used with an instance of DistributionSolar
+    or DistributionBattery.
+    """
 
     name: Annotated[str, Field("", description="Name of the inverter controller.")]
 
@@ -231,8 +270,8 @@ class InverterController(Component):
         "Example of a Volt-Watt Inverter Controller"
         return InverterController(
             name="inv1",
-            active_power_control=VoltWattInverterController.example(),
-            reactive_power_control=VoltVarInverterController.example(),
+            active_power_control=VoltWattControlSetting.example(),
+            reactive_power_control=VoltVarControlSetting.example(),
             prioritize_active_power=False,
             night_mode=True,
         )

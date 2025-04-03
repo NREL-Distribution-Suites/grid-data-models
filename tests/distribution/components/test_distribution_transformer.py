@@ -1,16 +1,22 @@
 import pytest
 
-from gdm import (
+from gdm.distribution.components import (
     DistributionTransformer,
-    Phase,
-    ConnectionType,
-    DistributionTransformerEquipment,
     DistributionBus,
+)
+from gdm.distribution.equipment import(
+    DistributionTransformerEquipment,
     WindingEquipment,
-    PositiveVoltage,
+)
+from gdm.distribution import(
+    ConnectionType,
     VoltageTypes,
-    PositiveApparentPower,
     SequencePair,
+    Phase,
+)
+from gdm.quantities import (
+    PositiveApparentPower,
+    PositiveVoltage,
 )
 
 
