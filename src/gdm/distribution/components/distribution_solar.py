@@ -63,6 +63,7 @@ class DistributionSolar(InServiceDistributionComponentBase):
         Field(..., description="Inverter equipment for the Distribution Solar PV system."),
     ]
     equipment: Annotated[SolarEquipment, Field(..., description="Solar PV model.")]
+  
 
     @model_validator(mode="after")
     def validate_controller_types(self) -> "DistributionSolar":
@@ -121,6 +122,8 @@ class DistributionSolar(InServiceDistributionComponentBase):
                     (1 / inst.equipment.reactance if inst.equipment.reactance else 0)
                     for inst in instances
                 ),
+                rated_voltage=bus.rated_voltage,
+                voltage_type=bus.voltage_type
             ),
             inverter=InverterEquipment(
                 rated_apparent_power=sum(inst.inverter.rated_apparent_power for inst in instances)

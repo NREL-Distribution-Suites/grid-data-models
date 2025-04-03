@@ -332,6 +332,8 @@ def build_split_phase_solar(bus: DistributionBus, bus_number: int):
             rated_power=ActivePower(bus_number + 1, "kilowatt"),
             resistance=1,
             reactance=1,
+            rated_voltage=bus.rated_voltage,
+            voltage_type=bus.voltage_type
         ),
         inverter=InverterEquipment(
             rated_apparent_power=PositiveApparentPower(3.8, "kva"),

@@ -26,11 +26,11 @@ class CapacitorEquipment(Component):
     ]
     rated_voltage: Annotated[
         PositiveVoltage,
-        Field(..., description="rated voltage for this capacitor."),
+        Field(..., description="Rated voltage for this capacitor."),
     ]
     voltage_type: Annotated[
         VoltageTypes,
-        Field(..., description="Rated volgage is line to line or line to neutral."),
+        Field(..., description="Rated voltage is line to line or line to neutral."),
     ]
 
     @classmethod

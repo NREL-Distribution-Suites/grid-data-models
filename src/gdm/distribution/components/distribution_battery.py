@@ -122,6 +122,8 @@ class DistributionBattery(InServiceDistributionComponentBase):
                 / len(instances),
                 idling_efficiency=sum(inst.equipment.idling_efficiency for inst in instances)
                 / len(instances),
+                rated_voltage = bus.rated_voltage,
+                voltage_type = bus.voltage_type,
             ),
             inverter=InverterEquipment(
                 rated_apparent_power=sum(inst.inverter.rated_apparent_power for inst in instances),

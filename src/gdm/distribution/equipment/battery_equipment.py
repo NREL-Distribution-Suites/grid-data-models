@@ -5,7 +5,8 @@ from typing import Annotated
 from infrasys import Component
 from pydantic import Field
 
-from gdm.quantities import PositiveActivePower, PositiveEnergyDC
+from gdm.quantities import PositiveActivePower, PositiveEnergyDC, PositiveVoltage
+from gdm.distribution.distribution_enum import VoltageTypes
 from gdm.constants import PINT_SCHEMA
 
 
@@ -38,6 +39,14 @@ class BatteryEquipment(Component):
         float,
         Field(..., ge=0, le=100, description="Idling efficiency of the battery."),
     ]
+    rated_voltage: Annotated[
+        PositiveVoltage,
+        Field(..., description="Rated voltage for this battery equipment."),
+    ]
+    voltage_type: Annotated[
+        VoltageTypes,
+        Field(..., description="Rated voltage is line to line or line to neutral."),
+    ]
 
     @classmethod
     def example(cls) -> "BatteryEquipment":
@@ -49,4 +58,6 @@ class BatteryEquipment(Component):
             charging_efficiency=98,
             discharging_efficiency=98,
             idling_efficiency=99,
+            rated_voltage=PositiveVoltage(12.47, "kilovolt"),
+            voltage_type= VoltageTypes.LINE_TO_LINE
         )

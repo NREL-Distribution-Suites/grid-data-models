@@ -5,10 +5,10 @@ from typing import Annotated
 from infrasys import Component
 from pydantic import Field
 
-from gdm.quantities import PositiveActivePower
+from gdm.quantities import PositiveActivePower, PositiveVoltage
+from gdm.distribution.distribution_enum import VoltageTypes
 from gdm.distribution.curve import Curve
 from gdm.constants import PINT_SCHEMA
-
 
 class SolarEquipment(Component):
     """Interface for Solar Model."""
@@ -42,6 +42,14 @@ class SolarEquipment(Component):
             description="Percentage internal reactance for the PV array.",
         ),
     ]
+    rated_voltage: Annotated[
+        PositiveVoltage,
+        Field(..., description="Rated voltage for this solar equipment."),
+    ]
+    voltage_type: Annotated[
+        VoltageTypes,
+        Field(..., description="Rated voltage is line to line or line to neutral."),
+    ]
 
     @classmethod
     def example(cls) -> "SolarEquipment":
@@ -52,4 +60,6 @@ class SolarEquipment(Component):
             power_temp_curve=None,
             resistance=50,
             reactance=0,
+            rated_voltage=PositiveVoltage(12.47, "kilovolt"),
+            voltage_type= VoltageTypes.LINE_TO_LINE
         )
