@@ -33,7 +33,7 @@
 <polygon fill="none" stroke="black" points="98,-150.5 98,-172.5 273,-172.5 273,-150.5 98,-150.5"/>
 <text text-anchor="start" x="140.88" y="-156.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">ConnectionType</text>
 <polygon fill="none" stroke="black" points="0,-128.5 0,-150.5 98,-150.5 98,-128.5 0,-128.5"/>
-<text text-anchor="start" x="3.25" y="-134.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">nominal_voltage</text>
+<text text-anchor="start" x="3.25" y="-134.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">rated_voltage</text>
 <polygon fill="none" stroke="black" points="98,-128.5 98,-150.5 273,-150.5 273,-128.5 98,-128.5"/>
 <text text-anchor="start" x="143.12" y="-134.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">PositiveVoltage</text>
 <polygon fill="none" stroke="black" points="0,-106.5 0,-128.5 98,-128.5 98,-106.5 0,-106.5"/>

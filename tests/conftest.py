@@ -140,7 +140,7 @@ def build_distribution_capacitor(bus: DistributionBus, bus_number: int):
                 update={
                     "uuid": uuid4(),
                     "name": f"capacitor_equipment_{bus_number}",
-                    "nominal_voltage": PositiveVoltage(120, "volt"),
+                    "rated_voltage": PositiveVoltage(120, "volt"),
                     "voltage_type": VoltageTypes.LINE_TO_GROUND,
                     "phase_capacitors": [
                         PhaseCapacitorEquipment.example().model_copy(
@@ -185,7 +185,7 @@ def build_source_bus():
         update={
             "name": "src_bus",
             "uuid": uuid4(),
-            "nominal_voltage": PositiveVoltage(12.47, "kilovolt"),
+            "rated_voltage": PositiveVoltage(12.47, "kilovolt"),
         }
     )
 
@@ -197,7 +197,7 @@ def build_split_phase_distribution_buses():
                 "uuid": uuid4(),
                 "name": f"split_phase_bus_{i}",
                 "phases": [Phase.S1, Phase.S2, Phase.N],
-                "nominal_voltage": PositiveVoltage(120, "volt"),
+                "rated_voltage": PositiveVoltage(120, "volt"),
                 "voltage_type": VoltageTypes.LINE_TO_GROUND,
             }
         )
@@ -221,7 +221,7 @@ def build_split_phase_distribution_xfmr(bus1: DistributionBus, bus2: Distributio
                 WindingEquipment(
                     resistance=1,
                     is_grounded=False,
-                    nominal_voltage=PositiveVoltage(0.4, "kilovolt"),
+                    rated_voltage=PositiveVoltage(0.4, "kilovolt"),
                     rated_power=PositiveApparentPower(50, "kilova"),
                     connection_type=ConnectionType.STAR,
                     num_phases=1,
@@ -231,7 +231,7 @@ def build_split_phase_distribution_xfmr(bus1: DistributionBus, bus2: Distributio
                 WindingEquipment(
                     resistance=1,
                     is_grounded=True,
-                    nominal_voltage=PositiveVoltage(120, "volt"),
+                    rated_voltage=PositiveVoltage(120, "volt"),
                     rated_power=PositiveApparentPower(50, "kilova"),
                     connection_type=ConnectionType.STAR,
                     num_phases=1,
@@ -241,7 +241,7 @@ def build_split_phase_distribution_xfmr(bus1: DistributionBus, bus2: Distributio
                 WindingEquipment(
                     resistance=1,
                     is_grounded=True,
-                    nominal_voltage=PositiveVoltage(120, "volt"),
+                    rated_voltage=PositiveVoltage(120, "volt"),
                     rated_power=PositiveApparentPower(50, "kilova"),
                     connection_type=ConnectionType.STAR,
                     num_phases=1,

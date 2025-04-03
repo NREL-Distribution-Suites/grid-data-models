@@ -15,7 +15,7 @@ class BatteryEquipment(Component):
     rated_energy: Annotated[
         PositiveEnergyDC,
         PINT_SCHEMA,
-        Field(..., description="Rated energy DC capacity of the battery."),
+        Field(..., description="Rated energy capacity (DC) of the battery."),
     ]
 
     rated_power: Annotated[

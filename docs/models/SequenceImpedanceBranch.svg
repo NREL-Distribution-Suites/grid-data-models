@@ -45,7 +45,7 @@
 <polygon fill="none" stroke="black" points="484,-428.5 484,-450.5 668,-450.5 668,-428.5 484,-428.5"/>
 <text text-anchor="start" x="518.62" y="-434.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">list[VoltageLimitSet]</text>
 <polygon fill="none" stroke="black" points="387,-406.5 387,-428.5 484,-428.5 484,-406.5 387,-406.5"/>
-<text text-anchor="start" x="389.75" y="-412.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">nominal_voltage</text>
+<text text-anchor="start" x="389.75" y="-412.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">rated_voltage</text>
 <polygon fill="none" stroke="black" points="484,-406.5 484,-428.5 668,-428.5 668,-406.5 484,-406.5"/>
 <text text-anchor="start" x="533.62" y="-412.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">PositiveVoltage</text>
 <polygon fill="none" stroke="black" points="387,-384.5 387,-406.5 484,-406.5 484,-384.5 387,-384.5"/>

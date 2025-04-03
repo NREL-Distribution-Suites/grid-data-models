@@ -36,19 +36,19 @@ def get_three_bus_system():
     sys = DistributionSystem(auto_add_composed_components=True)
     bus_1 = DistributionBus(
         name="Bus-1",
-        nominal_voltage=PositiveVoltage(12.47, "kilovolts"),
+        rated_voltage=PositiveVoltage(12.47, "kilovolts"),
         phases=[Phase.A, Phase.B, Phase.C],
         voltage_type=VoltageTypes.LINE_TO_LINE,
     )
     bus_2 = DistributionBus(
         name="Bus-2",
-        nominal_voltage=PositiveVoltage(0.24, "kilovolts"),
+        rated_voltage=PositiveVoltage(0.24, "kilovolts"),
         phases=[Phase.S1, Phase.N, Phase.S2],
         voltage_type=VoltageTypes.LINE_TO_LINE,
     )
     bus_3 = DistributionBus(
         name="Bus-3",
-        nominal_voltage=PositiveVoltage(0.24, "kilovolts"),
+        rated_voltage=PositiveVoltage(0.24, "kilovolts"),
         phases=[Phase.S1, Phase.S2, Phase.N],
         voltage_type=VoltageTypes.LINE_TO_LINE,
     )
@@ -65,7 +65,7 @@ def get_three_bus_system():
                 WindingEquipment(
                     resistance=0.02,
                     is_grounded=False,
-                    nominal_voltage=PositiveVoltage(12.47, "kilovolts"),
+                    rated_voltage=PositiveVoltage(12.47, "kilovolts"),
                     rated_power=PositiveApparentPower(25, "kilova"),
                     num_phases=1,
                     tap_positions=[1.0],
@@ -75,7 +75,7 @@ def get_three_bus_system():
                 WindingEquipment(
                     resistance=0.02,
                     is_grounded=False,
-                    nominal_voltage=PositiveVoltage(0.24, "kilovolts"),
+                    rated_voltage=PositiveVoltage(0.24, "kilovolts"),
                     rated_power=PositiveApparentPower(25, "kilova"),
                     num_phases=1,
                     tap_positions=[1.0],
@@ -85,7 +85,7 @@ def get_three_bus_system():
                 WindingEquipment(
                     resistance=0.02,
                     is_grounded=False,
-                    nominal_voltage=PositiveVoltage(0.24, "kilovolts"),
+                    rated_voltage=PositiveVoltage(0.24, "kilovolts"),
                     rated_power=PositiveApparentPower(25, "kilova"),
                     num_phases=1,
                     tap_positions=[1.0],

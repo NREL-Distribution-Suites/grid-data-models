@@ -36,7 +36,7 @@ class PhaseCapacitorEquipment(Component):
     rated_reactive_power: Annotated[
         PositiveReactivePower,
         PINT_SCHEMA,
-        Field(..., description="Capacity of this capacitor."),
+        Field(..., description="Rated reactive power of this capacitor."),
     ]
     num_banks_on: Annotated[
         NonNegativeInt, Field(..., description="Number of banks currently on.")

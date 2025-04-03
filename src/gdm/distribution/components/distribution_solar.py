@@ -150,7 +150,7 @@ class DistributionSolar(InServiceDistributionComponentBase):
             bus=DistributionBus(
                 voltage_type="line-to-ground",
                 name="Solar-DistBus1",
-                nominal_voltage=PositiveVoltage(400, "volt"),
+                rated_voltage=PositiveVoltage(400, "volt"),
                 phases=[Phase.A, Phase.B, Phase.C],
                 substation=DistributionSubstation.example(),
                 feeder=DistributionFeeder.example(),

@@ -102,7 +102,7 @@
 <polygon fill="none" stroke="black" points="531,-720.5 531,-742.5 715,-742.5 715,-720.5 531,-720.5"/>
 <text text-anchor="start" x="565.62" y="-726.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">list[VoltageLimitSet]</text>
 <polygon fill="none" stroke="black" points="434,-698.5 434,-720.5 531,-720.5 531,-698.5 434,-698.5"/>
-<text text-anchor="start" x="436.75" y="-704.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">nominal_voltage</text>
+<text text-anchor="start" x="436.75" y="-704.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">rated_voltage</text>
 <polygon fill="none" stroke="black" points="531,-698.5 531,-720.5 715,-720.5 715,-698.5 531,-698.5"/>
 <text text-anchor="start" x="580.62" y="-704.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">PositiveVoltage</text>
 <polygon fill="none" stroke="black" points="434,-676.5 434,-698.5 531,-698.5 531,-676.5 434,-676.5"/>

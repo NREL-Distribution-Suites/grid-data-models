@@ -28,10 +28,10 @@ class DistributionBus(DistributionComponentBase):
         list[VoltageLimitSet],
         Field([], description="List of voltage limit sets for this bus."),
     ]
-    nominal_voltage: Annotated[
+    rated_voltage: Annotated[
         PositiveVoltage,
         PINT_SCHEMA,
-        Field(..., description="Nominal voltage for this bus."),
+        Field(..., description="rated voltage for this bus."),
     ]
     coordinate: Annotated[
         Optional[Location],
@@ -43,7 +43,7 @@ class DistributionBus(DistributionComponentBase):
         return DistributionBus(
             voltage_type=VoltageTypes.LINE_TO_LINE,
             phases=[Phase.A, Phase.B, Phase.C],
-            nominal_voltage=PositiveVoltage(400, "volt"),
+            rated_voltage=PositiveVoltage(400, "volt"),
             name="DistBus1",
             substation=DistributionSubstation.example(),
             feeder=DistributionFeeder.example(),

@@ -27,14 +27,14 @@ class WindingEquipment(Component):
         ),
     ]
     is_grounded: Annotated[bool, Field(..., description="Is this winding grounded or not.")]
-    nominal_voltage: Annotated[
+    rated_voltage: Annotated[
         PositiveVoltage,
         PINT_SCHEMA,
-        Field(..., description="Nominal voltage rating for this winding."),
+        Field(..., description="rated voltage rating for this winding."),
     ]
     voltage_type: Annotated[
         VoltageTypes,
-        Field(..., description="Set voltage type for nominal voltage."),
+        Field(..., description="Set voltage type for rated voltage."),
     ]
     rated_power: Annotated[
         PositiveApparentPower,
@@ -97,7 +97,7 @@ class WindingEquipment(Component):
         return WindingEquipment(
             resistance=1,
             is_grounded=False,
-            nominal_voltage=PositiveVoltage(12.47, "kilovolt"),
+            rated_voltage=PositiveVoltage(12.47, "kilovolt"),
             rated_power=PositiveApparentPower(500, "kilova"),
             connection_type=ConnectionType.STAR,
             num_phases=3,
@@ -200,7 +200,7 @@ class DistributionTransformerEquipment(Component):
                 WindingEquipment(
                     resistance=1,
                     is_grounded=False,
-                    nominal_voltage=PositiveVoltage(12.47, "kilovolt"),
+                    rated_voltage=PositiveVoltage(12.47, "kilovolt"),
                     rated_power=PositiveApparentPower(56, "kilova"),
                     connection_type=ConnectionType.STAR,
                     num_phases=3,
@@ -210,7 +210,7 @@ class DistributionTransformerEquipment(Component):
                 WindingEquipment(
                     resistance=1,
                     is_grounded=False,
-                    nominal_voltage=PositiveVoltage(0.4, "kilovolt"),
+                    rated_voltage=PositiveVoltage(0.4, "kilovolt"),
                     rated_power=PositiveApparentPower(56, "kilova"),
                     connection_type=ConnectionType.STAR,
                     num_phases=3,

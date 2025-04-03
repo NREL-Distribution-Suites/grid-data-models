@@ -9,7 +9,7 @@ ac conducting equipment which is analogous to `DistributionBus` in grid data mod
 |`ComponentWithQuantities.name`| `cim:IdentifiedObject.name`| Both of them are string. |
 | `ComponentWithQuantities.uuid` | `cim:IdentifiedObject.mrid` | Unique identifier for the component. |
 | `ComponentWithQuantities.system_uuid` | N/A | System UUID to which this component belongs to. |
-| `PowerSystemBus.nominal_voltage` | `cim:BaseVoltage.nominalVoltage` | Note nominal voltage is unit aware but BaseVoltage is not. |
+| `PowerSystemBus.rated_voltage` | `cim:BaseVoltage.ratedVoltage` | Note rated voltage is unit aware but BaseVoltage is not. |
 | `Location.x` | `cim:PositionPoint.xPosition` | x coordinate of the component. |
 | `Location.y` | `cim:PositionPoint.yPosition` | y coordinate of the component |
 | `Location.crs` | N/A | Coordinate reference system for geo coordinates. |
@@ -34,7 +34,7 @@ Here is an UML diagram of `DistributionBus` from Grid data models.
       ComponentWithQuantities: +system_uuid UUID | None
 
       class PowerSystemBus
-      PowerSystemBus: +nominal_voltage PositiveVoltage
+      PowerSystemBus: +rated_voltage PositiveVoltage
       PowerSystemBus: +coordinate Location | None
 
       class Location

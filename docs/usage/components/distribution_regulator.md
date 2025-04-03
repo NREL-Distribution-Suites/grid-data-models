@@ -21,14 +21,14 @@
 ... )
 >>> bus_1 = DistributionBus(
 ...     name="Bus-1",
-...     nominal_voltage=PositiveVoltage(12.47, "kilovolts"),
+...     rated_voltage=PositiveVoltage(12.47, "kilovolts"),
 ...     phases=[Phase.A],
 ...     voltage_type=VoltageTypes.LINE_TO_GROUND,
 ... )
 
 >>> bus_2 = DistributionBus(
 ...     name="Bus-2",
-...     nominal_voltage=PositiveVoltage(12.47, "kilovolts"),
+...     rated_voltage=PositiveVoltage(12.47, "kilovolts"),
 ...     phases=[Phase.A],
 ...     voltage_type=VoltageTypes.LINE_TO_GROUND,
 ... )
@@ -41,7 +41,7 @@
 ...         WindingEquipment(
 ...             resistance=1.0,
 ...             is_grounded=False,
-...             nominal_voltage=PositiveVoltage(12.47, "kilovolts"),
+...             rated_voltage=PositiveVoltage(12.47, "kilovolts"),
 ...             rated_power=PositiveApparentPower(25, "kilova"),
 ...             num_phases=1,
 ...             tap_positions=[1.0],
@@ -51,7 +51,7 @@
 ...         WindingEquipment(
 ...             resistance=1.0,
 ...             is_grounded=False,
-...             nominal_voltage=PositiveVoltage(12.47, "kilovolts"),
+...             rated_voltage=PositiveVoltage(12.47, "kilovolts"),
 ...             rated_power=PositiveApparentPower(25, "kilova"),
 ...             num_phases=1,
 ...             tap_positions=[1.0],
@@ -103,7 +103,7 @@ DistributionRegulator(
             voltage_type=<VoltageTypes.LINE_TO_GROUND: 'line-to-ground'>,
             phases=[<Phase.A: 'A'>],
             voltagelimits=[],
-            nominal_voltage=<Quantity(12.47, 'kilovolt')>,
+            rated_voltage=<Quantity(12.47, 'kilovolt')>,
             coordinate=None
         ),
         DistributionBus(
@@ -113,7 +113,7 @@ DistributionRegulator(
             voltage_type=<VoltageTypes.LINE_TO_GROUND: 'line-to-ground'>,
             phases=[<Phase.A: 'A'>],
             voltagelimits=[],
-            nominal_voltage=<Quantity(12.47, 'kilovolt')>,
+            rated_voltage=<Quantity(12.47, 'kilovolt')>,
             coordinate=None
         )
     ],
@@ -127,7 +127,7 @@ DistributionRegulator(
                 name='',
                 resistance=1.0,
                 is_grounded=False,
-                nominal_voltage=<Quantity(12.47, 'kilovolt')>,
+                rated_voltage=<Quantity(12.47, 'kilovolt')>,
                 voltage_type=<VoltageTypes.LINE_TO_GROUND: 'line-to-ground'>,
                 rated_power=<Quantity(25, 'kilova')>,
                 num_phases=1,
@@ -141,7 +141,7 @@ DistributionRegulator(
                 name='',
                 resistance=1.0,
                 is_grounded=False,
-                nominal_voltage=<Quantity(12.47, 'kilovolt')>,
+                rated_voltage=<Quantity(12.47, 'kilovolt')>,
                 voltage_type=<VoltageTypes.LINE_TO_GROUND: 'line-to-ground'>,
                 rated_power=<Quantity(25, 'kilova')>,
                 num_phases=1,
@@ -178,7 +178,7 @@ DistributionRegulator(
                 voltage_type=<VoltageTypes.LINE_TO_GROUND: 'line-to-ground'>,
                 phases=[<Phase.A: 'A'>],
                 voltagelimits=[],
-                nominal_voltage=<Quantity(12.47, 'kilovolt')>,
+                rated_voltage=<Quantity(12.47, 'kilovolt')>,
                 coordinate=None
             ),
             controlled_phase=<Phase.A: 'A'>

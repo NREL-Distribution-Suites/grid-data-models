@@ -24,9 +24,9 @@ class CapacitorEquipment(Component):
         ConnectionType,
         Field(ConnectionType.STAR, description="Connection type for this capacitor."),
     ]
-    nominal_voltage: Annotated[
+    rated_voltage: Annotated[
         PositiveVoltage,
-        Field(..., description="Nominal voltage for this capacitor."),
+        Field(..., description="rated voltage for this capacitor."),
     ]
     voltage_type: Annotated[
         VoltageTypes,
@@ -40,6 +40,6 @@ class CapacitorEquipment(Component):
             name="capacitor-equipment-1",
             phase_capacitors=[PhaseCapacitorEquipment.example()] * 3,
             connection_type=ConnectionType.STAR,
-            nominal_voltage=PositiveVoltage(12.47, "kilovolt"),
+            rated_voltage=PositiveVoltage(12.47, "kilovolt"),
             voltage_type=VoltageTypes.LINE_TO_LINE,
         )

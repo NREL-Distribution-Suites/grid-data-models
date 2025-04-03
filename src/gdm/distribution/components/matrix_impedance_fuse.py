@@ -26,7 +26,7 @@ class MatrixImpedanceFuse(DistributionSwitchBase):
         bus1 = DistributionBus(
             voltage_type="line-to-ground",
             phases=[Phase.A, Phase.B, Phase.C],
-            nominal_voltage=PositiveVoltage(400, "volt"),
+            rated_voltage=PositiveVoltage(400, "volt"),
             substation=DistributionSubstation.example(),
             feeder=DistributionFeeder.example(),
             name="Branch-DistBus1",
@@ -34,7 +34,7 @@ class MatrixImpedanceFuse(DistributionSwitchBase):
         bus2 = DistributionBus(
             voltage_type="line-to-ground",
             phases=[Phase.A, Phase.B, Phase.C],
-            nominal_voltage=PositiveVoltage(400, "volt"),
+            rated_voltage=PositiveVoltage(400, "volt"),
             substation=DistributionSubstation.example(),
             feeder=DistributionFeeder.example(),
             name="Branch-DistBus2",

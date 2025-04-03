@@ -96,7 +96,7 @@ class DistributionLoad(InServiceDistributionComponentBase):
                 phases=[Phase.A, Phase.B, Phase.C],
                 substation=DistributionSubstation.example(),
                 feeder=DistributionFeeder.example(),
-                nominal_voltage=PositiveVoltage(0.4, "kilovolt"),
+                rated_voltage=PositiveVoltage(0.4, "kilovolt"),
             ),
             substation=DistributionSubstation.example(),
             feeder=DistributionFeeder.example(),

@@ -37,7 +37,7 @@ def get_primary_buses(dist_system: DistributionSystem) -> list[str]:
         bus.name
         for bus in dist_system.get_components(
             DistributionBus,
-            filter_func=lambda x: x.nominal_voltage.to("kilovolt").magnitude > 1.0,
+            filter_func=lambda x: x.rated_voltage.to("kilovolt").magnitude > 1.0,
         )
     ]
 

@@ -45,7 +45,7 @@
 <polygon fill="none" stroke="black" points="452,-508.5 452,-530.5 636,-530.5 636,-508.5 452,-508.5"/>
 <text text-anchor="start" x="486.62" y="-514.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">list[VoltageLimitSet]</text>
 <polygon fill="none" stroke="black" points="355,-486.5 355,-508.5 452,-508.5 452,-486.5 355,-486.5"/>
-<text text-anchor="start" x="357.75" y="-492.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">nominal_voltage</text>
+<text text-anchor="start" x="357.75" y="-492.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">rated_voltage</text>
 <polygon fill="none" stroke="black" points="452,-486.5 452,-508.5 636,-508.5 636,-486.5 452,-486.5"/>
 <text text-anchor="start" x="501.62" y="-492.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">PositiveVoltage</text>
 <polygon fill="none" stroke="black" points="355,-464.5 355,-486.5 452,-486.5 452,-464.5 355,-464.5"/>
@@ -338,7 +338,7 @@
 <polygon fill="none" stroke="black" points="457,-150.5 457,-172.5 632,-172.5 632,-150.5 457,-150.5"/>
 <text text-anchor="start" x="499.88" y="-156.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">ConnectionType</text>
 <polygon fill="none" stroke="black" points="359,-128.5 359,-150.5 457,-150.5 457,-128.5 359,-128.5"/>
-<text text-anchor="start" x="362.25" y="-134.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">nominal_voltage</text>
+<text text-anchor="start" x="362.25" y="-134.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">rated_voltage</text>
 <polygon fill="none" stroke="black" points="457,-128.5 457,-150.5 632,-150.5 632,-128.5 457,-128.5"/>
 <text text-anchor="start" x="502.12" y="-134.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">PositiveVoltage</text>
 <polygon fill="none" stroke="black" points="359,-106.5 359,-128.5 457,-128.5 457,-106.5 359,-106.5"/>

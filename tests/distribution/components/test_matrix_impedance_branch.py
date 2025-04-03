@@ -54,8 +54,8 @@ def test_duplicate_phases():
 def test_connecting_buses_with_different_voltage():
     branch = MatrixImpedanceBranch.example()
     bus1, bus2 = branch.buses
-    bus1.nominal_voltage = PositiveVoltage(12.47, "kilovolts")
-    bus2.nominal_voltage = PositiveVoltage(12.48, "kilovolts")
+    bus1.rated_voltage = PositiveVoltage(12.47, "kilovolts")
+    bus2.rated_voltage = PositiveVoltage(12.48, "kilovolts")
     with pytest.raises(ValueError):
         MatrixImpedanceBranch(
             name=branch.name,

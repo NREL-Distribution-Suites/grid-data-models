@@ -25,7 +25,7 @@ class DistributionTransformer(DistributionTransformerBase):
                 DistributionBus(
                     voltage_type=VoltageTypes.LINE_TO_LINE,
                     name="Transformer-DistBus1",
-                    nominal_voltage=PositiveVoltage(12.47, "kilovolt"),
+                    rated_voltage=PositiveVoltage(12.47, "kilovolt"),
                     substation=DistributionSubstation.example(),
                     feeder=DistributionFeeder.example(),
                     phases=[Phase.A, Phase.B, Phase.C],
@@ -33,7 +33,7 @@ class DistributionTransformer(DistributionTransformerBase):
                 DistributionBus(
                     voltage_type=VoltageTypes.LINE_TO_LINE,
                     name="Transformer-DistBus2",
-                    nominal_voltage=PositiveVoltage(0.4, "kilovolt"),
+                    rated_voltage=PositiveVoltage(0.4, "kilovolt"),
                     substation=DistributionSubstation.example(),
                     feeder=DistributionFeeder.example(),
                     phases=[Phase.A, Phase.B, Phase.C],

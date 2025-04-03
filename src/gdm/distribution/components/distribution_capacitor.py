@@ -84,7 +84,7 @@ class DistributionCapacitor(InServiceDistributionComponentBase):
                     for caps in phase_caps.values()
                 ],
                 connection_type=set([item.equipment.connection_type for item in instances]).pop(),
-                nominal_voltage=bus.nominal_voltage,
+                rated_voltage=bus.rated_voltage,
                 voltage_type=bus.voltage_type,
             ),
         )
@@ -118,7 +118,7 @@ class DistributionCapacitor(InServiceDistributionComponentBase):
             bus=DistributionBus(
                 voltage_type="line-to-ground",
                 name="Capacitor-DistBus1",
-                nominal_voltage=PositiveVoltage(400, "volt"),
+                rated_voltage=PositiveVoltage(400, "volt"),
                 phases=[Phase.A, Phase.B, Phase.C],
                 substation=DistributionSubstation.example(),
                 feeder=DistributionFeeder.example(),

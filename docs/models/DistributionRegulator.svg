@@ -45,7 +45,7 @@
 <polygon fill="none" stroke="black" points="857,-524.5 857,-546.5 1041,-546.5 1041,-524.5 857,-524.5"/>
 <text text-anchor="start" x="891.62" y="-530.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">list[VoltageLimitSet]</text>
 <polygon fill="none" stroke="black" points="760,-502.5 760,-524.5 857,-524.5 857,-502.5 760,-502.5"/>
-<text text-anchor="start" x="762.75" y="-508.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">nominal_voltage</text>
+<text text-anchor="start" x="762.75" y="-508.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">rated_voltage</text>
 <polygon fill="none" stroke="black" points="857,-502.5 857,-524.5 1041,-524.5 1041,-502.5 857,-502.5"/>
 <text text-anchor="start" x="906.62" y="-508.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">PositiveVoltage</text>
 <polygon fill="none" stroke="black" points="760,-480.5 760,-502.5 857,-502.5 857,-480.5 760,-480.5"/>
@@ -444,7 +444,7 @@
 <polygon fill="none" stroke="black" points="882,-334.5 882,-356.5 1016,-356.5 1016,-334.5 882,-334.5"/>
 <text text-anchor="start" x="937" y="-340.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">bool</text>
 <polygon fill="none" stroke="black" points="785,-312.5 785,-334.5 882,-334.5 882,-312.5 785,-312.5"/>
-<text text-anchor="start" x="787.75" y="-318.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">nominal_voltage</text>
+<text text-anchor="start" x="787.75" y="-318.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">rated_voltage</text>
 <polygon fill="none" stroke="black" points="882,-312.5 882,-334.5 1016,-334.5 1016,-312.5 882,-312.5"/>
 <text text-anchor="start" x="906.62" y="-318.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">PositiveVoltage</text>
 <polygon fill="none" stroke="black" points="785,-290.5 785,-312.5 882,-312.5 882,-290.5 785,-290.5"/>

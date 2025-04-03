@@ -74,7 +74,7 @@
 <polygon fill="none" stroke="black" points="457,-216.5 457,-238.5 591,-238.5 591,-216.5 457,-216.5"/>
 <text text-anchor="start" x="512" y="-222.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">bool</text>
 <polygon fill="none" stroke="black" points="360,-194.5 360,-216.5 457,-216.5 457,-194.5 360,-194.5"/>
-<text text-anchor="start" x="362.75" y="-200.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">nominal_voltage</text>
+<text text-anchor="start" x="362.75" y="-200.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">rated_voltage</text>
 <polygon fill="none" stroke="black" points="457,-194.5 457,-216.5 591,-216.5 591,-194.5 457,-194.5"/>
 <text text-anchor="start" x="481.62" y="-200.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">PositiveVoltage</text>
 <polygon fill="none" stroke="black" points="360,-172.5 360,-194.5 457,-194.5 457,-172.5 360,-172.5"/>

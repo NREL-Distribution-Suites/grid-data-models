@@ -18,7 +18,7 @@ Creating a single-phase constant power load connected to a bus. A constant power
 ... )
 >>> bus1 = DistributionBus(
 ...     name="Bus-1",
-...     nominal_voltage=PositiveVoltage(7.62, "kilovolts"),
+...     rated_voltage=PositiveVoltage(7.62, "kilovolts"),
 ...     voltage_type=VoltageTypes.LINE_TO_GROUND,
 ...     phases=[Phase.A]
 ... )
@@ -55,7 +55,7 @@ DistributionLoad(
         voltage_type=<VoltageTypes.LINE_TO_GROUND: 'line-to-ground'>,
         phases=[<Phase.A: 'A'>],
         voltagelimits=[],
-        nominal_voltage=<Quantity(7.62, 'kilovolt')>,
+        rated_voltage=<Quantity(7.62, 'kilovolt')>,
         coordinate=None
     ),
     phases=[<Phase.A: 'A'>],
@@ -103,7 +103,7 @@ For the three-phase delta-connected constant power load, we need to define the l
 ... )
 >>> bus2 = DistributionBus(
 ...     name="Bus-2",
-...     nominal_voltage=PositiveVoltage(13.8, "kilovolts"),
+...     rated_voltage=PositiveVoltage(13.8, "kilovolts"),
 ...     voltage_type=VoltageTypes.LINE_TO_LINE,
 ...     phases=[Phase.A, Phase.B, Phase.C]
 ... )
@@ -164,7 +164,7 @@ DistributionLoad(
         voltage_type=<VoltageTypes.LINE_TO_LINE: 'line-to-line'>,
         phases=[<Phase.A: 'A'>, <Phase.B: 'B'>, <Phase.C: 'C'>],
         voltagelimits=[],
-        nominal_voltage=<Quantity(13.8, 'kilovolt')>,
+        rated_voltage=<Quantity(13.8, 'kilovolt')>,
         coordinate=None
     ),
     phases=[<Phase.A: 'A'>, <Phase.B: 'B'>, <Phase.C: 'C'>],
