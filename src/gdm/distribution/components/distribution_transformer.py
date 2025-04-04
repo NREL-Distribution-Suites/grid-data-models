@@ -1,6 +1,6 @@
 """ This module contains interface for distribution transformer."""
 
-from gdm.distribution.distribution_enum import Phase, VoltageTypes
+from gdm.distribution.enums import Phase, VoltageTypes
 from gdm.quantities import PositiveVoltage
 from gdm.distribution.components.distribution_bus import DistributionBus
 from gdm.distribution.components.distribution_feeder import DistributionFeeder

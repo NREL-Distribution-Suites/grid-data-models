@@ -11,7 +11,7 @@ from gdm.quantities import (
     CapacitancePULength,
     PositiveCurrent,
 )
-from gdm.distribution.limitset import ThermalLimitSet
+from gdm.distribution.common.limitset import ThermalLimitSet
 from gdm.constants import PINT_SCHEMA
 
 

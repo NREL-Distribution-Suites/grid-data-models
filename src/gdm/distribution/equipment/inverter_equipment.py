@@ -6,7 +6,7 @@ from infrasys import Component
 from pydantic import Field
 
 from gdm.quantities import PositiveApparentPower, ActivePowerPUTime
-from gdm.distribution.curve import Curve
+from gdm.distribution.common.curve import Curve
 from gdm.constants import PINT_SCHEMA
 
 

@@ -9,7 +9,7 @@ from gdm.distribution.equipment.matrix_impedance_switch_equipment import (
 )
 from gdm.distribution.components.base.distribution_switch_base import DistributionSwitchBase
 from gdm.distribution.components.distribution_bus import DistributionBus
-from gdm.distribution.distribution_enum import Phase
+from gdm.distribution.enums import Phase
 from gdm.quantities import PositiveVoltage, PositiveDistance
 from gdm.distribution.components.distribution_substation import DistributionSubstation
 from gdm.distribution.components.distribution_feeder import DistributionFeeder

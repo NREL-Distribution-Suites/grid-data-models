@@ -20,9 +20,9 @@ import shapely
 from gdm.distribution.components.base.distribution_transformer_base import (
     DistributionTransformerBase,
 )
-from gdm.distribution.distribution_enum import Phase, GdfExportFileFormat
+from gdm.distribution.enums import Phase
 from gdm.distribution.components.distribution_bus import DistributionBus
-from gdm.distribution.distribution_enum import ColorNodeBy, ColorLineBy
+from gdm.distribution.enums import ColorNodeBy, ColorLineBy
 from gdm.distribution.components.base.distribution_branch_base import (
     DistributionBranchBase,
 )
@@ -286,49 +286,23 @@ class DistributionSystem(System):
         )
         return gdf_nodes
 
-    def to_gdf(self, export_path: Path | None = None, file_format:GdfExportFileFormat=GdfExportFileFormat.CSV) -> gpd.GeoDataFrame:
-        """
-        Converts the distribution system's graph data into a GeoDataFrame and optionally exports it.
-
-        Parameters:
-            export_path (Path | None): The directory path where the GeoDataFrame should be exported.
-                                    If None, the data is not exported.
-            file_format (GdfExportFileFormat): The format for exporting the GeoDataFrame. 
-                                            Defaults to CSV. Supported formats are 'csv' and 'json'.
-
-        Returns:
-            gpd.GeoDataFrame: A GeoDataFrame containing the nodes and edges of the distribution system.
-
-        Raises:
-            ValueError: If an unsupported file format is specified.
-            NotADirectoryError: If the provided export path is not a directory.
-            FileNotFoundError: If the provided export path does not exist.
-        """
-
-        if export_path:
-            export_path = Path(export_path)
-
+    def to_gdf(self, export_file: Path | None = None) -> gpd.GeoDataFrame:
         graph = self.get_undirected_graph()
         nodes_gdf = self._build_node_geodataframe()
         edges_gdf = self._build_edge_geodataframe(graph)
         final_gdf = gpd.pd.concat([nodes_gdf, edges_gdf], ignore_index=True)
 
-        if export_path and export_path.exists() and export_path.is_dir():
-            if file_format == GdfExportFileFormat.CSV:
-                final_gdf.to_csv(export_path / f"{self.name}_gdf.csv")
-            elif file_format == GdfExportFileFormat.JSON:
-                with open(export_path / f"{self.name}_gdf.geojson", "w") as f:
-                    f.write(final_gdf.to_json())
-                print(export_path / f"{self.name}_gdf.geojson")   
-            else:
-                raise ValueError("Unsupported file format. Supported formats are 'csv' and 'json'")
-           
-        elif export_path and export_path.exists() and not export_path.is_dir():
-            raise NotADirectoryError("Provided path is not a directory")
-        elif export_path and not export_path.exists():
-            raise FileNotFoundError("Provided path does not exist")
-
+        if export_file:
+            export_file = Path(export_file)
+            final_gdf.to_csv(export_file)
+         
         return final_gdf
+
+    def to_geojson(self, export_file : Path | str) -> None:
+        export_file = Path(export_file)
+        system_gdf = self.to_gdf()
+        with open(export_file, "w") as f:
+            f.write(system_gdf.to_json())
 
     def plot(
         self,

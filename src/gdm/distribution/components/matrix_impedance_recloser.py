@@ -12,7 +12,7 @@ from gdm.distribution.controllers.distribution_recloser_controller import (
     DistributionRecloserController,
 )
 from gdm.distribution.components.distribution_bus import DistributionBus
-from gdm.distribution.distribution_enum import Phase
+from gdm.distribution.enums import Phase
 from gdm.quantities import PositiveVoltage, PositiveDistance
 from gdm.distribution.components.distribution_substation import DistributionSubstation
 from gdm.distribution.components.distribution_feeder import DistributionFeeder

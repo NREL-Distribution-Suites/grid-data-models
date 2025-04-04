@@ -5,7 +5,7 @@ from infrasys import Component
 from pydantic import Field
 
 from gdm.quantities import PositiveCurrent, PositiveVoltage
-from gdm.distribution.distribution_enum import LimitType
+from gdm.distribution.enums import LimitType
 from gdm.constants import PINT_SCHEMA
 
 

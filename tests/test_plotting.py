@@ -1,6 +1,6 @@
 import random
 
-from gdm.distribution.distribution_enum import ColorNodeBy, ColorLineBy, GdfExportFileFormat
+from gdm.distribution.enums import ColorNodeBy, ColorLineBy
 from gdm.distribution.components import DistributionBus
 from gdm.distribution import DistributionSystem
 import pytest
@@ -30,16 +30,10 @@ def test_gdf_conversion(distribution_system_with_single_timeseries, tmp_path):
         system_gdf.shape
     )
 
-    model.to_gdf(tmp_path, GdfExportFileFormat.CSV)
+    model.to_gdf(tmp_path / f"{model.name}_gdf.csv")
     assert (tmp_path / f"{model.name}_gdf.csv").exists()
-    model.to_gdf(tmp_path, GdfExportFileFormat.JSON)
+    model.to_geojson(tmp_path / f"{model.name}_gdf.geojson")
     assert (tmp_path / f"{model.name}_gdf.geojson").exists()
-    with pytest.raises(ValueError):
-        model.to_gdf(tmp_path, "excel")
-
-
-    with pytest.raises(NotADirectoryError):
-        model.to_gdf(tmp_path / "test_model_gdf.csv")
 
 
 def test_system_gdf_failure(distribution_system_with_single_timeseries, tmp_path):

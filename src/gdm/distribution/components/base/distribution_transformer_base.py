@@ -7,7 +7,7 @@ from abc import ABC
 from infrasys.quantities import Voltage
 from pydantic import Field, model_validator
 
-from gdm.distribution.distribution_enum import Phase, VoltageTypes
+from gdm.distribution.enums import Phase, VoltageTypes
 from gdm.distribution.components.distribution_bus import DistributionBus
 from gdm.distribution.components.base.distribution_component_base import (
     InServiceDistributionComponentBase,

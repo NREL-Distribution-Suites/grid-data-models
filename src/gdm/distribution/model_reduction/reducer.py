@@ -12,7 +12,7 @@ from gdm.distribution.distribution_system import (
     DistributionSystem,
     UserAttributes,
 )
-from gdm.distribution import Phase
+from gdm.distribution.enums import Phase
 from gdm.distribution.sys_functools import (
     get_aggregated_load_timeseries,
     get_aggregated_solar_timeseries,

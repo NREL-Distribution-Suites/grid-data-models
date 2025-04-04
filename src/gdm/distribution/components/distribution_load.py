@@ -5,7 +5,7 @@ from typing import Annotated, Self
 
 from pydantic import model_validator, Field
 
-from gdm.distribution.distribution_enum import Phase
+from gdm.distribution.enums import Phase
 from gdm.distribution.components.distribution_bus import DistributionBus
 from gdm.distribution.components.base.distribution_component_base import (
     InServiceDistributionComponentBase,

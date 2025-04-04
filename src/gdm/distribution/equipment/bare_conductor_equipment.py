@@ -5,7 +5,7 @@ from typing import Annotated, Optional
 from infrasys import Component
 from pydantic import Field
 
-from gdm.distribution.limitset import ThermalLimitSet
+from gdm.distribution.common.limitset import ThermalLimitSet
 from gdm.quantities import (
     PositiveResistancePULength,
     PositiveDistance,

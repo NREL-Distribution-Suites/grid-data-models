@@ -69,8 +69,3 @@ class ColorLineBy(str, Enum):
     DEFAULT = "Default"
     EQUIPMENT_TYPE = "Type"
 
-class GdfExportFileFormat(str, Enum):
-    """Supported file formats for GDM distribution system GDF export """
-
-    CSV = "csv"
-    JSON = "json"

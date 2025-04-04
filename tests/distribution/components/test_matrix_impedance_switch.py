@@ -1,7 +1,7 @@
 import pytest
 
 from gdm.distribution.components import MatrixImpedanceSwitch
-from gdm.distribution import Phase
+from gdm.distribution.enums import Phase
 
 
 def test_is_closed_length():

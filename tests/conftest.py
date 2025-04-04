@@ -10,11 +10,13 @@ from gdm.distribution.equipment.solar_equipment import SolarEquipment
 from gdm.distribution.controllers.distribution_inverter_controller import (
     InverterController,
 )
-from gdm.distribution import (
-    DistributionSystem,
+from gdm.distribution.common import SequencePair
+from gdm.distribution import DistributionSystem
+
+
+from gdm.distribution.enums import(
     ConnectionType,
     VoltageTypes,
-    SequencePair,
     Phase,
 )
 

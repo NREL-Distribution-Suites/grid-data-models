@@ -8,11 +8,13 @@ from gdm.distribution.equipment import(
     DistributionTransformerEquipment,
     WindingEquipment,
 )
-from gdm.distribution import(
+from gdm.distribution.enums import (
     ConnectionType,
     VoltageTypes,
-    SequencePair,
     Phase,
+)
+from gdm.distribution.common import(
+    SequencePair,
 )
 from gdm.quantities import (
     PositiveApparentPower,

@@ -5,11 +5,11 @@ from typing import Annotated, Optional
 from infrasys import Location
 from pydantic import Field
 
-from gdm.distribution.distribution_enum import LimitType, Phase, VoltageTypes
+from gdm.distribution.enums import LimitType, Phase, VoltageTypes
 from gdm.distribution.components.base.distribution_component_base import DistributionComponentBase
 from gdm.distribution.components.distribution_feeder import DistributionFeeder
 from gdm.distribution.components.distribution_substation import DistributionSubstation
-from gdm.distribution.limitset import VoltageLimitSet
+from gdm.distribution.common.limitset import VoltageLimitSet
 from gdm.quantities import PositiveVoltage
 from gdm.constants import PINT_SCHEMA
 

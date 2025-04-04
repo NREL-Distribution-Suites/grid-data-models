@@ -6,8 +6,8 @@ from typing import Annotated
 from infrasys import Component
 from pydantic import Field, model_validator
 
-from gdm.distribution.sequence_pair import SequencePair
-from gdm.distribution.distribution_enum import ConnectionType, VoltageTypes
+from gdm.distribution.common.sequence_pair import SequencePair
+from gdm.distribution.enums import ConnectionType, VoltageTypes
 from gdm.quantities import PositiveApparentPower, PositiveVoltage
 from gdm.constants import PINT_SCHEMA
 

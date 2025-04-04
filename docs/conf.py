@@ -38,6 +38,7 @@ autodoc_pydantic_settings_show_validator_members = False
 autodoc_pydantic_validator_list_fields = False
 autodoc_pydantic_field_list_validators = False
 autodoc_pydantic_model_show_validator_summary = False
+autodoc_pydantic_model_erdantic_figure = False
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 

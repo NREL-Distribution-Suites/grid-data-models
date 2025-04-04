@@ -10,14 +10,14 @@ from gdm.distribution.equipment.distribution_transformer_equipment import (
 )
 from gdm.distribution.components.matrix_impedance_branch import MatrixImpedanceBranch
 from gdm.distribution.components.distribution_load import DistributionLoad
-from gdm.distribution.distribution_enum import ConnectionType, Phase, VoltageTypes
+from gdm.distribution.enums import ConnectionType, Phase, VoltageTypes
 from gdm.distribution import DistributionSystem
 from gdm.distribution.equipment.load_equipment import LoadEquipment
 from gdm.distribution.equipment.matrix_impedance_branch_equipment import (
     MatrixImpedanceBranchEquipment,
 )
 from gdm.distribution.equipment.phase_load_equipment import PhaseLoadEquipment
-from gdm.distribution.sequence_pair import SequencePair
+from gdm.distribution.common.sequence_pair import SequencePair
 from gdm.quantities import (
     CapacitancePULength,
     PositiveApparentPower,

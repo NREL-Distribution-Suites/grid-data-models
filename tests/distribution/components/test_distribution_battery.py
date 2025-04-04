@@ -14,7 +14,7 @@ from gdm.distribution.controllers import(
     VoltVarControlSetting,
     InverterController,
 )
-from gdm.distribution import Phase
+from gdm.distribution.enums import Phase
 from gdm.quantities import (
     ReactivePower,
     ActivePower,

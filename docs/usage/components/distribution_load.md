@@ -18,7 +18,7 @@ Creating a single-phase constant power load connected to a bus. A constant power
 ...     ReactivePower
 ...     ActivePower,
 ... )
->>> from gdm.distribution import Phase, VoltageTypes
+>>> from gdm.distribution.enums import Phase, VoltageTypes
 >>> bus1 = DistributionBus(
 ...     name="Bus-1",
 ...     rated_voltage=PositiveVoltage(7.62, "kilovolts"),
@@ -105,7 +105,7 @@ For the three-phase delta-connected constant power load, we need to define the l
 ...     ReactivePower
 ...     ActivePower,
 ... )
->>> from gdm.distribution import Phase, VoltageTypes, ConnectionType
+>>> from gdm.distribution.enums import Phase, VoltageTypes, ConnectionType
 >>> bus2 = DistributionBus(
 ...     name="Bus-2",
 ...     rated_voltage=PositiveVoltage(13.8, "kilovolts"),

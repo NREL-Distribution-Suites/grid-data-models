@@ -3,7 +3,7 @@
 [![](../../models/InverterController.svg)](../../models/InverterController.svg)
 
 ```{eval-rst}
-.. autopydantic_model:: gdm.InverterController
+.. autopydantic_model:: gdm.distribution.controllers.InverterController
    :members: __init__
    :inherited-members: Component
    :exclude-members: example, validate_fields
@@ -11,19 +11,19 @@
 
 ## Reactive Power Controls
 
-[![](../../models/PowerfactorInverterController.svg)](../../models/PowerfactorInverterController.svg)
+[![](../../models/PowerfactorControlSetting.svg)](../../models/PowerfactorControlSetting.svg
 
 ```{eval-rst}
-.. autopydantic_model:: gdm.PowerfactorInverterController
+.. autopydantic_model:: gdm.distribution.controllers.PowerfactorControlSetting
    :members: __init__
    :inherited-members: Component
    :exclude-members: example, validate_fields
 ```
 
-[![](../../models/VoltVarInverterController.svg)](../../models/VoltVarInverterController.svg)
+[![](../../models/VoltVarControlSetting.svg)](../../models/VoltVarControlSetting.svg)
 
 ```{eval-rst}
-.. autopydantic_model:: gdm.distribution.controllers.VoltVarInverterController
+.. autopydantic_model:: gdm.distribution.controllers.VoltVarControlSetting
    :members: __init__
    :inherited-members: Component
    :exclude-members: example, validate_fields
@@ -31,64 +31,64 @@
 
 ## Active Power Controls
 
-[![](../../models/VoltWattInverterController.svg)](../../models/VoltWattInverterController.svg)
+[![](../../models/VoltWattControlSetting.svg)](../../models/VoltWattControlSetting.svg)
 
 ```{eval-rst}
-.. autopydantic_model:: gdm.distribution.controllers.VoltWattInverterController
+.. autopydantic_model:: gdm.distribution.controllers.VoltWattControlSetting
    :members: __init__
    :inherited-members: Component
    :exclude-members: example, validate_fields
 ```
 
-[![](../../models/BatteryPeakShavingBaseLoadingController.svg)](../../models/BatteryPeakShavingBaseLoadingController.svg)
+[![](../../models/PeakShavingBaseLoadingControlSetting.svg)](../../models/PeakShavingBaseLoadingControlSetting.svg)
 
 ```{eval-rst}
-.. autopydantic_model:: gdm.distribution.controllers.BatteryPeakShavingBaseLoadingController
+.. autopydantic_model:: gdm.distribution.controllers.PeakShavingBaseLoadingControlSetting
    :members: __init__
    :inherited-members: Component
    :exclude-members: example, validate_fields
 ```
 
-[![](../../models/BatteryCapacityFirmingController.svg)](../../models/BatteryCapacityFirmingController.svg)
+[![](../../models/CapacityFirmingControlSetting.svg)](../../models/CapacityFirmingControlSetting.svg)
 
 ```{eval-rst}
-.. autopydantic_model:: gdm.distribution.controllers.BatteryCapacityFirmingController
+.. autopydantic_model:: gdm.distribution.controllers.CapacityFirmingControlSetting
    :members: __init__
    :inherited-members: Component
    :exclude-members: example, validate_fields
 ```
 
-[![](../../models/BatteryTimeBaseController.svg)](../../models/BatteryTimeBaseController.svg)
+[![](../../models/TimeBasedControlSetting.svg)](../../models/TimeBasedControlSetting.svg)
 
 ```{eval-rst}
-.. autopydantic_model:: gdm.distribution.controllers.BatteryTimeBaseController
+.. autopydantic_model:: gdm.distribution.controllers.TimeBasedControlSetting
    :members: __init__
    :inherited-members: Component
    :exclude-members: example, validate_fields
 ```
 
-[![](../../models/BatterySelfConsumptionController.svg)](../../models/BatterySelfConsumptionController.svg)
+[![](../../models/SelfConsumptionControlSetting.svg)](../../models/SelfConsumptionControlSetting.svg)
 
 ```{eval-rst}
-.. autopydantic_model:: gdm.distribution.controllers.BatterySelfConsumptionController
+.. autopydantic_model:: gdm.distribution.controllers.SelfConsumptionControlSetting
    :members: __init__
    :inherited-members: Component
    :exclude-members: example, validate_fields
 ```
 
-[![](../../models/BatteryTimeOfUseController.svg)](../../models/BatteryTimeOfUseController.svg)
+[![](../../models/TimeOfUseControlSetting.svg)](../../models/TimeOfUseControlSetting.svg)
 
 ```{eval-rst}
-.. autopydantic_model:: gdm.distribution.controllers.BatteryTimeOfUseController
+.. autopydantic_model:: gdm.distribution.controllers.TimeOfUseControlSetting
    :members: __init__
    :inherited-members: Component
    :exclude-members: example, validate_fields
 ```
 
-[![](../../models/BatteryDemandChargeController.svg)](../../models/BatteryDemandChargeController.svg)
+[![](../../models/DemandChargeControlSetting.svg)](../../models/DemandChargeControlSetting.svg)
 
 ```{eval-rst}
-.. autopydantic_model:: gdm.distribution.controllers.BatteryDemandChargeController
+.. autopydantic_model:: gdm.distribution.controllers.DemandChargeControlSetting
    :members: __init__
    :inherited-members: Component
    :exclude-members: example, validate_fields

@@ -7,6 +7,11 @@ from pathlib import Path
 
 # third-party imports
 import erdantic as erd
+import gdm.distribution
+import gdm.distribution.components
+import gdm.distribution.controllers
+import gdm.distribution.equipment
+import gdm.distribution.model_reduction
 from mdutils import Html
 from mdutils.mdutils import MdUtils
 from pydantic import BaseModel
@@ -22,25 +27,26 @@ class PydanticDocBuilder:
 
     def __init__(self, md_filename="models"):
         asset_list = self.create_schema_diagrams(md_filename)
-        self.create_markdown_file(md_filename, asset_list)
+        # self.create_markdown_file(md_filename, asset_list)
 
     def create_schema_diagrams(self, md_filename):
         """Method to create schema diagrams."""
         asset_list = {}
-        for asset in dir(gdm):
-            if not asset.startswith("_") and asset != "BaseModel":
-                model = getattr(gdm, asset)
-                if isinstance(model, type):
-                    print(model, issubclass(model, BaseModel))  # noqa: T201
-                    if not issubclass(model, enum.Enum):
-                        try:
-                            file_fath = folder_path / md_filename / f"{asset}.svg"
-                            diagram = erd.create(model)
-                            diagram.draw(file_fath)
-                            asset_list[asset] = f"{asset}.svg"
-                        except Exception as e:
-                            print(e)
-                            logging.info(str(e))
+        for mod in [gdm.distribution.common, gdm.distribution.components, gdm.distribution.equipment, gdm.distribution.controllers, gdm.distribution.model_reduction]:
+            for asset in dir(mod):
+                if not asset.startswith("_") and asset != "BaseModel":
+                    model = getattr(mod, asset)
+                    if isinstance(model, type):
+                        print(model, issubclass(model, BaseModel))  # noqa: T201
+                        if not issubclass(model, enum.Enum):
+                            try:
+                                file_fath = folder_path / md_filename / f"{asset}.svg"
+                                diagram = erd.create(model)
+                                diagram.draw(file_fath)
+                                asset_list[asset] = f"{asset}.svg"
+                            except Exception as e:
+                                print(e)
+                                logging.info(str(e))
         return asset_list
 
     def create_markdown_file(self, md_filename, asset_list):

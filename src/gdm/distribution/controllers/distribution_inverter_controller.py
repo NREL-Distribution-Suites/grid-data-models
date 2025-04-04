@@ -11,9 +11,9 @@ from gdm.distribution.controllers.base.inverter_controller_base import (
     ReactivePowerInverterControllerBase, 
     ActivePowerInverterControllerBase
 )
-from gdm.distribution.distribution_enum import ControllerSupport
+from gdm.distribution.enums import ControllerSupport
 from gdm.quantities import ActivePower, ActivePowerPUTime
-from gdm.distribution.curve import Curve
+from gdm.distribution.common.curve import Curve
 
 
 class PowerfactorControlSetting(ReactivePowerInverterControllerBase):

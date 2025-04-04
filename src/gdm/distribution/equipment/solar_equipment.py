@@ -6,8 +6,8 @@ from infrasys import Component
 from pydantic import Field
 
 from gdm.quantities import PositiveActivePower, PositiveVoltage
-from gdm.distribution.distribution_enum import VoltageTypes
-from gdm.distribution.curve import Curve
+from gdm.distribution.enums import VoltageTypes
+from gdm.distribution.common.curve import Curve
 from gdm.constants import PINT_SCHEMA
 
 class SolarEquipment(Component):

@@ -14,12 +14,12 @@ from gdm.distribution.components.distribution_feeder import DistributionFeeder
 from gdm.distribution.components.distribution_substation import DistributionSubstation
 from gdm.distribution.equipment.phase_capacitor_equipment import PhaseCapacitorEquipment
 from gdm.quantities import PositiveVoltage
-from gdm.distribution.distribution_enum import Phase
+from gdm.distribution.enums import Phase
 from gdm.distribution.controllers.distribution_capacitor_controller import (
     VoltageCapacitorController,
 )
 from gdm.distribution.controllers.base.capacitor_controller_base import CapacitorControllerBase
-from gdm.distribution.distribution_enum import VoltageTypes
+from gdm.distribution.enums import VoltageTypes
 
 
 class DistributionCapacitor(InServiceDistributionComponentBase):

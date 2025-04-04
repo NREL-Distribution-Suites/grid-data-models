@@ -20,8 +20,8 @@ from gdm.quantities import PositiveVoltage, ActivePower, ReactivePower
 from gdm.distribution.components.distribution_substation import (
     DistributionSubstation,
 )
-from gdm.distribution.distribution_enum import ControllerSupport
-from gdm.distribution.distribution_enum import Phase
+from gdm.distribution.enums import ControllerSupport
+from gdm.distribution.enums import Phase
 
 
 class DistributionBattery(InServiceDistributionComponentBase):

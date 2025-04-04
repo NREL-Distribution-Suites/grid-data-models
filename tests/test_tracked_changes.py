@@ -14,8 +14,8 @@ from gdm.tracked_changes import (
     get_distribution_system_on_date,
     apply_tracked_changes,
     apply_update_scenario,
-    TrackedChanges,
     UpdateScenario,
+    TrackedChange,
     PropertyEdit,
 )
 
@@ -26,8 +26,8 @@ def build_model_updates(system: DistributionSystem) -> UpdateScenario:
     load1, load2 = list(system.get_components(DistributionLoad))[:2]
     update_scenario = UpdateScenario(
         name="Test scenario",
-        modifications=[
-            TrackedChanges(
+        tracked_changes=[
+            TrackedChange(
                 update_date="2022-01-01",
                 edits=[
                     PropertyEdit(
@@ -37,15 +37,15 @@ def build_model_updates(system: DistributionSystem) -> UpdateScenario:
                     )
                 ],
             ),
-            TrackedChanges(
+            TrackedChange(
                 update_date="2023-01-01",
                 additions=["aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"],
             ),
-            TrackedChanges(
+            TrackedChange(
                 update_date="2024-01-01",
                 deletions=[load1.uuid],
             ),
-            TrackedChanges(
+            TrackedChange(
                 update_date="2025-01-01",
                 deletions=[load2.uuid],
             ),
@@ -112,4 +112,4 @@ def test_tracked_change(distribution_system_with_single_timeseries):
         }
     )
     catalog.add_component(load_equipment)
-    apply_tracked_changes(system,update_scenario.modifications[0], catalog, [])
+    apply_tracked_changes(system,update_scenario.tracked_changes[0], catalog, [])

@@ -2,7 +2,7 @@ import pytest
 
 from gdm.distribution.components import MatrixImpedanceBranch, DistributionBus
 from gdm.quantities import PositiveVoltage
-from gdm.distribution import Phase 
+from gdm.distribution.enums import Phase 
 
 def test_wrong_number_of_buses():
     branch = MatrixImpedanceBranch.example()

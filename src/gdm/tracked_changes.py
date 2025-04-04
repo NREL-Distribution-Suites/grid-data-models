@@ -17,7 +17,7 @@ class PropertyEdit(Component):
     component_uuid: UUID
 
 
-class TrackedChanges(Component):
+class TrackedChange(Component):
     """
     This model represents tracked changes to the distribution system model. This is useful when there is a need
     a) to track system changes over time (e.g. a capacity expansion problem)
@@ -46,8 +46,8 @@ class UpdateScenario(Component):
     Represents tracked changes for a given scenario. 
     Note: You an save multiple update scenarios in a sigle json file 
     """
-    modifications: Annotated[
-        list[TrackedChanges], Field([], description="List of edits to the base distribution system")
+    tracked_changes: Annotated[
+        list[TrackedChange], Field([], description="List of edits to the base distribution system")
     ]
     
     
@@ -104,9 +104,11 @@ def get_distribution_system_on_date(
     """
     # Initialize a log for tracking updates.
     log = []
-    model_changes = update_scenario.modifications
+    model_changes = update_scenario.tracked_changes
     #TODO: validate there is a date
     # Sort model changes by update date in ascending order.
+    assert None not in []
+    
     model_changes = sorted(model_changes, key=lambda x: x.update_date, reverse=False)
     # Filter changes that occurred on or before the specified date.
     filtered_tracked_change_list = list(filter(lambda x: x.update_date <= system_date, model_changes))
@@ -128,7 +130,7 @@ def apply_update_scenario(
         system: DistributionSystem,
         catalog: DistributionSystem,
     ):
-    tracked_change_list  = update_scenario.modifications
+    tracked_change_list  = update_scenario.tracked_changes
     log = []
     for filtered_tracked_changes in tracked_change_list:
         system = apply_tracked_changes(
@@ -144,7 +146,7 @@ def apply_update_scenario(
 
 def apply_tracked_changes(
         system: DistributionSystem, 
-        tracked_changes:TrackedChanges,
+        tracked_changes:TrackedChange,
         catalog: DistributionSystem | CatalogSystem,
         log: list = [],
         show_table: bool = False

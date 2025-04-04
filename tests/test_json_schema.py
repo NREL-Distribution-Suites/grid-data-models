@@ -59,11 +59,12 @@ from gdm.distribution.controllers import (
     RegulatorController,
 )
 
-from gdm.distribution import (
+from gdm.distribution.common import (
     TimeCurrentCurve,
+    VoltageLimitSet,
+    ThermalLimitSet,
     Curve,
 )
-
 
 CLASSES_TO_CHECK_JSON_SCHEMA = [
     DistributionVoltageSource,
@@ -117,6 +118,8 @@ CLASSES_TO_CHECK_JSON_SCHEMA = [
     VoltVarControlSetting,
     RegulatorController,
     TimeCurrentCurve,
+    VoltageLimitSet,
+    ThermalLimitSet,
     Curve,
 ]
 

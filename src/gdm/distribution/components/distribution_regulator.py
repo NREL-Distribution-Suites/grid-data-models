@@ -14,7 +14,7 @@ from gdm.distribution.equipment.distribution_transformer_equipment import (
     DistributionTransformerEquipment,
 )
 from gdm.distribution.components.distribution_bus import DistributionBus
-from gdm.distribution.distribution_enum import Phase, VoltageTypes
+from gdm.distribution.enums import Phase, VoltageTypes
 from gdm.quantities import PositiveVoltage
 
 
