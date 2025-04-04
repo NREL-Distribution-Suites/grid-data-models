@@ -27,7 +27,7 @@ A single-phase transformer with star (wye) connection. This example demonstrates
 ...     SequencePair,
 ... )
 >>> from gdm.quantities import (
-...     PositiveApparentPower
+...     PositiveApparentPower,
 ...     PositiveVoltage,
 ...     ReactivePower,
 ...     ActivePower,

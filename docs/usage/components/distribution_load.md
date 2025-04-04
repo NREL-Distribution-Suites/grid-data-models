@@ -96,7 +96,7 @@ For the three-phase delta-connected constant power load, we need to define the l
 ...     DistributionBus, 
 ...     DistributionLoad,
 ... )
->>> from gdm.distribution.equioment import (
+>>> from gdm.distribution.equipment import (
 ...     PhaseLoadEquipment,
 ...     LoadEquipment,
 ... )
