@@ -3,25 +3,26 @@
 ## Single Phase Regulator
 
 ```python
+
+>>> from gdm.distribution.equipment import WindingEquipment, DistributionTransformerEquipment
+>>> from gdm.distribution.controllers import RegulatorController
+>>> from gdm.distribution.common import SequencePair
 >>> from gdm.distribution.components import (
 ...     DistributionSubstation, 
 ...     DistributionRegulator, 
 ...     DistributionFeeder, 
 ...     DistributionBus
 ... )
->>> from gdm.distribution.equipment import WindingEquipment, DistributionTransformerEquipment
->>> from gdm.distribution.controllers import RegulatorController
->>> from gdm.quantities import (
-...     PositiveApparentPower, 
-...     PositiveVoltage,
-...     Time
-... )
->>> from gdm.distribution.common import SequencePair
 >>> from gdm.distribution.enums import (
 ...     ConnectionType,
 ...     VoltageTypes, 
 ...     Phase, 
 ... )
+>>> from gdm.quantities import (
+...     PositiveApparentPower, 
+...     PositiveVoltage,
+... )
+>>> from infrasys import Time
 >>> bus_1 = DistributionBus(
 ...     name="Bus-1",
 ...     rated_voltage=PositiveVoltage(12.47, "kilovolts"),
