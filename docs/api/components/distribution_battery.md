@@ -7,5 +7,4 @@
    :members: __init__
    :inherited-members: Component
    :exclude-members: example, validate_fields
-   :model-erdantic-figure: True
 ```

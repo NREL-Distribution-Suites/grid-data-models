@@ -1,3 +1,18 @@
+from pathlib import Path
+import importlib.util
+import sys
+
+file_path = Path(__file__).parent
+
+def import_from_path(module_name, file_path):
+    spec = importlib.util.spec_from_file_location(module_name, file_path)
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[module_name] = module
+    spec.loader.exec_module(module)
+    return module
+
+# import_from_path("erdantic_schema_builder", file_path / "erdantic_schema_builder.py")
+
 # Configuration file for the Sphinx documentation builder.
 #
 # For the full list of built-in configuration values, see the documentation:
