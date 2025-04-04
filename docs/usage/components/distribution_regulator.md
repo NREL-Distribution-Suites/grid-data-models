@@ -13,6 +13,7 @@
 ...     DistributionFeeder, 
 ...     DistributionBus
 ... )
+>>> from infrasys.quantities import Time
 >>> from gdm.distribution.enums import (
 ...     ConnectionType,
 ...     VoltageTypes, 
@@ -22,7 +23,6 @@
 ...     PositiveApparentPower, 
 ...     PositiveVoltage,
 ... )
->>> from infrasys import Time
 >>> bus_1 = DistributionBus(
 ...     name="Bus-1",
 ...     rated_voltage=PositiveVoltage(12.47, "kilovolts"),
