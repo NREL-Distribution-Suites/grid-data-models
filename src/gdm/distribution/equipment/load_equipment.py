@@ -6,7 +6,7 @@ from infrasys import Component
 from pydantic import Field
 
 from gdm.distribution.equipment.phase_load_equipment import PhaseLoadEquipment
-from gdm.distribution.distribution_enum import ConnectionType
+from gdm.distribution.enums import ConnectionType
 
 
 class LoadEquipment(Component):

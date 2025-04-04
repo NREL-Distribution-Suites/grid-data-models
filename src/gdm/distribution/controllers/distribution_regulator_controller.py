@@ -1,4 +1,4 @@
-""" This module contains interface for distribution controllers."""
+"""This module contains interface for distribution controllers."""
 
 from typing import Annotated, Optional
 
@@ -7,7 +7,7 @@ from infrasys import Component
 from pydantic import Field
 
 from gdm.distribution.components.distribution_bus import DistributionBus
-from gdm.distribution.distribution_enum import Phase
+from gdm.distribution.enums import Phase
 from gdm.quantities import (
     PositiveVoltage,
     PositiveCurrent,

@@ -1,5 +1,5 @@
 (temporal-changes)=
-## Tracking temporal changes in `grid-data-models`
+## Tracking temporal changes in GDM
 
 The `grid-data-models` (GDM) package includes comprehensive support for modeling temporal changes within a distribution system. This functionality allows users to effectively manage time-dependent modifications to a base grid model, enabling dynamic analysis and scenario planning. All temporal changes are built upon a single base GDM model, ensuring a consistent foundation for analysis. The system enables edits, additions, and deletions to a base GDM model at specific timestamps. Each modification is tracked and stored, ensuring a clear history of changes over time.
   
@@ -51,7 +51,7 @@ load_model_to_delete_in_2025 = base_model.get_component(DistributionLoad, "fdr3_
 ```
 
 
-4. The `UpdateScenario` model in GDM represents a collection of system modifications. Each scenario object has a unique scenario name and a list of `SystemModification` objects, which represent individual modifications to be applied to a system. Each `SystemModification` object has an idientifier for the date when the modification was made along with a list of system additions, edits and deletions to be applied on the date.
+4. The `UpdateScenario` model in GDM represents a collection of tracked changes to the system. Each scenario object has a unique scenario name and a list of `TrackedChange` objects, which represent individual modifications to be applied to a system. Each `TrackedChange` object has an idientifier for the date when the modification was made along with a list of system additions, edits and deletions to be applied on the date.
 
 - **additions**: This is a list attribute that holds the UUIDs of the components that were added in this modification. These UUIDs should exist in the `catalog`.
 - **deletions**: This is a list attribute that holds the UUIDs of the components that were deleted in this modification. These UUIDs should exist in the `base system model`
@@ -60,12 +60,12 @@ load_model_to_delete_in_2025 = base_model.get_component(DistributionLoad, "fdr3_
 NOTE: When editing property of an existing component, make sure to use the same quantity / component type as defined in the model defination. For example when modifing the length property of a distribution branch, PositiveDistance is used to the define the new value in the example below
 
 ```python 
-from gdm.temporal_models import UpdateScenario, PropertyEdit, SystemModification
+from gdm.temporal_models import UpdateScenario, PropertyEdit, TrackedChange
 
 model_scenario =UpdateScenario(
     name = "Test scenario",
-    modifications = [
-        SystemModification(
+    tracked_changes = [
+        TrackedChange(
             update_date="2022-01-01",
             edits=[
                 PropertyEdit(
@@ -75,15 +75,15 @@ model_scenario =UpdateScenario(
                 )
             ],
         ),
-        SystemModification(
+        TrackedChange(
             update_date="2023-01-01",
             additions=["aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"],
         ),
-        SystemModification(
+        TrackedChange(
             update_date="2024-01-01",
             deletions=[load_model_to_delete_in_2024.uuid],
         ),
-        SystemModification(
+        TrackedChange(
             update_date="2025-01-01",
             deletions=[load_model_to_delete_in_2025.uuid],
         ),

@@ -1,8 +1,7 @@
 import pytest
 import networkx as nx
 
-from gdm import build_graph_from_system
-from gdm import DistributionLoad
+from gdm.distribution.components import DistributionLoad
 from .get_sample_system import get_three_bus_system
 
 
@@ -15,7 +14,7 @@ def create_system():
 
 def test_distribution_graph(create_system):
     """Tests distribution graph."""
-    graph_instance = build_graph_from_system(create_system)
+    graph_instance = create_system.get_undirected_graph()
     assert isinstance(graph_instance, nx.Graph)
     assert isinstance(
         create_system.get_bus_connected_components("Bus-3", DistributionLoad)[0], DistributionLoad

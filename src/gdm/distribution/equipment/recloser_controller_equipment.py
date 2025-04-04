@@ -1,4 +1,4 @@
-""" This module stores recloser controller equipment."""
+"""This module stores recloser controller equipment."""
 
 from infrasys import Component
 

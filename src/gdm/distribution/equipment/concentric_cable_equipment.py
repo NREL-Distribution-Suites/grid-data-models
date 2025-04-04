@@ -1,4 +1,4 @@
-""" This module contains concentric cable equipment."""
+"""This module contains concentric cable equipment."""
 
 from typing import Annotated
 

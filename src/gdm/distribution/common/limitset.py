@@ -1,11 +1,11 @@
-""" This module contains interface for operation limit sets. """
+"""This module contains interface for operation limit sets."""
 
 from typing import Annotated
 from infrasys import Component
 from pydantic import Field
 
 from gdm.quantities import PositiveCurrent, PositiveVoltage
-from gdm.distribution.distribution_enum import LimitType
+from gdm.distribution.enums import LimitType
 from gdm.constants import PINT_SCHEMA
 
 

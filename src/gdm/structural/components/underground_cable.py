@@ -28,9 +28,10 @@ class UndergroundCable(_InstalledDateBaseComponent):
         if self.from_component.name == self.to_component.name:
             msg = f"{self.from_component.name=} and {self.to_component.name=} can not be the same."
             raise ValueError(msg)
+        return self
 
     @classmethod
-    def example(cls) -> Self:
+    def example(cls) -> "UndergroundCable":
         return UndergroundCable(
             name="Cable-1",
             installed_date=datetime(2016, 1, 1, 0, 0, 0),

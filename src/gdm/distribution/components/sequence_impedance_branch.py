@@ -11,7 +11,7 @@ from gdm.distribution.equipment.sequence_impedance_branch_equipment import (
     SequenceImpedanceBranchEquipment,
 )
 from gdm.distribution.components.distribution_bus import DistributionBus
-from gdm.distribution.distribution_enum import Phase
+from gdm.distribution.enums import Phase
 from gdm.quantities import PositiveVoltage, PositiveDistance
 
 
@@ -36,7 +36,7 @@ class SequenceImpedanceBranch(DistributionBranchBase):
         bus1 = DistributionBus(
             voltage_type="line-to-ground",
             phases=[Phase.A, Phase.B, Phase.C],
-            nominal_voltage=PositiveVoltage(400, "volt"),
+            rated_voltage=PositiveVoltage(400, "volt"),
             substation=DistributionSubstation.example(),
             feeder=DistributionFeeder.example(),
             name="Branch-DistBus1",
@@ -44,7 +44,7 @@ class SequenceImpedanceBranch(DistributionBranchBase):
         bus2 = DistributionBus(
             voltage_type="line-to-ground",
             phases=[Phase.A, Phase.B, Phase.C],
-            nominal_voltage=PositiveVoltage(400, "volt"),
+            rated_voltage=PositiveVoltage(400, "volt"),
             substation=DistributionSubstation.example(),
             feeder=DistributionFeeder.example(),
             name="Branch-DistBus2",

@@ -5,7 +5,7 @@ from typing import Annotated
 from pydantic import Field
 
 from gdm.distribution.components.distribution_bus import DistributionBus
-from gdm.distribution.distribution_enum import Phase
+from gdm.distribution.enums import Phase
 from gdm.distribution.components.base.distribution_component_base import (
     InServiceDistributionComponentBase,
 )

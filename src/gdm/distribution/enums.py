@@ -1,4 +1,4 @@
-""" This module contains phase enums. """
+"""This module contains phase enums."""
 
 from enum import Enum
 
@@ -36,6 +36,22 @@ class LimitType(str, Enum):
 
     MIN = "min"
     MAX = "max"
+
+
+class BatteryState(str, Enum):
+    """Interface for battery state."""
+
+    CHARGING = "charging"
+    DISCHARGING = "discharging"
+    IDLING = "idling"
+
+
+class ControllerSupport(str, Enum):
+    """Interface for controller support."""
+
+    BATTERY_ONLY = "battery-only"
+    SOLAR_ONLY = "solar-only"
+    BATTERY_AND_SOLAR = "battery-and-solar"
 
 
 class ColorNodeBy(str, Enum):

@@ -1,4 +1,4 @@
-""" This module contains distribution switch controller."""
+"""This module contains distribution switch controller."""
 
 from typing import Annotated, Literal
 

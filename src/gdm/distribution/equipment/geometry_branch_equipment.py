@@ -1,4 +1,4 @@
-""" This module contains geometry branch equipment."""
+"""This module contains geometry branch equipment."""
 
 from typing import Annotated
 

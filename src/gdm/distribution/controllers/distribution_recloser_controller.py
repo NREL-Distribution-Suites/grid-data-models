@@ -1,4 +1,4 @@
-""" This module contains distribution recloser controller."""
+"""This module contains distribution recloser controller."""
 
 from typing import Annotated
 
@@ -7,7 +7,7 @@ from infrasys.quantities import Time
 from infrasys import Component
 
 from gdm.distribution.equipment.recloser_controller_equipment import RecloserControllerEquipment
-from gdm.distribution.curve import TimeCurrentCurve
+from gdm.distribution.common.curve import TimeCurrentCurve
 from gdm.constants import PINT_SCHEMA
 
 
