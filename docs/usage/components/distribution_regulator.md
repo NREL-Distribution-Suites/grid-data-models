@@ -13,14 +13,14 @@
 >>> from gdm.distribution.controllers import RegulatorController
 >>> from gdm.quantities import (
 ...     PositiveApparentPower, 
-...     PositiveVoltage
+...     PositiveVoltage,
+...     Time
 ... )
->>> from gdm.distribution import (
+>>> from gdm.distribution.common import SequencePair
+>>> from gdm.distribution.enums import (
 ...     ConnectionType,
-...     SequencePair, 
 ...     VoltageTypes, 
 ...     Phase, 
-...     Time 
 ... )
 >>> bus_1 = DistributionBus(
 ...     name="Bus-1",

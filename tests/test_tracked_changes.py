@@ -19,6 +19,14 @@ from gdm.tracked_changes import (
     PropertyEdit,
 )
 
+from gdm.distribution
+
+from gdm.distribution.enums import (
+     ConnectionType,
+     VoltageTypes, 
+     Phase, 
+     Time 
+ )
 
 def build_model_updates(system: DistributionSystem) -> UpdateScenario:
     capacitor = next(system.get_components(PhaseCapacitorEquipment))

@@ -6,7 +6,7 @@
 import numpy as np
 
 from infrasys.base_quantity import BaseQuantity, ureg
-from infrasys.quantities import Current, Distance, Resistance, Voltage, ActivePower
+from infrasys.quantities import Current, Distance, Resistance, Voltage, ActivePower, Time
 
 
 ureg.define("var = ampere * volt")
