@@ -9,7 +9,7 @@ Creating a single-phase constant power load connected to a bus. A constant power
 ...     DistributionBus, 
 ...     DistributionLoad,
 ... )
->>> from gdm.distribution.equioment import (
+>>> from gdm.distribution.equipment import (
 ...     PhaseLoadEquipment,
 ...     LoadEquipment,
 ... )

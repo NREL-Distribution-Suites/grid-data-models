@@ -4,7 +4,7 @@ Single phase bus.
 
 ```python
 >>> from gdm.distribution.components import DistributionBus
->>> from gdm.quantities import PositiveVoltage,
+>>> from gdm.quantities import PositiveVoltage
 >>> from gdm.distribution (
 ...     VoltageTypes,
 ...     Phase
@@ -35,7 +35,7 @@ DistributionBus(name='Bus-1', substation=None, feeder=None, voltage_type=<Voltag
 A bus with cartesian coordinates.
 
 ```python
->>> from gdm import Location
+>>> from gdm.distribution.common import Location
 >>> DistributionBus(
 ...     name="Bus-1",
 ...     rated_voltage=PositiveVoltage(7.62, "kilovolts"),
@@ -50,7 +50,7 @@ DistributionBus(name='Bus-1', substation=None, feeder=None, voltage_type=<Voltag
 A bus with coordinate reference system.
 
 ```python
->>> from gdm import Location
+>>> from gdm.distribution.common import Location
 >>> DistributionBus(
 ...     name="Bus-1",
 ...     rated_voltage=PositiveVoltage(7.62, "kilovolts"),
