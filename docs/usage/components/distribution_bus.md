@@ -5,7 +5,7 @@ Single phase bus.
 ```python
 >>> from gdm.distribution.components import DistributionBus
 >>> from gdm.quantities import PositiveVoltage
->>> from gdm.distribution (
+>>> from gdm.distribution import (
 ...     VoltageTypes,
 ...     Phase
 ... )

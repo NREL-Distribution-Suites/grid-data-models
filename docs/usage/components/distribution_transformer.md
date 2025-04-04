@@ -5,24 +5,32 @@
 A single-phase transformer with star (wye) connection. This example demonstrates creating a single-phase transformer with primary and secondary buses, winding equipment, and transformer configuration.
 
 ```python
->>> from gdm import (
-...     DistributionBus, 
-...     DistributionLoad,
-...     LoadEquipment,
-...     PositiveVoltage,
-...     VoltageTypes,
-...     PhaseLoadEquipment,
-...     Phase,
-...     ActivePower,
-...     ReactivePower,
-...     ConnectionType,
+>>> from gdm.distribution.components import (
 ...     DistributionTransformer,
 ...     DistributionSubstation,
 ...     DistributionFeeder,
+...     DistributionBus, 
+...     DistributionLoad,
+... )
+>>> from gdm.distribution.equipment import (
 ...     DistributionTransformerEquipment,
+...     PhaseLoadEquipment,
 ...     WindingEquipment,
+...     LoadEquipment,
+... )
+>>> from gdm.distribution.enums import (
+...     ConnectionType,
+...     VoltageTypes,
+...     Phase,
+... )
+>>> from gdm.distribution.common import (
 ...     SequencePair,
+... )
+>>> from gdm.quantities import (
 ...     PositiveApparentPower
+...     PositiveVoltage,
+...     ReactivePower,
+...     ActivePower,
 ... )
 >>> substation = DistributionSubstation(name='Test Substation', feeders=[DistributionFeeder(name='Test Feeder')])
 >>> feeder = DistributionFeeder(name='Test Feeder')

@@ -4,13 +4,12 @@
 
 ```python
 >>> from gdm.distribution.components import (
-...     DistributionTransformerEquipment,
 ...     DistributionSubstation, 
 ...     DistributionRegulator, 
 ...     DistributionFeeder, 
 ...     DistributionBus
 ... )
->>> from gdm.distribution.equipment import WindingEquipment
+>>> from gdm.distribution.equipment import WindingEquipment, DistributionTransformerEquipment
 >>> from gdm.distribution.controllers import RegulatorController
 >>> from gdm.quantities import (
 ...     PositiveApparentPower, 

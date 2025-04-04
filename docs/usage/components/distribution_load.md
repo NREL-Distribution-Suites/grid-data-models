@@ -15,7 +15,7 @@ Creating a single-phase constant power load connected to a bus. A constant power
 ... )
 >>> from gdm.quantities import (
 ...     PositiveVoltage,
-...     ReactivePower
+...     ReactivePower,
 ...     ActivePower,
 ... )
 >>> from gdm.distribution.enums import Phase, VoltageTypes
