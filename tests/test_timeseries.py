@@ -22,7 +22,7 @@ from gdm.exceptions import (
 )
 
 from gdm.quantities import ActivePower
-from gdm.distribution.common 
+
 
 class CustomTimeSeries:
     "A dummy time series class for test"
