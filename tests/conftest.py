@@ -14,7 +14,7 @@ from gdm.distribution.common import SequencePair
 from gdm.distribution import DistributionSystem
 
 
-from gdm.distribution.enums import(
+from gdm.distribution.enums import (
     ConnectionType,
     VoltageTypes,
     Phase,
@@ -40,7 +40,7 @@ from gdm.distribution.equipment import (
     LoadEquipment,
 )
 
-from gdm.quantities import(
+from gdm.quantities import (
     PositiveReactivePower,
     PositiveApparentPower,
     PositiveActivePower,
@@ -344,7 +344,7 @@ def build_split_phase_solar(bus: DistributionBus, bus_number: int):
             resistance=1,
             reactance=1,
             rated_voltage=bus.rated_voltage,
-            voltage_type=bus.voltage_type
+            voltage_type=bus.voltage_type,
         ),
         inverter=InverterEquipment(
             rated_apparent_power=PositiveApparentPower(3.8, "kva"),

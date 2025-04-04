@@ -1,4 +1,4 @@
-""" This module contains distribution branch. """
+"""This module contains distribution branch."""
 
 from typing import Annotated
 from itertools import product

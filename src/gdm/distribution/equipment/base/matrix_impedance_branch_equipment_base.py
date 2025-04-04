@@ -1,4 +1,4 @@
-""" This module contains matrix impedance branch equipment."""
+"""This module contains matrix impedance branch equipment."""
 
 from typing import Annotated, Optional
 

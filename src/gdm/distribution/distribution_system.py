@@ -295,10 +295,10 @@ class DistributionSystem(System):
         if export_file:
             export_file = Path(export_file)
             final_gdf.to_csv(export_file)
-         
+
         return final_gdf
 
-    def to_geojson(self, export_file : Path | str) -> None:
+    def to_geojson(self, export_file: Path | str) -> None:
         export_file = Path(export_file)
         system_gdf = self.to_gdf()
         with open(export_file, "w") as f:

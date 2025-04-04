@@ -1,4 +1,4 @@
-""" This module contains interface for distribution transformer."""
+"""This module contains interface for distribution transformer."""
 
 from itertools import groupby
 from typing import Annotated

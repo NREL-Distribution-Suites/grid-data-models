@@ -1,4 +1,4 @@
-""" This module contains matrix impedance switch equipment."""
+"""This module contains matrix impedance switch equipment."""
 
 from typing import Optional
 from typing_extensions import Annotated

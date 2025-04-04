@@ -1,4 +1,4 @@
-""" This module contains matrix impedacne phase."""
+"""This module contains matrix impedacne phase."""
 
 from typing import Annotated
 

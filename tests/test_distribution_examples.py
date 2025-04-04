@@ -1,4 +1,4 @@
-""" This module contains tests for all examples."""
+"""This module contains tests for all examples."""
 
 import pytest
 
@@ -18,7 +18,7 @@ from gdm.distribution.components import (
     DistributionSolar,
     DistributionLoad,
     DistributionBus,
-    GeometryBranch
+    GeometryBranch,
 )
 
 from gdm.distribution.equipment import (

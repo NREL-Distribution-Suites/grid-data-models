@@ -1,4 +1,4 @@
-""" This module contains interface for distribution controllers."""
+"""This module contains interface for distribution controllers."""
 
 from typing import Annotated, Optional
 

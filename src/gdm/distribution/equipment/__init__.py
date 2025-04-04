@@ -1,4 +1,3 @@
-
 from gdm.distribution.equipment.base.matrix_impedance_branch_equipment_base import (
     MatrixImpedanceBranchEquipmentBase,
 )
@@ -45,4 +44,3 @@ from gdm.distribution.equipment.solar_equipment import SolarEquipment
 from gdm.distribution.equipment.voltagesource_equipment import VoltageSourceEquipment
 from gdm.distribution.equipment.phase_voltagesource_equipment import PhaseVoltageSourceEquipment
 from gdm.distribution.equipment.battery_equipment import BatteryEquipment
-

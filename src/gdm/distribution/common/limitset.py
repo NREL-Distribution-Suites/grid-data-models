@@ -1,4 +1,4 @@
-""" This module contains interface for operation limit sets. """
+"""This module contains interface for operation limit sets."""
 
 from typing import Annotated
 from infrasys import Component

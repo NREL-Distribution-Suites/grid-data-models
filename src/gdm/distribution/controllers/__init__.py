@@ -3,8 +3,8 @@ from gdm.distribution.controllers.distribution_capacitor_controller import (
     CurrentCapacitorController,
     VoltageCapacitorController,
     ActivePowerCapacitorController,
-    ReactivePowerCapacitorController
-    )
+    ReactivePowerCapacitorController,
+)
 from gdm.distribution.controllers.distribution_inverter_controller import (
     InverterController,
     VoltVarControlSetting,
@@ -18,13 +18,11 @@ from gdm.distribution.controllers.distribution_inverter_controller import (
     PeakShavingBaseLoadingControlSetting,
 )
 from gdm.distribution.controllers.distribution_recloser_controller import (
-    DistributionRecloserController
+    DistributionRecloserController,
 )
-from gdm.distribution.controllers.distribution_regulator_controller import(
-    RegulatorController
-)
+from gdm.distribution.controllers.distribution_regulator_controller import RegulatorController
 from gdm.distribution.controllers.distribution_switch_controller import (
-    DistributionSwitchController
+    DistributionSwitchController,
 )
 
 from gdm.distribution.controllers.base.inverter_controller_base import (

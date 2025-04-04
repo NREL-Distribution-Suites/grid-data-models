@@ -1,4 +1,4 @@
-""" This module contains bare conductor equipment."""
+"""This module contains bare conductor equipment."""
 
 from typing import Annotated, Optional
 

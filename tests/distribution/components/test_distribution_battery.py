@@ -5,11 +5,11 @@ from gdm.distribution.components import (
     DistributionSolar,
     DistributionBus,
 )
-from gdm.distribution.equipment import(
+from gdm.distribution.equipment import (
     InverterEquipment,
     BatteryEquipment,
 )
-from gdm.distribution.controllers import(
+from gdm.distribution.controllers import (
     PeakShavingBaseLoadingControlSetting,
     VoltVarControlSetting,
     InverterController,
@@ -39,7 +39,7 @@ def test_distribution_battery_without_controller():
 def test_distribution_solar_with_invalid_controller():
     # InverterController example should raise an excention given the controller uses SolarOnly control algorithm
     with pytest.raises(ValueError):
-        inverter_control =  InverterController.example()
+        inverter_control = InverterController.example()
         inverter_control.active_power_control = PeakShavingBaseLoadingControlSetting.example()
         DistributionSolar(
             name="test_battery",

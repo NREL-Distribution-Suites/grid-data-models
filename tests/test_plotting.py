@@ -22,7 +22,7 @@ def test_gdf_conversion(distribution_system_with_single_timeseries, tmp_path):
 
     exported_file = tmp_path / f"{model.name}_gdf.csv"
     system_gdf = model.to_gdf()
-    
+
     assert not exported_file.exists()
 
     assert not system_gdf.empty

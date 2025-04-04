@@ -1,4 +1,4 @@
-"""This module contains solar equipment. """
+"""This module contains solar equipment."""
 
 from typing import Annotated
 
@@ -9,6 +9,7 @@ from gdm.quantities import PositiveActivePower, PositiveVoltage
 from gdm.distribution.enums import VoltageTypes
 from gdm.distribution.common.curve import Curve
 from gdm.constants import PINT_SCHEMA
+
 
 class SolarEquipment(Component):
     """Interface for Solar Model."""
@@ -61,5 +62,5 @@ class SolarEquipment(Component):
             resistance=50,
             reactance=0,
             rated_voltage=PositiveVoltage(12.47, "kilovolt"),
-            voltage_type= VoltageTypes.LINE_TO_LINE
+            voltage_type=VoltageTypes.LINE_TO_LINE,
         )

@@ -1,4 +1,4 @@
-""" This module contains interface for distribution inverter controllers."""
+"""This module contains interface for distribution inverter controllers."""
 
 from typing import Annotated, Literal
 from datetime import time
@@ -8,8 +8,8 @@ from pydantic import Field
 
 
 from gdm.distribution.controllers.base.inverter_controller_base import (
-    ReactivePowerInverterControllerBase, 
-    ActivePowerInverterControllerBase
+    ReactivePowerInverterControllerBase,
+    ActivePowerInverterControllerBase,
 )
 from gdm.distribution.enums import ControllerSupport
 from gdm.quantities import ActivePower, ActivePowerPUTime
@@ -19,7 +19,7 @@ from gdm.distribution.common.curve import Curve
 class PowerfactorControlSetting(ReactivePowerInverterControllerBase):
     """
     Control settings for the  Inverter Controller to represent power factor control.
-    Works with both battery and solar systems. Controls reactive power output of the 
+    Works with both battery and solar systems. Controls reactive power output of the
     connected inverter
     """
 
@@ -41,7 +41,7 @@ class PowerfactorControlSetting(ReactivePowerInverterControllerBase):
 class VoltVarControlSetting(ReactivePowerInverterControllerBase):
     """
     Control settings for the Inverter Controller to represent volt / var control settings.
-    Works with both battery and solar systems. Controls reactive power output of the 
+    Works with both battery and solar systems. Controls reactive power output of the
     connected inverter
     """
 
@@ -72,14 +72,16 @@ class VoltVarControlSetting(ReactivePowerInverterControllerBase):
 class VoltWattControlSetting(ActivePowerInverterControllerBase):
     """
     Control settings for the Inverter Controller to represent volt / watt control settings.
-    Works with both battery and solar systems. Controls active power output of the 
+    Works with both battery and solar systems. Controls active power output of the
     connected inverter
     """
 
     volt_watt_curve: Annotated[
         Curve, Field(..., description="The volt-watt curve that is being applied.")
     ]
-    supported_by: Literal[ControllerSupport.BATTERY_AND_SOLAR] = ControllerSupport.BATTERY_AND_SOLAR
+    supported_by: Literal[
+        ControllerSupport.BATTERY_AND_SOLAR
+    ] = ControllerSupport.BATTERY_AND_SOLAR
 
     @classmethod
     def example(cls) -> "VoltWattControlSetting":
@@ -92,7 +94,7 @@ class VoltWattControlSetting(ActivePowerInverterControllerBase):
 class PeakShavingBaseLoadingControlSetting(ActivePowerInverterControllerBase):
     """
     Control settings for the Inverter Controller to represent peak shaving / base loading
-    control settings. Works with battery systems only. Controls active power output of the 
+    control settings. Works with battery systems only. Controls active power output of the
     connected inverter
     """
 
@@ -112,7 +114,7 @@ class PeakShavingBaseLoadingControlSetting(ActivePowerInverterControllerBase):
 class CapacityFirmingControlSetting(ActivePowerInverterControllerBase):
     """
     Control settings for the Inverter Controller to represent capacity firming
-    control settings. Works with battery systems only. Controls active power output of the 
+    control settings. Works with battery systems only. Controls active power output of the
     connected inverter
     """
 
@@ -138,7 +140,7 @@ class CapacityFirmingControlSetting(ActivePowerInverterControllerBase):
 class TimeBasedControlSetting(ActivePowerInverterControllerBase):
     """
     Control settings for the Inverter Controller to represent time based charge / discharge
-    control settings. Works with battery systems only. Controls active power output of the 
+    control settings. Works with battery systems only. Controls active power output of the
     connected inverter
     """
 
@@ -178,7 +180,7 @@ class TimeBasedControlSetting(ActivePowerInverterControllerBase):
 class SelfConsumptionControlSetting(ActivePowerInverterControllerBase):
     """
     Control settings for the Inverter Controller to represent self comsumption
-    control settings. Works with battery systems only. Controls active power output of the 
+    control settings. Works with battery systems only. Controls active power output of the
     connected inverter
     """
 
@@ -192,8 +194,8 @@ class SelfConsumptionControlSetting(ActivePowerInverterControllerBase):
 
 class TimeOfUseControlSetting(ActivePowerInverterControllerBase):
     """
-    Control settings for the Inverter Controller to represent time of use 
-    control settings. Works with battery systems only. Controls active power output of the 
+    Control settings for the Inverter Controller to represent time of use
+    control settings. Works with battery systems only. Controls active power output of the
     connected inverter
     """
 
@@ -212,7 +214,7 @@ class TimeOfUseControlSetting(ActivePowerInverterControllerBase):
 class DemandChargeControlSetting(ActivePowerInverterControllerBase):
     """
     Control settings for the Inverter Controller to represent demand charge focused
-    control settings. Works with battery systems only. Controls active power output of the 
+    control settings. Works with battery systems only. Controls active power output of the
     connected inverter
     """
 
@@ -230,7 +232,7 @@ class DemandChargeControlSetting(ActivePowerInverterControllerBase):
 
 
 class InverterController(Component):
-    """Inverter contoller represent the complete control settings for a given 
+    """Inverter contoller represent the complete control settings for a given
     InverterEquipment. This model may be used with an instance of DistributionSolar,
     DistributionBattery or any other model that has an inverter.
     """

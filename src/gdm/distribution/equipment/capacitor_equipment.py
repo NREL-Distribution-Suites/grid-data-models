@@ -1,4 +1,4 @@
-""" This module contains capacitor equipment."""
+"""This module contains capacitor equipment."""
 
 from typing import Annotated
 

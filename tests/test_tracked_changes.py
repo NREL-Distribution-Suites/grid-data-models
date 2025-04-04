@@ -19,6 +19,7 @@ from gdm.tracked_changes import (
     PropertyEdit,
 )
 
+
 def build_model_updates(system: DistributionSystem) -> UpdateScenario:
     capacitor = next(system.get_components(PhaseCapacitorEquipment))
 
@@ -82,6 +83,7 @@ def test_tracked_changes_on_a_system(distribution_system_with_single_timeseries)
     capacitor = updated_system.get_component_by_uuid(cap_uuid)
     assert capacitor.rated_reactive_power.to("kilovar").magnitude == 200.0
 
+
 def test_scenario_update(distribution_system_with_single_timeseries):
     system: DistributionSystem = distribution_system_with_single_timeseries
     update_scenario, cap_uuid, load_1_uuid, load_2_uuid = build_model_updates(system)
@@ -111,4 +113,4 @@ def test_tracked_change(distribution_system_with_single_timeseries):
         }
     )
     catalog.add_component(load_equipment)
-    apply_tracked_changes(system,update_scenario.tracked_changes[0], catalog, [])
+    apply_tracked_changes(system, update_scenario.tracked_changes[0], catalog, [])

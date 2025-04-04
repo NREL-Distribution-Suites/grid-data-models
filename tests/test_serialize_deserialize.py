@@ -4,6 +4,7 @@ from gdm.distribution.components import DistributionLoad, DistributionSolar
 from gdm.distribution.model_reduction import reduce_to_three_phase_system
 from gdm.distribution import DistributionSystem
 
+
 def test_serialization_deserialization_single_time_series(
     tmp_path, distribution_system_with_single_timeseries
 ):

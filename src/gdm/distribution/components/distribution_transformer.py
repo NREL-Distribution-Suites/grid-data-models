@@ -1,4 +1,4 @@
-""" This module contains interface for distribution transformer."""
+"""This module contains interface for distribution transformer."""
 
 from gdm.distribution.enums import Phase, VoltageTypes
 from gdm.quantities import PositiveVoltage

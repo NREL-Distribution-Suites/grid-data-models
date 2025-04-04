@@ -1,4 +1,4 @@
-""" This module contains interface for Distribution Bus."""
+"""This module contains interface for Distribution Bus."""
 
 from typing import Annotated, Optional
 

@@ -1,4 +1,4 @@
-"""This module contains solar equipment. """
+"""This module contains solar equipment."""
 
 from typing import Annotated
 
@@ -59,5 +59,5 @@ class BatteryEquipment(Component):
             discharging_efficiency=98,
             idling_efficiency=99,
             rated_voltage=PositiveVoltage(12.47, "kilovolt"),
-            voltage_type= VoltageTypes.LINE_TO_LINE
+            voltage_type=VoltageTypes.LINE_TO_LINE,
         )

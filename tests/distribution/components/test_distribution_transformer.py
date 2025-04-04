@@ -4,7 +4,7 @@ from gdm.distribution.components import (
     DistributionTransformer,
     DistributionBus,
 )
-from gdm.distribution.equipment import(
+from gdm.distribution.equipment import (
     DistributionTransformerEquipment,
     WindingEquipment,
 )
@@ -13,7 +13,7 @@ from gdm.distribution.enums import (
     VoltageTypes,
     Phase,
 )
-from gdm.distribution.common import(
+from gdm.distribution.common import (
     SequencePair,
 )
 from gdm.quantities import (

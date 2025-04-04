@@ -1,4 +1,4 @@
-""" This module contains class for managing basic fields for distribution assets."""
+"""This module contains class for managing basic fields for distribution assets."""
 
 from typing_extensions import Annotated
 from typing import Optional

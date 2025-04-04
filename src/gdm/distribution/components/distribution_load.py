@@ -1,4 +1,4 @@
-""" This module contains interface for distribution load."""
+"""This module contains interface for distribution load."""
 
 from collections import defaultdict
 from typing import Annotated, Self

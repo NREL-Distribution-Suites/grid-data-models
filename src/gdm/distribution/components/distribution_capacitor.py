@@ -1,4 +1,4 @@
-""" This module contains interface for distribution system capacitor."""
+"""This module contains interface for distribution system capacitor."""
 
 from collections import defaultdict
 from typing import Annotated
@@ -19,7 +19,6 @@ from gdm.distribution.controllers.distribution_capacitor_controller import (
     VoltageCapacitorController,
 )
 from gdm.distribution.controllers.base.capacitor_controller_base import CapacitorControllerBase
-from gdm.distribution.enums import VoltageTypes
 
 
 class DistributionCapacitor(InServiceDistributionComponentBase):
@@ -37,8 +36,7 @@ class DistributionCapacitor(InServiceDistributionComponentBase):
         Field(
             ...,
             description=(
-                "List of phases at which this phase capacitors"
-                "are connected to in the same order."
+                "List of phases at which this phase capacitorsare connected to in the same order."
             ),
         ),
     ]

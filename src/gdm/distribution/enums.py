@@ -1,4 +1,4 @@
-""" This module contains phase enums. """
+"""This module contains phase enums."""
 
 from enum import Enum
 
@@ -53,6 +53,7 @@ class ControllerSupport(str, Enum):
     SOLAR_ONLY = "solar-only"
     BATTERY_AND_SOLAR = "battery-and-solar"
 
+
 class ColorNodeBy(str, Enum):
     """Color choices for the distribution system plot"""
 
@@ -68,4 +69,3 @@ class ColorLineBy(str, Enum):
     PHASE = "Phases"
     DEFAULT = "Default"
     EQUIPMENT_TYPE = "Type"
-

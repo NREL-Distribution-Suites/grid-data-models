@@ -1,4 +1,4 @@
-""" This module contains pydantic model for distribution feeder. """
+"""This module contains pydantic model for distribution feeder."""
 
 from infrasys import Component
 

@@ -1,4 +1,4 @@
-""" This module contains class for creating graph representation of Distribution System."""
+"""This module contains class for creating graph representation of Distribution System."""
 
 import warnings
 

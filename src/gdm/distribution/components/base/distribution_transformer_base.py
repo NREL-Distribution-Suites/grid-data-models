@@ -1,4 +1,4 @@
-""" This module contains interface for distribution transformer."""
+"""This module contains interface for distribution transformer."""
 
 import math
 from typing import Annotated
@@ -86,10 +86,7 @@ class DistributionTransformerBase(InServiceDistributionComponentBase, ABC):
 
         for bus, pw_phases in zip(self.buses, self.winding_phases):
             if not (set(pw_phases) - set(Phase.N)).issubset(bus.phases):
-                msg = (
-                    f"Winding phases {pw_phases=}"
-                    f" must be subset of bus phases ({bus.phases=})."
-                )
+                msg = f"Winding phases {pw_phases=} must be subset of bus phases ({bus.phases=})."
                 raise ValueError(msg)
 
         for bus, wdg in zip(self.buses, self.equipment.windings):

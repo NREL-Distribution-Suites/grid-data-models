@@ -1,4 +1,4 @@
-""" This module contains class for auto documenting pydantic classes."""
+"""This module contains class for auto documenting pydantic classes."""
 
 # standard imports
 import enum
@@ -26,13 +26,20 @@ class PydanticDocBuilder:
     """Builder class for automatically documenting pydantic classes."""
 
     def __init__(self, md_filename="models"):
-        asset_list = self.create_schema_diagrams(md_filename)
+        # asset_list =
+        self.create_schema_diagrams(md_filename)
         # self.create_markdown_file(md_filename, asset_list)
 
     def create_schema_diagrams(self, md_filename):
         """Method to create schema diagrams."""
         asset_list = {}
-        for mod in [gdm.distribution.common, gdm.distribution.components, gdm.distribution.equipment, gdm.distribution.controllers, gdm.distribution.model_reduction]:
+        for mod in [
+            gdm.distribution.common,
+            gdm.distribution.components,
+            gdm.distribution.equipment,
+            gdm.distribution.controllers,
+            gdm.distribution.model_reduction,
+        ]:
             for asset in dir(mod):
                 if not asset.startswith("_") and asset != "BaseModel":
                     model = getattr(mod, asset)

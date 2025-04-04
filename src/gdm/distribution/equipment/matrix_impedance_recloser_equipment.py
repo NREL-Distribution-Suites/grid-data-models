@@ -1,4 +1,4 @@
-""" This module contains matrix impedance recloser equipment."""
+"""This module contains matrix impedance recloser equipment."""
 
 from gdm.distribution.equipment.matrix_impedance_branch_equipment import (
     MatrixImpedanceBranchEquipment,

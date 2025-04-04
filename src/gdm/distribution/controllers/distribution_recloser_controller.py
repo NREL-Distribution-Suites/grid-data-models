@@ -1,4 +1,4 @@
-""" This module contains distribution recloser controller."""
+"""This module contains distribution recloser controller."""
 
 from typing import Annotated
 

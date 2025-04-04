@@ -1,4 +1,4 @@
-""" This module contains interface for distribution capacitor controllers."""
+"""This module contains interface for distribution capacitor controllers."""
 
 from typing import Annotated
 import datetime

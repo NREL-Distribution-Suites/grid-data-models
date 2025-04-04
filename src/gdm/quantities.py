@@ -1,4 +1,4 @@
-""" This module contains all custom quantities for this package."""
+"""This module contains all custom quantities for this package."""
 
 # pylint:disable=unused-argument
 # pylint:disable=super-init-not-called
@@ -6,7 +6,7 @@
 import numpy as np
 
 from infrasys.base_quantity import BaseQuantity, ureg
-from infrasys.quantities import Current, Distance, Resistance, Voltage, ActivePower, Time
+from infrasys.quantities import Current, Distance, Resistance, Voltage, ActivePower
 
 
 ureg.define("var = ampere * volt")
