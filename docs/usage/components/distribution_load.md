@@ -5,17 +5,20 @@
 Creating a single-phase constant power load connected to a bus. A constant power load means that the power (both real and reactive) remains constant irrespective of voltage variations. The parameters p_real and p_imag are set to 1.0, indicating that the load is a constant power type.
 
 ```python
->>> from gdm import (
+>>> from gdm.distribution.components import (
 ...     DistributionBus, 
 ...     DistributionLoad,
-...     LoadEquipment,
-...     PositiveVoltage,
-...     VoltageTypes,
-...     PhaseLoadEquipment,
-...     Phase,
-...     ActivePower,
-...     ReactivePower
 ... )
+>>> from gdm.distribution.equioment import (
+...     PhaseLoadEquipment,
+...     LoadEquipment,
+... )
+>>> from gdm.quantities import (
+...     PositiveVoltage,
+...     ReactivePower
+...     ActivePower,
+... )
+>>> from gdm.distribution import Phase, VoltageTypes
 >>> bus1 = DistributionBus(
 ...     name="Bus-1",
 ...     rated_voltage=PositiveVoltage(7.62, "kilovolts"),
@@ -89,18 +92,20 @@ For the three-phase delta-connected constant power load, we need to define the l
 
 
 ```python
->>> from gdm import (
+>>> from gdm.distribution.components import (
 ...     DistributionBus, 
 ...     DistributionLoad,
-...     LoadEquipment,
-...     PositiveVoltage,
-...     VoltageTypes,
-...     PhaseLoadEquipment,
-...     Phase,
-...     ActivePower,
-...     ReactivePower,
-...     ConnectionType
 ... )
+>>> from gdm.distribution.equioment import (
+...     PhaseLoadEquipment,
+...     LoadEquipment,
+... )
+>>> from gdm.quantities import (
+...     PositiveVoltage,
+...     ReactivePower
+...     ActivePower,
+... )
+>>> from gdm.distribution import Phase, VoltageTypes, ConnectionType
 >>> bus2 = DistributionBus(
 ...     name="Bus-2",
 ...     rated_voltage=PositiveVoltage(13.8, "kilovolts"),

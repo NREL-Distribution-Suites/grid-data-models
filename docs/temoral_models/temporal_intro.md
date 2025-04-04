@@ -1,4 +1,4 @@
-## Tracking temporal changes in `grid-data-models`
+## Tracking changes in `grid-data-models`
 
 The `grid-data-models` (GDM) package includes comprehensive support for modeling temporal changes within a distribution system. This functionality allows users to effectively manage time-dependent modifications to a base grid model, enabling dynamic analysis and scenario planning. All temporal changes are built upon a single base GDM model, ensuring a consistent foundation for analysis. The system enables edits, additions, and deletions to a base GDM model at specific timestamps. Each modification is tracked and stored, ensuring a clear history of changes over time.
   
@@ -14,7 +14,8 @@ In the following example,
 1. We will Make use of `gdmloader` package to fist download a sample GDM model. The package can be installed using `pip intall gdmloader`. 
 
 ```python 
-from gdm import DistributionSystem, DistributionLoad, DistributionSolar, MatrixImpedanceBranch
+from gdm.distribution.components import DistributionLoad, DistributionSolar, MatrixImpedanceBranch
+from gdm.distribution import DistributionSystem
 from gdm.quantities import PositiveDistance
 from gdmloader.constants import GDM_CASE_SOURCE
 from gdmloader.source import SystemLoader
@@ -58,7 +59,7 @@ load_model_to_delete_in_2025 = base_model.get_component(DistributionLoad, "fdr3_
 NOTE: When editing property of an existing component, make sure to use the same quantity / component type as defined in the model defination. For example when modifing the length property of a distribution branch, PositiveDistance is used to the define the new value in the example below
 
 ```python 
-from gdm.temporal_models import UpdateScenario, PropertyEdit, TrackedChanges
+from gdm.tracked_changes import UpdateScenario, PropertyEdit, TrackedChanges
 
 model_scenario =UpdateScenario(
     name = "Test scenario",
@@ -93,7 +94,7 @@ model_scenario =UpdateScenario(
 ```python 
 from datetime import date
 
-from gdm.temporal_models import get_distribution_system_on_date
+from gdm.tracked_changes import get_distribution_system_on_date
 
 model_on_date= date(2024, 1, 1)
 new_system = get_distribution_system_on_date(model_scenario, base_model, catalog, model_on_date)
@@ -134,7 +135,7 @@ system_scenarios.to_json("system_changes.json")
 2. Once serialized, these components can be deserialized and retrieved similar to other components within a system. One or more of the scenarios can then be applied to the base distribution system model.
 
 ```python 
-from gdm.temporal_models import UpdateScenario
+from gdm.tracked_changes import UpdateScenario
 
 system_scenarios = DistributionSystem.from_json("system_changes.json", auto_add_composed_components=True)
 update_scenarios = list(system_scenarios.get_components(UpdateScenario))

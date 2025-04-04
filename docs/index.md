@@ -34,9 +34,9 @@ To get started, you can clone and pip install this library from [here](https://g
 
 ## Contributors
 
+- **Aadil Latif**
 - **Kapil Duwadi**
 - **Tarek Elgindy**
-- **Aadil Latif**
 - **Pedro Andres Sanchez Perez**
 - **Daniel Thom**
 - **Jeremy Keen**

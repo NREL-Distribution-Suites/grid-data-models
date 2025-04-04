@@ -231,8 +231,8 @@ class DemandChargeControlSetting(ActivePowerInverterControllerBase):
 
 class InverterController(Component):
     """Inverter contoller represent the complete control settings for a given 
-    InverterEquipment. This model is may be used with an instance of DistributionSolar
-    or DistributionBattery.
+    InverterEquipment. This model may be used with an instance of DistributionSolar,
+    DistributionBattery or any other model that has an inverter.
     """
 
     name: Annotated[str, Field("", description="Name of the inverter controller.")]

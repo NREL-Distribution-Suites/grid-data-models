@@ -23,7 +23,7 @@
 [![](../../models/VoltVarInverterController.svg)](../../models/VoltVarInverterController.svg)
 
 ```{eval-rst}
-.. autopydantic_model:: gdm.VoltVarInverterController
+.. autopydantic_model:: gdm.distribution.controllers.VoltVarInverterController
    :members: __init__
    :inherited-members: Component
    :exclude-members: example, validate_fields
@@ -34,7 +34,7 @@
 [![](../../models/VoltWattInverterController.svg)](../../models/VoltWattInverterController.svg)
 
 ```{eval-rst}
-.. autopydantic_model:: gdm.VoltWattInverterController
+.. autopydantic_model:: gdm.distribution.controllers.VoltWattInverterController
    :members: __init__
    :inherited-members: Component
    :exclude-members: example, validate_fields
@@ -43,7 +43,7 @@
 [![](../../models/BatteryPeakShavingBaseLoadingController.svg)](../../models/BatteryPeakShavingBaseLoadingController.svg)
 
 ```{eval-rst}
-.. autopydantic_model:: gdm.BatteryPeakShavingBaseLoadingController
+.. autopydantic_model:: gdm.distribution.controllers.BatteryPeakShavingBaseLoadingController
    :members: __init__
    :inherited-members: Component
    :exclude-members: example, validate_fields
@@ -52,7 +52,7 @@
 [![](../../models/BatteryCapacityFirmingController.svg)](../../models/BatteryCapacityFirmingController.svg)
 
 ```{eval-rst}
-.. autopydantic_model:: gdm.BatteryCapacityFirmingController
+.. autopydantic_model:: gdm.distribution.controllers.BatteryCapacityFirmingController
    :members: __init__
    :inherited-members: Component
    :exclude-members: example, validate_fields
@@ -61,7 +61,7 @@
 [![](../../models/BatteryTimeBaseController.svg)](../../models/BatteryTimeBaseController.svg)
 
 ```{eval-rst}
-.. autopydantic_model:: gdm.BatteryTimeBaseController
+.. autopydantic_model:: gdm.distribution.controllers.BatteryTimeBaseController
    :members: __init__
    :inherited-members: Component
    :exclude-members: example, validate_fields
@@ -70,7 +70,7 @@
 [![](../../models/BatterySelfConsumptionController.svg)](../../models/BatterySelfConsumptionController.svg)
 
 ```{eval-rst}
-.. autopydantic_model:: gdm.BatterySelfConsumptionController
+.. autopydantic_model:: gdm.distribution.controllers.BatterySelfConsumptionController
    :members: __init__
    :inherited-members: Component
    :exclude-members: example, validate_fields
@@ -79,7 +79,7 @@
 [![](../../models/BatteryTimeOfUseController.svg)](../../models/BatteryTimeOfUseController.svg)
 
 ```{eval-rst}
-.. autopydantic_model:: gdm.BatteryTimeOfUseController
+.. autopydantic_model:: gdm.distribution.controllers.BatteryTimeOfUseController
    :members: __init__
    :inherited-members: Component
    :exclude-members: example, validate_fields
@@ -88,7 +88,7 @@
 [![](../../models/BatteryDemandChargeController.svg)](../../models/BatteryDemandChargeController.svg)
 
 ```{eval-rst}
-.. autopydantic_model:: gdm.BatteryDemandChargeController
+.. autopydantic_model:: gdm.distribution.controllers.BatteryDemandChargeController
    :members: __init__
    :inherited-members: Component
    :exclude-members: example, validate_fields

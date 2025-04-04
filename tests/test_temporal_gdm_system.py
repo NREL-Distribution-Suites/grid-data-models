@@ -10,7 +10,7 @@ from gdm.distribution.equipment import (
     LoadEquipment,
 )
 from infrasys.exceptions import ISNotStored
-from gdm.track_changes import (
+from gdm.tracked_changes import (
     get_distribution_system_on_date,
     apply_tracked_changes,
     apply_update_scenario,

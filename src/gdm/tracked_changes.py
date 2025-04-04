@@ -19,7 +19,7 @@ class PropertyEdit(Component):
 
 class TrackedChanges(Component):
     """
-    This model reresenets tracked changes to the distribution system model. This is useful when there is a need
+    This model represents tracked changes to the distribution system model. This is useful when there is a need
     a) to track system changes over time (e.g. a capacity expansion problem)
     b) to save multiple scenarios that apply to a given base model. (e.g. a Monte Calro study)
     """
@@ -28,7 +28,7 @@ class TrackedChanges(Component):
         str, Field("", description="If these changes represent a scenrio that needs to be tracked, provide a name, else use the default value")
     ]
     update_date: Annotated[
-        date | None, Field(None, description="If thsese changes are too applied on specific date, provide a date. Else, leave it blank")
+        date | None, Field(None, description="If these changes are to be applied on specific date, provide a date, else leave it blank")
     ]
     additions: Annotated[
         list[UUID], Field([], description="List of additions to the base distribution system")
@@ -105,6 +105,7 @@ def get_distribution_system_on_date(
     # Initialize a log for tracking updates.
     log = []
     model_changes = update_scenario.modifications
+    #TODO: validate there is a date
     # Sort model changes by update date in ascending order.
     model_changes = sorted(model_changes, key=lambda x: x.update_date, reverse=False)
     # Filter changes that occurred on or before the specified date.

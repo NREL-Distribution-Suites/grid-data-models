@@ -18,7 +18,7 @@ from gdm.distribution.components import (
     DistributionSolar,
     DistributionLoad,
     DistributionBus,
-    GeometryBranch,
+    GeometryBranch
 )
 
 from gdm.distribution.equipment import (
