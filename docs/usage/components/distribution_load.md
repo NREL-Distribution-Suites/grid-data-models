@@ -102,7 +102,7 @@ For the three-phase delta-connected constant power load, we need to define the l
 ... )
 >>> from gdm.quantities import (
 ...     PositiveVoltage,
-...     ReactivePower
+...     ReactivePower,
 ...     ActivePower,
 ... )
 >>> from gdm.distribution.enums import Phase, VoltageTypes, ConnectionType
