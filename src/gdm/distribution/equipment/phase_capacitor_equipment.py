@@ -15,7 +15,7 @@ from gdm.constants import PINT_SCHEMA
 
 
 class PhaseCapacitorEquipment(Component):
-    """Interface for phase capacitor."""
+    """Data model for phase capacitor."""
 
     resistance: Annotated[
         PositiveResistance,

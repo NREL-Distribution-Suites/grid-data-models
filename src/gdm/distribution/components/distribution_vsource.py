@@ -15,7 +15,7 @@ from gdm.distribution.equipment.voltagesource_equipment import VoltageSourceEqui
 
 
 class DistributionVoltageSource(InServiceDistributionComponentBase):
-    """Interface for distribution substation."""
+    """Data model for distribution substation."""
 
     bus: Annotated[
         DistributionBus,

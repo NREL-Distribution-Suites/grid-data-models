@@ -19,15 +19,15 @@ class PropertyEdit(Component):
 class TrackedChange(Component):
     """
     This model represents tracked changes to the distribution system model. This is useful when there is a need
-    a) to track system changes over time (e.g. a capacity expansion problem)
-    b) to save multiple scenarios that apply to a given base model. (e.g. a Monte Calro study)
+    a) to track system changes over time (e.g., a capacity expansion problem)
+    b) to save multiple scenarios that apply to a given base model. (e.g., a Monte Carlo study)
     """
 
     name: Annotated[
         str,
         Field(
             "",
-            description="If these changes represent a scenrio that needs to be tracked, provide a name, else use the default value",
+            description="If these changes represent a scenario that needs to be tracked, provide a name, otherwise, use the default value",
         ),
     ]
     update_date: Annotated[
@@ -51,11 +51,17 @@ class TrackedChange(Component):
 class UpdateScenario(Component):
     """
     Represents tracked changes for a given scenario.
-    Note: You an save multiple update scenarios in a sigle json file
+    Note: You can save multiple update scenarios to a single json file by
+    adding UpdateScenario objects to the GDM DistributionSystem and serializing
+    it to disk by calling .to_json() on the DistributionSystem object.
     """
 
     tracked_changes: Annotated[
-        list[TrackedChange], Field([], description="List of edits to the base distribution system")
+        list[TrackedChange],
+        Field(
+            [],
+            description="List of changes(additions, deletions, and edits) to the base distribution system",
+        ),
     ]
 
 
@@ -112,9 +118,8 @@ def get_distribution_system_on_date(
     # Initialize a log for tracking updates.
     log = []
     model_changes = update_scenario.tracked_changes
-    # TODO: validate there is a date
-    # Sort model changes by update date in ascending order.
-    assert None not in []
+
+    assert None not in [model_change.update_date for model_change in model_changes]
 
     model_changes = sorted(model_changes, key=lambda x: x.update_date, reverse=False)
     # Filter changes that occurred on or before the specified date.

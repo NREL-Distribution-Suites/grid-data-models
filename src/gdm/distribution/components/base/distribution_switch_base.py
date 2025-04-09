@@ -7,7 +7,7 @@ from gdm.distribution.components.base.distribution_branch_base import Distributi
 
 
 class DistributionSwitchBase(DistributionBranchBase, ABC):
-    """Interface for distribution branch that can be toggled."""
+    """Data model for distribution branch that can be toggled."""
 
     is_closed: Annotated[list[bool], Field(description="Status of branch for each phase.")]
 

@@ -296,7 +296,7 @@
 <polygon fill="none" stroke="black" points="450.38,-153.5 450.38,-176 580.12,-176 580.12,-153.5 450.38,-153.5"/>
 <text text-anchor="start" x="480" y="-159.7" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">rated_energy</text>
 <polygon fill="none" stroke="black" points="580.12,-153.5 580.12,-176 700.12,-176 700.12,-153.5 580.12,-153.5"/>
-<text text-anchor="start" x="589.5" y="-159.7" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">PositiveEnergyDC</text>
+<text text-anchor="start" x="589.5" y="-159.7" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">EnergyDC</text>
 <polygon fill="none" stroke="black" points="450.38,-131 450.38,-153.5 580.12,-153.5 580.12,-131 450.38,-131"/>
 <text text-anchor="start" x="481.5" y="-137.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">rated_power</text>
 <polygon fill="none" stroke="black" points="580.12,-131 580.12,-153.5 700.12,-153.5 700.12,-131 580.12,-131"/>
@@ -357,11 +357,11 @@
 <polygon fill="none" stroke="black" points="422.25,-392 422.25,-414.5 549,-414.5 549,-392 422.25,-392"/>
 <text text-anchor="start" x="459.38" y="-398.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">rise_limit</text>
 <polygon fill="none" stroke="black" points="549,-392 549,-414.5 728.25,-414.5 728.25,-392 549,-392"/>
-<text text-anchor="start" x="552" y="-398.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">Optional[ActivePowerPUTime]</text>
+<text text-anchor="start" x="552" y="-398.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">Optional[ActivePowerOverTime]</text>
 <polygon fill="none" stroke="black" points="422.25,-369.5 422.25,-392 549,-392 549,-369.5 422.25,-369.5"/>
 <text text-anchor="start" x="460.12" y="-375.7" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">fall_limit</text>
 <polygon fill="none" stroke="black" points="549,-369.5 549,-392 728.25,-392 728.25,-369.5 549,-369.5"/>
-<text text-anchor="start" x="552" y="-375.7" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">Optional[ActivePowerPUTime]</text>
+<text text-anchor="start" x="552" y="-375.7" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">Optional[ActivePowerOverTime]</text>
 <polygon fill="none" stroke="black" points="422.25,-347 422.25,-369.5 549,-369.5 549,-347 422.25,-347"/>
 <text text-anchor="start" x="445.5" y="-353.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">cutout_percent</text>
 <polygon fill="none" stroke="black" points="549,-347 549,-369.5 728.25,-369.5 728.25,-347 549,-347"/>

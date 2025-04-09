@@ -76,7 +76,7 @@ def test_distribution_battery_with_controller():
 
 def test_distribution_battery_example():
     battery = DistributionBattery.example()
-    assert battery.name == "pv1"
+    assert battery.name == "battery1"
     assert isinstance(battery.bus, DistributionBus)
     assert battery.phases == [Phase.A, Phase.B, Phase.C]
     assert isinstance(battery.equipment, BatteryEquipment)

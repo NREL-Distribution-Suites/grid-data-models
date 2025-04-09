@@ -17,7 +17,7 @@ from gdm.constants import PINT_SCHEMA
 
 
 class RegulatorController(Component):
-    """Interface for a Regulator Controller."""
+    """Data model for a Regulator Controller."""
 
     name: Annotated[str, Field("", description="Name of the regulator controller.")]
     delay: Annotated[

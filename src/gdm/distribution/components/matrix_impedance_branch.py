@@ -16,7 +16,7 @@ from gdm.quantities import PositiveVoltage, PositiveDistance
 
 
 class MatrixImpedanceBranch(DistributionBranchBase):
-    """Interface for matrix impedance branch."""
+    """Data model for matrix impedance branch."""
 
     equipment: Annotated[
         MatrixImpedanceBranchEquipment,

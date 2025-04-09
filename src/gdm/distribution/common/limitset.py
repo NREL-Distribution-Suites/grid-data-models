@@ -10,7 +10,7 @@ from gdm.constants import PINT_SCHEMA
 
 
 class VoltageLimitSet(Component):
-    """Interface for voltage limit set."""
+    """Data model for voltage limit set."""
 
     name: Annotated[str, Field("", description="Name of the voltage limit set.")]
     limit_type: Annotated[LimitType, Field(..., description="Limit type used.")]
@@ -27,7 +27,7 @@ class VoltageLimitSet(Component):
 
 
 class ThermalLimitSet(Component):
-    """Interface for voltage limit set."""
+    """Data model for voltage limit set."""
 
     name: Annotated[str, Field("", description="Name of the thermal limit set.")]
     limit_type: Annotated[LimitType, Field(..., description="Limit type used.")]

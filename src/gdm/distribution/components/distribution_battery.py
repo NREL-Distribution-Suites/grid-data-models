@@ -25,7 +25,7 @@ from gdm.distribution.enums import Phase
 
 
 class DistributionBattery(InServiceDistributionComponentBase):
-    """Interface for battery system in distribution system models."""
+    """Data model for battery system in distribution system models."""
 
     bus: Annotated[
         DistributionBus,
@@ -98,13 +98,34 @@ class DistributionBattery(InServiceDistributionComponentBase):
         name: str,
         split_phase_mapping: dict[str, set[Phase]],
     ) -> "DistributionBattery":
+        """
+        Aggregates multiple DistributionBattery instances into a single instance.
+
+        This method combines the properties of multiple DistributionBattery
+        instances connected to the same bus into a single DistributionBattery
+        instance. It calculates the aggregate phases, equipment ratings, and
+        efficiencies based on the provided instances.
+
+        Args:
+            instances (list[DistributionBattery]): List of DistributionBattery
+                instances to be aggregated.
+            bus (DistributionBus): The bus to which the aggregated battery is
+                connected.
+            name (str): The name for the aggregated DistributionBattery.
+            split_phase_mapping (dict[str, set[Phase]]): Mapping of battery names
+                to their respective split phases.
+
+        Returns:
+            DistributionBattery: A new DistributionBattery instance representing
+            the aggregate of the provided instances.
+        """
         phases = set()
-        for solar in instances:
-            if {Phase.S1, Phase.S2} & set(solar.phases):
-                parent_phase = split_phase_mapping[solar.name]
+        for battery in instances:
+            if {Phase.S1, Phase.S2} & set(battery.phases):
+                parent_phase = split_phase_mapping[battery.name]
                 phases = phases.union(set(parent_phase))
             else:
-                phases = phases.union(set(solar.phases))
+                phases = phases.union(set(battery.phases))
 
         return DistributionBattery(
             name=name,
@@ -146,7 +167,7 @@ class DistributionBattery(InServiceDistributionComponentBase):
     def example(cls) -> "DistributionBattery":
         """Example of a distribution battery system."""
         return DistributionBattery(
-            name="pv1",
+            name="battery1",
             bus=DistributionBus(
                 voltage_type="line-to-ground",
                 name="Battery-DistBus1",

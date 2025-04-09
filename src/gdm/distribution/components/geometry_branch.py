@@ -20,7 +20,7 @@ from gdm.quantities import PositiveVoltage, PositiveDistance
 
 
 class GeometryBranch(DistributionBranchBase):
-    """Interface for geometry based lines."""
+    """Data model for geometry based lines."""
 
     equipment: Annotated[
         GeometryBranchEquipment,

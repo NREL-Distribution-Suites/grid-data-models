@@ -20,7 +20,7 @@ from gdm.distribution.equipment.load_equipment import LoadEquipment
 
 
 class DistributionLoad(InServiceDistributionComponentBase):
-    """Interface for distribution load."""
+    """Data model for distribution load."""
 
     bus: Annotated[
         DistributionBus,

@@ -13,7 +13,7 @@ from gdm.constants import PINT_SCHEMA
 
 
 class WindingEquipment(Component):
-    """Interface for winding."""
+    """Data model for winding."""
 
     name: Annotated[str, Field("", description="Name of the winding.")]
     resistance: Annotated[
@@ -108,7 +108,7 @@ class WindingEquipment(Component):
 
 
 class DistributionTransformerEquipment(Component):
-    """Interface for distribution transformer info."""
+    """Data model for distribution transformer info."""
 
     pct_no_load_loss: Annotated[
         float,

@@ -1,4 +1,4 @@
-"""This module contains interface for distribution transformer."""
+"""This module contains data models for distribution transformer."""
 
 from gdm.distribution.enums import Phase, VoltageTypes
 from gdm.quantities import PositiveVoltage
@@ -14,7 +14,7 @@ from gdm.distribution.components.base.distribution_transformer_base import (
 
 
 class DistributionTransformer(DistributionTransformerBase):
-    """Interface for defining distribution transformer."""
+    """Data model for defining distribution transformer."""
 
     @classmethod
     def example(cls) -> "DistributionTransformer":

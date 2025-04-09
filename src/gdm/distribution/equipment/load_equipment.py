@@ -10,7 +10,7 @@ from gdm.distribution.enums import ConnectionType
 
 
 class LoadEquipment(Component):
-    """Interface for load model."""
+    """Data model for load model."""
 
     phase_loads: Annotated[
         list[PhaseLoadEquipment], Field(..., description="List of phase loads.")

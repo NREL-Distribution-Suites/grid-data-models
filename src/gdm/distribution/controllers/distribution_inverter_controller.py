@@ -12,7 +12,7 @@ from gdm.distribution.controllers.base.inverter_controller_base import (
     ActivePowerInverterControllerBase,
 )
 from gdm.distribution.enums import ControllerSupport
-from gdm.quantities import ActivePower, ActivePowerPUTime
+from gdm.quantities import ActivePower, ActivePowerOverTime
 from gdm.distribution.common.curve import Curve
 
 
@@ -120,20 +120,26 @@ class CapacityFirmingControlSetting(ActivePowerInverterControllerBase):
 
     supported_by: Literal[ControllerSupport.BATTERY_ONLY] = ControllerSupport.BATTERY_ONLY
     max_active_power_roc: Annotated[
-        ActivePowerPUTime,
-        Field(..., description="Maximum allowable rate of charge for active power."),
+        ActivePowerOverTime,
+        Field(
+            ...,
+            description="Maximum allowable rate of charge for active power on the controlled bus.",
+        ),
     ]
     min_active_power_roc: Annotated[
-        ActivePowerPUTime,
-        Field(..., description="Minimum allowable rate of charge for active power."),
+        ActivePowerOverTime,
+        Field(
+            ...,
+            description="Minimum allowable rate of charge for active power on the controlled bus.",
+        ),
     ]
 
     @classmethod
     def example(cls) -> "CapacityFirmingControlSetting":
         "Example of a battery capacity firming controller"
         return CapacityFirmingControlSetting(
-            max_active_power_roc=ActivePowerPUTime(1000, "kilowatt/second"),
-            min_active_power_roc=ActivePowerPUTime(1000, "kilowatt/second"),
+            max_active_power_roc=ActivePowerOverTime(1000, "kilowatt/second"),
+            min_active_power_roc=ActivePowerOverTime(1000, "kilowatt/second"),
         )
 
 

@@ -16,7 +16,7 @@ from gdm.quantities import PositiveVoltage, PositiveDistance
 
 
 class SequenceImpedanceBranch(DistributionBranchBase):
-    """Interface for sequence impedance branch."""
+    """Data model for sequence impedance branch."""
 
     equipment: Annotated[
         SequenceImpedanceBranchEquipment, Field(..., description="Sequence impedance branch.")

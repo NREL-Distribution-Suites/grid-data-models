@@ -15,7 +15,7 @@ class Phase(str, Enum):
 
 
 class ConnectionType(str, Enum):
-    """Interface for connection type."""
+    """Winding connection types."""
 
     STAR = "STAR"
     DELTA = "DELTA"
@@ -25,21 +25,21 @@ class ConnectionType(str, Enum):
 
 
 class VoltageTypes(str, Enum):
-    """Interface for voltage types."""
+    """Identifier of voltage types referenced in distribution models."""
 
     LINE_TO_LINE = "line-to-line"
     LINE_TO_GROUND = "line-to-ground"
 
 
 class LimitType(str, Enum):
-    """Interface for operational limit types."""
+    """Operational limit types."""
 
     MIN = "min"
     MAX = "max"
 
 
 class BatteryState(str, Enum):
-    """Interface for battery state."""
+    """Repersents possible battery operation states."""
 
     CHARGING = "charging"
     DISCHARGING = "discharging"
@@ -47,7 +47,7 @@ class BatteryState(str, Enum):
 
 
 class ControllerSupport(str, Enum):
-    """Interface for controller support."""
+    """Identifier for distribution components supported by the control algorithm"""
 
     BATTERY_ONLY = "battery-only"
     SOLAR_ONLY = "solar-only"
@@ -55,7 +55,7 @@ class ControllerSupport(str, Enum):
 
 
 class ColorNodeBy(str, Enum):
-    """Color choices for the distribution system plot"""
+    """Node color choices for the distribution system plot"""
 
     PHASE = "Phases"
     DEFAULT = "Default"

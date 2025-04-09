@@ -27,7 +27,7 @@ def get_phase_voltage_in_kv(
 
 
 class DistributionTransformerBase(InServiceDistributionComponentBase, ABC):
-    """Interface for distribution transformer."""
+    """Data model for distribution transformer."""
 
     buses: Annotated[
         list[DistributionBus],

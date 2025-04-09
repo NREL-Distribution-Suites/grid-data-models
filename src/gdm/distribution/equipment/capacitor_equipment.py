@@ -11,7 +11,7 @@ from gdm.quantities import PositiveVoltage
 
 
 class CapacitorEquipment(Component):
-    """Interface for capacitor model."""
+    """Data model for capacitor model."""
 
     phase_capacitors: Annotated[
         list[PhaseCapacitorEquipment],

@@ -12,7 +12,7 @@ from gdm.constants import PINT_SCHEMA
 
 
 class DistributionRecloserController(Component):
-    """Interface for distribution recloser controller."""
+    """Data model for distribution recloser controller."""
 
     name: Annotated[str, Field("", description="Name of the recloser controller.")]
 

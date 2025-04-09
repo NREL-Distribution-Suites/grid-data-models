@@ -56,11 +56,11 @@
 <polygon fill="none" stroke="black" points="0,-220.75 0,-243.25 126.75,-243.25 126.75,-220.75 0,-220.75"/>
 <text text-anchor="start" x="37.12" y="-226.95" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">rise_limit</text>
 <polygon fill="none" stroke="black" points="126.75,-220.75 126.75,-243.25 306,-243.25 306,-220.75 126.75,-220.75"/>
-<text text-anchor="start" x="129.75" y="-226.95" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">Optional[ActivePowerPUTime]</text>
+<text text-anchor="start" x="129.75" y="-226.95" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">Optional[ActivePowerOverTime]</text>
 <polygon fill="none" stroke="black" points="0,-198.25 0,-220.75 126.75,-220.75 126.75,-198.25 0,-198.25"/>
 <text text-anchor="start" x="37.88" y="-204.45" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">fall_limit</text>
 <polygon fill="none" stroke="black" points="126.75,-198.25 126.75,-220.75 306,-220.75 306,-198.25 126.75,-198.25"/>
-<text text-anchor="start" x="129.75" y="-204.45" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">Optional[ActivePowerPUTime]</text>
+<text text-anchor="start" x="129.75" y="-204.45" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">Optional[ActivePowerOverTime]</text>
 <polygon fill="none" stroke="black" points="0,-175.75 0,-198.25 126.75,-198.25 126.75,-175.75 0,-175.75"/>
 <text text-anchor="start" x="23.25" y="-181.95" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">cutout_percent</text>
 <polygon fill="none" stroke="black" points="126.75,-175.75 126.75,-198.25 306,-198.25 306,-175.75 126.75,-175.75"/>

@@ -9,7 +9,7 @@ from gdm.distribution.equipment.phase_voltagesource_equipment import PhaseVoltag
 
 
 class VoltageSourceEquipment(Component):
-    """Interface for voltage source model."""
+    """Data model for voltage source model."""
 
     sources: Annotated[
         list[PhaseVoltageSourceEquipment],

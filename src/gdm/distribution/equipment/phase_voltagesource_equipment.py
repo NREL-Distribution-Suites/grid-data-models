@@ -11,7 +11,7 @@ from gdm.constants import PINT_SCHEMA
 
 
 class PhaseVoltageSourceEquipment(Component):
-    """Interface for phase voltage source."""
+    """Data model for phase voltage source."""
 
     r0: Annotated[Resistance, PINT_SCHEMA, Field(..., description="Zero sequence resistance.")]
     r1: Annotated[Resistance, PINT_SCHEMA, Field(..., description="Positive sequence resistance.")]

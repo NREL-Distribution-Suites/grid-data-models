@@ -9,7 +9,7 @@ from gdm.distribution.equipment.base.matrix_impedance_branch_equipment_base impo
 
 
 class MatrixImpedanceRecloserEquipment(MatrixImpedanceBranchEquipmentBase):
-    """Interface for matrix impedance based recloser equipment."""
+    """Data model for matrix impedance based recloser equipment."""
 
     @classmethod
     def example(cls) -> "MatrixImpedanceRecloserEquipment":

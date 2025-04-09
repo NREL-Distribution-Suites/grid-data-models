@@ -14,7 +14,7 @@ from gdm.distribution.components.distribution_feeder import DistributionFeeder
 
 
 class MatrixImpedanceFuse(DistributionSwitchBase):
-    """Interface for distribution fuse."""
+    """Data model for distribution fuse."""
 
     equipment: Annotated[
         MatrixImpedanceFuseEquipment,

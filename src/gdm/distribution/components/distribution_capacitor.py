@@ -22,7 +22,7 @@ from gdm.distribution.controllers.base.capacitor_controller_base import Capacito
 
 
 class DistributionCapacitor(InServiceDistributionComponentBase):
-    """Interface for capacitor present in distribution system models."""
+    """Data model for capacitor present in distribution system models."""
 
     bus: Annotated[
         DistributionBus,
@@ -36,7 +36,7 @@ class DistributionCapacitor(InServiceDistributionComponentBase):
         Field(
             ...,
             description=(
-                "List of phases at which this phase capacitorsare connected to in the same order."
+                "List of phases that have capacitor controllers. Phase order should be in the same order as the controllers."
             ),
         ),
     ]

@@ -17,7 +17,7 @@ from gdm.constants import PINT_SCHEMA
 
 
 class VoltageCapacitorController(CapacitorControllerBase):
-    """Interface for a Capacitor Controller which uses voltage."""
+    """Data model for a Capacitor Controller which uses voltage."""
 
     on_voltage: Annotated[
         PositiveVoltage,
@@ -55,7 +55,7 @@ class VoltageCapacitorController(CapacitorControllerBase):
 
 
 class ActivePowerCapacitorController(CapacitorControllerBase):
-    """Interface for a Capacitor Controller which uses active power."""
+    """Data model for a Capacitor Controller which uses active power."""
 
     on_power: Annotated[
         PositiveActivePower,
@@ -84,7 +84,7 @@ class ActivePowerCapacitorController(CapacitorControllerBase):
 
 
 class ReactivePowerCapacitorController(CapacitorControllerBase):
-    """Interface for a Capacitor Controller which uses reactive power."""
+    """Data model for a Capacitor Controller which uses reactive power."""
 
     on_power: Annotated[
         PositiveReactivePower,
@@ -113,7 +113,7 @@ class ReactivePowerCapacitorController(CapacitorControllerBase):
 
 
 class CurrentCapacitorController(CapacitorControllerBase):
-    """Interface for a Capacitor Controller which uses current."""
+    """Data model for a Capacitor Controller which uses current."""
 
     on_current: Annotated[
         PositiveCurrent,
@@ -154,7 +154,7 @@ class CurrentCapacitorController(CapacitorControllerBase):
 
 
 class DailyTimedCapacitorController(CapacitorControllerBase):
-    """Interface for a Capacitor Controller which uses a timed controller."""
+    """Data model for a Capacitor Controller which uses a timed controller."""
 
     on_time: Annotated[
         datetime.time, Field(..., description="Time at which the capacitor switches on.")

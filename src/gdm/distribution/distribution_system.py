@@ -38,7 +38,7 @@ from gdm.exceptions import (
 
 
 class UserAttributes(BaseModel):
-    """Interface for single time series data user attributes."""
+    """Data model for single time series data user attributes."""
 
     profile_name: Annotated[
         str, Field(..., description="Name of the profile to be used in original powerflow model.")

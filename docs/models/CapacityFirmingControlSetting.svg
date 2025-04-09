@@ -31,11 +31,11 @@
 <polygon fill="none" stroke="black" points="0,-41 0,-63.5 133.5,-63.5 133.5,-41 0,-41"/>
 <text text-anchor="start" x="3" y="-47.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">max_active_power_roc</text>
 <polygon fill="none" stroke="black" points="133.5,-41 133.5,-63.5 390.75,-63.5 390.75,-41 133.5,-41"/>
-<text text-anchor="start" x="203.62" y="-47.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">ActivePowerPUTime</text>
+<text text-anchor="start" x="203.62" y="-47.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">ActivePowerOverTime</text>
 <polygon fill="none" stroke="black" points="0,-18.5 0,-41 133.5,-41 133.5,-18.5 0,-18.5"/>
 <text text-anchor="start" x="4.12" y="-24.7" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">min_active_power_roc</text>
 <polygon fill="none" stroke="black" points="133.5,-18.5 133.5,-41 390.75,-41 390.75,-18.5 133.5,-18.5"/>
-<text text-anchor="start" x="203.62" y="-24.7" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">ActivePowerPUTime</text>
+<text text-anchor="start" x="203.62" y="-24.7" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">ActivePowerOverTime</text>
 </a>
 </g>
 </g>

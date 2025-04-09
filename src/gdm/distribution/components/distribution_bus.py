@@ -1,5 +1,3 @@
-"""This module contains interface for Distribution Bus."""
-
 from typing import Annotated, Optional
 
 from infrasys import Location
@@ -15,7 +13,7 @@ from gdm.constants import PINT_SCHEMA
 
 
 class DistributionBus(DistributionComponentBase):
-    """Interface for distribution bus.
+    """Data model for distribution bus.
 
     Examples:
         >>> from gdm import DistributionBus

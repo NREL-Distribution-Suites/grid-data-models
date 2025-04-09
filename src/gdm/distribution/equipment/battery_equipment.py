@@ -5,16 +5,16 @@ from typing import Annotated
 from infrasys import Component
 from pydantic import Field
 
-from gdm.quantities import PositiveActivePower, PositiveEnergyDC, PositiveVoltage
+from gdm.quantities import PositiveActivePower, EnergyDC, PositiveVoltage
 from gdm.distribution.enums import VoltageTypes
 from gdm.constants import PINT_SCHEMA
 
 
 class BatteryEquipment(Component):
-    """Interface for Solar Model."""
+    """Data model for Solar Model."""
 
     rated_energy: Annotated[
-        PositiveEnergyDC,
+        EnergyDC,
         PINT_SCHEMA,
         Field(..., description="Rated energy capacity (DC) of the battery."),
     ]
@@ -53,7 +53,7 @@ class BatteryEquipment(Component):
         "Example for a battery Equipment"
         return BatteryEquipment(
             name="battery-install1",
-            rated_energy=PositiveEnergyDC(4, "kWh"),
+            rated_energy=EnergyDC(4, "kWh"),
             rated_power=PositiveActivePower(1, "kW"),
             charging_efficiency=98,
             discharging_efficiency=98,

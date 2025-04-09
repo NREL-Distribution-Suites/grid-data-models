@@ -21,7 +21,7 @@ from gdm.distribution.enums import Phase
 
 
 class DistributionSolar(InServiceDistributionComponentBase):
-    """Interface for Solar PV system in distribution system models."""
+    """Data model for Solar PV system in distribution system models."""
 
     bus: Annotated[
         DistributionBus,
@@ -45,11 +45,11 @@ class DistributionSolar(InServiceDistributionComponentBase):
     ]
     active_power: Annotated[
         PositiveActivePower,
-        Field(..., description="Current active power output of the inverter."),
+        Field(..., description="Active power output of the inverter."),
     ]
     reactive_power: Annotated[
         ReactivePower,
-        Field(..., description="Current reactive power output of the inverter."),
+        Field(..., description="Reactive power output of the inverter."),
     ]
     controller: Annotated[
         InverterController | None,

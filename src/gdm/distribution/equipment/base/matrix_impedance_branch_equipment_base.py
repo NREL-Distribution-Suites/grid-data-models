@@ -1,6 +1,6 @@
 """This module contains matrix impedance branch equipment."""
 
-from typing import Annotated, Optional
+from typing import Annotated
 
 from infrasys import Component
 from pydantic import Field, model_validator
@@ -11,12 +11,12 @@ from gdm.quantities import (
     CapacitancePULength,
     PositiveCurrent,
 )
-from gdm.distribution.common.limitset import ThermalLimitSet
+
 from gdm.constants import PINT_SCHEMA
 
 
 class MatrixImpedanceBranchEquipmentBase(Component):
-    """Interface for impedance based branch."""
+    """Data model for impedance based branch."""
 
     r_matrix: Annotated[
         ResistancePULength,
@@ -35,10 +35,6 @@ class MatrixImpedanceBranchEquipmentBase(Component):
     ]
     ampacity: Annotated[
         PositiveCurrent, PINT_SCHEMA, Field(..., description="Ampacity of the conducotr.")
-    ]
-    loading_limit: Annotated[
-        Optional[ThermalLimitSet],
-        Field(None, description="Loading limit set for this conductor."),
     ]
 
     @model_validator(mode="after")

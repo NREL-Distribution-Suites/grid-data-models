@@ -115,10 +115,6 @@ def _get_solar_power(
         ).magnitude,
         dc_power.units,
     )
-    # TODO: Looks like GDM is not capturing irradiance which is why user_attr is not used
-    # this will work fine if irradiance=1 however if it is different than 1 then
-    # in case use_actual is false needs to be multiplied with this value.
-    # NOTE: AP: The above issue should be solved now? Good to check
 
 
 def _check_for_timeseries_metadata_consistency(ts_metadata: list[TimeSeriesMetadata]):

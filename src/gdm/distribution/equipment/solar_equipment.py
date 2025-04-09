@@ -12,7 +12,7 @@ from gdm.constants import PINT_SCHEMA
 
 
 class SolarEquipment(Component):
-    """Interface for Solar Model."""
+    """Data model for Solar Model."""
 
     rated_power: Annotated[
         PositiveActivePower,

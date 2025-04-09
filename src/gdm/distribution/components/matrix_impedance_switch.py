@@ -16,7 +16,7 @@ from gdm.distribution.components.distribution_feeder import DistributionFeeder
 
 
 class MatrixImpedanceSwitch(DistributionSwitchBase):
-    """Interface for matrix impedance switch."""
+    """Data model for matrix impedance switch."""
 
     equipment: Annotated[
         MatrixImpedanceSwitchEquipment,

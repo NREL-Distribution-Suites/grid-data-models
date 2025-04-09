@@ -15,7 +15,7 @@ from infrasys import Component
 
 
 class OperatingUnitEnum(str, Enum):
-    """Interface for operating unit enumeration."""
+    """Operating unit enumeration."""
 
     KWH = "kWh"
     HOUR = "hr"
@@ -24,7 +24,7 @@ class OperatingUnitEnum(str, Enum):
 
 
 class CostModel(Component):
-    """Interface for base cost model."""
+    """Data model for base cost."""
 
     purchase_date: Annotated[
         datetime.datetime, PlainSerializer(lambda x: x.strftime("%Y-%m-%d %H:%M:%S"))

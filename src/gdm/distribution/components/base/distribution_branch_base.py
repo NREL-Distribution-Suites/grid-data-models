@@ -18,7 +18,7 @@ from gdm.constants import PINT_SCHEMA
 
 
 class DistributionBranchBase(InServiceDistributionComponentBase, ABC):
-    """Interface for abstract base distribution branch."""
+    """Data model for abstract base distribution branch."""
 
     buses: Annotated[
         list[DistributionBus],

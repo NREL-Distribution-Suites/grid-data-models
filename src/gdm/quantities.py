@@ -182,7 +182,7 @@ class PositiveDistance(Distance):
         ), f"Distance ({value}, {units}) must be positive."
 
 
-class ActivePowerPUTime(BaseQuantity):
+class ActivePowerOverTime(BaseQuantity):
     """Quantity representing active power per unit of time"""
 
     __base_unit__ = "watt/minute"
@@ -193,14 +193,8 @@ class EnergyDC(BaseQuantity):
 
     __base_unit__ = "kilowatt*hour"
 
-
-class PositiveEnergyDC(EnergyDC):
-    """Quantity representing positive DC energy of a storage device."""
-
     def __init__(self, value, units, **kwargs):
-        assert all(
-            np.array(value).flatten() >= 0
-        ), f"Distance ({value}, {units}) must be positive."
+        assert all(np.array(value).flatten() >= 0), f"Value ({value}, {units}) must be positive."
 
 
 class EnergyAC(BaseQuantity):
@@ -213,9 +207,7 @@ class PositiveEnergyAC(EnergyAC):
     """Quantity representing positive AC energy of a storage device."""
 
     def __init__(self, value, units, **kwargs):
-        assert all(
-            np.array(value).flatten() >= 0
-        ), f"Distance ({value}, {units}) must be positive."
+        assert all(np.array(value).flatten() >= 0), f"Value ({value}, {units}) must be positive."
 
 
 class Irradiance(BaseQuantity):

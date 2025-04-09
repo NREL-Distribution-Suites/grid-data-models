@@ -19,7 +19,7 @@ from gdm.distribution.components.distribution_feeder import DistributionFeeder
 
 
 class MatrixImpedanceRecloser(DistributionSwitchBase):
-    """Interface for distribution recloser."""
+    """Data model for distribution recloser."""
 
     equipment: Annotated[
         MatrixImpedanceRecloserEquipment,

@@ -27,7 +27,7 @@
 <polygon fill="none" stroke="black" points="8.38,-153.5 8.38,-176 138.12,-176 138.12,-153.5 8.38,-153.5"/>
 <text text-anchor="start" x="38" y="-159.7" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">rated_energy</text>
 <polygon fill="none" stroke="black" points="138.12,-153.5 138.12,-176 258.12,-176 258.12,-153.5 138.12,-153.5"/>
-<text text-anchor="start" x="147.5" y="-159.7" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">PositiveEnergyDC</text>
+<text text-anchor="start" x="147.5" y="-159.7" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">EnergyDC</text>
 <polygon fill="none" stroke="black" points="8.38,-131 8.38,-153.5 138.12,-153.5 138.12,-131 8.38,-131"/>
 <text text-anchor="start" x="39.5" y="-137.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">rated_power</text>
 <polygon fill="none" stroke="black" points="138.12,-131 138.12,-153.5 258.12,-153.5 258.12,-131 138.12,-131"/>

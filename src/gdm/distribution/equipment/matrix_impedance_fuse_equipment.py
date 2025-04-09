@@ -17,7 +17,7 @@ from gdm.constants import PINT_SCHEMA
 
 
 class MatrixImpedanceFuseEquipment(MatrixImpedanceBranchEquipmentBase):
-    """Interface for impedance based fuse equipment."""
+    """Data model for impedance based fuse equipment."""
 
     delay: Annotated[Time, PINT_SCHEMA, Field(description="Delay time before blowing the fuse.")]
     tcc_curve: Annotated[TimeCurrentCurve, Field(description="Time current curve")]
