@@ -95,7 +95,9 @@ class PeakShavingBaseLoadingControlSetting(ActivePowerInverterControllerBase):
     """
     Control settings for the Inverter Controller to represent peak shaving / base loading
     control settings. Works with battery systems only. Controls active power output of the
-    connected inverter
+    connected inverter. If the loading on the controlled element exceeds peak_shaving_target,
+    the battery discharges to shave off peak load. If the loading drops below the
+    base_loading_target, the battery charges to maintain minimum loading.
     """
 
     supported_by: Literal[ControllerSupport.BATTERY_ONLY] = ControllerSupport.BATTERY_ONLY
