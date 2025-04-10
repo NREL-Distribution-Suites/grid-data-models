@@ -159,10 +159,15 @@ def apply_updates_to_system(
     Returns:
         DistributionSystem: The updated distribution system with all changes from the scenario applied.
     """
+
     if system_date:
         assert None not in [change.update_date for change in tracked_changes]
         tracked_changes = sorted(tracked_changes, key=lambda x: x.update_date, reverse=False)
         tracked_changes = list(filter(lambda x: x.update_date <= system_date, tracked_changes))
+
+    unique_scenarios = {change.scenario_name for change in tracked_changes}
+    if len(unique_scenarios) != 1:
+        raise ValueError("Scenario name should be consistant across all tracked changes.")
 
     log = []
     for change in tracked_changes:

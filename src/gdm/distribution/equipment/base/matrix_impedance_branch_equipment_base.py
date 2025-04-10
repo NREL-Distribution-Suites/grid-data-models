@@ -34,7 +34,7 @@ class MatrixImpedanceBranchEquipmentBase(Component):
         Field(..., description="Per unit length capacitance matrix."),
     ]
     ampacity: Annotated[
-        PositiveCurrent, PINT_SCHEMA, Field(..., description="Ampacity of the conducotr.")
+        PositiveCurrent, PINT_SCHEMA, Field(..., description="Ampacity of the conductor.")
     ]
 
     @model_validator(mode="after")

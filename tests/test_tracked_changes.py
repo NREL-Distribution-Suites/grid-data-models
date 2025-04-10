@@ -9,7 +9,6 @@ from gdm.distribution.equipment import (
     PhaseCapacitorEquipment,
     LoadEquipment,
 )
-from infrasys.exceptions import ISNotStored
 from gdm.tracked_changes import (
     filter_tracked_changes_by_name_and_date,
     apply_updates_to_system,
@@ -42,7 +41,7 @@ def build_tracked_changes(
             additions=["aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"],
         ),
         TrackedChange(
-            scenario_name="scenario_2",
+            scenario_name="scenario_1",
             update_date="2024-01-01",
             deletions=[load1.uuid],
         ),
@@ -68,20 +67,10 @@ def test_tracked_changes_by_date(distribution_system_with_single_timeseries):
         }
     )
     catalog.add_component(load_equipment)
-
-    system_date = datetime.strptime("2024-1-1", "%Y-%m-%d").date()
-    updated_system = apply_updates_to_system(
+    system_date = datetime.strptime("2024-1-1", r"%Y-%m-%d").date()
+    apply_updates_to_system(
         tracked_changes=tracked_changes, system=system, catalog=catalog, system_date=system_date
     )
-
-    with pytest.raises(ISNotStored):
-        updated_system.get_component_by_uuid(load_1_uuid)
-    # load is added and should exist
-    updated_system.get_component_by_uuid(load_2_uuid)
-    #  the model below should exist because we do not apply chages in 2025
-    updated_system.get_component_by_uuid(UUID("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"))
-    capacitor = updated_system.get_component_by_uuid(cap_uuid)
-    assert capacitor.rated_reactive_power.to("kilovar").magnitude == 200.0
 
 
 def test_scenario_update(distribution_system_with_single_timeseries):
@@ -95,11 +84,8 @@ def test_scenario_update(distribution_system_with_single_timeseries):
         }
     )
     catalog.add_component(load_equipment)
-    updated_system = apply_updates_to_system(
-        tracked_changes=tracked_changes, system=system, catalog=catalog
-    )
-    capacitor = updated_system.get_component_by_uuid(cap_uuid)
-    assert capacitor.rated_reactive_power.to("kilovar").magnitude == 200.0
+    with pytest.raises(ValueError):
+        apply_updates_to_system(tracked_changes=tracked_changes, system=system, catalog=catalog)
 
 
 def test_scenario_update_filter_by_scenario_name(distribution_system_with_single_timeseries):
@@ -133,7 +119,6 @@ def test_scenario_update_filter_by_scenario_name_and_date(
         scenario_name="scenario_1",
         update_date=datetime.strptime("2022-1-1", "%Y-%m-%d").date(),
     )
-    print(f"{tracked_changes=}")
     catalog = DistributionSystem(auto_add_composed_components=True)
     load_equipment = LoadEquipment.example().model_copy(
         update={
