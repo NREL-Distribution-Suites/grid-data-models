@@ -202,10 +202,6 @@ class EnergyAC(BaseQuantity):
 
     __base_unit__ = "kilova*hour"
 
-
-class PositiveEnergyAC(EnergyAC):
-    """Quantity representing positive AC energy of a storage device."""
-
     def __init__(self, value, units, **kwargs):
         assert all(np.array(value).flatten() >= 0), f"Value ({value}, {units}) must be positive."
 

@@ -57,7 +57,11 @@ class DistributionSystem(System):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.data_format_version = importlib.metadata.version("grid-data-models")
+        if not self.data_format_version:
+            self.data_format_version = importlib.metadata.version("grid-data-models")
+
+    def handle_data_format_upgrade():
+        print("Implement upgrade logic here")
 
     def get_bus_connected_components(
         self, bus_name: str, component_type: Component

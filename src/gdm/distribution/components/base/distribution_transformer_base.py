@@ -58,6 +58,15 @@ class DistributionTransformerBase(InServiceDistributionComponentBase, ABC):
         all_voltages = [item.rated_voltage for item in self.equipment.windings]
         return voltage < max(all_voltages)
 
+    def _split_phase_validation(self):
+        if self.equipment.is_center_tapped:
+            if len(self.buses) != 3:
+                raise ValueError("Center tapped transformer must have 3 buses.")
+            if self.buses[1] != self.buses[2]:
+                raise ValueError(
+                    "Center tapped transformer must have same bus on the secondary side (bus 2 and 3)."
+                )
+
     @model_validator(mode="after")
     def validate_fields_base(self) -> "DistributionTransformerBase":
         """Custom validator for distribution transformer."""
@@ -107,5 +116,7 @@ class DistributionTransformerBase(InServiceDistributionComponentBase, ABC):
                     f" bus rated voltage {bus_phase_voltage}"
                 )
                 raise ValueError(msg)
+
+        self._split_phase_validation()
 
         return self

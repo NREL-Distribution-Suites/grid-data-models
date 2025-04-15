@@ -219,7 +219,7 @@ def build_split_phase_distribution_buses():
 def build_split_phase_distribution_xfmr(bus1: DistributionBus, bus2: DistributionBus):
     return DistributionTransformer(
         name="split_phase_xfmr",
-        buses=[bus1, bus2],
+        buses=[bus1, bus2, bus2],
         winding_phases=[[Phase.A, Phase.B], [Phase.S1, Phase.N], [Phase.S2, Phase.N]],
         equipment=DistributionTransformerEquipment(
             name="split_phase_xfmr_equipment",

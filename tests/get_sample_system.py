@@ -55,7 +55,7 @@ def get_three_bus_system():
     sys.add_components(bus_1, bus_2, bus_3)
     transformer_1 = DistributionTransformer(
         name="Transformer-1",
-        buses=[bus_1, bus_2],
+        buses=[bus_1, bus_2, bus_2],
         winding_phases=[[Phase.A, Phase.B], [Phase.S1, Phase.N], [Phase.N, Phase.S2]],
         equipment=DistributionTransformerEquipment(
             name="SplitPhase-Transformer-1",
