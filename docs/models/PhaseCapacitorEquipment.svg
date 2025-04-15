@@ -13,7 +13,7 @@
 <!-- gdm.distribution.equipment.phase_capacitor_equipment.PhaseCapacitorEquipment -->
 <g id="node1" class="node">
 <title>gdm.distribution.equipment.phase_capacitor_equipment.PhaseCapacitorEquipment</title>
-<g id="a_node1"><a xlink:title="gdm.distribution.equipment.phase_capacitor_equipment.PhaseCapacitorEquipment&#10;&#10;Interface for phase capacitor.&#10;">
+<g id="a_node1"><a xlink:title="gdm.distribution.equipment.phase_capacitor_equipment.PhaseCapacitorEquipment&#10;&#10;Data model for phase capacitor.&#10;">
 <polygon fill="none" stroke="black" points="6.12,-176 6.12,-198.5 260.38,-198.5 260.38,-176 6.12,-176"/>
 <text text-anchor="start" x="54.88" y="-183.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-weight="bold" font-size="14.00">PhaseCapacitorEquipment</text>
 <polygon fill="none" stroke="black" points="6.12,-153.5 6.12,-176 129.12,-176 129.12,-153.5 6.12,-153.5"/>

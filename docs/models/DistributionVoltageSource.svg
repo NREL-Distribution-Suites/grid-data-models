@@ -13,7 +13,7 @@
 <!-- gdm.distribution.common.limitset.VoltageLimitSet -->
 <g id="node1" class="node">
 <title>gdm.distribution.common.limitset.VoltageLimitSet</title>
-<g id="a_node1"><a xlink:title="gdm.distribution.common.limitset.VoltageLimitSet&#10;&#10;Interface for voltage limit set.&#10;">
+<g id="a_node1"><a xlink:title="gdm.distribution.common.limitset.VoltageLimitSet&#10;&#10;Data model for voltage limit set.&#10;">
 <polygon fill="none" stroke="black" points="745.88,-518.5 745.88,-541 898.88,-541 898.88,-518.5 745.88,-518.5"/>
 <text text-anchor="start" x="775.12" y="-525.7" font-family="Times New Roman,Times,Liberation Serif,serif" font-weight="bold" font-size="14.00">VoltageLimitSet</text>
 <polygon fill="none" stroke="black" points="745.88,-496 745.88,-518.5 808.12,-518.5 808.12,-496 745.88,-496"/>
@@ -38,7 +38,7 @@
 <!-- gdm.distribution.components.distribution_bus.DistributionBus -->
 <g id="node2" class="node">
 <title>gdm.distribution.components.distribution_bus.DistributionBus</title>
-<g id="a_node2"><a xlink:title="gdm.distribution.components.distribution_bus.DistributionBus&#10;&#10;Interface for distribution bus.&#10;&#10;Examples:&#10; &#160;&#160;&#160;&gt;&gt;&gt; from gdm import DistributionBus&#10; &#160;&#160;&#160;&gt;&gt;&gt; DistributionBus.example()&#10;">
+<g id="a_node2"><a xlink:title="gdm.distribution.components.distribution_bus.DistributionBus&#10;&#10;Data model for distribution bus.&#10;&#10;Examples:&#10; &#160;&#160;&#160;&gt;&gt;&gt; from gdm import DistributionBus&#10; &#160;&#160;&#160;&gt;&gt;&gt; DistributionBus.example()&#10;">
 <polygon fill="none" stroke="black" points="356.25,-591.75 356.25,-614.25 620.25,-614.25 620.25,-591.75 356.25,-591.75"/>
 <text text-anchor="start" x="442.12" y="-598.95" font-family="Times New Roman,Times,Liberation Serif,serif" font-weight="bold" font-size="14.00">DistributionBus</text>
 <polygon fill="none" stroke="black" points="356.25,-569.25 356.25,-591.75 435.75,-591.75 435.75,-569.25 356.25,-569.25"/>
@@ -201,7 +201,7 @@
 <!-- gdm.distribution.components.distribution_vsource.DistributionVoltageSource -->
 <g id="node6" class="node">
 <title>gdm.distribution.components.distribution_vsource.DistributionVoltageSource</title>
-<g id="a_node6"><a xlink:title="gdm.distribution.components.distribution_vsource.DistributionVoltageSource&#10;&#10;Interface for distribution substation.&#10;">
+<g id="a_node6"><a xlink:title="gdm.distribution.components.distribution_vsource.DistributionVoltageSource&#10;&#10;Data model for distribution substation.&#10;">
 <polygon fill="none" stroke="black" points="0,-737.5 0,-760 248.25,-760 248.25,-737.5 0,-737.5"/>
 <text text-anchor="start" x="47.25" y="-744.7" font-family="Times New Roman,Times,Liberation Serif,serif" font-weight="bold" font-size="14.00">DistributionVoltageSource</text>
 <polygon fill="none" stroke="black" points="0,-715 0,-737.5 63.75,-737.5 63.75,-715 0,-715"/>
@@ -276,7 +276,7 @@
 <!-- gdm.distribution.equipment.voltagesource_equipment.VoltageSourceEquipment -->
 <g id="node7" class="node">
 <title>gdm.distribution.equipment.voltagesource_equipment.VoltageSourceEquipment</title>
-<g id="a_node7"><a xlink:title="gdm.distribution.equipment.voltagesource_equipment.VoltageSourceEquipment&#10;&#10;Interface for voltage source model.&#10;">
+<g id="a_node7"><a xlink:title="gdm.distribution.equipment.voltagesource_equipment.VoltageSourceEquipment&#10;&#10;Data model for voltage source model.&#10;">
 <polygon fill="none" stroke="black" points="364.12,-298.25 364.12,-320.75 612.38,-320.75 612.38,-298.25 364.12,-298.25"/>
 <text text-anchor="start" x="414" y="-305.45" font-family="Times New Roman,Times,Liberation Serif,serif" font-weight="bold" font-size="14.00">VoltageSourceEquipment</text>
 <polygon fill="none" stroke="black" points="364.12,-275.75 364.12,-298.25 410.62,-298.25 410.62,-275.75 364.12,-275.75"/>
@@ -309,7 +309,7 @@
 <!-- gdm.distribution.equipment.phase_voltagesource_equipment.PhaseVoltageSourceEquipment -->
 <g id="node8" class="node">
 <title>gdm.distribution.equipment.phase_voltagesource_equipment.PhaseVoltageSourceEquipment</title>
-<g id="a_node8"><a xlink:title="gdm.distribution.equipment.phase_voltagesource_equipment.PhaseVoltageSourceEquipment&#10;&#10;Interface for phase voltage source.&#10;">
+<g id="a_node8"><a xlink:title="gdm.distribution.equipment.phase_voltagesource_equipment.PhaseVoltageSourceEquipment&#10;&#10;Data model for phase voltage source.&#10;">
 <polygon fill="none" stroke="black" points="728.25,-198.5 728.25,-221 916.5,-221 916.5,-198.5 728.25,-198.5"/>
 <text text-anchor="start" x="731.25" y="-205.7" font-family="Times New Roman,Times,Liberation Serif,serif" font-weight="bold" font-size="14.00">PhaseVoltageSourceEquipment</text>
 <polygon fill="none" stroke="black" points="728.25,-176 728.25,-198.5 813.38,-198.5 813.38,-176 728.25,-176"/>

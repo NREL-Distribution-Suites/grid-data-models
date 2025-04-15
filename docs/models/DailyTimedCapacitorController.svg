@@ -13,7 +13,7 @@
 <!-- gdm.distribution.controllers.distribution_capacitor_controller.DailyTimedCapacitorController -->
 <g id="node1" class="node">
 <title>gdm.distribution.controllers.distribution_capacitor_controller.DailyTimedCapacitorController</title>
-<g id="a_node1"><a xlink:title="gdm.distribution.controllers.distribution_capacitor_controller.DailyTimedCapacitorController&#10;&#10;Interface for a Capacitor Controller which uses a timed controller.&#10;">
+<g id="a_node1"><a xlink:title="gdm.distribution.controllers.distribution_capacitor_controller.DailyTimedCapacitorController&#10;&#10;Data model for a Capacitor Controller which uses a timed controller.&#10;">
 <polygon fill="none" stroke="black" points="36.5,-176 36.5,-198.5 230,-198.5 230,-176 36.5,-176"/>
 <text text-anchor="start" x="39.5" y="-183.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-weight="bold" font-size="14.00">DailyTimedCapacitorController</text>
 <polygon fill="none" stroke="black" points="36.5,-153.5 36.5,-176 119,-176 119,-153.5 36.5,-153.5"/>

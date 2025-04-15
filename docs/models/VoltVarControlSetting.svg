@@ -38,7 +38,7 @@
 <!-- gdm.distribution.controllers.distribution_inverter_controller.VoltVarControlSetting -->
 <g id="node2" class="node">
 <title>gdm.distribution.controllers.distribution_inverter_controller.VoltVarControlSetting</title>
-<g id="a_node2"><a xlink:title="gdm.distribution.controllers.distribution_inverter_controller.VoltVarControlSetting&#10;&#10;Control settings for the Inverter Controller to represent volt / var control settings.&#10;Works with both battery and solar systems. Controls reactive power output of the &#10;connected inverter&#10;">
+<g id="a_node2"><a xlink:title="gdm.distribution.controllers.distribution_inverter_controller.VoltVarControlSetting&#10;&#10;Control settings for the Inverter Controller to represent volt / var control settings.&#10;Works with both battery and solar systems. Controls reactive power output of the&#10;connected inverter&#10;">
 <polygon fill="none" stroke="black" points="0,-175.75 0,-198.25 388.5,-198.25 388.5,-175.75 0,-175.75"/>
 <text text-anchor="start" x="128.62" y="-182.95" font-family="Times New Roman,Times,Liberation Serif,serif" font-weight="bold" font-size="14.00">VoltVarControlSetting</text>
 <polygon fill="none" stroke="black" points="0,-153.25 0,-175.75 87.75,-175.75 87.75,-153.25 0,-153.25"/>

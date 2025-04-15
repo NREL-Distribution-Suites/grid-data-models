@@ -13,7 +13,7 @@
 <!-- gdm.distribution.controllers.distribution_inverter_controller.SelfConsumptionControlSetting -->
 <g id="node1" class="node">
 <title>gdm.distribution.controllers.distribution_inverter_controller.SelfConsumptionControlSetting</title>
-<g id="a_node1"><a xlink:title="gdm.distribution.controllers.distribution_inverter_controller.SelfConsumptionControlSetting&#10;&#10;Control settings for the Inverter Controller to represent self comsumption&#10;control settings. Works with battery systems only. Controls active power output of the &#10;connected inverter&#10;">
+<g id="a_node1"><a xlink:title="gdm.distribution.controllers.distribution_inverter_controller.SelfConsumptionControlSetting&#10;&#10;Control settings for the Inverter Controller to represent self comsumption&#10;control settings. Works with battery systems only. Controls active power output of the&#10;connected inverter&#10;">
 <polygon fill="none" stroke="black" points="0,-86 0,-108.5 336.75,-108.5 336.75,-86 0,-86"/>
 <text text-anchor="start" x="75.38" y="-93.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-weight="bold" font-size="14.00">SelfConsumptionControlSetting</text>
 <polygon fill="none" stroke="black" points="0,-63.5 0,-86 79.5,-86 79.5,-63.5 0,-63.5"/>

@@ -13,7 +13,7 @@
 <!-- gdm.distribution.controllers.distribution_inverter_controller.TimeOfUseControlSetting -->
 <g id="node1" class="node">
 <title>gdm.distribution.controllers.distribution_inverter_controller.TimeOfUseControlSetting</title>
-<g id="a_node1"><a xlink:title="gdm.distribution.controllers.distribution_inverter_controller.TimeOfUseControlSetting&#10;&#10;Control settings for the Inverter Controller to represent time of use &#10;control settings. Works with battery systems only. Controls active power output of the &#10;connected inverter&#10;">
+<g id="a_node1"><a xlink:title="gdm.distribution.controllers.distribution_inverter_controller.TimeOfUseControlSetting&#10;&#10;Control settings for the Inverter Controller to represent time of use&#10;control settings. Works with battery systems only. Controls active power output of the&#10;connected inverter&#10;">
 <polygon fill="none" stroke="black" points="0,-131 0,-153.5 351,-153.5 351,-131 0,-131"/>
 <text text-anchor="start" x="99" y="-138.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-weight="bold" font-size="14.00">TimeOfUseControlSetting</text>
 <polygon fill="none" stroke="black" points="0,-108.5 0,-131 93.75,-131 93.75,-108.5 0,-108.5"/>

@@ -13,7 +13,7 @@
 <!-- gdm.distribution.components.base.distribution_component_base.DistributionComponentBase -->
 <g id="node1" class="node">
 <title>gdm.distribution.components.base.distribution_component_base.DistributionComponentBase</title>
-<g id="a_node1"><a xlink:title="gdm.distribution.components.base.distribution_component_base.DistributionComponentBase&#10;&#10;Interface for simple distribution component.&#10;">
+<g id="a_node1"><a xlink:title="gdm.distribution.components.base.distribution_component_base.DistributionComponentBase&#10;&#10;Data model for simple distribution component.&#10;">
 <polygon fill="none" stroke="black" points="0,-175 0,-197.5 245.25,-197.5 245.25,-175 0,-175"/>
 <text text-anchor="start" x="39.75" y="-182.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-weight="bold" font-size="14.00">DistributionComponentBase</text>
 <polygon fill="none" stroke="black" points="0,-152.5 0,-175 60.75,-175 60.75,-152.5 0,-152.5"/>

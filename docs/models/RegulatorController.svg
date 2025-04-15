@@ -13,7 +13,7 @@
 <!-- gdm.distribution.common.limitset.VoltageLimitSet -->
 <g id="node1" class="node">
 <title>gdm.distribution.common.limitset.VoltageLimitSet</title>
-<g id="a_node1"><a xlink:title="gdm.distribution.common.limitset.VoltageLimitSet&#10;&#10;Interface for voltage limit set.&#10;">
+<g id="a_node1"><a xlink:title="gdm.distribution.common.limitset.VoltageLimitSet&#10;&#10;Data model for voltage limit set.&#10;">
 <polygon fill="none" stroke="black" points="738,-279.75 738,-302.25 891,-302.25 891,-279.75 738,-279.75"/>
 <text text-anchor="start" x="767.25" y="-286.95" font-family="Times New Roman,Times,Liberation Serif,serif" font-weight="bold" font-size="14.00">VoltageLimitSet</text>
 <polygon fill="none" stroke="black" points="738,-257.25 738,-279.75 800.25,-279.75 800.25,-257.25 738,-257.25"/>
@@ -38,7 +38,7 @@
 <!-- gdm.distribution.components.distribution_bus.DistributionBus -->
 <g id="node2" class="node">
 <title>gdm.distribution.components.distribution_bus.DistributionBus</title>
-<g id="a_node2"><a xlink:title="gdm.distribution.components.distribution_bus.DistributionBus&#10;&#10;Interface for distribution bus.&#10;&#10;Examples:&#10; &#160;&#160;&#160;&gt;&gt;&gt; from gdm import DistributionBus&#10; &#160;&#160;&#160;&gt;&gt;&gt; DistributionBus.example()&#10;">
+<g id="a_node2"><a xlink:title="gdm.distribution.components.distribution_bus.DistributionBus&#10;&#10;Data model for distribution bus.&#10;&#10;Examples:&#10; &#160;&#160;&#160;&gt;&gt;&gt; from gdm import DistributionBus&#10; &#160;&#160;&#160;&gt;&gt;&gt; DistributionBus.example()&#10;">
 <polygon fill="none" stroke="black" points="353.25,-436 353.25,-458.5 617.25,-458.5 617.25,-436 353.25,-436"/>
 <text text-anchor="start" x="439.12" y="-443.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-weight="bold" font-size="14.00">DistributionBus</text>
 <polygon fill="none" stroke="black" points="353.25,-413.5 353.25,-436 432.75,-436 432.75,-413.5 353.25,-413.5"/>
@@ -201,7 +201,7 @@
 <!-- gdm.distribution.controllers.distribution_regulator_controller.RegulatorController -->
 <g id="node6" class="node">
 <title>gdm.distribution.controllers.distribution_regulator_controller.RegulatorController</title>
-<g id="a_node6"><a xlink:title="gdm.distribution.controllers.distribution_regulator_controller.RegulatorController&#10;&#10;Interface for a Regulator Controller.&#10;">
+<g id="a_node6"><a xlink:title="gdm.distribution.controllers.distribution_regulator_controller.RegulatorController&#10;&#10;Data model for a Regulator Controller.&#10;">
 <polygon fill="none" stroke="black" points="0,-772.75 0,-795.25 245.25,-795.25 245.25,-772.75 0,-772.75"/>
 <text text-anchor="start" x="63.38" y="-779.95" font-family="Times New Roman,Times,Liberation Serif,serif" font-weight="bold" font-size="14.00">RegulatorController</text>
 <polygon fill="none" stroke="black" points="0,-750.25 0,-772.75 98.25,-772.75 98.25,-750.25 0,-750.25"/>

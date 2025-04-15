@@ -13,7 +13,7 @@
 <!-- gdm.distribution.controllers.distribution_capacitor_controller.ActivePowerCapacitorController -->
 <g id="node1" class="node">
 <title>gdm.distribution.controllers.distribution_capacitor_controller.ActivePowerCapacitorController</title>
-<g id="a_node1"><a xlink:title="gdm.distribution.controllers.distribution_capacitor_controller.ActivePowerCapacitorController&#10;&#10;Interface for a Capacitor Controller which uses active power.&#10;">
+<g id="a_node1"><a xlink:title="gdm.distribution.controllers.distribution_capacitor_controller.ActivePowerCapacitorController&#10;&#10;Data model for a Capacitor Controller which uses active power.&#10;">
 <polygon fill="none" stroke="black" points="34.25,-176 34.25,-198.5 232.25,-198.5 232.25,-176 34.25,-176"/>
 <text text-anchor="start" x="37.25" y="-183.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-weight="bold" font-size="14.00">ActivePowerCapacitorController</text>
 <polygon fill="none" stroke="black" points="34.25,-153.5 34.25,-176 104.75,-176 104.75,-153.5 34.25,-153.5"/>

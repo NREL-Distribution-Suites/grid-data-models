@@ -13,7 +13,7 @@
 <!-- gdm.distribution.controllers.base.inverter_controller_base.ReactivePowerInverterControllerBase -->
 <g id="node1" class="node">
 <title>gdm.distribution.controllers.base.inverter_controller_base.ReactivePowerInverterControllerBase</title>
-<g id="a_node1"><a xlink:title="gdm.distribution.controllers.base.inverter_controller_base.ReactivePowerInverterControllerBase&#10;&#10;Interface for Inverter controllers that control reactive power.&#10;">
+<g id="a_node1"><a xlink:title="gdm.distribution.controllers.base.inverter_controller_base.ReactivePowerInverterControllerBase&#10;&#10;Data model for Inverter controllers that control reactive power.&#10;">
 <polygon fill="none" stroke="black" points="19.25,-63.5 19.25,-86 247.25,-86 247.25,-63.5 19.25,-63.5"/>
 <text text-anchor="start" x="22.25" y="-70.7" font-family="Times New Roman,Times,Liberation Serif,serif" font-weight="bold" font-size="14.00">ReactivePowerInverterControllerBase</text>
 <polygon fill="none" stroke="black" points="19.25,-41 19.25,-63.5 131.38,-63.5 131.38,-41 19.25,-41"/>

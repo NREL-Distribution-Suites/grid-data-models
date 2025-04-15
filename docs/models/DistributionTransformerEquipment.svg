@@ -13,7 +13,7 @@
 <!-- gdm.distribution.equipment.distribution_transformer_equipment.DistributionTransformerEquipment -->
 <g id="node1" class="node">
 <title>gdm.distribution.equipment.distribution_transformer_equipment.DistributionTransformerEquipment</title>
-<g id="a_node1"><a xlink:title="gdm.distribution.equipment.distribution_transformer_equipment.DistributionTransformerEquipment&#10;&#10;Interface for distribution transformer info.&#10;">
+<g id="a_node1"><a xlink:title="gdm.distribution.equipment.distribution_transformer_equipment.DistributionTransformerEquipment&#10;&#10;Data model for distribution transformer info.&#10;">
 <polygon fill="none" stroke="black" points="0,-422.75 0,-445.25 253.5,-445.25 253.5,-422.75 0,-422.75"/>
 <text text-anchor="start" x="21" y="-429.95" font-family="Times New Roman,Times,Liberation Serif,serif" font-weight="bold" font-size="14.00">DistributionTransformerEquipment</text>
 <polygon fill="none" stroke="black" points="0,-400.25 0,-422.75 114.75,-422.75 114.75,-400.25 0,-400.25"/>
@@ -54,7 +54,7 @@
 <!-- gdm.distribution.equipment.distribution_transformer_equipment.WindingEquipment -->
 <g id="node2" class="node">
 <title>gdm.distribution.equipment.distribution_transformer_equipment.WindingEquipment</title>
-<g id="a_node2"><a xlink:title="gdm.distribution.equipment.distribution_transformer_equipment.WindingEquipment&#10;&#10;Interface for winding.&#10;">
+<g id="a_node2"><a xlink:title="gdm.distribution.equipment.distribution_transformer_equipment.WindingEquipment&#10;&#10;Data model for winding.&#10;">
 <polygon fill="none" stroke="black" points="361.5,-311 361.5,-333.5 591,-333.5 591,-311 361.5,-311"/>
 <text text-anchor="start" x="418.5" y="-318.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-weight="bold" font-size="14.00">WindingEquipment</text>
 <polygon fill="none" stroke="black" points="361.5,-288.5 361.5,-311 456.75,-311 456.75,-288.5 361.5,-288.5"/>

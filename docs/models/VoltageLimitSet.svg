@@ -13,7 +13,7 @@
 <!-- gdm.distribution.common.limitset.VoltageLimitSet -->
 <g id="node1" class="node">
 <title>gdm.distribution.common.limitset.VoltageLimitSet</title>
-<g id="a_node1"><a xlink:title="gdm.distribution.common.limitset.VoltageLimitSet&#10;&#10;Interface for voltage limit set.&#10;">
+<g id="a_node1"><a xlink:title="gdm.distribution.common.limitset.VoltageLimitSet&#10;&#10;Data model for voltage limit set.&#10;">
 <polygon fill="none" stroke="black" points="56.75,-108.5 56.75,-131 209.75,-131 209.75,-108.5 56.75,-108.5"/>
 <text text-anchor="start" x="86" y="-115.7" font-family="Times New Roman,Times,Liberation Serif,serif" font-weight="bold" font-size="14.00">VoltageLimitSet</text>
 <polygon fill="none" stroke="black" points="56.75,-86 56.75,-108.5 119,-108.5 119,-86 56.75,-86"/>

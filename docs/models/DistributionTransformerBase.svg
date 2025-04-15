@@ -13,7 +13,7 @@
 <!-- gdm.distribution.common.limitset.VoltageLimitSet -->
 <g id="node1" class="node">
 <title>gdm.distribution.common.limitset.VoltageLimitSet</title>
-<g id="a_node1"><a xlink:title="gdm.distribution.common.limitset.VoltageLimitSet&#10;&#10;Interface for voltage limit set.&#10;">
+<g id="a_node1"><a xlink:title="gdm.distribution.common.limitset.VoltageLimitSet&#10;&#10;Data model for voltage limit set.&#10;">
 <polygon fill="none" stroke="black" points="810.75,-630.75 810.75,-653.25 963.75,-653.25 963.75,-630.75 810.75,-630.75"/>
 <text text-anchor="start" x="840" y="-637.95" font-family="Times New Roman,Times,Liberation Serif,serif" font-weight="bold" font-size="14.00">VoltageLimitSet</text>
 <polygon fill="none" stroke="black" points="810.75,-608.25 810.75,-630.75 873,-630.75 873,-608.25 810.75,-608.25"/>
@@ -38,7 +38,7 @@
 <!-- gdm.distribution.components.base.distribution_transformer_base.DistributionTransformerBase -->
 <g id="node2" class="node">
 <title>gdm.distribution.components.base.distribution_transformer_base.DistributionTransformerBase</title>
-<g id="a_node2"><a xlink:title="gdm.distribution.components.base.distribution_transformer_base.DistributionTransformerBase&#10;&#10;Interface for distribution transformer.&#10;">
+<g id="a_node2"><a xlink:title="gdm.distribution.components.base.distribution_transformer_base.DistributionTransformerBase&#10;&#10;Data model for distribution transformer.&#10;">
 <polygon fill="none" stroke="black" points="0,-849.75 0,-872.25 292.5,-872.25 292.5,-849.75 0,-849.75"/>
 <text text-anchor="start" x="59.62" y="-856.95" font-family="Times New Roman,Times,Liberation Serif,serif" font-weight="bold" font-size="14.00">DistributionTransformerBase</text>
 <polygon fill="none" stroke="black" points="0,-827.25 0,-849.75 93,-849.75 93,-827.25 0,-827.25"/>
@@ -79,7 +79,7 @@
 <!-- gdm.distribution.components.distribution_bus.DistributionBus -->
 <g id="node3" class="node">
 <title>gdm.distribution.components.distribution_bus.DistributionBus</title>
-<g id="a_node3"><a xlink:title="gdm.distribution.components.distribution_bus.DistributionBus&#10;&#10;Interface for distribution bus.&#10;&#10;Examples:&#10; &#160;&#160;&#160;&gt;&gt;&gt; from gdm import DistributionBus&#10; &#160;&#160;&#160;&gt;&gt;&gt; DistributionBus.example()&#10;">
+<g id="a_node3"><a xlink:title="gdm.distribution.components.distribution_bus.DistributionBus&#10;&#10;Data model for distribution bus.&#10;&#10;Examples:&#10; &#160;&#160;&#160;&gt;&gt;&gt; from gdm import DistributionBus&#10; &#160;&#160;&#160;&gt;&gt;&gt; DistributionBus.example()&#10;">
 <polygon fill="none" stroke="black" points="400.5,-704 400.5,-726.5 664.5,-726.5 664.5,-704 400.5,-704"/>
 <text text-anchor="start" x="486.38" y="-711.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-weight="bold" font-size="14.00">DistributionBus</text>
 <polygon fill="none" stroke="black" points="400.5,-681.5 400.5,-704 480,-704 480,-681.5 400.5,-681.5"/>
@@ -193,7 +193,7 @@
 <!-- gdm.distribution.equipment.distribution_transformer_equipment.DistributionTransformerEquipment -->
 <g id="node6" class="node">
 <title>gdm.distribution.equipment.distribution_transformer_equipment.DistributionTransformerEquipment</title>
-<g id="a_node6"><a xlink:title="gdm.distribution.equipment.distribution_transformer_equipment.DistributionTransformerEquipment&#10;&#10;Interface for distribution transformer info.&#10;">
+<g id="a_node6"><a xlink:title="gdm.distribution.equipment.distribution_transformer_equipment.DistributionTransformerEquipment&#10;&#10;Data model for distribution transformer info.&#10;">
 <polygon fill="none" stroke="black" points="405.75,-432.75 405.75,-455.25 659.25,-455.25 659.25,-432.75 405.75,-432.75"/>
 <text text-anchor="start" x="426.75" y="-439.95" font-family="Times New Roman,Times,Liberation Serif,serif" font-weight="bold" font-size="14.00">DistributionTransformerEquipment</text>
 <polygon fill="none" stroke="black" points="405.75,-410.25 405.75,-432.75 520.5,-432.75 520.5,-410.25 405.75,-410.25"/>
@@ -326,7 +326,7 @@
 <!-- gdm.distribution.equipment.distribution_transformer_equipment.WindingEquipment -->
 <g id="node8" class="node">
 <title>gdm.distribution.equipment.distribution_transformer_equipment.WindingEquipment</title>
-<g id="a_node8"><a xlink:title="gdm.distribution.equipment.distribution_transformer_equipment.WindingEquipment&#10;&#10;Interface for winding.&#10;">
+<g id="a_node8"><a xlink:title="gdm.distribution.equipment.distribution_transformer_equipment.WindingEquipment&#10;&#10;Data model for winding.&#10;">
 <polygon fill="none" stroke="black" points="772.5,-311 772.5,-333.5 1002,-333.5 1002,-311 772.5,-311"/>
 <text text-anchor="start" x="829.5" y="-318.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-weight="bold" font-size="14.00">WindingEquipment</text>
 <polygon fill="none" stroke="black" points="772.5,-288.5 772.5,-311 867.75,-311 867.75,-288.5 772.5,-288.5"/>

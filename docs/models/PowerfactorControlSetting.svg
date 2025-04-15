@@ -13,7 +13,7 @@
 <!-- gdm.distribution.controllers.distribution_inverter_controller.PowerfactorControlSetting -->
 <g id="node1" class="node">
 <title>gdm.distribution.controllers.distribution_inverter_controller.PowerfactorControlSetting</title>
-<g id="a_node1"><a xlink:title="gdm.distribution.controllers.distribution_inverter_controller.PowerfactorControlSetting&#10;&#10;Control settings for the &#160;Inverter Controller to represent power factor control.&#10;Works with both battery and solar systems. Controls reactive power output of the &#10;connected inverter&#10;">
+<g id="a_node1"><a xlink:title="gdm.distribution.controllers.distribution_inverter_controller.PowerfactorControlSetting&#10;&#10;Control settings for the &#160;Inverter Controller to represent power factor control.&#10;Works with both battery and solar systems. Controls reactive power output of the&#10;connected inverter&#10;">
 <polygon fill="none" stroke="black" points="0,-108.5 0,-131 380.25,-131 380.25,-108.5 0,-108.5"/>
 <text text-anchor="start" x="111.75" y="-115.7" font-family="Times New Roman,Times,Liberation Serif,serif" font-weight="bold" font-size="14.00">PowerfactorControlSetting</text>
 <polygon fill="none" stroke="black" points="0,-86 0,-108.5 79.5,-108.5 79.5,-86 0,-86"/>

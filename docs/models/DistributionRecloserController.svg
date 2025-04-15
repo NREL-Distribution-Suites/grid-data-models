@@ -38,7 +38,7 @@
 <!-- gdm.distribution.controllers.distribution_recloser_controller.DistributionRecloserController -->
 <g id="node2" class="node">
 <title>gdm.distribution.controllers.distribution_recloser_controller.DistributionRecloserController</title>
-<g id="a_node2"><a xlink:title="gdm.distribution.controllers.distribution_recloser_controller.DistributionRecloserController&#10;&#10;Interface for distribution recloser controller.&#10;">
+<g id="a_node2"><a xlink:title="gdm.distribution.controllers.distribution_recloser_controller.DistributionRecloserController&#10;&#10;Data model for distribution recloser controller.&#10;">
 <polygon fill="none" stroke="black" points="0,-333 0,-355.5 266.25,-355.5 266.25,-333 0,-333"/>
 <text text-anchor="start" x="42.75" y="-340.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-weight="bold" font-size="14.00">DistributionRecloserController</text>
 <polygon fill="none" stroke="black" points="0,-310.5 0,-333 97.5,-333 97.5,-310.5 0,-310.5"/>

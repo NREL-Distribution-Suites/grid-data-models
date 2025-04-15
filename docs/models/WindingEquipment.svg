@@ -13,7 +13,7 @@
 <!-- gdm.distribution.equipment.distribution_transformer_equipment.WindingEquipment -->
 <g id="node1" class="node">
 <title>gdm.distribution.equipment.distribution_transformer_equipment.WindingEquipment</title>
-<g id="a_node1"><a xlink:title="gdm.distribution.equipment.distribution_transformer_equipment.WindingEquipment&#10;&#10;Interface for winding.&#10;">
+<g id="a_node1"><a xlink:title="gdm.distribution.equipment.distribution_transformer_equipment.WindingEquipment&#10;&#10;Data model for winding.&#10;">
 <polygon fill="none" stroke="black" points="18.5,-311 18.5,-333.5 248,-333.5 248,-311 18.5,-311"/>
 <text text-anchor="start" x="75.5" y="-318.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-weight="bold" font-size="14.00">WindingEquipment</text>
 <polygon fill="none" stroke="black" points="18.5,-288.5 18.5,-311 113.75,-311 113.75,-288.5 18.5,-288.5"/>

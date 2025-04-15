@@ -38,7 +38,7 @@
 <!-- gdm.distribution.controllers.distribution_inverter_controller.VoltWattControlSetting -->
 <g id="node2" class="node">
 <title>gdm.distribution.controllers.distribution_inverter_controller.VoltWattControlSetting</title>
-<g id="a_node2"><a xlink:title="gdm.distribution.controllers.distribution_inverter_controller.VoltWattControlSetting&#10;&#10;Control settings for the Inverter Controller to represent volt / watt control settings.&#10;Works with both battery and solar systems. Controls active power output of the &#10;connected inverter&#10;">
+<g id="a_node2"><a xlink:title="gdm.distribution.controllers.distribution_inverter_controller.VoltWattControlSetting&#10;&#10;Control settings for the Inverter Controller to represent volt / watt control settings.&#10;Works with both battery and solar systems. Controls active power output of the&#10;connected inverter&#10;">
 <polygon fill="none" stroke="black" points="0,-175.5 0,-198 394.5,-198 394.5,-175.5 0,-175.5"/>
 <text text-anchor="start" x="127.88" y="-182.7" font-family="Times New Roman,Times,Liberation Serif,serif" font-weight="bold" font-size="14.00">VoltWattControlSetting</text>
 <polygon fill="none" stroke="black" points="0,-153 0,-175.5 93.75,-175.5 93.75,-153 0,-153"/>

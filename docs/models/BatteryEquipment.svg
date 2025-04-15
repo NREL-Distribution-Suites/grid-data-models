@@ -13,7 +13,7 @@
 <!-- gdm.distribution.equipment.battery_equipment.BatteryEquipment -->
 <g id="node1" class="node">
 <title>gdm.distribution.equipment.battery_equipment.BatteryEquipment</title>
-<g id="a_node1"><a xlink:title="gdm.distribution.equipment.battery_equipment.BatteryEquipment&#10;&#10;Interface for Solar Model.&#10;">
+<g id="a_node1"><a xlink:title="gdm.distribution.equipment.battery_equipment.BatteryEquipment&#10;&#10;Data model for Solar Model.&#10;">
 <polygon fill="none" stroke="black" points="8.38,-221 8.38,-243.5 258.12,-243.5 258.12,-221 8.38,-221"/>
 <text text-anchor="start" x="78.88" y="-228.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-weight="bold" font-size="14.00">BatteryEquipment</text>
 <polygon fill="none" stroke="black" points="8.38,-198.5 8.38,-221 138.12,-221 138.12,-198.5 8.38,-198.5"/>
@@ -27,7 +27,7 @@
 <polygon fill="none" stroke="black" points="8.38,-153.5 8.38,-176 138.12,-176 138.12,-153.5 8.38,-153.5"/>
 <text text-anchor="start" x="38" y="-159.7" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">rated_energy</text>
 <polygon fill="none" stroke="black" points="138.12,-153.5 138.12,-176 258.12,-176 258.12,-153.5 138.12,-153.5"/>
-<text text-anchor="start" x="147.5" y="-159.7" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">EnergyDC</text>
+<text text-anchor="start" x="169.25" y="-159.7" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">EnergyDC</text>
 <polygon fill="none" stroke="black" points="8.38,-131 8.38,-153.5 138.12,-153.5 138.12,-131 8.38,-131"/>
 <text text-anchor="start" x="39.5" y="-137.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">rated_power</text>
 <polygon fill="none" stroke="black" points="138.12,-131 138.12,-153.5 258.12,-153.5 258.12,-131 138.12,-131"/>

@@ -13,7 +13,7 @@
 <!-- gdm.distribution.equipment.load_equipment.LoadEquipment -->
 <g id="node1" class="node">
 <title>gdm.distribution.equipment.load_equipment.LoadEquipment</title>
-<g id="a_node1"><a xlink:title="gdm.distribution.equipment.load_equipment.LoadEquipment&#10;&#10;Interface for load model.&#10;">
+<g id="a_node1"><a xlink:title="gdm.distribution.equipment.load_equipment.LoadEquipment&#10;&#10;Data model for load model.&#10;">
 <polygon fill="none" stroke="black" points="0,-333.25 0,-355.75 246,-355.75 246,-333.25 0,-333.25"/>
 <text text-anchor="start" x="75.38" y="-340.45" font-family="Times New Roman,Times,Liberation Serif,serif" font-weight="bold" font-size="14.00">LoadEquipment</text>
 <polygon fill="none" stroke="black" points="0,-310.75 0,-333.25 95.25,-333.25 95.25,-310.75 0,-310.75"/>
@@ -38,7 +38,7 @@
 <!-- gdm.distribution.equipment.phase_load_equipment.PhaseLoadEquipment -->
 <g id="node2" class="node">
 <title>gdm.distribution.equipment.phase_load_equipment.PhaseLoadEquipment</title>
-<g id="a_node2"><a xlink:title="gdm.distribution.equipment.phase_load_equipment.PhaseLoadEquipment&#10;&#10;Interface for single phase load equipment.&#10;">
+<g id="a_node2"><a xlink:title="gdm.distribution.equipment.phase_load_equipment.PhaseLoadEquipment&#10;&#10;Data model for single phase load equipment.&#10;">
 <polygon fill="none" stroke="black" points="354,-266 354,-288.5 534.75,-288.5 534.75,-266 354,-266"/>
 <text text-anchor="start" x="379.88" y="-273.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-weight="bold" font-size="14.00">PhaseLoadEquipment</text>
 <polygon fill="none" stroke="black" points="354,-243.5 354,-266 447,-266 447,-243.5 354,-243.5"/>

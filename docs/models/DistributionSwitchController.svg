@@ -13,7 +13,7 @@
 <!-- gdm.distribution.controllers.distribution_switch_controller.DistributionSwitchController -->
 <g id="node1" class="node">
 <title>gdm.distribution.controllers.distribution_switch_controller.DistributionSwitchController</title>
-<g id="a_node1"><a xlink:title="gdm.distribution.controllers.distribution_switch_controller.DistributionSwitchController&#10;&#10;Interface for distribution switch controller.&#10;">
+<g id="a_node1"><a xlink:title="gdm.distribution.controllers.distribution_switch_controller.DistributionSwitchController&#10;&#10;Data model for distribution switch controller.&#10;">
 <polygon fill="none" stroke="black" points="34.25,-131 34.25,-153.5 232.25,-153.5 232.25,-131 34.25,-131"/>
 <text text-anchor="start" x="48.12" y="-138.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-weight="bold" font-size="14.00">DistributionSwitchController</text>
 <polygon fill="none" stroke="black" points="34.25,-108.5 34.25,-131 110.75,-131 110.75,-108.5 34.25,-108.5"/>

@@ -13,7 +13,7 @@
 <!-- gdm.distribution.common.limitset.VoltageLimitSet -->
 <g id="node1" class="node">
 <title>gdm.distribution.common.limitset.VoltageLimitSet</title>
-<g id="a_node1"><a xlink:title="gdm.distribution.common.limitset.VoltageLimitSet&#10;&#10;Interface for voltage limit set.&#10;">
+<g id="a_node1"><a xlink:title="gdm.distribution.common.limitset.VoltageLimitSet&#10;&#10;Data model for voltage limit set.&#10;">
 <polygon fill="none" stroke="black" points="742.12,-586.25 742.12,-608.75 895.12,-608.75 895.12,-586.25 742.12,-586.25"/>
 <text text-anchor="start" x="771.38" y="-593.45" font-family="Times New Roman,Times,Liberation Serif,serif" font-weight="bold" font-size="14.00">VoltageLimitSet</text>
 <polygon fill="none" stroke="black" points="742.12,-563.75 742.12,-586.25 804.38,-586.25 804.38,-563.75 742.12,-563.75"/>
@@ -38,7 +38,7 @@
 <!-- gdm.distribution.components.distribution_bus.DistributionBus -->
 <g id="node2" class="node">
 <title>gdm.distribution.components.distribution_bus.DistributionBus</title>
-<g id="a_node2"><a xlink:title="gdm.distribution.components.distribution_bus.DistributionBus&#10;&#10;Interface for distribution bus.&#10;&#10;Examples:&#10; &#160;&#160;&#160;&gt;&gt;&gt; from gdm import DistributionBus&#10; &#160;&#160;&#160;&gt;&gt;&gt; DistributionBus.example()&#10;">
+<g id="a_node2"><a xlink:title="gdm.distribution.components.distribution_bus.DistributionBus&#10;&#10;Data model for distribution bus.&#10;&#10;Examples:&#10; &#160;&#160;&#160;&gt;&gt;&gt; from gdm import DistributionBus&#10; &#160;&#160;&#160;&gt;&gt;&gt; DistributionBus.example()&#10;">
 <polygon fill="none" stroke="black" points="356.25,-659.5 356.25,-682 620.25,-682 620.25,-659.5 356.25,-659.5"/>
 <text text-anchor="start" x="442.12" y="-666.7" font-family="Times New Roman,Times,Liberation Serif,serif" font-weight="bold" font-size="14.00">DistributionBus</text>
 <polygon fill="none" stroke="black" points="356.25,-637 356.25,-659.5 435.75,-659.5 435.75,-637 356.25,-637"/>
@@ -201,7 +201,7 @@
 <!-- gdm.distribution.components.distribution_load.DistributionLoad -->
 <g id="node6" class="node">
 <title>gdm.distribution.components.distribution_load.DistributionLoad</title>
-<g id="a_node6"><a xlink:title="gdm.distribution.components.distribution_load.DistributionLoad&#10;&#10;Interface for distribution load.&#10;">
+<g id="a_node6"><a xlink:title="gdm.distribution.components.distribution_load.DistributionLoad&#10;&#10;Data model for distribution load.&#10;">
 <polygon fill="none" stroke="black" points="0,-805.25 0,-827.75 248.25,-827.75 248.25,-805.25 0,-805.25"/>
 <text text-anchor="start" x="73.88" y="-812.45" font-family="Times New Roman,Times,Liberation Serif,serif" font-weight="bold" font-size="14.00">DistributionLoad</text>
 <polygon fill="none" stroke="black" points="0,-782.75 0,-805.25 63.75,-805.25 63.75,-782.75 0,-782.75"/>
@@ -276,7 +276,7 @@
 <!-- gdm.distribution.equipment.load_equipment.LoadEquipment -->
 <g id="node7" class="node">
 <title>gdm.distribution.equipment.load_equipment.LoadEquipment</title>
-<g id="a_node7"><a xlink:title="gdm.distribution.equipment.load_equipment.LoadEquipment&#10;&#10;Interface for load model.&#10;">
+<g id="a_node7"><a xlink:title="gdm.distribution.equipment.load_equipment.LoadEquipment&#10;&#10;Data model for load model.&#10;">
 <polygon fill="none" stroke="black" points="365.25,-366.25 365.25,-388.75 611.25,-388.75 611.25,-366.25 365.25,-366.25"/>
 <text text-anchor="start" x="440.62" y="-373.45" font-family="Times New Roman,Times,Liberation Serif,serif" font-weight="bold" font-size="14.00">LoadEquipment</text>
 <polygon fill="none" stroke="black" points="365.25,-343.75 365.25,-366.25 460.5,-366.25 460.5,-343.75 365.25,-343.75"/>
@@ -313,7 +313,7 @@
 <!-- gdm.distribution.equipment.phase_load_equipment.PhaseLoadEquipment -->
 <g id="node8" class="node">
 <title>gdm.distribution.equipment.phase_load_equipment.PhaseLoadEquipment</title>
-<g id="a_node8"><a xlink:title="gdm.distribution.equipment.phase_load_equipment.PhaseLoadEquipment&#10;&#10;Interface for single phase load equipment.&#10;">
+<g id="a_node8"><a xlink:title="gdm.distribution.equipment.phase_load_equipment.PhaseLoadEquipment&#10;&#10;Data model for single phase load equipment.&#10;">
 <polygon fill="none" stroke="black" points="728.25,-266 728.25,-288.5 909,-288.5 909,-266 728.25,-266"/>
 <text text-anchor="start" x="754.12" y="-273.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-weight="bold" font-size="14.00">PhaseLoadEquipment</text>
 <polygon fill="none" stroke="black" points="728.25,-243.5 728.25,-266 821.25,-266 821.25,-243.5 728.25,-243.5"/>

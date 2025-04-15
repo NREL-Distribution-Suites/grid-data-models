@@ -13,7 +13,7 @@
 <!-- gdm.distribution.common.limitset.VoltageLimitSet -->
 <g id="node1" class="node">
 <title>gdm.distribution.common.limitset.VoltageLimitSet</title>
-<g id="a_node1"><a xlink:title="gdm.distribution.common.limitset.VoltageLimitSet&#10;&#10;Interface for voltage limit set.&#10;">
+<g id="a_node1"><a xlink:title="gdm.distribution.common.limitset.VoltageLimitSet&#10;&#10;Data model for voltage limit set.&#10;">
 <polygon fill="none" stroke="black" points="738.75,-279.75 738.75,-302.25 891.75,-302.25 891.75,-279.75 738.75,-279.75"/>
 <text text-anchor="start" x="768" y="-286.95" font-family="Times New Roman,Times,Liberation Serif,serif" font-weight="bold" font-size="14.00">VoltageLimitSet</text>
 <polygon fill="none" stroke="black" points="738.75,-257.25 738.75,-279.75 801,-279.75 801,-257.25 738.75,-257.25"/>
@@ -38,7 +38,7 @@
 <!-- gdm.distribution.components.base.distribution_branch_base.DistributionBranchBase -->
 <g id="node2" class="node">
 <title>gdm.distribution.components.base.distribution_branch_base.DistributionBranchBase</title>
-<g id="a_node2"><a xlink:title="gdm.distribution.components.base.distribution_branch_base.DistributionBranchBase&#10;&#10;Interface for abstract base distribution branch.&#10;">
+<g id="a_node2"><a xlink:title="gdm.distribution.components.base.distribution_branch_base.DistributionBranchBase&#10;&#10;Data model for abstract base distribution branch.&#10;">
 <polygon fill="none" stroke="black" points="0,-572.75 0,-595.25 246,-595.25 246,-572.75 0,-572.75"/>
 <text text-anchor="start" x="52.88" y="-579.95" font-family="Times New Roman,Times,Liberation Serif,serif" font-weight="bold" font-size="14.00">DistributionBranchBase</text>
 <polygon fill="none" stroke="black" points="0,-550.25 0,-572.75 61.5,-572.75 61.5,-550.25 0,-550.25"/>
@@ -79,7 +79,7 @@
 <!-- gdm.distribution.components.distribution_bus.DistributionBus -->
 <g id="node3" class="node">
 <title>gdm.distribution.components.distribution_bus.DistributionBus</title>
-<g id="a_node3"><a xlink:title="gdm.distribution.components.distribution_bus.DistributionBus&#10;&#10;Interface for distribution bus.&#10;&#10;Examples:&#10; &#160;&#160;&#160;&gt;&gt;&gt; from gdm import DistributionBus&#10; &#160;&#160;&#160;&gt;&gt;&gt; DistributionBus.example()&#10;">
+<g id="a_node3"><a xlink:title="gdm.distribution.components.distribution_bus.DistributionBus&#10;&#10;Data model for distribution bus.&#10;&#10;Examples:&#10; &#160;&#160;&#160;&gt;&gt;&gt; from gdm import DistributionBus&#10; &#160;&#160;&#160;&gt;&gt;&gt; DistributionBus.example()&#10;">
 <polygon fill="none" stroke="black" points="354,-416 354,-438.5 618,-438.5 618,-416 354,-416"/>
 <text text-anchor="start" x="439.88" y="-423.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-weight="bold" font-size="14.00">DistributionBus</text>
 <polygon fill="none" stroke="black" points="354,-393.5 354,-416 433.5,-416 433.5,-393.5 354,-393.5"/>

@@ -43,6 +43,7 @@ extensions = [
     "sphinxcontrib.mermaid",
     "sphinx.ext.mathjax",
 ]
+html_static_path = ["_static"]
 templates_path = ["_templates"]
 exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 autodoc_pydantic_model_show_json = False

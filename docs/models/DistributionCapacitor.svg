@@ -13,7 +13,7 @@
 <!-- gdm.distribution.common.limitset.VoltageLimitSet -->
 <g id="node1" class="node">
 <title>gdm.distribution.common.limitset.VoltageLimitSet</title>
-<g id="a_node1"><a xlink:title="gdm.distribution.common.limitset.VoltageLimitSet&#10;&#10;Interface for voltage limit set.&#10;">
+<g id="a_node1"><a xlink:title="gdm.distribution.common.limitset.VoltageLimitSet&#10;&#10;Data model for voltage limit set.&#10;">
 <polygon fill="none" stroke="black" points="788.62,-538.25 788.62,-560.75 941.62,-560.75 941.62,-538.25 788.62,-538.25"/>
 <text text-anchor="start" x="817.88" y="-545.45" font-family="Times New Roman,Times,Liberation Serif,serif" font-weight="bold" font-size="14.00">VoltageLimitSet</text>
 <polygon fill="none" stroke="black" points="788.62,-515.75 788.62,-538.25 850.88,-538.25 850.88,-515.75 788.62,-515.75"/>
@@ -38,7 +38,7 @@
 <!-- gdm.distribution.components.distribution_bus.DistributionBus -->
 <g id="node2" class="node">
 <title>gdm.distribution.components.distribution_bus.DistributionBus</title>
-<g id="a_node2"><a xlink:title="gdm.distribution.components.distribution_bus.DistributionBus&#10;&#10;Interface for distribution bus.&#10;&#10;Examples:&#10; &#160;&#160;&#160;&gt;&gt;&gt; from gdm import DistributionBus&#10; &#160;&#160;&#160;&gt;&gt;&gt; DistributionBus.example()&#10;">
+<g id="a_node2"><a xlink:title="gdm.distribution.components.distribution_bus.DistributionBus&#10;&#10;Data model for distribution bus.&#10;&#10;Examples:&#10; &#160;&#160;&#160;&gt;&gt;&gt; from gdm import DistributionBus&#10; &#160;&#160;&#160;&gt;&gt;&gt; DistributionBus.example()&#10;">
 <polygon fill="none" stroke="black" points="361.12,-674.5 361.12,-697 625.12,-697 625.12,-674.5 361.12,-674.5"/>
 <text text-anchor="start" x="447" y="-681.7" font-family="Times New Roman,Times,Liberation Serif,serif" font-weight="bold" font-size="14.00">DistributionBus</text>
 <polygon fill="none" stroke="black" points="361.12,-652 361.12,-674.5 440.62,-674.5 440.62,-652 361.12,-652"/>
@@ -201,7 +201,7 @@
 <!-- gdm.distribution.components.distribution_capacitor.DistributionCapacitor -->
 <g id="node6" class="node">
 <title>gdm.distribution.components.distribution_capacitor.DistributionCapacitor</title>
-<g id="a_node6"><a xlink:title="gdm.distribution.components.distribution_capacitor.DistributionCapacitor&#10;&#10;Interface for capacitor present in distribution system models.&#10;">
+<g id="a_node6"><a xlink:title="gdm.distribution.components.distribution_capacitor.DistributionCapacitor&#10;&#10;Data model for capacitor present in distribution system models.&#10;">
 <polygon fill="none" stroke="black" points="0,-809.5 0,-832 248.25,-832 248.25,-809.5 0,-809.5"/>
 <text text-anchor="start" x="60" y="-816.7" font-family="Times New Roman,Times,Liberation Serif,serif" font-weight="bold" font-size="14.00">DistributionCapacitor</text>
 <polygon fill="none" stroke="black" points="0,-787 0,-809.5 63.75,-809.5 63.75,-787 0,-787"/>
@@ -280,7 +280,7 @@
 <!-- gdm.distribution.controllers.base.capacitor_controller_base.CapacitorControllerBase -->
 <g id="node7" class="node">
 <title>gdm.distribution.controllers.base.capacitor_controller_base.CapacitorControllerBase</title>
-<g id="a_node7"><a xlink:title="gdm.distribution.controllers.base.capacitor_controller_base.CapacitorControllerBase&#10;&#10;Interface for capacitor controllers. Phase connection specified in the capacitor.&#10;">
+<g id="a_node7"><a xlink:title="gdm.distribution.controllers.base.capacitor_controller_base.CapacitorControllerBase&#10;&#10;Data model for capacitor controllers. Phase connection specified in the capacitor.&#10;">
 <polygon fill="none" stroke="black" points="415.88,-413.5 415.88,-436 570.38,-436 570.38,-413.5 415.88,-413.5"/>
 <text text-anchor="start" x="420.38" y="-420.7" font-family="Times New Roman,Times,Liberation Serif,serif" font-weight="bold" font-size="14.00">CapacitorControllerBase</text>
 <polygon fill="none" stroke="black" points="415.88,-391 415.88,-413.5 478.88,-413.5 478.88,-391 415.88,-391"/>
@@ -318,7 +318,7 @@
 <!-- gdm.distribution.equipment.capacitor_equipment.CapacitorEquipment -->
 <g id="node8" class="node">
 <title>gdm.distribution.equipment.capacitor_equipment.CapacitorEquipment</title>
-<g id="a_node8"><a xlink:title="gdm.distribution.equipment.capacitor_equipment.CapacitorEquipment&#10;&#10;Interface for capacitor model.&#10;">
+<g id="a_node8"><a xlink:title="gdm.distribution.equipment.capacitor_equipment.CapacitorEquipment&#10;&#10;Data model for capacitor model.&#10;">
 <polygon fill="none" stroke="black" points="356.25,-242.75 356.25,-265.25 630,-265.25 630,-242.75 356.25,-242.75"/>
 <text text-anchor="start" x="431.62" y="-249.95" font-family="Times New Roman,Times,Liberation Serif,serif" font-weight="bold" font-size="14.00">CapacitorEquipment</text>
 <polygon fill="none" stroke="black" points="356.25,-220.25 356.25,-242.75 454.5,-242.75 454.5,-220.25 356.25,-220.25"/>
@@ -363,7 +363,7 @@
 <!-- gdm.distribution.equipment.phase_capacitor_equipment.PhaseCapacitorEquipment -->
 <g id="node9" class="node">
 <title>gdm.distribution.equipment.phase_capacitor_equipment.PhaseCapacitorEquipment</title>
-<g id="a_node9"><a xlink:title="gdm.distribution.equipment.phase_capacitor_equipment.PhaseCapacitorEquipment&#10;&#10;Interface for phase capacitor.&#10;">
+<g id="a_node9"><a xlink:title="gdm.distribution.equipment.phase_capacitor_equipment.PhaseCapacitorEquipment&#10;&#10;Data model for phase capacitor.&#10;">
 <polygon fill="none" stroke="black" points="738,-176 738,-198.5 992.25,-198.5 992.25,-176 738,-176"/>
 <text text-anchor="start" x="786.75" y="-183.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-weight="bold" font-size="14.00">PhaseCapacitorEquipment</text>
 <polygon fill="none" stroke="black" points="738,-153.5 738,-176 861,-176 861,-153.5 738,-153.5"/>

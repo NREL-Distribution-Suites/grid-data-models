@@ -10,6 +10,17 @@ components/distribution_transformer.md
 components/distribution_regulator.md
 ```
 
+# Exporting GIS Data
+
+```{toctree}
+:caption: Support for GIS
+:hidden: true
+
+gis_support.md
+plotting_gdm.md
+```
+
+
 # Advanced Usage
 
 ```{toctree}

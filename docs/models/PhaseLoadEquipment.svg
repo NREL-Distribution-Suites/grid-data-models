@@ -13,7 +13,7 @@
 <!-- gdm.distribution.equipment.phase_load_equipment.PhaseLoadEquipment -->
 <g id="node1" class="node">
 <title>gdm.distribution.equipment.phase_load_equipment.PhaseLoadEquipment</title>
-<g id="a_node1"><a xlink:title="gdm.distribution.equipment.phase_load_equipment.PhaseLoadEquipment&#10;&#10;Interface for single phase load equipment.&#10;">
+<g id="a_node1"><a xlink:title="gdm.distribution.equipment.phase_load_equipment.PhaseLoadEquipment&#10;&#10;Data model for single phase load equipment.&#10;">
 <polygon fill="none" stroke="black" points="42.88,-266 42.88,-288.5 223.62,-288.5 223.62,-266 42.88,-266"/>
 <text text-anchor="start" x="68.75" y="-273.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-weight="bold" font-size="14.00">PhaseLoadEquipment</text>
 <polygon fill="none" stroke="black" points="42.88,-243.5 42.88,-266 135.88,-266 135.88,-243.5 42.88,-243.5"/>

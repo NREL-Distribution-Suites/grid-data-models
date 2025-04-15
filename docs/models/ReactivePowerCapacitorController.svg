@@ -13,7 +13,7 @@
 <!-- gdm.distribution.controllers.distribution_capacitor_controller.ReactivePowerCapacitorController -->
 <g id="node1" class="node">
 <title>gdm.distribution.controllers.distribution_capacitor_controller.ReactivePowerCapacitorController</title>
-<g id="a_node1"><a xlink:title="gdm.distribution.controllers.distribution_capacitor_controller.ReactivePowerCapacitorController&#10;&#10;Interface for a Capacitor Controller which uses reactive power.&#10;">
+<g id="a_node1"><a xlink:title="gdm.distribution.controllers.distribution_capacitor_controller.ReactivePowerCapacitorController&#10;&#10;Data model for a Capacitor Controller which uses reactive power.&#10;">
 <polygon fill="none" stroke="black" points="27.88,-176 27.88,-198.5 238.62,-198.5 238.62,-176 27.88,-176"/>
 <text text-anchor="start" x="30.88" y="-183.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-weight="bold" font-size="14.00">ReactivePowerCapacitorController</text>
 <polygon fill="none" stroke="black" points="27.88,-153.5 27.88,-176 99.12,-176 99.12,-153.5 27.88,-153.5"/>

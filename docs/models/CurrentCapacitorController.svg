@@ -13,7 +13,7 @@
 <!-- gdm.distribution.controllers.distribution_capacitor_controller.CurrentCapacitorController -->
 <g id="node1" class="node">
 <title>gdm.distribution.controllers.distribution_capacitor_controller.CurrentCapacitorController</title>
-<g id="a_node1"><a xlink:title="gdm.distribution.controllers.distribution_capacitor_controller.CurrentCapacitorController&#10;&#10;Interface for a Capacitor Controller which uses current.&#10;">
+<g id="a_node1"><a xlink:title="gdm.distribution.controllers.distribution_capacitor_controller.CurrentCapacitorController&#10;&#10;Data model for a Capacitor Controller which uses current.&#10;">
 <polygon fill="none" stroke="black" points="47.38,-198.5 47.38,-221 219.12,-221 219.12,-198.5 47.38,-198.5"/>
 <text text-anchor="start" x="50.38" y="-205.7" font-family="Times New Roman,Times,Liberation Serif,serif" font-weight="bold" font-size="14.00">CurrentCapacitorController</text>
 <polygon fill="none" stroke="black" points="47.38,-176 47.38,-198.5 120.88,-198.5 120.88,-176 47.38,-176"/>

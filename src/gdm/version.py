@@ -4,6 +4,7 @@ import platform
 import sys
 
 VERSION = "1.0.0"
+SUPPORTED_VERSIONS = [VERSION]
 
 
 def is_git_repo(dir: Path) -> bool:

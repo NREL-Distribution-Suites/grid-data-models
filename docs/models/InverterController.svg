@@ -13,7 +13,7 @@
 <!-- gdm.distribution.controllers.base.inverter_controller_base.ActivePowerInverterControllerBase -->
 <g id="node1" class="node">
 <title>gdm.distribution.controllers.base.inverter_controller_base.ActivePowerInverterControllerBase</title>
-<g id="a_node1"><a xlink:title="gdm.distribution.controllers.base.inverter_controller_base.ActivePowerInverterControllerBase&#10;&#10;Interface for Inverter controllers that control active power.&#10;">
+<g id="a_node1"><a xlink:title="gdm.distribution.controllers.base.inverter_controller_base.ActivePowerInverterControllerBase&#10;&#10;Data model for Inverter controllers that control active power.&#10;">
 <polygon fill="none" stroke="black" points="501.38,-167.5 501.38,-190 716.62,-190 716.62,-167.5 501.38,-167.5"/>
 <text text-anchor="start" x="504.38" y="-174.7" font-family="Times New Roman,Times,Liberation Serif,serif" font-weight="bold" font-size="14.00">ActivePowerInverterControllerBase</text>
 <polygon fill="none" stroke="black" points="501.38,-145 501.38,-167.5 607.12,-167.5 607.12,-145 501.38,-145"/>
@@ -30,7 +30,7 @@
 <!-- gdm.distribution.controllers.base.inverter_controller_base.ReactivePowerInverterControllerBase -->
 <g id="node2" class="node">
 <title>gdm.distribution.controllers.base.inverter_controller_base.ReactivePowerInverterControllerBase</title>
-<g id="a_node2"><a xlink:title="gdm.distribution.controllers.base.inverter_controller_base.ReactivePowerInverterControllerBase&#10;&#10;Interface for Inverter controllers that control reactive power.&#10;">
+<g id="a_node2"><a xlink:title="gdm.distribution.controllers.base.inverter_controller_base.ReactivePowerInverterControllerBase&#10;&#10;Data model for Inverter controllers that control reactive power.&#10;">
 <polygon fill="none" stroke="black" points="495,-63.5 495,-86 723,-86 723,-63.5 495,-63.5"/>
 <text text-anchor="start" x="498" y="-70.7" font-family="Times New Roman,Times,Liberation Serif,serif" font-weight="bold" font-size="14.00">ReactivePowerInverterControllerBase</text>
 <polygon fill="none" stroke="black" points="495,-41 495,-63.5 607.12,-63.5 607.12,-41 495,-41"/>
@@ -47,7 +47,7 @@
 <!-- gdm.distribution.controllers.distribution_inverter_controller.InverterController -->
 <g id="node3" class="node">
 <title>gdm.distribution.controllers.distribution_inverter_controller.InverterController</title>
-<g id="a_node3"><a xlink:title="gdm.distribution.controllers.distribution_inverter_controller.InverterController&#10;&#10;Inverter contoller represent the complete control settings for a given &#10;InverterEquipment. This model may be used with an instance of DistributionSolar,&#10;DistributionBattery or any other model that has an inverter.&#10;">
+<g id="a_node3"><a xlink:title="gdm.distribution.controllers.distribution_inverter_controller.InverterController&#10;&#10;Inverter contoller represent the complete control settings for a given&#10;InverterEquipment. This model may be used with an instance of DistributionSolar,&#10;DistributionBattery or any other model that has an inverter.&#10;">
 <polygon fill="none" stroke="black" points="0,-193.5 0,-216 387,-216 387,-193.5 0,-193.5"/>
 <text text-anchor="start" x="139.12" y="-200.7" font-family="Times New Roman,Times,Liberation Serif,serif" font-weight="bold" font-size="14.00">InverterController</text>
 <polygon fill="none" stroke="black" points="0,-171 0,-193.5 135,-193.5 135,-171 0,-171"/>
