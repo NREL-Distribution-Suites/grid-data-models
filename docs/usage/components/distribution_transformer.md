@@ -345,7 +345,6 @@ Primary delta connected split phase transformer.
 ...     voltage_type=VoltageTypes.LINE_TO_LINE,
 ... )
 
-
 >>> transformer_equipment = DistributionTransformerEquipment(
 ...     name="SplitPhase-Transformer-1",
 ...     pct_full_load_loss=0.2,
@@ -430,7 +429,7 @@ DistributionTransformer(
             substation=None,
             feeder=None,
             voltage_type=<VoltageTypes.LINE_TO_LINE: 'line-to-line'>,
-            phases=[<Phase.S1: 'S1'>, <Phase.S2: 'N'>, <Phase.N: 'S2'>],
+            phases=[<Phase.S1: 'S1'>, <Phase.N: 'N'>, <Phase.S2: 'S2'>],
             voltagelimits=[],
             rated_voltage=<Quantity(0.24, 'kilovolt')>,
             coordinate=None
