@@ -1,11 +1,11 @@
-""" This module contains interface for distribution load."""
+"""This module contains interface for distribution load."""
 
 from collections import defaultdict
 from typing import Annotated, Self
 
 from pydantic import model_validator, Field
 
-from gdm.distribution.distribution_enum import Phase
+from gdm.distribution.enums import Phase
 from gdm.distribution.components.distribution_bus import DistributionBus
 from gdm.distribution.components.base.distribution_component_base import (
     InServiceDistributionComponentBase,
@@ -20,7 +20,7 @@ from gdm.distribution.equipment.load_equipment import LoadEquipment
 
 
 class DistributionLoad(InServiceDistributionComponentBase):
-    """Interface for distribution load."""
+    """Data model for distribution load."""
 
     bus: Annotated[
         DistributionBus,
@@ -96,7 +96,7 @@ class DistributionLoad(InServiceDistributionComponentBase):
                 phases=[Phase.A, Phase.B, Phase.C],
                 substation=DistributionSubstation.example(),
                 feeder=DistributionFeeder.example(),
-                nominal_voltage=PositiveVoltage(0.4, "kilovolt"),
+                rated_voltage=PositiveVoltage(0.4, "kilovolt"),
             ),
             substation=DistributionSubstation.example(),
             feeder=DistributionFeeder.example(),

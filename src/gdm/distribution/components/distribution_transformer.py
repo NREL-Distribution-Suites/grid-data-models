@@ -1,6 +1,6 @@
-""" This module contains interface for distribution transformer."""
+"""This module contains data models for distribution transformer."""
 
-from gdm.distribution.distribution_enum import Phase, VoltageTypes
+from gdm.distribution.enums import Phase, VoltageTypes
 from gdm.quantities import PositiveVoltage
 from gdm.distribution.components.distribution_bus import DistributionBus
 from gdm.distribution.components.distribution_feeder import DistributionFeeder
@@ -14,7 +14,7 @@ from gdm.distribution.components.base.distribution_transformer_base import (
 
 
 class DistributionTransformer(DistributionTransformerBase):
-    """Interface for defining distribution transformer."""
+    """Data model for defining distribution transformer."""
 
     @classmethod
     def example(cls) -> "DistributionTransformer":
@@ -25,7 +25,7 @@ class DistributionTransformer(DistributionTransformerBase):
                 DistributionBus(
                     voltage_type=VoltageTypes.LINE_TO_LINE,
                     name="Transformer-DistBus1",
-                    nominal_voltage=PositiveVoltage(12.47, "kilovolt"),
+                    rated_voltage=PositiveVoltage(12.47, "kilovolt"),
                     substation=DistributionSubstation.example(),
                     feeder=DistributionFeeder.example(),
                     phases=[Phase.A, Phase.B, Phase.C],
@@ -33,7 +33,7 @@ class DistributionTransformer(DistributionTransformerBase):
                 DistributionBus(
                     voltage_type=VoltageTypes.LINE_TO_LINE,
                     name="Transformer-DistBus2",
-                    nominal_voltage=PositiveVoltage(0.4, "kilovolt"),
+                    rated_voltage=PositiveVoltage(0.4, "kilovolt"),
                     substation=DistributionSubstation.example(),
                     feeder=DistributionFeeder.example(),
                     phases=[Phase.A, Phase.B, Phase.C],

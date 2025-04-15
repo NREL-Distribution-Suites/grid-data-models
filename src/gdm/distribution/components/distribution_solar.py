@@ -1,29 +1,27 @@
-""" This module contains interface for distribution system capacitor."""
+"""This module contains interface for distribution system capacitor."""
 
 from typing import Annotated
 
-from pydantic import Field
+from pydantic import Field, model_validator
 
-from gdm.distribution.components.distribution_inverter import DistributionInverter
+from gdm.distribution.controllers.distribution_inverter_controller import InverterController
+from gdm.quantities import PositiveVoltage, PositiveActivePower, ReactivePower, Irradiance
 from gdm.distribution.components.distribution_feeder import DistributionFeeder
+from gdm.distribution.equipment.inverter_equipment import InverterEquipment
 from gdm.distribution.components.base.distribution_component_base import (
     InServiceDistributionComponentBase,
-)
-from gdm.distribution.equipment.inverter_equipment import InverterEquipment
-from gdm.distribution.controllers.distribution_inverter_controller import (
-    PowerfactorInverterController,
 )
 from gdm.distribution.components.distribution_bus import DistributionBus
 from gdm.distribution.equipment.solar_equipment import SolarEquipment
 from gdm.distribution.components.distribution_substation import (
     DistributionSubstation,
 )
-from gdm.distribution.distribution_enum import Phase
-from gdm.quantities import PositiveVoltage
+from gdm.distribution.enums import ControllerSupport
+from gdm.distribution.enums import Phase
 
 
 class DistributionSolar(InServiceDistributionComponentBase):
-    """Interface for Solar PV system in distribution system models."""
+    """Data model for Solar PV system in distribution system models."""
 
     bus: Annotated[
         DistributionBus,
@@ -41,15 +39,54 @@ class DistributionSolar(InServiceDistributionComponentBase):
             ),
         ),
     ]
-    inverter: Annotated[
-        DistributionInverter,
+    irradiance: Annotated[
+        Irradiance,
+        Field(..., description="Irradiance incident on the PV array."),
+    ]
+    active_power: Annotated[
+        PositiveActivePower,
+        Field(..., description="Active power output of the inverter."),
+    ]
+    reactive_power: Annotated[
+        ReactivePower,
+        Field(..., description="Reactive power output of the inverter."),
+    ]
+    controller: Annotated[
+        InverterController | None,
         Field(
-            ...,
-            description="Inverter model for the Distribution Solar PV system.",
+            None,
+            description="Controller settings to control output of the inverter",
         ),
     ]
-
+    inverter: Annotated[
+        InverterEquipment,
+        Field(..., description="Inverter equipment for the Distribution Solar PV system."),
+    ]
     equipment: Annotated[SolarEquipment, Field(..., description="Solar PV model.")]
+
+    @model_validator(mode="after")
+    def validate_controller_types(self) -> "DistributionSolar":
+        valid_controller_types = [
+            ControllerSupport.SOLAR_ONLY,
+            ControllerSupport.BATTERY_AND_SOLAR,
+        ]
+        if self.controller is not None:
+            if self.controller.active_power_control is not None:
+                if self.controller.active_power_control.supported_by not in valid_controller_types:
+                    raise ValueError(
+                        f"Controller type '{self.controller.active_power_control.supported_by}' is not supported by DistributionSolar. Supported Controller types: {valid_controller_types}"
+                    )
+
+            if self.controller.reactive_power_control is not None:
+                if (
+                    self.controller.reactive_power_control.supported_by
+                    not in valid_controller_types
+                ):
+                    raise ValueError(
+                        f"Controller type '{self.controller.reactive_power_control.supported_by}' is not supported by DistributionSolar. Supported Controller types: {valid_controller_types}"
+                    )
+
+        return self
 
     @classmethod
     def aggregate(
@@ -73,8 +110,7 @@ class DistributionSolar(InServiceDistributionComponentBase):
             phases=list(phases),
             equipment=SolarEquipment(
                 name=f"{name}_solar_equipment",
-                rated_capacity=sum(inst.equipment.rated_capacity for inst in instances),
-                solar_power=sum(inst.equipment.rated_capacity for inst in instances),
+                rated_power=sum(inst.equipment.rated_power for inst in instances),
                 resistance=1
                 / sum(
                     (1 / inst.equipment.resistance if inst.equipment.resistance else 0)
@@ -85,24 +121,27 @@ class DistributionSolar(InServiceDistributionComponentBase):
                     (1 / inst.equipment.reactance if inst.equipment.reactance else 0)
                     for inst in instances
                 ),
+                rated_voltage=bus.rated_voltage,
+                voltage_type=bus.voltage_type,
             ),
-            inverter=DistributionInverter(
-                name=f"{name}_inverter",
-                equipment=InverterEquipment(
-                    capacity=sum(inst.inverter.equipment.capacity for inst in instances)
-                    / len(instances),
-                    rise_limit=None,
-                    fall_limit=None,
-                    eff_curve=None,
-                    cutin_percent=sum(inst.inverter.equipment.cutin_percent for inst in instances)
-                    / len(instances),
-                    cutout_percent=sum(
-                        inst.inverter.equipment.cutout_percent for inst in instances
-                    )
-                    / len(instances),
-                ),
-                controller=PowerfactorInverterController.example(),
+            inverter=InverterEquipment(
+                rated_apparent_power=sum(inst.inverter.rated_apparent_power for inst in instances)
+                / len(instances),
+                rise_limit=None,
+                fall_limit=None,
+                eff_curve=None,
+                dc_to_ac_efficiency=sum(inst.inverter.dc_to_ac_efficiency for inst in instances)
+                / len(instances),
+                cutin_percent=sum(inst.inverter.cutin_percent for inst in instances)
+                / len(instances),
+                cutout_percent=sum(inst.inverter.cutout_percent for inst in instances)
+                / len(instances),
             ),
+            controller=None,
+            irradiance=sum(inst.irradiance * inst.equipment.rated_power for inst in instances)
+            / sum(inst.equipment.rated_power for inst in instances),
+            active_power=sum(inst.active_power for inst in instances),
+            reactive_power=sum(inst.reactive_power for inst in instances),
         )
 
     @classmethod
@@ -113,7 +152,7 @@ class DistributionSolar(InServiceDistributionComponentBase):
             bus=DistributionBus(
                 voltage_type="line-to-ground",
                 name="Solar-DistBus1",
-                nominal_voltage=PositiveVoltage(400, "volt"),
+                rated_voltage=PositiveVoltage(400, "volt"),
                 phases=[Phase.A, Phase.B, Phase.C],
                 substation=DistributionSubstation.example(),
                 feeder=DistributionFeeder.example(),
@@ -122,5 +161,9 @@ class DistributionSolar(InServiceDistributionComponentBase):
             feeder=DistributionFeeder.example(),
             phases=[Phase.A, Phase.B, Phase.C],
             equipment=SolarEquipment.example(),
-            inverter=DistributionInverter.example(),
+            inverter=InverterEquipment.example(),
+            controller=InverterController.example(),
+            active_power=PositiveActivePower(1000, "watt"),
+            reactive_power=ReactivePower(1000, "watt"),
+            irradiance=Irradiance(1000, "watt/m^2"),
         )

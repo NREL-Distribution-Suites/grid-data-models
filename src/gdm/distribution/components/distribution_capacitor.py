@@ -1,4 +1,4 @@
-""" This module contains interface for distribution system capacitor."""
+"""This module contains interface for distribution system capacitor."""
 
 from collections import defaultdict
 from typing import Annotated
@@ -14,16 +14,15 @@ from gdm.distribution.components.distribution_feeder import DistributionFeeder
 from gdm.distribution.components.distribution_substation import DistributionSubstation
 from gdm.distribution.equipment.phase_capacitor_equipment import PhaseCapacitorEquipment
 from gdm.quantities import PositiveVoltage
-from gdm.distribution.distribution_enum import Phase
+from gdm.distribution.enums import Phase
 from gdm.distribution.controllers.distribution_capacitor_controller import (
     VoltageCapacitorController,
 )
 from gdm.distribution.controllers.base.capacitor_controller_base import CapacitorControllerBase
-from gdm.distribution.distribution_enum import VoltageTypes
 
 
 class DistributionCapacitor(InServiceDistributionComponentBase):
-    """Interface for capacitor present in distribution system models."""
+    """Data model for capacitor present in distribution system models."""
 
     bus: Annotated[
         DistributionBus,
@@ -37,8 +36,7 @@ class DistributionCapacitor(InServiceDistributionComponentBase):
         Field(
             ...,
             description=(
-                "List of phases at which this phase capacitors"
-                "are connected to in the same order."
+                "List of phases that have capacitor controllers. Phase order should be in the same order as the controllers."
             ),
         ),
     ]
@@ -85,8 +83,8 @@ class DistributionCapacitor(InServiceDistributionComponentBase):
                     for caps in phase_caps.values()
                 ],
                 connection_type=set([item.equipment.connection_type for item in instances]).pop(),
-                voltage_type=VoltageTypes.LINE_TO_GROUND,
-                nominal_voltage=max([item.equipment.nominal_voltage for item in instances]),
+                rated_voltage=bus.rated_voltage,
+                voltage_type=bus.voltage_type,
             ),
         )
 
@@ -119,7 +117,7 @@ class DistributionCapacitor(InServiceDistributionComponentBase):
             bus=DistributionBus(
                 voltage_type="line-to-ground",
                 name="Capacitor-DistBus1",
-                nominal_voltage=PositiveVoltage(400, "volt"),
+                rated_voltage=PositiveVoltage(400, "volt"),
                 phases=[Phase.A, Phase.B, Phase.C],
                 substation=DistributionSubstation.example(),
                 feeder=DistributionFeeder.example(),

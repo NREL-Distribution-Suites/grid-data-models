@@ -10,11 +10,23 @@ components/distribution_transformer.md
 components/distribution_regulator.md
 ```
 
-# Tracking temporal changes in GDM models
+# Exporting GIS Data
 
 ```{toctree}
-:caption: Tracking temporal changes in GDM models
+:caption: Support for GIS
+:hidden: true
+
+gis_support.md
+plotting_gdm.md
+```
+
+
+# Advanced Usage
+
+```{toctree}
+:caption: Advanced Usage
 :hidden: true
 
 temporal_model/overview.md
+network_reduction/model_reduction.md
 ```

@@ -1,4 +1,4 @@
-""" This module contains matrix impedance recloser equipment."""
+"""This module contains matrix impedance recloser equipment."""
 
 from gdm.distribution.equipment.matrix_impedance_branch_equipment import (
     MatrixImpedanceBranchEquipment,
@@ -9,7 +9,7 @@ from gdm.distribution.equipment.base.matrix_impedance_branch_equipment_base impo
 
 
 class MatrixImpedanceRecloserEquipment(MatrixImpedanceBranchEquipmentBase):
-    """Interface for matrix impedance based recloser equipment."""
+    """Data model for matrix impedance based recloser equipment."""
 
     @classmethod
     def example(cls) -> "MatrixImpedanceRecloserEquipment":

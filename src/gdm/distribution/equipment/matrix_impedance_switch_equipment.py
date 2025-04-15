@@ -1,4 +1,4 @@
-""" This module contains matrix impedance switch equipment."""
+"""This module contains matrix impedance switch equipment."""
 
 from typing import Optional
 from typing_extensions import Annotated
@@ -17,7 +17,7 @@ from gdm.distribution.equipment.base.matrix_impedance_branch_equipment_base impo
 
 
 class MatrixImpedanceSwitchEquipment(MatrixImpedanceBranchEquipmentBase):
-    """Interface for matrix impedance based recloser equipment."""
+    """Data model for matrix impedance based recloser equipment."""
 
     controller: Annotated[
         Optional[DistributionSwitchController],

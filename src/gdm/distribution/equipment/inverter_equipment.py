@@ -5,28 +5,28 @@ from typing import Annotated, Optional
 from infrasys import Component
 from pydantic import Field
 
-from gdm.quantities import PositiveApparentPower, ActivePowerPUTime
-from gdm.distribution.curve import Curve
+from gdm.quantities import PositiveApparentPower, ActivePowerOverTime
+from gdm.distribution.common.curve import Curve
 from gdm.constants import PINT_SCHEMA
 
 
 class InverterEquipment(Component):
-    """Interface for inverter equipment."""
+    """Data model for inverter equipment."""
 
     name: Annotated[str, Field("", description="Name of the inverter controller.")]
-    capacity: Annotated[
+    rated_apparent_power: Annotated[
         PositiveApparentPower,
         PINT_SCHEMA,
         Field(..., description="Apparent power rating for the inverter."),
     ]
     rise_limit: Annotated[
-        Optional[ActivePowerPUTime],
+        Optional[ActivePowerOverTime],
         PINT_SCHEMA,
         Field(..., description="The rise in power output allowed per unit of time"),
     ]
 
     fall_limit: Annotated[
-        Optional[ActivePowerPUTime],
+        Optional[ActivePowerOverTime],
         PINT_SCHEMA,
         Field(..., description="The fall in power output allowed per unit of time"),
     ]
@@ -38,7 +38,6 @@ class InverterEquipment(Component):
             description="If the per-unit power drops below this value the PV output is turned off.",
         ),
     ]
-
     cutin_percent: Annotated[
         float,
         Field(
@@ -47,16 +46,19 @@ class InverterEquipment(Component):
             description="If the per-unit power rises above this value the PV output is turned on.",
         ),
     ]
-
+    dc_to_ac_efficiency: Annotated[
+        float, Field(..., ge=0, le=100, description="DC to AC efficiency of the inverter.")
+    ]
     eff_curve: Annotated[Optional[Curve], Field(None, description="Efficency curve for inverter.")]
 
     @classmethod
     def example(cls) -> "InverterEquipment":
         """Example for load model."""
         return InverterEquipment(
-            capacity=PositiveApparentPower(3.8, "kva"),
-            rise_limit=ActivePowerPUTime(1.1, "kW/second"),
-            fall_limit=ActivePowerPUTime(1.1, "kW/second"),
+            rated_apparent_power=PositiveApparentPower(3.8, "kva"),
+            rise_limit=ActivePowerOverTime(1.1, "kW/second"),
+            fall_limit=ActivePowerOverTime(1.1, "kW/second"),
+            dc_to_ac_efficiency=100,
             cutout_percent=10,
             cutin_percent=10,
         )

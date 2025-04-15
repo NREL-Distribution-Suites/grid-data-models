@@ -5,6 +5,7 @@ from typing import Annotated, Type
 import importlib.metadata
 from pathlib import Path
 
+from infrasys.time_series_models import TimeSeriesData, SingleTimeSeries
 from infrasys import Component, System
 from pydantic import BaseModel, Field
 from shapely import Point, LineString, union_all
@@ -19,8 +20,9 @@ import shapely
 from gdm.distribution.components.base.distribution_transformer_base import (
     DistributionTransformerBase,
 )
+from gdm.distribution.enums import Phase
 from gdm.distribution.components.distribution_bus import DistributionBus
-from gdm.distribution.distribution_enum import ColorNodeBy, ColorLineBy
+from gdm.distribution.enums import ColorNodeBy, ColorLineBy
 from gdm.distribution.components.base.distribution_branch_base import (
     DistributionBranchBase,
 )
@@ -30,14 +32,13 @@ from gdm.distribution.components.distribution_transformer import (
 from gdm.distribution.components.distribution_vsource import (
     DistributionVoltageSource,
 )
-from gdm.distribution.distribution_enum import Phase
 from gdm.exceptions import (
     MultipleOrEmptyVsourceFound,
 )
 
 
 class UserAttributes(BaseModel):
-    """Interface for single time series data user attributes."""
+    """Data model for single time series data user attributes."""
 
     profile_name: Annotated[
         str, Field(..., description="Name of the profile to be used in original powerflow model.")
@@ -56,7 +57,11 @@ class DistributionSystem(System):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.data_format_version = importlib.metadata.version("grid-data-models")
+        if not self.data_format_version:
+            self.data_format_version = importlib.metadata.version("grid-data-models")
+
+    def handle_data_format_upgrade():
+        print("Implement upgrade logic here")
 
     def get_bus_connected_components(
         self, bus_name: str, component_type: Component
@@ -115,8 +120,29 @@ class DistributionSystem(System):
             )
         return graph
 
+    def _add_to_subsystem(
+        self,
+        subtree_system: "DistributionSystem",
+        parent_components: list[Component],
+        bus_names: list[DistributionBus],
+    ):
+        for component in parent_components:
+            if isinstance(
+                component,
+                (DistributionBranchBase, DistributionTransformerBase),
+            ):
+                nodes = {bus.name for bus in component.buses}
+                if not nodes.issubset(set(bus_names)):
+                    continue
+            if not subtree_system.has_component(component):
+                subtree_system.add_component(component)
+
     def get_subsystem(
-        self, bus_names: list[str], name: str, keep_timeseries: bool = False
+        self,
+        bus_names: list[str],
+        name: str,
+        keep_timeseries: bool = False,
+        time_series_type: Type[TimeSeriesData] = SingleTimeSeries,
     ) -> "DistributionSystem":
         """Method to get subsystem from list of buses.
 
@@ -128,7 +154,8 @@ class DistributionSystem(System):
             Name of the subsystem.
         keep_timeseries: bool
             Set this flag to retain timeseries data associated with the component.
-
+        time_series_type: Type[TimeSeriesData]
+            Type of time series data. Defaults to: SingleTimeSeries
         Returns
         -------
         DistributionSystem
@@ -140,23 +167,24 @@ class DistributionSystem(System):
             parent_components = self.list_parent_components(
                 self.get_component(DistributionBus, u)
             ) + self.list_parent_components(self.get_component(DistributionBus, v))
-            for component in parent_components:
-                if isinstance(
-                    component,
-                    (DistributionBranchBase, DistributionTransformerBase),
-                ):
-                    nodes = {bus.name for bus in component.buses}
-                    if not nodes.issubset(set(bus_names)):
-                        continue
-                if not subtree_system.has_component(component):
-                    subtree_system.add_component(component)
+            self._add_to_subsystem(subtree_system, parent_components, bus_names)
+
+        for u in subtree.nodes():
+            parent_components = self.list_parent_components(self.get_component(DistributionBus, u))
+            self._add_to_subsystem(subtree_system, parent_components, bus_names)
+
         if keep_timeseries:
             for comp in subtree_system.get_components(
-                Component, filter_func=lambda x: self.has_time_series(x)
+                Component,
+                filter_func=lambda x: self.has_time_series(x, time_series_type=time_series_type),
             ):
-                ts_metadata = self.list_time_series_metadata(comp)
+                ts_metadata = self.list_time_series_metadata(
+                    comp, time_series_type=time_series_type
+                )
                 for metadata in ts_metadata:
-                    ts_data = self.get_time_series(comp, metadata.variable_name)
+                    ts_data = self.get_time_series(
+                        comp, metadata.variable_name, time_series_type=time_series_type
+                    )
                     subtree_system.add_time_series(ts_data, comp, **metadata.user_attributes)
 
         return subtree_system
@@ -230,12 +258,17 @@ class DistributionSystem(System):
         return gdf_edges
 
     def _build_node_geodataframe(self) -> gpd.GeoDataFrame:
-        """Returns geo dataframes for the edges
+        """
+        Builds a GeoDataFrame containing node information for distribution buses.
 
-        Returns
-        -------
-        gpd.GeoDataFrame
-            geodataframe with node info
+        This method collects data from all distribution bus components, including
+        their names, types, rated voltages, phases, and coordinates. It constructs
+        a GeoDataFrame with this information, using the bus coordinates to create
+        point geometries. The coordinate reference system (CRS) is determined from
+        the bus data, defaulting to EPSG:4326 if not specified.
+
+        Returns:
+            gpd.GeoDataFrame: A GeoDataFrame with node information and geometries.
         """
         node_data = defaultdict(list)
         system_crs = None
@@ -243,7 +276,7 @@ class DistributionSystem(System):
             if bus.coordinate.x != 0 and bus.coordinate.y != 0:
                 node_data["Name"].append(bus.name)
                 node_data["Type"].append(DistributionBus.__name__)
-                node_data["kV"].append(bus.nominal_voltage.to("kilovolt").magnitude)
+                node_data["kV"].append(bus.rated_voltage.to("kilovolt").magnitude)
                 node_data["Phases"].append(",".join([phs.value for phs in bus.phases]))
                 node_data["Latitude"].append(bus.coordinate.y)
                 node_data["Longitude"].append(bus.coordinate.x)
@@ -257,23 +290,23 @@ class DistributionSystem(System):
         )
         return gdf_nodes
 
-    def to_gdf(self, export_path: Path | None = None) -> gpd.GeoDataFrame:
-        if export_path:
-            export_path = Path(export_path)
-
+    def to_gdf(self, export_file: Path | None = None) -> gpd.GeoDataFrame:
         graph = self.get_undirected_graph()
         nodes_gdf = self._build_node_geodataframe()
         edges_gdf = self._build_edge_geodataframe(graph)
+        final_gdf = gpd.pd.concat([nodes_gdf, edges_gdf], ignore_index=True)
 
-        if export_path and export_path.exists() and export_path.is_dir():
-            nodes_gdf.to_csv(export_path / f"{self.name}_nodes_gdf.csv")
-            edges_gdf.to_csv(export_path / f"{self.name}_edges_gdf.csv")
-        elif export_path and export_path.exists() and not export_path.is_dir():
-            raise NotADirectoryError("Provided path is not a directory")
-        elif export_path and not export_path.exists():
-            raise FileNotFoundError("Provided path does not exist")
+        if export_file:
+            export_file = Path(export_file)
+            final_gdf.to_csv(export_file)
 
-        return nodes_gdf, edges_gdf
+        return final_gdf
+
+    def to_geojson(self, export_file: Path | str) -> None:
+        export_file = Path(export_file)
+        system_gdf = self.to_gdf()
+        with open(export_file, "w") as f:
+            f.write(system_gdf.to_json())
 
     def plot(
         self,
@@ -284,7 +317,10 @@ class DistributionSystem(System):
         color_line_by: ColorLineBy = ColorLineBy.EQUIPMENT_TYPE,
         **kwargs,
     ) -> None:
-        nodes_gdf, edges_gdf = self.to_gdf()
+        system_gdf = self.to_gdf()
+
+        nodes_gdf = system_gdf[system_gdf.Type == "DistributionBus"]
+        edges_gdf = system_gdf[system_gdf.Type != "DistributionBus"]
         center = union_all(nodes_gdf.geometry).centroid
         nodes_gdf["lon"] = nodes_gdf.geometry.y
         nodes_gdf["lat"] = nodes_gdf.geometry.x

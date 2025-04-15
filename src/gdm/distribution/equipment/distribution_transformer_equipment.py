@@ -1,4 +1,4 @@
-""" This module contains interface for distribution transformer."""
+"""This module contains interface for distribution transformer."""
 
 from itertools import groupby
 from typing import Annotated
@@ -6,14 +6,14 @@ from typing import Annotated
 from infrasys import Component
 from pydantic import Field, model_validator
 
-from gdm.distribution.sequence_pair import SequencePair
-from gdm.distribution.distribution_enum import ConnectionType, VoltageTypes
+from gdm.distribution.common.sequence_pair import SequencePair
+from gdm.distribution.enums import ConnectionType, VoltageTypes
 from gdm.quantities import PositiveApparentPower, PositiveVoltage
 from gdm.constants import PINT_SCHEMA
 
 
 class WindingEquipment(Component):
-    """Interface for winding."""
+    """Data model for winding."""
 
     name: Annotated[str, Field("", description="Name of the winding.")]
     resistance: Annotated[
@@ -27,14 +27,14 @@ class WindingEquipment(Component):
         ),
     ]
     is_grounded: Annotated[bool, Field(..., description="Is this winding grounded or not.")]
-    nominal_voltage: Annotated[
+    rated_voltage: Annotated[
         PositiveVoltage,
         PINT_SCHEMA,
-        Field(..., description="Nominal voltage rating for this winding."),
+        Field(..., description="rated voltage rating for this winding."),
     ]
     voltage_type: Annotated[
         VoltageTypes,
-        Field(..., description="Set voltage type for nominal voltage."),
+        Field(..., description="Set voltage type for rated voltage."),
     ]
     rated_power: Annotated[
         PositiveApparentPower,
@@ -97,7 +97,7 @@ class WindingEquipment(Component):
         return WindingEquipment(
             resistance=1,
             is_grounded=False,
-            nominal_voltage=PositiveVoltage(12.47, "kilovolt"),
+            rated_voltage=PositiveVoltage(12.47, "kilovolt"),
             rated_power=PositiveApparentPower(500, "kilova"),
             connection_type=ConnectionType.STAR,
             num_phases=3,
@@ -108,7 +108,7 @@ class WindingEquipment(Component):
 
 
 class DistributionTransformerEquipment(Component):
-    """Interface for distribution transformer info."""
+    """Data model for distribution transformer info."""
 
     pct_no_load_loss: Annotated[
         float,
@@ -200,7 +200,7 @@ class DistributionTransformerEquipment(Component):
                 WindingEquipment(
                     resistance=1,
                     is_grounded=False,
-                    nominal_voltage=PositiveVoltage(12.47, "kilovolt"),
+                    rated_voltage=PositiveVoltage(12.47, "kilovolt"),
                     rated_power=PositiveApparentPower(56, "kilova"),
                     connection_type=ConnectionType.STAR,
                     num_phases=3,
@@ -210,7 +210,7 @@ class DistributionTransformerEquipment(Component):
                 WindingEquipment(
                     resistance=1,
                     is_grounded=False,
-                    nominal_voltage=PositiveVoltage(0.4, "kilovolt"),
+                    rated_voltage=PositiveVoltage(0.4, "kilovolt"),
                     rated_power=PositiveApparentPower(56, "kilova"),
                     connection_type=ConnectionType.STAR,
                     num_phases=3,

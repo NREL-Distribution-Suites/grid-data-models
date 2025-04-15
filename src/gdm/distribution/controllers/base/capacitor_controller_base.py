@@ -10,7 +10,7 @@ from gdm.constants import PINT_SCHEMA
 
 
 class CapacitorControllerBase(Component, ABC):
-    """Interface for capacitor controllers. Phase connection specified in the capacitor."""
+    """Data model for capacitor controllers. Phase connection specified in the capacitor."""
 
     name: Annotated[str, Field("", description="Name of the capacitor controller.")]
     delay_on: Annotated[

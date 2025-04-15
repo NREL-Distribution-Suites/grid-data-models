@@ -60,7 +60,7 @@ class CrossArmType(str, Enum):
 
 
 class CrossArm(Component):
-    """Interface for cross arm."""
+    """Data model for cross arm."""
 
     material: Annotated[CrossArmMaterial, Field(..., description="Cross arm material.")]
     arm_type: Annotated[
@@ -84,7 +84,7 @@ class CrossArm(Component):
 
 
 class RoundedPoleDimension(Component):
-    """Interface for rounded dimension of pole."""
+    """Data model for rounded dimension of pole."""
 
     name: Annotated[str, Field("", description="Name of the dimension.")]
     ground_diameter: Annotated[
@@ -100,7 +100,7 @@ class RoundedPoleDimension(Component):
 
 
 class CrossSectionalPoleDimension(Component):
-    """Interface for rounded dimension of pole."""
+    """Data model for rounded dimension of pole."""
 
     name: Annotated[str, Field("", description="Name of the dimension.")]
     ground_width: Annotated[
@@ -149,7 +149,7 @@ class StreetLight(Component):
 
 
 class Pole(_GeoLocatedWithInstalledDateComponent):
-    """Interface for electric pole."""
+    """Data model for electric pole."""
 
     material: Annotated[PoleMaterial, Field(..., description="Pole material type.")]
     height: Annotated[

@@ -10,14 +10,14 @@ from gdm.distribution.equipment.distribution_transformer_equipment import (
 )
 from gdm.distribution.components.matrix_impedance_branch import MatrixImpedanceBranch
 from gdm.distribution.components.distribution_load import DistributionLoad
-from gdm.distribution.distribution_enum import ConnectionType, Phase, VoltageTypes
-from gdm import DistributionSystem
+from gdm.distribution.enums import ConnectionType, Phase, VoltageTypes
+from gdm.distribution import DistributionSystem
 from gdm.distribution.equipment.load_equipment import LoadEquipment
 from gdm.distribution.equipment.matrix_impedance_branch_equipment import (
     MatrixImpedanceBranchEquipment,
 )
 from gdm.distribution.equipment.phase_load_equipment import PhaseLoadEquipment
-from gdm.distribution.sequence_pair import SequencePair
+from gdm.distribution.common.sequence_pair import SequencePair
 from gdm.quantities import (
     CapacitancePULength,
     PositiveApparentPower,
@@ -36,26 +36,26 @@ def get_three_bus_system():
     sys = DistributionSystem(auto_add_composed_components=True)
     bus_1 = DistributionBus(
         name="Bus-1",
-        nominal_voltage=PositiveVoltage(12.47, "kilovolts"),
+        rated_voltage=PositiveVoltage(12.47, "kilovolts"),
         phases=[Phase.A, Phase.B, Phase.C],
         voltage_type=VoltageTypes.LINE_TO_LINE,
     )
     bus_2 = DistributionBus(
         name="Bus-2",
-        nominal_voltage=PositiveVoltage(0.24, "kilovolts"),
+        rated_voltage=PositiveVoltage(0.24, "kilovolts"),
         phases=[Phase.S1, Phase.N, Phase.S2],
         voltage_type=VoltageTypes.LINE_TO_LINE,
     )
     bus_3 = DistributionBus(
         name="Bus-3",
-        nominal_voltage=PositiveVoltage(0.24, "kilovolts"),
+        rated_voltage=PositiveVoltage(0.24, "kilovolts"),
         phases=[Phase.S1, Phase.S2, Phase.N],
         voltage_type=VoltageTypes.LINE_TO_LINE,
     )
     sys.add_components(bus_1, bus_2, bus_3)
     transformer_1 = DistributionTransformer(
         name="Transformer-1",
-        buses=[bus_1, bus_2],
+        buses=[bus_1, bus_2, bus_2],
         winding_phases=[[Phase.A, Phase.B], [Phase.S1, Phase.N], [Phase.N, Phase.S2]],
         equipment=DistributionTransformerEquipment(
             name="SplitPhase-Transformer-1",
@@ -65,7 +65,7 @@ def get_three_bus_system():
                 WindingEquipment(
                     resistance=0.02,
                     is_grounded=False,
-                    nominal_voltage=PositiveVoltage(12.47, "kilovolts"),
+                    rated_voltage=PositiveVoltage(12.47, "kilovolts"),
                     rated_power=PositiveApparentPower(25, "kilova"),
                     num_phases=1,
                     tap_positions=[1.0],
@@ -75,7 +75,7 @@ def get_three_bus_system():
                 WindingEquipment(
                     resistance=0.02,
                     is_grounded=False,
-                    nominal_voltage=PositiveVoltage(0.24, "kilovolts"),
+                    rated_voltage=PositiveVoltage(0.24, "kilovolts"),
                     rated_power=PositiveApparentPower(25, "kilova"),
                     num_phases=1,
                     tap_positions=[1.0],
@@ -85,7 +85,7 @@ def get_three_bus_system():
                 WindingEquipment(
                     resistance=0.02,
                     is_grounded=False,
-                    nominal_voltage=PositiveVoltage(0.24, "kilovolts"),
+                    rated_voltage=PositiveVoltage(0.24, "kilovolts"),
                     rated_power=PositiveApparentPower(25, "kilova"),
                     num_phases=1,
                     tap_positions=[1.0],

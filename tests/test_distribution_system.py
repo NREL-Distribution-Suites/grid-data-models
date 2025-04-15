@@ -1,6 +1,6 @@
-from gdm import DistributionSystem
+from gdm.distribution import DistributionSystem
 
 
-def test_distribution_system_with_timeseries(sample_distribution_system_with_timeseries):
+def test_distribution_system_with_timeseries(distribution_system_with_single_timeseries):
     """Tests creation of sample distribution system with timeseries."""
-    assert isinstance(sample_distribution_system_with_timeseries, DistributionSystem)
+    assert isinstance(distribution_system_with_single_timeseries, DistributionSystem)

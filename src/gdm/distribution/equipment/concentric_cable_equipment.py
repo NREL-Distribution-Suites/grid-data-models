@@ -1,4 +1,4 @@
-""" This module contains concentric cable equipment."""
+"""This module contains concentric cable equipment."""
 
 from typing import Annotated
 
@@ -15,7 +15,7 @@ from gdm.constants import PINT_SCHEMA
 
 
 class ConcentricCableEquipment(Component):
-    """Interface for cable catalog."""
+    """Data model for cable catalog."""
 
     strand_diameter: Annotated[
         PositiveDistance, PINT_SCHEMA, Field(..., description="Diameter of the cable strand.")
@@ -36,11 +36,6 @@ class ConcentricCableEquipment(Component):
     ]
     ampacity: Annotated[
         PositiveCurrent, PINT_SCHEMA, Field(..., description="Ampacity of the conductor.")
-    ]
-    emergency_ampacity: Annotated[
-        PositiveCurrent,
-        PINT_SCHEMA,
-        Field(..., description="Emergency ampacity of the conductor."),
     ]
     conductor_gmr: Annotated[
         PositiveDistance,
@@ -103,7 +98,6 @@ class ConcentricCableEquipment(Component):
             insulation_thickness=PositiveDistance(0.226, "in"),
             insulation_diameter=PositiveDistance(0.78, "in"),
             ampacity=PositiveCurrent(135, "ampere"),
-            emergency_ampacity=PositiveCurrent(135, "ampere"),
             conductor_gmr=PositiveDistance(0.00836, "ft"),
             strand_gmr=PositiveDistance(0.00208, "ft"),
             phase_ac_resistance=PositiveResistancePULength(0.945, "ohm/mi"),

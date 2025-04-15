@@ -5,24 +5,32 @@
 A single-phase transformer with star (wye) connection. This example demonstrates creating a single-phase transformer with primary and secondary buses, winding equipment, and transformer configuration.
 
 ```python
->>> from gdm import (
-...     DistributionBus, 
-...     DistributionLoad,
-...     LoadEquipment,
-...     PositiveVoltage,
-...     VoltageTypes,
-...     PhaseLoadEquipment,
-...     Phase,
-...     ActivePower,
-...     ReactivePower,
-...     ConnectionType,
+>>> from gdm.distribution.components import (
 ...     DistributionTransformer,
 ...     DistributionSubstation,
 ...     DistributionFeeder,
+...     DistributionBus, 
+...     DistributionLoad,
+... )
+>>> from gdm.distribution.equipment import (
 ...     DistributionTransformerEquipment,
+...     PhaseLoadEquipment,
 ...     WindingEquipment,
+...     LoadEquipment,
+... )
+>>> from gdm.distribution.enums import (
+...     ConnectionType,
+...     VoltageTypes,
+...     Phase,
+... )
+>>> from gdm.distribution.common import (
 ...     SequencePair,
-...     PositiveApparentPower
+... )
+>>> from gdm.quantities import (
+...     PositiveApparentPower,
+...     PositiveVoltage,
+...     ReactivePower,
+...     ActivePower,
 ... )
 >>> substation = DistributionSubstation(name='Test Substation', feeders=[DistributionFeeder(name='Test Feeder')])
 >>> feeder = DistributionFeeder(name='Test Feeder')
@@ -32,7 +40,7 @@ A single-phase transformer with star (wye) connection. This example demonstrates
 ...     feeder=feeder,
 ...     voltage_type=VoltageTypes.LINE_TO_GROUND,
 ...     phases=[Phase.A],
-...     nominal_voltage=PositiveVoltage(7.62, "kilovolts")
+...     rated_voltage=PositiveVoltage(7.62, "kilovolts")
 ... )
 >>> secondary_bus = DistributionBus(
 ...     name='SecondaryBus',
@@ -40,13 +48,13 @@ A single-phase transformer with star (wye) connection. This example demonstrates
 ...     feeder=feeder,
 ...     voltage_type=VoltageTypes.LINE_TO_GROUND,
 ...     phases=[Phase.A],
-...     nominal_voltage=PositiveVoltage(0.24, "kilovolts")
+...     rated_voltage=PositiveVoltage(0.24, "kilovolts")
 ... )
 >>> primary_winding = WindingEquipment(
 ...     name='PrimaryWinding',
 ...     resistance=1.0,
 ...     is_grounded=True,
-...     nominal_voltage=PositiveVoltage(7.62, "kilovolts"),
+...     rated_voltage=PositiveVoltage(7.62, "kilovolts"),
 ...     voltage_type=VoltageTypes.LINE_TO_GROUND,
 ...     rated_power=PositiveApparentPower(56, "kilova"),
 ...     num_phases=1,
@@ -60,7 +68,7 @@ A single-phase transformer with star (wye) connection. This example demonstrates
 ...     name='SecondaryWinding',
 ...     resistance=1.0,
 ...     is_grounded=True,
-...     nominal_voltage=PositiveVoltage(0.24, "kilovolts"),
+...     rated_voltage=PositiveVoltage(0.24, "kilovolts"),
 ...     voltage_type=VoltageTypes.LINE_TO_GROUND,
 ...     rated_power=PositiveApparentPower(56, "kilova"),
 ...     num_phases=1,
@@ -107,7 +115,7 @@ DistributionTransformer(
             voltage_type=<VoltageTypes.LINE_TO_GROUND: 'line-to-ground'>,
             phases=[<Phase.A: 'A'>],
             voltagelimits=[],
-            nominal_voltage=<Quantity(7.62, 'kilovolt')>,
+            rated_voltage=<Quantity(7.62, 'kilovolt')>,
             coordinate=None
         ),
         DistributionBus(
@@ -120,7 +128,7 @@ DistributionTransformer(
             voltage_type=<VoltageTypes.LINE_TO_GROUND: 'line-to-ground'>,
             phases=[<Phase.A: 'A'>],
             voltagelimits=[],
-            nominal_voltage=<Quantity(0.24, 'kilovolt')>,
+            rated_voltage=<Quantity(0.24, 'kilovolt')>,
             coordinate=None
         )
     ],
@@ -134,7 +142,7 @@ DistributionTransformer(
                 name='PrimaryWinding',
                 resistance=1.0,
                 is_grounded=True,
-                nominal_voltage=<Quantity(7.62, 'kilovolt')>,
+                rated_voltage=<Quantity(7.62, 'kilovolt')>,
                 voltage_type=<VoltageTypes.LINE_TO_GROUND: 'line-to-ground'>,
                 rated_power=<Quantity(56, 'kilova')>,
                 num_phases=1,
@@ -148,7 +156,7 @@ DistributionTransformer(
                 name='SecondaryWinding',
                 resistance=1.0,
                 is_grounded=True,
-                nominal_voltage=<Quantity(0.24, 'kilovolt')>,
+                rated_voltage=<Quantity(0.24, 'kilovolt')>,
                 voltage_type=<VoltageTypes.LINE_TO_GROUND: 'line-to-ground'>,
                 rated_power=<Quantity(56, 'kilova')>,
                 num_phases=1,
@@ -180,7 +188,7 @@ A three-phase transformer with star (wye) connection. This example demonstrates 
 ...     feeder=feeder,
 ...     voltage_type=VoltageTypes.LINE_TO_LINE,
 ...     phases=[Phase.A, Phase.B, Phase.C],
-...     nominal_voltage=PositiveVoltage(12.47, "kilovolts")
+...     rated_voltage=PositiveVoltage(12.47, "kilovolts")
 ... )
 >>> secondary_bus_3p = DistributionBus(
 ...     name='SecondaryBus-3P',
@@ -188,13 +196,13 @@ A three-phase transformer with star (wye) connection. This example demonstrates 
 ...     feeder=feeder,
 ...     voltage_type=VoltageTypes.LINE_TO_LINE,
 ...     phases=[Phase.A, Phase.B, Phase.C],
-...     nominal_voltage=PositiveVoltage(0.4, "kilovolts")
+...     rated_voltage=PositiveVoltage(0.4, "kilovolts")
 ... )
 >>> primary_winding_3p = WindingEquipment(
 ...     name='PrimaryWinding-3P',
 ...     resistance=1.0,
 ...     is_grounded=False,
-...     nominal_voltage=PositiveVoltage(12.47, "kilovolts"),
+...     rated_voltage=PositiveVoltage(12.47, "kilovolts"),
 ...     voltage_type=VoltageTypes.LINE_TO_LINE,
 ...     rated_power=PositiveApparentPower(56, "kilova"),
 ...     num_phases=3,
@@ -208,7 +216,7 @@ A three-phase transformer with star (wye) connection. This example demonstrates 
 ...     name='SecondaryWinding-3P',
 ...     resistance=1.0,
 ...     is_grounded=False,
-...     nominal_voltage=PositiveVoltage(0.4, "kilovolts"),
+...     rated_voltage=PositiveVoltage(0.4, "kilovolts"),
 ...     voltage_type=VoltageTypes.LINE_TO_LINE,
 ...     rated_power=PositiveApparentPower(56, "kilova"),
 ...     num_phases=3,
@@ -255,7 +263,7 @@ DistributionTransformer(
             voltage_type=<VoltageTypes.LINE_TO_LINE: 'line-to-line'>,
             phases=[<Phase.A: 'A'>, <Phase.B: 'B'>, <Phase.C: 'C'>],
             voltagelimits=[],
-            nominal_voltage=<Quantity(12.47, 'kilovolt')>,
+            rated_voltage=<Quantity(12.47, 'kilovolt')>,
             coordinate=None
         ),
         DistributionBus(
@@ -268,7 +276,7 @@ DistributionTransformer(
             voltage_type=<VoltageTypes.LINE_TO_LINE: 'line-to-line'>,
             phases=[<Phase.A: 'A'>, <Phase.B: 'B'>, <Phase.C: 'C'>],
             voltagelimits=[],
-            nominal_voltage=<Quantity(0.4, 'kilovolt')>,
+            rated_voltage=<Quantity(0.4, 'kilovolt')>,
             coordinate=None
         )
     ],
@@ -285,7 +293,7 @@ DistributionTransformer(
                 name='PrimaryWinding-3P',
                 resistance=1.0,
                 is_grounded=False,
-                nominal_voltage=<Quantity(12.47, 'kilovolt')>,
+                rated_voltage=<Quantity(12.47, 'kilovolt')>,
                 voltage_type=<VoltageTypes.LINE_TO_LINE: 'line-to-line'>,
                 rated_power=<Quantity(56, 'kilova')>,
                 num_phases=3,
@@ -299,7 +307,7 @@ DistributionTransformer(
                 name='SecondaryWinding-3P',
                 resistance=1.0,
                 is_grounded=False,
-                nominal_voltage=<Quantity(0.4, 'kilovolt')>,
+                rated_voltage=<Quantity(0.4, 'kilovolt')>,
                 voltage_type=<VoltageTypes.LINE_TO_LINE: 'line-to-line'>,
                 rated_power=<Quantity(56, 'kilova')>,
                 num_phases=3,
@@ -325,22 +333,15 @@ Primary delta connected split phase transformer.
 ```python
 >>> bus_1 = DistributionBus(
 ...     name="Bus-1",
-...     nominal_voltage=PositiveVoltage(12.47, "kilovolts"),
+...     rated_voltage=PositiveVoltage(12.47, "kilovolts"),
 ...     phases=[Phase.A, Phase.B, Phase.C],
 ...     voltage_type=VoltageTypes.LINE_TO_LINE,
 ... )
 
 >>> bus_2 = DistributionBus(
 ...     name="Bus-2",
-...     nominal_voltage=PositiveVoltage(0.24, "kilovolts"),
+...     rated_voltage=PositiveVoltage(0.24, "kilovolts"),
 ...     phases=[Phase.S1, Phase.N, Phase.S2],
-...     voltage_type=VoltageTypes.LINE_TO_LINE,
-... )
-
->>> bus_3 = DistributionBus(
-...     name="Bus-3",
-...     nominal_voltage=PositiveVoltage(0.24, "kilovolts"),
-...     phases=[Phase.S1, Phase.S2, Phase.N],
 ...     voltage_type=VoltageTypes.LINE_TO_LINE,
 ... )
 
@@ -352,7 +353,7 @@ Primary delta connected split phase transformer.
 ...         WindingEquipment(
 ...             resistance=0.02,
 ...             is_grounded=False,
-...             nominal_voltage=PositiveVoltage(12.47, "kilovolts"),
+...             rated_voltage=PositiveVoltage(12.47, "kilovolts"),
 ...             rated_power=PositiveApparentPower(25, "kilova"),
 ...             num_phases=1,
 ...             tap_positions=[1.0],
@@ -362,7 +363,7 @@ Primary delta connected split phase transformer.
 ...         WindingEquipment(
 ...             resistance=0.02,
 ...             is_grounded=False,
-...             nominal_voltage=PositiveVoltage(0.24, "kilovolts"),
+...             rated_voltage=PositiveVoltage(0.24, "kilovolts"),
 ...             rated_power=PositiveApparentPower(25, "kilova"),
 ...             num_phases=1,
 ...             tap_positions=[1.0],
@@ -372,7 +373,7 @@ Primary delta connected split phase transformer.
 ...         WindingEquipment(
 ...             resistance=0.02,
 ...             is_grounded=False,
-...             nominal_voltage=PositiveVoltage(0.24, "kilovolts"),
+...             rated_voltage=PositiveVoltage(0.24, "kilovolts"),
 ...             rated_power=PositiveApparentPower(25, "kilova"),
 ...             num_phases=1,
 ...             tap_positions=[1.0],
@@ -391,7 +392,7 @@ Primary delta connected split phase transformer.
 
 >>> transformer_1 = DistributionTransformer(
 ...     name="Transformer-1",
-...     buses=[bus_1, bus_2, bus_3],
+...     buses=[bus_1, bus_2, bus_2],
 ...     winding_phases=[[Phase.A, Phase.B], [Phase.S1, Phase.N], [Phase.N, Phase.S2]],
 ...     equipment=transformer_equipment,
 ... )
@@ -410,7 +411,7 @@ DistributionTransformer(
             voltage_type=<VoltageTypes.LINE_TO_LINE: 'line-to-line'>,
             phases=[<Phase.A: 'A'>, <Phase.B: 'B'>, <Phase.C: 'C'>],
             voltagelimits=[],
-            nominal_voltage=<Quantity(12.47, 'kilovolt')>,
+            rated_voltage=<Quantity(12.47, 'kilovolt')>,
             coordinate=None
         ),
         DistributionBus(
@@ -420,17 +421,17 @@ DistributionTransformer(
             voltage_type=<VoltageTypes.LINE_TO_LINE: 'line-to-line'>,
             phases=[<Phase.S1: 'S1'>, <Phase.N: 'N'>, <Phase.S2: 'S2'>],
             voltagelimits=[],
-            nominal_voltage=<Quantity(0.24, 'kilovolt')>,
+            rated_voltage=<Quantity(0.24, 'kilovolt')>,
             coordinate=None
         ),
         DistributionBus(
-            name='Bus-3',
+            name='Bus-2',
             substation=None,
             feeder=None,
             voltage_type=<VoltageTypes.LINE_TO_LINE: 'line-to-line'>,
-            phases=[<Phase.S1: 'S1'>, <Phase.S2: 'S2'>, <Phase.N: 'N'>],
+            phases=[<Phase.S1: 'S1'>, <Phase.N: 'N'>, <Phase.S2: 'S2'>],
             voltagelimits=[],
-            nominal_voltage=<Quantity(0.24, 'kilovolt')>,
+            rated_voltage=<Quantity(0.24, 'kilovolt')>,
             coordinate=None
         )
     ],
@@ -448,7 +449,7 @@ DistributionTransformer(
                 name='',
                 resistance=0.02,
                 is_grounded=False,
-                nominal_voltage=<Quantity(12.47, 'kilovolt')>,
+                rated_voltage=<Quantity(12.47, 'kilovolt')>,
                 voltage_type=<VoltageTypes.LINE_TO_LINE: 'line-to-line'>,
                 rated_power=<Quantity(25, 'kilova')>,
                 num_phases=1,
@@ -462,7 +463,7 @@ DistributionTransformer(
                 name='',
                 resistance=0.02,
                 is_grounded=False,
-                nominal_voltage=<Quantity(0.24, 'kilovolt')>,
+                rated_voltage=<Quantity(0.24, 'kilovolt')>,
                 voltage_type=<VoltageTypes.LINE_TO_LINE: 'line-to-line'>,
                 rated_power=<Quantity(25, 'kilova')>,
                 num_phases=1,
@@ -476,7 +477,7 @@ DistributionTransformer(
                 name='',
                 resistance=0.02,
                 is_grounded=False,
-                nominal_voltage=<Quantity(0.24, 'kilovolt')>,
+                rated_voltage=<Quantity(0.24, 'kilovolt')>,
                 voltage_type=<VoltageTypes.LINE_TO_LINE: 'line-to-line'>,
                 rated_power=<Quantity(25, 'kilova')>,
                 num_phases=1,

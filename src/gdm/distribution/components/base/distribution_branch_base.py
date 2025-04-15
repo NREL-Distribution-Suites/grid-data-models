@@ -1,4 +1,4 @@
-""" This module contains distribution branch. """
+"""This module contains distribution branch."""
 
 from typing import Annotated
 from itertools import product
@@ -7,7 +7,7 @@ from abc import ABC
 from pydantic import model_validator, Field
 
 from gdm.distribution.components.distribution_bus import DistributionBus
-from gdm.distribution.distribution_enum import Phase
+from gdm.distribution.enums import Phase
 from gdm.distribution.components.base.distribution_component_base import (
     InServiceDistributionComponentBase,
 )
@@ -18,7 +18,7 @@ from gdm.constants import PINT_SCHEMA
 
 
 class DistributionBranchBase(InServiceDistributionComponentBase, ABC):
-    """Interface for abstract base distribution branch."""
+    """Data model for abstract base distribution branch."""
 
     buses: Annotated[
         list[DistributionBus],
@@ -51,10 +51,10 @@ class DistributionBranchBase(InServiceDistributionComponentBase, ABC):
             )
             raise ValueError(msg)
 
-        if self.buses[0].nominal_voltage != self.buses[1].nominal_voltage:
+        if self.buses[0].rated_voltage != self.buses[1].rated_voltage:
             msg = (
-                f"From bus {self.buses[0].nominal_voltage=}"
-                f"and to bus voltage {self.buses[1].nominal_voltage=} rating should be same."
+                f"From bus {self.buses[0].rated_voltage=}"
+                f"and to bus voltage {self.buses[1].rated_voltage=} rating should be same."
             )
             raise ValueError(msg)
 

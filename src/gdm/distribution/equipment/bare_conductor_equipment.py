@@ -1,11 +1,10 @@
-""" This module contains bare conductor equipment."""
+"""This module contains bare conductor equipment."""
 
-from typing import Annotated, Optional
+from typing import Annotated
 
 from infrasys import Component
 from pydantic import Field
 
-from gdm.distribution.limitset import ThermalLimitSet
 from gdm.quantities import (
     PositiveResistancePULength,
     PositiveDistance,
@@ -15,7 +14,7 @@ from gdm.constants import PINT_SCHEMA
 
 
 class BareConductorEquipment(Component):
-    """Interface for conductor catalaog."""
+    """Data model for conductor catalaog."""
 
     conductor_diameter: Annotated[
         PositiveDistance, PINT_SCHEMA, Field(..., description="Diameter of the conductor.")
@@ -48,10 +47,6 @@ class BareConductorEquipment(Component):
             ...,
             description="Per unit length positive direct current resistance of the conductor.",
         ),
-    ]
-    loading_limit: Annotated[
-        Optional[ThermalLimitSet],
-        Field(None, description="Loading limit set for this conductor."),
     ]
 
     @classmethod

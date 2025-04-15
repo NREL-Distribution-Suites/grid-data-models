@@ -1,4 +1,4 @@
-""" This module contains geometry branch equipment."""
+"""This module contains geometry branch equipment."""
 
 from typing import Annotated
 
@@ -12,7 +12,7 @@ from gdm.constants import PINT_SCHEMA
 
 
 class GeometryBranchEquipment(Component):
-    """Interface for geometry branch info."""
+    """Data model for geometry branch info."""
 
     conductors: Annotated[
         list[BareConductorEquipment | ConcentricCableEquipment],

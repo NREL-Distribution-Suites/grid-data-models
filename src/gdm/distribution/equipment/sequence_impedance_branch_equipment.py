@@ -1,6 +1,6 @@
 """This module contains sequence impedance branch equipment."""
 
-from typing import Annotated, Optional
+from typing import Annotated
 
 from infrasys import Component
 from pydantic import Field
@@ -11,12 +11,11 @@ from gdm.quantities import (
     ReactancePULength,
     CapacitancePULength,
 )
-from gdm.distribution.limitset import ThermalLimitSet
 from gdm.constants import PINT_SCHEMA
 
 
 class SequenceImpedanceBranchEquipment(Component):
-    """Interface for sequence impedance branch."""
+    """Data model for sequence impedance branch."""
 
     pos_seq_resistance: Annotated[
         ResistancePULength,
@@ -50,10 +49,6 @@ class SequenceImpedanceBranchEquipment(Component):
     ]
     ampacity: Annotated[
         PositiveCurrent, PINT_SCHEMA, Field(..., description="Ampacity of the conductor.")
-    ]
-    loading_limit: Annotated[
-        Optional[ThermalLimitSet],
-        Field(None, description="Loading limit set for this conductor."),
     ]
 
     @classmethod

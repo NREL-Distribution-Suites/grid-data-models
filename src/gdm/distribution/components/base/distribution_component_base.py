@@ -1,4 +1,4 @@
-""" This module contains class for managing basic fields for distribution assets."""
+"""This module contains class for managing basic fields for distribution assets."""
 
 from typing_extensions import Annotated
 from typing import Optional
@@ -12,7 +12,7 @@ from gdm.distribution.components.distribution_substation import DistributionSubs
 
 
 class DistributionComponentBase(Component, ABC):
-    """Interface for simple distribution component."""
+    """Data model for simple distribution component."""
 
     substation: Annotated[
         Optional[DistributionSubstation], Field(None, description="Name of the substation.")

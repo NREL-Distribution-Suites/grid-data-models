@@ -1,48 +1,62 @@
 from datetime import datetime, timedelta
 from uuid import uuid4
 
+import pytest
+
+from infrasys import SingleTimeSeries, NonSequentialTimeSeries
+
 from gdm.distribution.equipment.inverter_equipment import InverterEquipment
 from gdm.distribution.equipment.solar_equipment import SolarEquipment
 from gdm.distribution.controllers.distribution_inverter_controller import (
-    PowerfactorInverterController,
+    InverterController,
 )
-from gdm import (
-    DistributionTransformerEquipment,
-    MatrixImpedanceBranchEquipment,
-    DistributionVoltageSource,
-    DistributionTransformer,
-    PhaseCapacitorEquipment,
-    DistributionCapacitor,
-    MatrixImpedanceBranch,
-    PositiveReactivePower,
-    PositiveApparentPower,
-    DistributionInverter,
-    PositiveActivePower,
-    CapacitancePULength,
-    DistributionSystem,
-    CapacitorEquipment,
-    PhaseLoadEquipment,
-    ResistancePULength,
-    DistributionSolar,
-    ActivePowerPUTime,
-    ReactancePULength,
-    WindingEquipment,
-    PositiveDistance,
-    DistributionLoad,
-    PositiveCurrent,
-    PositiveVoltage,
-    DistributionBus,
+from gdm.distribution.common import SequencePair
+from gdm.distribution import DistributionSystem
+
+
+from gdm.distribution.enums import (
     ConnectionType,
-    LoadEquipment,
-    ReactivePower,
     VoltageTypes,
-    SequencePair,
-    ActivePower,
-    Irradiance,
     Phase,
 )
-from infrasys import SingleTimeSeries
-import pytest
+
+from gdm.distribution.components import (
+    DistributionVoltageSource,
+    DistributionTransformer,
+    DistributionCapacitor,
+    MatrixImpedanceBranch,
+    DistributionSolar,
+    DistributionLoad,
+    DistributionBus,
+)
+
+from gdm.distribution.equipment import (
+    DistributionTransformerEquipment,
+    MatrixImpedanceBranchEquipment,
+    PhaseCapacitorEquipment,
+    CapacitorEquipment,
+    PhaseLoadEquipment,
+    WindingEquipment,
+    LoadEquipment,
+)
+
+from gdm.quantities import (
+    PositiveReactivePower,
+    PositiveApparentPower,
+    PositiveActivePower,
+    CapacitancePULength,
+    PositiveResistance,
+    PositiveReactance,
+    ResistancePULength,
+    ActivePowerOverTime,
+    ReactancePULength,
+    PositiveDistance,
+    PositiveCurrent,
+    PositiveVoltage,
+    ReactivePower,
+    ActivePower,
+    Irradiance,
+)
 
 
 def build_distribution_buses():
@@ -87,30 +101,32 @@ def build_distribution_solar(bus: DistributionBus, bus_number: int):
             "uuid": uuid4(),
             "name": f"solar_{bus_number}",
             "bus": bus,
-            "inverter": DistributionInverter.example().model_copy(
+            "inverter": InverterEquipment.example().model_copy(
                 update={
                     "uuid": uuid4(),
-                    "name": f"inverter_{bus_number}",
-                    "controller": PowerfactorInverterController.example(),
-                    "equipment": InverterEquipment.example().model_copy(
-                        update={
-                            "uuid": uuid4(),
-                            "name": f"inverter_equipment_{bus_number}",
-                            "capacity": PositiveApparentPower(bus_number + 1, "kilowatt"),
-                        }
-                    ),
+                    "name": f"inverter_equipment_{bus_number}",
+                    "rated_apparent_power": PositiveApparentPower(bus_number + 1, "kilowatt"),
                 }
             ),
             "equipment": SolarEquipment.example().model_copy(
                 update={
                     "uuid": uuid4(),
                     "name": f"solar_equipment_{bus_number}",
-                    "solar_capacity": ActivePower(bus_number + 1, "kilowatt"),
-                    "rated_capacity": PositiveActivePower(bus_number + 1, "kilowatt"),
+                    "rated_power": PositiveActivePower(1000, "kilowatt"),
                     "resistance": 1,
                     "reactance": 1,
                 }
             ),
+            "controller": InverterController.example().model_copy(
+                update={
+                    "uuid": uuid4(),
+                    "name": f"inverter_controller_{bus_number}",
+                }
+            ),
+            "array_power": PositiveActivePower(1001, "watt"),
+            "active_power": PositiveActivePower(1001, "watt"),
+            "reactive_power": ReactivePower(1001, "watt"),
+            "irradiance": Irradiance(1000, "watt/m^2"),
         }
     )
 
@@ -135,12 +151,18 @@ def build_distribution_capacitor(bus: DistributionBus, bus_number: int):
                 update={
                     "uuid": uuid4(),
                     "name": f"capacitor_equipment_{bus_number}",
+                    "rated_voltage": PositiveVoltage(120, "volt"),
+                    "voltage_type": VoltageTypes.LINE_TO_GROUND,
                     "phase_capacitors": [
                         PhaseCapacitorEquipment.example().model_copy(
                             update={
                                 "uuid": uuid4(),
                                 "name": f"phase_capacitor_{i}_{bus_number}",
-                                "rated_capacity": PositiveReactivePower(bus_number + 1, "kvar"),
+                                "rated_reactive_power": PositiveReactivePower(
+                                    bus_number + 1, "kvar"
+                                ),
+                                "resistance": PositiveResistance(1, "ohm"),
+                                "reactance": PositiveReactance(1, "ohm"),
                             }
                         )
                         for i in range(3)
@@ -174,7 +196,7 @@ def build_source_bus():
         update={
             "name": "src_bus",
             "uuid": uuid4(),
-            "nominal_voltage": PositiveVoltage(12.47, "kilovolt"),
+            "rated_voltage": PositiveVoltage(12.47, "kilovolt"),
         }
     )
 
@@ -186,7 +208,7 @@ def build_split_phase_distribution_buses():
                 "uuid": uuid4(),
                 "name": f"split_phase_bus_{i}",
                 "phases": [Phase.S1, Phase.S2, Phase.N],
-                "nominal_voltage": PositiveVoltage(120, "volt"),
+                "rated_voltage": PositiveVoltage(120, "volt"),
                 "voltage_type": VoltageTypes.LINE_TO_GROUND,
             }
         )
@@ -197,7 +219,7 @@ def build_split_phase_distribution_buses():
 def build_split_phase_distribution_xfmr(bus1: DistributionBus, bus2: DistributionBus):
     return DistributionTransformer(
         name="split_phase_xfmr",
-        buses=[bus1, bus2],
+        buses=[bus1, bus2, bus2],
         winding_phases=[[Phase.A, Phase.B], [Phase.S1, Phase.N], [Phase.S2, Phase.N]],
         equipment=DistributionTransformerEquipment(
             name="split_phase_xfmr_equipment",
@@ -210,7 +232,7 @@ def build_split_phase_distribution_xfmr(bus1: DistributionBus, bus2: Distributio
                 WindingEquipment(
                     resistance=1,
                     is_grounded=False,
-                    nominal_voltage=PositiveVoltage(0.4, "kilovolt"),
+                    rated_voltage=PositiveVoltage(0.4, "kilovolt"),
                     rated_power=PositiveApparentPower(50, "kilova"),
                     connection_type=ConnectionType.STAR,
                     num_phases=1,
@@ -220,7 +242,7 @@ def build_split_phase_distribution_xfmr(bus1: DistributionBus, bus2: Distributio
                 WindingEquipment(
                     resistance=1,
                     is_grounded=True,
-                    nominal_voltage=PositiveVoltage(120, "volt"),
+                    rated_voltage=PositiveVoltage(120, "volt"),
                     rated_power=PositiveApparentPower(50, "kilova"),
                     connection_type=ConnectionType.STAR,
                     num_phases=1,
@@ -230,7 +252,7 @@ def build_split_phase_distribution_xfmr(bus1: DistributionBus, bus2: Distributio
                 WindingEquipment(
                     resistance=1,
                     is_grounded=True,
-                    nominal_voltage=PositiveVoltage(120, "volt"),
+                    rated_voltage=PositiveVoltage(120, "volt"),
                     rated_power=PositiveApparentPower(50, "kilova"),
                     connection_type=ConnectionType.STAR,
                     num_phases=1,
@@ -318,25 +340,28 @@ def build_split_phase_solar(bus: DistributionBus, bus_number: int):
         phases=[Phase.S1, Phase.S2],
         equipment=SolarEquipment(
             name=f"pv_equipment_{bus_number}",
-            rated_capacity=ActivePower(bus_number + 1, "kilowatt"),
-            solar_power=ActivePower(bus_number + 1, "kilowatt"),
+            rated_power=ActivePower(bus_number + 1, "kilowatt"),
             resistance=1,
             reactance=1,
+            rated_voltage=bus.rated_voltage,
+            voltage_type=bus.voltage_type,
         ),
-        inverter=DistributionInverter(
-            name=f"pv_inverter_{bus_number}",
-            controller=PowerfactorInverterController.example(),
-            equipment=InverterEquipment(
-                capacity=PositiveApparentPower(3.8, "kva"),
-                rise_limit=ActivePowerPUTime(1.1, "kW/second"),
-                fall_limit=ActivePowerPUTime(1.1, "kW/second"),
-                cutin_percent=10,
-                cutout_percent=10,
-            ),
+        inverter=InverterEquipment(
+            rated_apparent_power=PositiveApparentPower(3.8, "kva"),
+            rise_limit=ActivePowerOverTime(1.1, "kW/second"),
+            fall_limit=ActivePowerOverTime(1.1, "kW/second"),
+            dc_to_ac_efficiency=100,
+            cutin_percent=10,
+            cutout_percent=10,
         ),
+        controller=None,
+        active_power=PositiveActivePower(bus_number + 1, "kilowatt"),
+        reactive_power=ReactivePower(bus_number + 1, "kilowatt"),
+        irradiance=Irradiance(1000, "watt/m^2"),
     )
 
 
+@pytest.fixture(name="simple_distribution_system")
 def sample_distribution_system() -> DistributionSystem:
     """Tests the DistributionSystem class."""
 
@@ -394,9 +419,11 @@ def sample_distribution_system() -> DistributionSystem:
     return system
 
 
-@pytest.fixture()
-def sample_distribution_system_with_timeseries() -> DistributionSystem:
-    system = sample_distribution_system()
+@pytest.fixture(name="distribution_system_with_single_timeseries")
+def sample_distribution_system_with_single_timeseries(
+    simple_distribution_system,
+) -> DistributionSystem:
+    system = simple_distribution_system
     load_profile_kw = SingleTimeSeries.from_array(
         data=ActivePower([1, 2, 3, 4, 5], "kilowatt"),
         variable_name="active_power",
@@ -433,6 +460,67 @@ def sample_distribution_system_with_timeseries() -> DistributionSystem:
     )
     pvs: list[DistributionSolar] = list(system.get_components(DistributionSolar))
     system.add_time_series(
-        irradiance_profile, *pvs, profile_type="PMult", profile_name="pv_profile", use_actual=True
+        irradiance_profile, *pvs, profile_type="PMult", profile_name="pv_profile", use_actual=False
+    )
+    return system
+
+
+@pytest.fixture(name="distribution_system_with_nonsequential_timeseries")
+def sample_distribution_system_with_nonsequential_timeseries(
+    simple_distribution_system,
+) -> DistributionSystem:
+    system = simple_distribution_system
+    load_profile_kw = NonSequentialTimeSeries.from_array(
+        data=ActivePower([1, 2, 3, 4, 5], "kilowatt"),
+        timestamps=[
+            datetime(2020, 1, 1),
+            datetime(2020, 1, 3),
+            datetime(2020, 2, 1),
+            datetime(2020, 2, 3),
+            datetime(2020, 3, 1),
+        ],
+        variable_name="active_power",
+    )
+    load_profile_kvar = NonSequentialTimeSeries.from_array(
+        data=ActivePower([1, 2, 3, 4, 5], "kilovar"),
+        timestamps=[
+            datetime(2020, 1, 1),
+            datetime(2020, 1, 3),
+            datetime(2020, 2, 1),
+            datetime(2020, 2, 3),
+            datetime(2020, 3, 1),
+        ],
+        variable_name="reactive_power",
+    )
+    loads: list[DistributionLoad] = list(system.get_components(DistributionLoad))
+    system.add_time_series(
+        load_profile_kw,
+        *loads,
+        profile_type="PMult",
+        profile_name="load_profile_kw",
+        use_actual=True,
+    )
+    system.add_time_series(
+        load_profile_kvar,
+        *loads,
+        profile_type="QMult",
+        profile_name="load_profile_kvar",
+        use_actual=False,
+    )
+
+    irradiance_profile = NonSequentialTimeSeries.from_array(
+        data=Irradiance([0, 0.5, 1, 0.5, 0], "kilowatt / meter ** 2"),
+        timestamps=[
+            datetime(2020, 1, 1),
+            datetime(2020, 1, 3),
+            datetime(2020, 2, 1),
+            datetime(2020, 2, 3),
+            datetime(2020, 3, 1),
+        ],
+        variable_name="irradiance",
+    )
+    pvs: list[DistributionSolar] = list(system.get_components(DistributionSolar))
+    system.add_time_series(
+        irradiance_profile, *pvs, profile_type="PMult", profile_name="pv_profile", use_actual=False
     )
     return system

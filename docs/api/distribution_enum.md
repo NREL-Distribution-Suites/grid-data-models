@@ -2,7 +2,7 @@
 
 
 ```{eval-rst}
-.. automodule:: gdm
-    :members: Phase, ConnectionType, VoltageTypes, LimitType
+.. automodule:: gdm.distribution
+    :members: Phase, ConnectionType, VoltageTypes, LimitType, BatteryState, ControllerSupport, ColorLineBy, ColorNodeBy
 
 ```

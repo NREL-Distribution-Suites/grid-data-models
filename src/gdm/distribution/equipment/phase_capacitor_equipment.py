@@ -15,7 +15,7 @@ from gdm.constants import PINT_SCHEMA
 
 
 class PhaseCapacitorEquipment(Component):
-    """Interface for phase capacitor."""
+    """Data model for phase capacitor."""
 
     resistance: Annotated[
         PositiveResistance,
@@ -33,10 +33,10 @@ class PhaseCapacitorEquipment(Component):
             description="Positive reactance for the capacitor.",
         ),
     ]
-    rated_capacity: Annotated[
+    rated_reactive_power: Annotated[
         PositiveReactivePower,
         PINT_SCHEMA,
-        Field(..., description="Capacity of this capacitor."),
+        Field(..., description="Rated reactive power of this capacitor."),
     ]
     num_banks_on: Annotated[
         NonNegativeInt, Field(..., description="Number of banks currently on.")
@@ -50,7 +50,7 @@ class PhaseCapacitorEquipment(Component):
         return instance.model_copy(
             update={
                 "name": str(uuid.uuid4()),
-                "rated_capacity": instance.rated_capacity / num_splits,
+                "rated_reactive_power": instance.rated_reactive_power / num_splits,
                 "resistance": instance.resistance * num_splits,
                 "reactance": instance.reactance * num_splits,
             }
@@ -62,9 +62,11 @@ class PhaseCapacitorEquipment(Component):
     ) -> "PhaseCapacitorEquipment":
         return PhaseCapacitorEquipment(
             name=name,
-            rated_capacity=sum(inst.rated_capacity for inst in instances),
-            resistance=0,
-            reactance=0,
+            rated_reactive_power=sum(inst.rated_reactive_power for inst in instances),
+            resistance=1
+            / sum(1 / inst.resistance if inst.resistance.magnitude else 0 for inst in instances),
+            reactance=1
+            / sum(1 / inst.reactance if inst.reactance.magnitude else 0 for inst in instances),
             num_banks=sum(inst.num_banks for inst in instances),
             num_banks_on=sum(inst.num_banks_on for inst in instances),
         )
@@ -84,7 +86,7 @@ class PhaseCapacitorEquipment(Component):
         """Example for phase capacitor equipment."""
         return PhaseCapacitorEquipment(
             name="Phase-Cap-1",
-            rated_capacity=PositiveReactivePower(200, "kvar"),
+            rated_reactive_power=PositiveReactivePower(200, "kvar"),
             num_banks=1,
             num_banks_on=1,
         )

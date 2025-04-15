@@ -1,4 +1,4 @@
-""" This module contains interface for distribution transformer."""
+"""This module contains interface for distribution transformer."""
 
 import math
 from typing import Annotated
@@ -7,7 +7,7 @@ from abc import ABC
 from infrasys.quantities import Voltage
 from pydantic import Field, model_validator
 
-from gdm.distribution.distribution_enum import Phase, VoltageTypes
+from gdm.distribution.enums import Phase, VoltageTypes
 from gdm.distribution.components.distribution_bus import DistributionBus
 from gdm.distribution.components.base.distribution_component_base import (
     InServiceDistributionComponentBase,
@@ -27,7 +27,7 @@ def get_phase_voltage_in_kv(
 
 
 class DistributionTransformerBase(InServiceDistributionComponentBase, ABC):
-    """Interface for distribution transformer."""
+    """Data model for distribution transformer."""
 
     buses: Annotated[
         list[DistributionBus],
@@ -55,8 +55,17 @@ class DistributionTransformerBase(InServiceDistributionComponentBase, ABC):
         if not self.equipment.is_center_tapped:
             return False
 
-        all_voltages = [item.nominal_voltage for item in self.equipment.windings]
+        all_voltages = [item.rated_voltage for item in self.equipment.windings]
         return voltage < max(all_voltages)
+
+    def _split_phase_validation(self):
+        if self.equipment.is_center_tapped:
+            if len(self.buses) != 3:
+                raise ValueError("Center tapped transformer must have 3 buses.")
+            if self.buses[1] != self.buses[2]:
+                raise ValueError(
+                    "Center tapped transformer must have same bus on the secondary side (bus 2 and 3)."
+                )
 
     @model_validator(mode="after")
     def validate_fields_base(self) -> "DistributionTransformerBase":
@@ -86,29 +95,28 @@ class DistributionTransformerBase(InServiceDistributionComponentBase, ABC):
 
         for bus, pw_phases in zip(self.buses, self.winding_phases):
             if not (set(pw_phases) - set(Phase.N)).issubset(bus.phases):
-                msg = (
-                    f"Winding phases {pw_phases=}"
-                    f" must be subset of bus phases ({bus.phases=})."
-                )
+                msg = f"Winding phases {pw_phases=} must be subset of bus phases ({bus.phases=})."
                 raise ValueError(msg)
 
         for bus, wdg in zip(self.buses, self.equipment.windings):
             bus_phase_voltage = get_phase_voltage_in_kv(
-                bus.nominal_voltage,
+                bus.rated_voltage,
                 bus.voltage_type,
-                split_phase_secondary=self._check_if_voltage_is_on_split_side(bus.nominal_voltage),
+                split_phase_secondary=self._check_if_voltage_is_on_split_side(bus.rated_voltage),
             )
             wdg_phase_voltage = get_phase_voltage_in_kv(
-                wdg.nominal_voltage,
+                wdg.rated_voltage,
                 wdg.voltage_type,
-                split_phase_secondary=self._check_if_voltage_is_on_split_side(wdg.nominal_voltage),
+                split_phase_secondary=self._check_if_voltage_is_on_split_side(wdg.rated_voltage),
             )
             if not (0.85 * bus_phase_voltage <= wdg_phase_voltage <= 1.15 * bus_phase_voltage):
                 msg = (
-                    f"Nominal voltage of transformer {wdg_phase_voltage}"
+                    f"rated voltage of transformer {wdg_phase_voltage}"
                     f" must be within 15% range of"
-                    f" bus nominal voltage {bus_phase_voltage}"
+                    f" bus rated voltage {bus_phase_voltage}"
                 )
                 raise ValueError(msg)
+
+        self._split_phase_validation()
 
         return self

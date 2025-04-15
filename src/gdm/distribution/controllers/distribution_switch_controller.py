@@ -1,4 +1,4 @@
-""" This module contains distribution switch controller."""
+"""This module contains distribution switch controller."""
 
 from typing import Annotated, Literal
 
@@ -10,7 +10,7 @@ from gdm.constants import PINT_SCHEMA
 
 
 class DistributionSwitchController(Component):
-    """Interface for distribution switch controller."""
+    """Data model for distribution switch controller."""
 
     name: Annotated[str, Field("", description="Name of the switch controller.")]
 

@@ -1,21 +1,19 @@
-""" This module contains interface for Distribution Bus."""
-
 from typing import Annotated, Optional
 
 from infrasys import Location
 from pydantic import Field
 
-from gdm.distribution.distribution_enum import LimitType, Phase, VoltageTypes
+from gdm.distribution.enums import LimitType, Phase, VoltageTypes
 from gdm.distribution.components.base.distribution_component_base import DistributionComponentBase
 from gdm.distribution.components.distribution_feeder import DistributionFeeder
 from gdm.distribution.components.distribution_substation import DistributionSubstation
-from gdm.distribution.limitset import VoltageLimitSet
+from gdm.distribution.common.limitset import VoltageLimitSet
 from gdm.quantities import PositiveVoltage
 from gdm.constants import PINT_SCHEMA
 
 
 class DistributionBus(DistributionComponentBase):
-    """Interface for distribution bus.
+    """Data model for distribution bus.
 
     Examples:
         >>> from gdm import DistributionBus
@@ -28,10 +26,10 @@ class DistributionBus(DistributionComponentBase):
         list[VoltageLimitSet],
         Field([], description="List of voltage limit sets for this bus."),
     ]
-    nominal_voltage: Annotated[
+    rated_voltage: Annotated[
         PositiveVoltage,
         PINT_SCHEMA,
-        Field(..., description="Nominal voltage for this bus."),
+        Field(..., description="rated voltage for this bus."),
     ]
     coordinate: Annotated[
         Optional[Location],
@@ -43,7 +41,7 @@ class DistributionBus(DistributionComponentBase):
         return DistributionBus(
             voltage_type=VoltageTypes.LINE_TO_LINE,
             phases=[Phase.A, Phase.B, Phase.C],
-            nominal_voltage=PositiveVoltage(400, "volt"),
+            rated_voltage=PositiveVoltage(400, "volt"),
             name="DistBus1",
             substation=DistributionSubstation.example(),
             feeder=DistributionFeeder.example(),
