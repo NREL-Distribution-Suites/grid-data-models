@@ -345,12 +345,6 @@ Primary delta connected split phase transformer.
 ...     voltage_type=VoltageTypes.LINE_TO_LINE,
 ... )
 
->>> bus_3 = DistributionBus(
-...     name="Bus-3",
-...     rated_voltage=PositiveVoltage(0.24, "kilovolts"),
-...     phases=[Phase.S1, Phase.S2, Phase.N],
-...     voltage_type=VoltageTypes.LINE_TO_LINE,
-... )
 
 >>> transformer_equipment = DistributionTransformerEquipment(
 ...     name="SplitPhase-Transformer-1",
@@ -432,11 +426,11 @@ DistributionTransformer(
             coordinate=None
         ),
         DistributionBus(
-            name='Bus-3',
+            name='Bus-2',
             substation=None,
             feeder=None,
             voltage_type=<VoltageTypes.LINE_TO_LINE: 'line-to-line'>,
-            phases=[<Phase.S1: 'S1'>, <Phase.S2: 'S2'>, <Phase.N: 'N'>],
+            phases=[<Phase.S1: 'S1'>, <Phase.S2: 'N'>, <Phase.N: 'S2'>],
             voltagelimits=[],
             rated_voltage=<Quantity(0.24, 'kilovolt')>,
             coordinate=None
