@@ -1,3 +1,9 @@
+
+<div align="center">
+  <img src="_static/gdm_logo_no_text_light.jpeg" width="250">
+</div>
+
+
 # Grid Data Models (GDM)
 
 GDM is a python package containing data models for power system assets and datasets. This package is actively being developed at [National Renewable Energy Laboratory (NREL)](https://www.nrel.gov/).

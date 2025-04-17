@@ -44,6 +44,7 @@ extensions = [
     "sphinx.ext.mathjax",
 ]
 html_static_path = ["_static"]
+html_logo = "_static/gdm_logo_no_text_light.jpeg"
 templates_path = ["_templates"]
 exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 autodoc_pydantic_model_show_json = False
@@ -61,6 +62,14 @@ autodoc_pydantic_model_erdantic_figure = False
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
 html_theme = "pydata_sphinx_theme"
+html_theme_options = {
+    "logo": {
+        "text": "Grid-Data-Models",
+        "image_light": "gdm_logo_no_text_light.jpeg",
+        "image_dark": "gdm_logo_no_text_dark.jpg",
+    }
+}
+
 # html_static_path = ["_static"]
 # html_css_files = [
 #     "css/custom.css",
