@@ -312,15 +312,17 @@ class DistributionSystem(System):
         show: bool = True,
         color_node_by: ColorNodeBy = ColorNodeBy.PHASE,
         color_line_by: ColorLineBy = ColorLineBy.EQUIPMENT_TYPE,
+        show_legend: bool = True,
         **kwargs,
     ) -> None:
         system_gdf = self.to_gdf()
 
-        nodes_gdf = system_gdf[system_gdf.Type == "DistributionBus"]
-        edges_gdf = system_gdf[system_gdf.Type != "DistributionBus"]
-        center = union_all(nodes_gdf.geometry).centroid
+        nodes_gdf = system_gdf[system_gdf.Type == "DistributionBus"].copy()
         nodes_gdf["lon"] = nodes_gdf.geometry.y
         nodes_gdf["lat"] = nodes_gdf.geometry.x
+
+        edges_gdf = system_gdf[system_gdf.Type != "DistributionBus"].copy()
+        center = union_all(nodes_gdf.geometry).centroid
 
         fig = go.Figure()
 
@@ -328,14 +330,18 @@ class DistributionSystem(System):
         self._add_edge_traces(fig, edges_gdf, color_line_by)
 
         fig.update_layout(
-            title=f"GDM plot for {self.name} distribution system",
+            # title=f"GDM plot for {self.name} distribution system",
             geo=dict(
                 center=dict(lat=center.x, lon=center.y),  # Set center
                 projection_scale=zoom_level,  # Adjust zoom (lower value = more zoomed-in)
                 showland=kwargs.get("showland", True),
                 landcolor=kwargs.get("landcolor", "lightgray"),
             ),
+            legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
         )
+
+        if not show_legend:
+            fig.update_layout(showlegend=False)
 
         if show:
             fig.show()

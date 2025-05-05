@@ -1,0 +1,32 @@
+name: deploy-book
+
+on:
+  push:
+    branches:
+      - main  # or your default branch
+
+jobs:
+  github-pages:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install graphviz pygraphviz
+          python -m pip install ".[doc]"
+          pip install jupyter-book ghp-import matplotlib
+
+      - name: Build the book
+        run: jupyter-book build docs
+
+      - name: Deploy to GitHub Pages
+        run: |
+          ghp-import -n -p -f docs/_build/html

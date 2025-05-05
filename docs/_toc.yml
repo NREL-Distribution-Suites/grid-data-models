@@ -1,0 +1,30 @@
+# Table of contents
+# Learn more at https://jupyterbook.org/customize/toc.html
+
+format: jb-book
+root: intro
+parts:
+  - caption: Installation
+    chapters:
+    - file: installation
+    - file: gdmloader/gdmloader
+  - caption: Tutorial
+    chapters:
+    - file: gdm_intro/data_models
+    - file: gdm_intro/units
+    - file: gdm_intro/timeseries
+    - file: dist_system/import_export
+    - file: dist_system/plotting
+  - caption: Advanced Usage
+    chapters:
+    - file: dist_system/graphs
+    - file: dist_system/network_reduction
+    - file: dist_system/tracked_changes
+  - caption: On CIM and GDM
+    chapters:
+    - file: cim/index
+    - file: cim/distribution-bus
+  - caption: Reference Guides
+    chapters:
+    - file: api/index
+    - file: cli/index
