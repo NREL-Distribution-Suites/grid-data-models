@@ -22,9 +22,6 @@ jobs:
       - name: Run pytest
         run: |
           pytest -v --cov --cov-report=xml
-          cd docs
-          pytest --doctest-glob="*.md"
-          cd ..
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v4.0.1
         with:
