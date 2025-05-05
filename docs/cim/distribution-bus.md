@@ -1,4 +1,4 @@
-# Terminal in CIM vs DistributionBus in GDM
+# Model Representation
 
 Figure below shows an UML diagram for `Terminal` and `ConnectivityNode` in Common Information Model (CIM) which is used to connect terminals of 
 ac conducting equipment which is analogous to `DistributionBus` in grid data models. [The CIM diagram is accessed from here.](https://ontology.tno.nl/IEC_CIM/cim_Terminal.html). `Terminal` class inherits from `IdentifiedObject` class which has `name`, `description` and `mrid`. `IdentifiedObject.mrid` is analogous to `ComponentWithQuantities.uuid`. Note in GDM we also have `system_uuid` to sort of manage which system these assets belong to. Also `DistributionBus` has `coordinate` attribute of type `Location` which is equivalent to `PositionPoint` in CIM. 

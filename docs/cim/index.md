@@ -1,4 +1,4 @@
-# CIM & GDM
+# CIM vs GDM a comparison
 
 The common information model (CIM) as defined by the International Electrotechnical Commission (IEC) as "An abstract model that represents all the major objects in an electric utility enterprise typically involved in utility operations". It provides a standard way of defining object classes, their attributes and relationships. The CIM is currently maintained as UML model. 
 
@@ -21,10 +21,3 @@ In grid data models, we are attempting to solve these challenges. GDM is a colle
 * GDM currently is only supported in [Python](https://python.org) programming language. 
 
 * It is still in development phase and may not have representation for all the distribution assets you see in CIM.
-
-```{toctree}
-:caption: CIM vs Grid Data Models
-:hidden: true
-
-distribution-bus
-```

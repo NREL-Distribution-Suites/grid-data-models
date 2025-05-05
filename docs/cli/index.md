@@ -1,4 +1,4 @@
-# CLI
+# CLI Reference
 
 To see all the commands, you can use the following command.
 

@@ -1,4 +1,4 @@
-# References
+# API Reference
 
 ```{toctree}
 :caption: Distribution Components
