@@ -1,0 +1,78 @@
+Traceback (most recent call last):
+  File "/opt/hostedtoolcache/Python/3.12.10/x64/lib/python3.12/site-packages/jupyter_cache/executors/utils.py", line 58, in single_nb_execution
+    executenb(
+  File "/opt/hostedtoolcache/Python/3.12.10/x64/lib/python3.12/site-packages/nbclient/client.py", line 1319, in execute
+    return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.10/x64/lib/python3.12/site-packages/jupyter_core/utils/__init__.py", line 165, in wrapped
+    return loop.run_until_complete(inner)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.10/x64/lib/python3.12/asyncio/base_events.py", line 691, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.10/x64/lib/python3.12/site-packages/nbclient/client.py", line 709, in async_execute
+    await self.async_execute_cell(
+  File "/opt/hostedtoolcache/Python/3.12.10/x64/lib/python3.12/site-packages/nbclient/client.py", line 1062, in async_execute_cell
+    await self._check_raise_for_error(cell, cell_index, exec_reply)
+  File "/opt/hostedtoolcache/Python/3.12.10/x64/lib/python3.12/site-packages/nbclient/client.py", line 918, in _check_raise_for_error
+    raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
+nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
+------------------
+bus = DistributionBus(
+    voltage_type=VoltageTypes.LINE_TO_LINE,
+    phases=[Phase.A, Phase.B, Phase.C],
+    rated_voltage=rated_voltage,
+    name="DistBus1",
+    substation=DistributionSubstation.example(),
+    feeder=DistributionFeeder.example(),
+    voltagelimits=[
+        VoltageLimitSet(
+            limit_type=LimitType.MIN, value=PositiveVoltage(400 * 0.9, "volt")
+        ),
+        VoltageLimitSet(
+            limit_type=LimitType.MAX, value=PositiveVoltage(400 * 1.1, "volt")
+        ),
+    ],
+    coordinate=Location(x=20.0, y=30.0),
+)
+------------------
+
+
+[31m---------------------------------------------------------------------------[39m
+[31mValidationError[39m                           Traceback (most recent call last)
+[36mCell[39m[36m [39m[32mIn[6][39m[32m, line 1[39m
+[32m----> [39m[32m1[39m bus = [43mDistributionBus[49m[43m([49m
+[32m      2[39m [43m    [49m[43mvoltage_type[49m[43m=[49m[43mVoltageTypes[49m[43m.[49m[43mLINE_TO_LINE[49m[43m,[49m
+[32m      3[39m [43m    [49m[43mphases[49m[43m=[49m[43m[[49m[43mPhase[49m[43m.[49m[43mA[49m[43m,[49m[43m [49m[43mPhase[49m[43m.[49m[43mB[49m[43m,[49m[43m [49m[43mPhase[49m[43m.[49m[43mC[49m[43m][49m[43m,[49m
+[32m      4[39m [43m    [49m[43mrated_voltage[49m[43m=[49m[43mrated_voltage[49m[43m,[49m
+[32m      5[39m [43m    [49m[43mname[49m[43m=[49m[33;43m"[39;49m[33;43mDistBus1[39;49m[33;43m"[39;49m[43m,[49m
+[32m      6[39m [43m    [49m[43msubstation[49m[43m=[49m[43mDistributionSubstation[49m[43m.[49m[43mexample[49m[43m([49m[43m)[49m[43m,[49m
+[32m      7[39m [43m    [49m[43mfeeder[49m[43m=[49m[43mDistributionFeeder[49m[43m.[49m[43mexample[49m[43m([49m[43m)[49m[43m,[49m
+[32m      8[39m [43m    [49m[43mvoltagelimits[49m[43m=[49m[43m[[49m
+[32m      9[39m [43m        [49m[43mVoltageLimitSet[49m[43m([49m
+[32m     10[39m [43m            [49m[43mlimit_type[49m[43m=[49m[43mLimitType[49m[43m.[49m[43mMIN[49m[43m,[49m[43m [49m[43mvalue[49m[43m=[49m[43mPositiveVoltage[49m[43m([49m[32;43m400[39;49m[43m [49m[43m*[49m[43m [49m[32;43m0.9[39;49m[43m,[49m[43m [49m[33;43m"[39;49m[33;43mvolt[39;49m[33;43m"[39;49m[43m)[49m
+[32m     11[39m [43m        [49m[43m)[49m[43m,[49m
+[32m     12[39m [43m        [49m[43mVoltageLimitSet[49m[43m([49m
+[32m     13[39m [43m            [49m[43mlimit_type[49m[43m=[49m[43mLimitType[49m[43m.[49m[43mMAX[49m[43m,[49m[43m [49m[43mvalue[49m[43m=[49m[43mPositiveVoltage[49m[43m([49m[32;43m400[39;49m[43m [49m[43m*[49m[43m [49m[32;43m1.1[39;49m[43m,[49m[43m [49m[33;43m"[39;49m[33;43mvolt[39;49m[33;43m"[39;49m[43m)[49m
+[32m     14[39m [43m        [49m[43m)[49m[43m,[49m
+[32m     15[39m [43m    [49m[43m][49m[43m,[49m
+[32m     16[39m [43m    [49m[43mcoordinate[49m[43m=[49m[43mLocation[49m[43m([49m[43mx[49m[43m=[49m[32;43m20.0[39;49m[43m,[49m[43m [49m[43my[49m[43m=[49m[32;43m30.0[39;49m[43m)[49m[43m,[49m
+[32m     17[39m [43m)[49m
+
+[36mFile [39m[32m/opt/hostedtoolcache/Python/3.12.10/x64/lib/python3.12/site-packages/pydantic/main.py:214[39m, in [36mBaseModel.__init__[39m[34m(self, **data)[39m
+[32m    212[39m [38;5;66;03m# `__tracebackhide__` tells pytest and some other tools to omit this function from tracebacks[39;00m
+[32m    213[39m __tracebackhide__ = [38;5;28;01mTrue[39;00m
+[32m--> [39m[32m214[39m validated_self = [38;5;28;43mself[39;49m[43m.[49m[43m__pydantic_validator__[49m[43m.[49m[43mvalidate_python[49m[43m([49m[43mdata[49m[43m,[49m[43m [49m[43mself_instance[49m[43m=[49m[38;5;28;43mself[39;49m[43m)[49m
+[32m    215[39m [38;5;28;01mif[39;00m [38;5;28mself[39m [38;5;129;01mis[39;00m [38;5;129;01mnot[39;00m validated_self:
+[32m    216[39m     warnings.warn(
+[32m    217[39m         [33m'[39m[33mA custom validator is returning a value other than `self`.[39m[38;5;130;01m\n[39;00m[33m'[39m
+[32m    218[39m         [33m"[39m[33mReturning anything other than `self` from a top level model validator isn[39m[33m'[39m[33mt supported when validating via `__init__`.[39m[38;5;130;01m\n[39;00m[33m"[39m
+[32m    219[39m         [33m'[39m[33mSee the `model_validator` docs (https://docs.pydantic.dev/latest/concepts/validators/#model-validators) for more details.[39m[33m'[39m,
+[32m    220[39m         stacklevel=[32m2[39m,
+[32m    221[39m     )
+
+[31mValidationError[39m: 1 validation error for DistributionBus
+rated_voltage
+  Assertion failed, Unit must be compatible with volt [type=assertion_error, input_value=<Quantity(400, 'ampere')>, input_type=PositiveVoltage]
+    For further information visit https://errors.pydantic.dev/2.10/v/assertion_error
+

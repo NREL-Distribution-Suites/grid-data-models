@@ -1,0 +1,886 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Working with GDMLOADER &#8212; Grid-Data-Models</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/autodoc_pydantic.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'gdmloader/gdmloader';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="On GDM Data Models" href="../gdm_intro/data_models.html" />
+    <link rel="prev" title="Installing Dependencies" href="../installation.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/gdm_logo.jpeg" class="logo__image only-light" alt="Grid-Data-Models - Home"/>
+    <script>document.write(`<img src="../_static/gdm_logo.jpeg" class="logo__image only-dark" alt="Grid-Data-Models - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    Intro to Grid-Data-Models
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Installation</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installing Dependencies</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Working with GDMLOADER</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Tutorial</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../gdm_intro/data_models.html">On GDM Data Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gdm_intro/units.html">Managing Physical Units</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gdm_intro/timeseries.html">Managing Time-Series Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dist_system/import_export.html">Importing and Exporting Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dist_system/plotting.html">Plotting GDM Models</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Usage</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../dist_system/graphs.html">System Graphs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dist_system/network_reduction.html">Network Reduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dist_system/tracked_changes.html">Tracking Changes in GDM</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">On CIM and GDM</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../cim/index.html">CIM vs GDM a comparison</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cim/distribution-bus.html">Model Representation</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference Guides</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../api/index.html">API Reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../api/components/distribution_battery.html">Distribution Battery</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/components/distribution_bus.html">Distribution Bus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/components/distribution_branch.html">Distribution Branch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/components/distribution_capacitor.html">Distribution Capacitor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/components/distribution_feeder.html">Distribution Feeder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/components/distribution_substation.html">Distribution Substation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/components/distribution_load.html">Distribution Load</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/components/distribution_transformer.html">Distribution Transformer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/components/distribution_regulator.html">Distribution Regulator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/components/distribution_fuse.html">Distribution Fuse</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/components/distribution_switch.html">Distribution Switch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/components/distribution_recloser.html">Distribution Recloser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/components/distribution_vsource.html">Distribution Voltage Sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/components/distribution_solar.html">Distribution Solar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/equipment/battery_equipment.html">Battery Equipment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/equipment/branch_equipment.html">Distribution Branch Equipment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/equipment/capacitor_equipment.html">Capacitor Equipment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/equipment/load_equipment.html">Load Equipment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/equipment/distribution_transformer_equipment.html">Distribution Transformer Equipment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/equipment/vsource_equipment.html">Voltage Source Equipment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/equipment/distribution_wires.html">Wire Equipment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/equipment/fuse_equipment.html">Fuse Equipment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/equipment/switch_equipment.html">Switch Equipment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/equipment/recloser_equipment.html">Recloser Equipment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/equipment/solar_equipment.html">Solar Equipment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/equipment/inverter_equipment.html">Inverter Equipment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/controllers/capacitor_controllers.html">Capacitor Controllers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/controllers/regulator_controllers.html">Regulator Controller</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/controllers/inverter_controllers.html">Inverter Controller</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/controllers/switch_controllers.html">Switch Controller</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/controllers/recloser_controllers.html">Recloser Controller</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/distribution_enum.html">Distribution Enumerations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/limitset.html">Distribution Limitsets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/quantities.html">Quantities</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../cli/index.html">CLI Reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../cli/reduce.html">GDM Transformation</a></li>
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2Fgdmloader/gdmloader.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/gdmloader/gdmloader.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Working with GDMLOADER</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setting-up-data-source">Setting Up Data Source</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#viewing-available-models">Viewing Available Models</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#downloading-case-files">Downloading case files</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="working-with-gdmloader">
+<h1>Working with GDMLOADER<a class="headerlink" href="#working-with-gdmloader" title="Link to this heading">#</a></h1>
+<p>GDMLOADER is a helper package designed to simplify downloading and loading example distribution system models into your workspace. It provides convenience functions for retrieving prebuilt test cases, allowing you to focus on using the models rather than building them from scratch.</p>
+<p>First, we will add sources to <code class="docutils literal notranslate"><span class="pre">SystemLoader</span></code> and explore the available test cases.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Public cases are currently hosted on Google Cloud. However, GDMLOADER allows users to manage private sources (not covered in this tutorial). Contact the GDM team if you are interested in learning more.</p>
+</div>
+<section id="setting-up-data-source">
+<h2>Setting Up Data Source<a class="headerlink" href="#setting-up-data-source" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">gdmloader.constants</span><span class="w"> </span><span class="kn">import</span> <span class="n">GCS_CASE_SOURCE</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">gdmloader.source</span><span class="w"> </span><span class="kn">import</span> <span class="n">SystemLoader</span>
+
+<span class="n">gdm_loader</span> <span class="o">=</span> <span class="n">SystemLoader</span><span class="p">()</span>
+<span class="n">gdm_loader</span><span class="o">.</span><span class="n">add_source</span><span class="p">(</span><span class="n">GCS_CASE_SOURCE</span><span class="p">)</span>
+<span class="n">gdm_loader</span><span class="o">.</span><span class="n">show_sources</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">┏━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃<span style="font-weight: bold">     Name </span>┃<span style="font-weight: bold"> URL                                     </span>┃
+┡━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│<span style="color: #008080; text-decoration-color: #008080"> gdm_data </span>│<span style="color: #800080; text-decoration-color: #800080"> https://storage.googleapis.com/gdm_data </span>│
+└──────────┴─────────────────────────────────────────┘
+</pre>
+</div></div>
+</div>
+</section>
+<section id="viewing-available-models">
+<h2>Viewing Available Models<a class="headerlink" href="#viewing-available-models" title="Link to this heading">#</a></h2>
+<p>Sources are designed to support all systems in GDM, including DistributionSystem, CatalogSystem, and StructuralSystem. You can view all available models hosted by the source using the <code class="docutils literal notranslate"><span class="pre">show_dataset_by_source</span></code> method.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gdm_loader</span><span class="o">.</span><span class="n">show_dataset_by_source</span><span class="p">(</span><span class="s2">&quot;gdm_data&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="font-style: italic">                                               System: CatalogSystem                                               </span>
+┏━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┓
+┃<span style="font-weight: bold">        name </span>┃<span style="font-weight: bold">                                                      description </span>┃<span style="font-weight: bold"> contributor </span>┃<span style="font-weight: bold"> contributed_date </span>┃
+┡━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━┩
+│ gdm_catalog │    Equipment catalog for DistributionSystem models contains over │ Aadil Latif │       2024-12-04 │
+│             │     25000 models for BareConductorEquipment, CapacitorEquipment, │             │                  │
+│             │      ConcentricCableEquipment, DistributionTransformerEquipment, │             │                  │
+│             │                             InverterEquipment and SolarEquipment │             │                  │
+└─────────────┴──────────────────────────────────────────────────────────────────┴─────────────┴──────────────────┘
+</pre>
+</div><div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="font-style: italic">  System:  </span>
+<span style="font-style: italic">CatalogSyst</span>
+<span style="font-style: italic">em versions</span>
+┏━━━━━━━━━┓
+┃<span style="font-weight: bold"> Version </span>┃
+┡━━━━━━━━━┩
+│   1_3_1 │
+│   1_3_2 │
+│   1_3_3 │
+│   1_4_0 │
+│   2_0_0 │
+│   2_0_1 │
+└─────────┘
+</pre>
+</div><div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="font-style: italic">                                            System: DistributionSystem                                             </span>
+┏━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┓
+┃<span style="font-weight: bold">          name </span>┃<span style="font-weight: bold">   description </span>┃<span style="font-weight: bold">   contributor </span>┃<span style="font-weight: bold"> contributed_… </span>┃<span style="font-weight: bold"> has_geo_coord… </span>┃<span style="font-weight: bold"> has_time_ser… </span>┃<span style="font-weight: bold"> has_split_pha… </span>┃
+┡━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━┩
+│ three_feeder… │  Three feeder │ Abodh Poudyal │    2024-12-03 │          False │         False │          False │
+│               │     test case │               │               │                │               │                │
+│               │          with │               │               │                │               │                │
+│               │     switches. │               │               │                │               │                │
+│ three_feeder… │  Three feeder │ Abodh Poudyal │    2024-12-13 │          False │         False │          False │
+│               │     test case │               │               │                │               │                │
+│               │          with │               │               │                │               │                │
+│               │ non-identical │               │               │                │               │                │
+│               │   feeder load │               │               │                │               │                │
+│               │ and switches. │               │               │                │               │                │
+│ three_feeder… │  Three feeder │ Abodh Poudyal │    2024-12-13 │          False │         False │          False │
+│               │     test case │               │               │                │               │                │
+│               │          with │               │               │                │               │                │
+│               │ non-identical │               │               │                │               │                │
+│               │   feeder load │               │               │                │               │                │
+│               │   without tie │               │               │                │               │                │
+│               │     switches. │               │               │                │               │                │
+│           p5r │      Slightly │  Kapil Duwadi │    2024-12-03 │           True │          True │           True │
+│               │      modified │               │               │                │               │                │
+│               │    version of │               │               │                │               │                │
+│               │    sub feeder │               │               │                │               │                │
+│               │  within `P5R` │               │               │                │               │                │
+│               │        region │               │               │                │               │                │
+│               │  SMARTDS data │               │               │                │               │                │
+│               │    from `SFO` │               │               │                │               │                │
+│               │   area. Added │               │               │                │               │                │
+│               │     PVsystem. │               │               │                │               │                │
+│ three_feeder… │  Three feeder │ Abodh Poudyal │    2024-02-19 │          False │         False │          False │
+│               │     test case │               │               │                │               │                │
+│               │          with │               │               │                │               │                │
+│               │ non-identical │               │               │                │               │                │
+│               │   feeder load │               │               │                │               │                │
+│               │   without tie │               │               │                │               │                │
+│               │     switches. │               │               │                │               │                │
+│ three_feeder… │  Three feeder │ Abodh Poudyal │    2024-02-19 │          False │         False │          False │
+│               │     test case │               │               │                │               │                │
+│               │          with │               │               │                │               │                │
+│               │ non-identical │               │               │                │               │                │
+│               │   feeder load │               │               │                │               │                │
+│               │   without tie │               │               │                │               │                │
+│               │     switches. │               │               │                │               │                │
+│    testcasev1 │   Simple test │  Kapil Duwadi │    2024-12-03 │          False │         False │          False │
+│               │      case for │               │               │                │               │                │
+│               │         CADET │               │               │                │               │                │
+│               │      testing. │               │               │                │               │                │
+│   p1rhs7_1247 │  Medium sized │   Aadil Latif │    2025-05-07 │           True │         False │           True │
+│               │      Smart-DS │               │               │                │               │                │
+│               │     model for │               │               │                │               │                │
+│               │       testing │               │               │                │               │                │
+└───────────────┴───────────────┴───────────────┴───────────────┴────────────────┴───────────────┴────────────────┘
+</pre>
+</div><div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="font-style: italic">  System:  </span>
+<span style="font-style: italic">Distributio</span>
+<span style="font-style: italic">  nSystem  </span>
+<span style="font-style: italic"> versions  </span>
+┏━━━━━━━━━┓
+┃<span style="font-weight: bold"> Version </span>┃
+┡━━━━━━━━━┩
+│   1_2_0 │
+│   1_3_0 │
+│   1_3_1 │
+│   1_3_2 │
+│   1_3_3 │
+│   1_4_0 │
+│   2_0_0 │
+│   2_0_1 │
+└─────────┘
+</pre>
+</div></div>
+</div>
+<p>Alternatively, models for a specific system can be viewed using the <code class="docutils literal notranslate"><span class="pre">show_dataset_by_system</span></code> method.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gdm_loader</span><span class="o">.</span><span class="n">show_dataset_by_system</span><span class="p">(</span><span class="s2">&quot;DistributionSystem&quot;</span><span class="p">,</span> <span class="s2">&quot;gdm_data&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="font-style: italic">                                            System: DistributionSystem                                             </span>
+┏━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┓
+┃<span style="font-weight: bold">          name </span>┃<span style="font-weight: bold">   description </span>┃<span style="font-weight: bold">   contributor </span>┃<span style="font-weight: bold"> contributed_… </span>┃<span style="font-weight: bold"> has_geo_coord… </span>┃<span style="font-weight: bold"> has_time_ser… </span>┃<span style="font-weight: bold"> has_split_pha… </span>┃
+┡━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━┩
+│ three_feeder… │  Three feeder │ Abodh Poudyal │    2024-12-03 │          False │         False │          False │
+│               │     test case │               │               │                │               │                │
+│               │          with │               │               │                │               │                │
+│               │     switches. │               │               │                │               │                │
+│ three_feeder… │  Three feeder │ Abodh Poudyal │    2024-12-13 │          False │         False │          False │
+│               │     test case │               │               │                │               │                │
+│               │          with │               │               │                │               │                │
+│               │ non-identical │               │               │                │               │                │
+│               │   feeder load │               │               │                │               │                │
+│               │ and switches. │               │               │                │               │                │
+│ three_feeder… │  Three feeder │ Abodh Poudyal │    2024-12-13 │          False │         False │          False │
+│               │     test case │               │               │                │               │                │
+│               │          with │               │               │                │               │                │
+│               │ non-identical │               │               │                │               │                │
+│               │   feeder load │               │               │                │               │                │
+│               │   without tie │               │               │                │               │                │
+│               │     switches. │               │               │                │               │                │
+│           p5r │      Slightly │  Kapil Duwadi │    2024-12-03 │           True │          True │           True │
+│               │      modified │               │               │                │               │                │
+│               │    version of │               │               │                │               │                │
+│               │    sub feeder │               │               │                │               │                │
+│               │  within `P5R` │               │               │                │               │                │
+│               │        region │               │               │                │               │                │
+│               │  SMARTDS data │               │               │                │               │                │
+│               │    from `SFO` │               │               │                │               │                │
+│               │   area. Added │               │               │                │               │                │
+│               │     PVsystem. │               │               │                │               │                │
+│ three_feeder… │  Three feeder │ Abodh Poudyal │    2024-02-19 │          False │         False │          False │
+│               │     test case │               │               │                │               │                │
+│               │          with │               │               │                │               │                │
+│               │ non-identical │               │               │                │               │                │
+│               │   feeder load │               │               │                │               │                │
+│               │   without tie │               │               │                │               │                │
+│               │     switches. │               │               │                │               │                │
+│ three_feeder… │  Three feeder │ Abodh Poudyal │    2024-02-19 │          False │         False │          False │
+│               │     test case │               │               │                │               │                │
+│               │          with │               │               │                │               │                │
+│               │ non-identical │               │               │                │               │                │
+│               │   feeder load │               │               │                │               │                │
+│               │   without tie │               │               │                │               │                │
+│               │     switches. │               │               │                │               │                │
+│    testcasev1 │   Simple test │  Kapil Duwadi │    2024-12-03 │          False │         False │          False │
+│               │      case for │               │               │                │               │                │
+│               │         CADET │               │               │                │               │                │
+│               │      testing. │               │               │                │               │                │
+│   p1rhs7_1247 │  Medium sized │   Aadil Latif │    2025-05-07 │           True │         False │           True │
+│               │      Smart-DS │               │               │                │               │                │
+│               │     model for │               │               │                │               │                │
+│               │       testing │               │               │                │               │                │
+└───────────────┴───────────────┴───────────────┴───────────────┴────────────────┴───────────────┴────────────────┘
+</pre>
+</div><div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="font-style: italic">  System:  </span>
+<span style="font-style: italic">Distributio</span>
+<span style="font-style: italic">  nSystem  </span>
+<span style="font-style: italic"> versions  </span>
+┏━━━━━━━━━┓
+┃<span style="font-weight: bold"> Version </span>┃
+┡━━━━━━━━━┩
+│   1_2_0 │
+│   1_3_0 │
+│   1_3_1 │
+│   1_3_2 │
+│   1_3_3 │
+│   1_4_0 │
+│   2_0_0 │
+│   2_0_1 │
+└─────────┘
+</pre>
+</div></div>
+</div>
+</section>
+<section id="downloading-case-files">
+<h2>Downloading case files<a class="headerlink" href="#downloading-case-files" title="Link to this heading">#</a></h2>
+<p>Users can download specific models using the <code class="docutils literal notranslate"><span class="pre">load_dataset</span></code> method.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>By default, gdmloader downloads the model version that corresponds to the installed GDM version. However, users can specify a different version they wish to download.</p>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">gdm.distribution</span><span class="w"> </span><span class="kn">import</span> <span class="n">DistributionSystem</span>
+<span class="n">distribution_system</span><span class="p">:</span> <span class="n">DistributionSystem</span> <span class="o">=</span> <span class="n">gdm_loader</span><span class="o">.</span><span class="n">load_dataset</span><span class="p">(</span>
+    <span class="n">system_type</span><span class="o">=</span><span class="n">DistributionSystem</span><span class="p">,</span> 
+    <span class="n">source_name</span><span class="o">=</span><span class="s2">&quot;gdm_data&quot;</span><span class="p">,</span> 
+    <span class="n">dataset_name</span><span class="o">=</span><span class="s2">&quot;p5r&quot;</span><span class="p">,</span>
+    <span class="c1">#version=&quot;1_4_0&quot; # Optional. By default model matching your GDM installation is returned</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.12.10/x64/lib/python3.12/site-packages/pydantic/_internal/_generate_schema.py:502: UserWarning: Ellipsis is not a Python type (it may be an instance of an object), Pydantic will allow any object with no validation since we cannot even enforce that the input is an instance of the given type. To get rid of this error wrap the type with `pydantic.SkipValidation`.
+  warn(
+</pre></div>
+</div>
+</div>
+</div>
+<p>Downloaded models are cached on the local machine for improved performance. Users can view system information using the <code class="docutils literal notranslate"><span class="pre">info</span></code> method on the system instance.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">distribution_system</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;P5R&quot;</span>
+<span class="n">distribution_system</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="font-weight: bold">System                          </span>
+┏━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┓
+┃<span style="font-weight: bold"> Property             </span>┃<span style="font-weight: bold"> Value </span>┃
+┡━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━┩
+│ System name          │   P5R │
+│ Data format version  │ 2.0.1 │
+│ Components attached  │    60 │
+│ Time Series attached │     5 │
+│ Description          │       │
+└──────────────────────┴───────┘
+</pre>
+</div><div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="font-weight: bold">Component Information                       </span>
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┓
+┃<span style="font-weight: bold"> Type                             </span>┃<span style="font-weight: bold"> Count </span>┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━┩
+│ DistributionBus                  │    10 │
+│ DistributionLoad                 │     2 │
+│ DistributionSolar                │     2 │
+│ DistributionTransformer          │     2 │
+│ DistributionTransformerEquipment │     1 │
+│ DistributionVoltageSource        │     1 │
+│ InverterEquipment                │     2 │
+│ LoadEquipment                    │     2 │
+│ Location                         │    10 │
+│ MatrixImpedanceBranch            │     6 │
+│ MatrixImpedanceBranchEquipment   │     2 │
+│ MatrixImpedanceSwitch            │     1 │
+│ MatrixImpedanceSwitchEquipment   │     1 │
+│ PhaseLoadEquipment               │     6 │
+│ PhaseVoltageSourceEquipment      │     3 │
+│ SolarEquipment                   │     2 │
+│ VoltageLimitSet                  │     4 │
+│ VoltageSourceEquipment           │     1 │
+│ WindingEquipment                 │     2 │
+└──────────────────────────────────┴───────┘
+</pre>
+</div><div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="font-weight: bold">Time Series Summary                                                                                                </span>
+┏━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━
+┃<span style="font-weight: bold">                      </span>┃<span style="font-weight: bold">                  </span>┃<span style="font-weight: bold">                     </span>┃<span style="font-weight: bold">            </span>┃<span style="font-weight: bold">                </span>┃<span style="font-weight: bold">     No. Components </span>
+┃<span style="font-weight: bold"> Component Type       </span>┃<span style="font-weight: bold"> Time Series Type </span>┃<span style="font-weight: bold">        Initial time </span>┃<span style="font-weight: bold"> Resolution </span>┃<span style="font-weight: bold"> No. Components </span>┃<span style="font-weight: bold">   with Time Series </span>
+┡━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━
+│ DistributionLoad     │ SingleTimeSeries │ 2020-01-01 00:00:00 │    0:15:00 │              2 │                  4 
+│ DistributionSolar    │ SingleTimeSeries │ 2020-01-01 00:00:00 │    0:15:00 │              2 │                  2 
+└──────────────────────┴──────────────────┴─────────────────────┴────────────┴────────────────┴────────────────────
+</pre>
+</div></div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./gdmloader"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../installation.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Installing Dependencies</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../gdm_intro/data_models.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">On GDM Data Models</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setting-up-data-source">Setting Up Data Source</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#viewing-available-models">Viewing Available Models</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#downloading-case-files">Downloading case files</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Aadil Latif
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+<div class="extra_footer">
+  <p>
+© Copyright 2024, Alliance for Sustainable Energy, LLC. This work is licensed under a BSD 3-Clause License
+</p>
+
+</div>
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
