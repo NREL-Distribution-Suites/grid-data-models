@@ -9,7 +9,7 @@ from gdm.quantities import (
     ResistancePULength,
     ReactancePULength,
     CapacitancePULength,
-    PositiveCurrent,
+    Current,
 )
 
 from gdm.constants import PINT_SCHEMA
@@ -34,7 +34,7 @@ class MatrixImpedanceBranchEquipmentBase(Component):
         Field(..., description="Per unit length capacitance matrix."),
     ]
     ampacity: Annotated[
-        PositiveCurrent, PINT_SCHEMA, Field(..., description="Ampacity of the conductor.")
+        Current, PINT_SCHEMA, Field(..., description="Ampacity of the conductor.", gt=0)
     ]
 
     @model_validator(mode="after")

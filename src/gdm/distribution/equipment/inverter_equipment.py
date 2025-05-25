@@ -5,7 +5,7 @@ from typing import Annotated, Optional
 from infrasys import Component
 from pydantic import Field
 
-from gdm.quantities import PositiveApparentPower, ActivePowerOverTime
+from gdm.quantities import ApparentPower, ActivePowerOverTime
 from gdm.distribution.common.curve import Curve
 from gdm.constants import PINT_SCHEMA
 
@@ -15,9 +15,9 @@ class InverterEquipment(Component):
 
     name: Annotated[str, Field("", description="Name of the inverter controller.")]
     rated_apparent_power: Annotated[
-        PositiveApparentPower,
+        ApparentPower,
         PINT_SCHEMA,
-        Field(..., description="Apparent power rating for the inverter."),
+        Field(..., description="Apparent power rating for the inverter.", gt=0),
     ]
     rise_limit: Annotated[
         Optional[ActivePowerOverTime],
@@ -55,7 +55,7 @@ class InverterEquipment(Component):
     def example(cls) -> "InverterEquipment":
         """Example for load model."""
         return InverterEquipment(
-            rated_apparent_power=PositiveApparentPower(3.8, "kva"),
+            rated_apparent_power=ApparentPower(3.8, "kva"),
             rise_limit=ActivePowerOverTime(1.1, "kW/second"),
             fall_limit=ActivePowerOverTime(1.1, "kW/second"),
             dc_to_ac_efficiency=100,

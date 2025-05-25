@@ -4,7 +4,7 @@ from datetime import datetime
 from infrasys import Component
 from pydantic import Field
 
-from gdm.quantities import PositiveDistance
+from gdm.quantities import Distance
 from infrasys import Location
 
 
@@ -13,7 +13,7 @@ class _InstalledDateBaseComponent(Component, ABC):
 
 
 class _GeoLocatedBaseComponent(Component, ABC):
-    elevation: Annotated[PositiveDistance, Field(..., description="Elevation from sea level.")]
+    elevation: Annotated[Distance, Field(..., description="Elevation from sea level.", gt=0)]
     location: Annotated[Location, Field(..., description="Location of the component.")]
 
 

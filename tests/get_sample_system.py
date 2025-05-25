@@ -20,11 +20,11 @@ from gdm.distribution.equipment.phase_load_equipment import PhaseLoadEquipment
 from gdm.distribution.common.sequence_pair import SequencePair
 from gdm.quantities import (
     CapacitancePULength,
-    PositiveApparentPower,
-    PositiveCurrent,
-    PositiveDistance,
-    PositiveResistancePULength,
-    PositiveVoltage,
+    ApparentPower,
+    Current,
+    Distance,
+    ResistancePULength,
+    Voltage,
     ReactancePULength,
 )
 from gdm.quantities import ReactivePower
@@ -36,19 +36,19 @@ def get_three_bus_system():
     sys = DistributionSystem(auto_add_composed_components=True)
     bus_1 = DistributionBus(
         name="Bus-1",
-        rated_voltage=PositiveVoltage(12.47, "kilovolts"),
+        rated_voltage=Voltage(12.47, "kilovolts"),
         phases=[Phase.A, Phase.B, Phase.C],
         voltage_type=VoltageTypes.LINE_TO_LINE,
     )
     bus_2 = DistributionBus(
         name="Bus-2",
-        rated_voltage=PositiveVoltage(0.24, "kilovolts"),
+        rated_voltage=Voltage(0.24, "kilovolts"),
         phases=[Phase.S1, Phase.N, Phase.S2],
         voltage_type=VoltageTypes.LINE_TO_LINE,
     )
     bus_3 = DistributionBus(
         name="Bus-3",
-        rated_voltage=PositiveVoltage(0.24, "kilovolts"),
+        rated_voltage=Voltage(0.24, "kilovolts"),
         phases=[Phase.S1, Phase.S2, Phase.N],
         voltage_type=VoltageTypes.LINE_TO_LINE,
     )
@@ -65,8 +65,8 @@ def get_three_bus_system():
                 WindingEquipment(
                     resistance=0.02,
                     is_grounded=False,
-                    rated_voltage=PositiveVoltage(12.47, "kilovolts"),
-                    rated_power=PositiveApparentPower(25, "kilova"),
+                    rated_voltage=Voltage(12.47, "kilovolts"),
+                    rated_power=ApparentPower(25, "kilova"),
                     num_phases=1,
                     tap_positions=[1.0],
                     connection_type=ConnectionType.DELTA,
@@ -75,8 +75,8 @@ def get_three_bus_system():
                 WindingEquipment(
                     resistance=0.02,
                     is_grounded=False,
-                    rated_voltage=PositiveVoltage(0.24, "kilovolts"),
-                    rated_power=PositiveApparentPower(25, "kilova"),
+                    rated_voltage=Voltage(0.24, "kilovolts"),
+                    rated_power=ApparentPower(25, "kilova"),
                     num_phases=1,
                     tap_positions=[1.0],
                     connection_type=ConnectionType.DELTA,
@@ -85,8 +85,8 @@ def get_three_bus_system():
                 WindingEquipment(
                     resistance=0.02,
                     is_grounded=False,
-                    rated_voltage=PositiveVoltage(0.24, "kilovolts"),
-                    rated_power=PositiveApparentPower(25, "kilova"),
+                    rated_voltage=Voltage(0.24, "kilovolts"),
+                    rated_power=ApparentPower(25, "kilova"),
                     num_phases=1,
                     tap_positions=[1.0],
                     connection_type=ConnectionType.DELTA,
@@ -108,10 +108,10 @@ def get_three_bus_system():
         name="AC Line Segment 1",
         buses=[bus_2, bus_3],
         phases=[Phase.S1, Phase.S2, Phase.N],
-        length=PositiveDistance(20, "m"),
+        length=Distance(20, "m"),
         equipment=MatrixImpedanceBranchEquipment(
             name="matrix-impedance-branch-1",
-            r_matrix=PositiveResistancePULength(
+            r_matrix=ResistancePULength(
                 [
                     [0.08820, 0.0312137],
                     [0.0312137, 0.0901946],
@@ -132,7 +132,7 @@ def get_three_bus_system():
                 ],
                 "nanofarad/mi",
             ),
-            ampacity=PositiveCurrent(90, "ampere"),
+            ampacity=Current(90, "ampere"),
         ),
     )
     sys.add_component(line_1)

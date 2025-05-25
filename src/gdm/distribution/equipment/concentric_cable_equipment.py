@@ -6,10 +6,10 @@ from infrasys import Component
 from pydantic import Field, PositiveInt, model_validator
 
 from gdm.quantities import (
-    PositiveDistance,
-    PositiveCurrent,
-    PositiveResistancePULength,
-    PositiveVoltage,
+    ResistancePULength,
+    Distance,
+    Current,
+    Voltage,
 )
 from gdm.constants import PINT_SCHEMA
 
@@ -18,50 +18,50 @@ class ConcentricCableEquipment(Component):
     """Data model for cable catalog."""
 
     strand_diameter: Annotated[
-        PositiveDistance, PINT_SCHEMA, Field(..., description="Diameter of the cable strand.")
+        Distance, PINT_SCHEMA, Field(..., description="Diameter of the cable strand.", gt=0)
     ]
     conductor_diameter: Annotated[
-        PositiveDistance,
+        Distance,
         PINT_SCHEMA,
-        Field(..., description="Diameter of the conductor inside cable."),
+        Field(..., description="Diameter of the conductor inside cable.", gt=0),
     ]
     cable_diameter: Annotated[
-        PositiveDistance, PINT_SCHEMA, Field(..., description="Diameter of the cable.")
+        Distance, PINT_SCHEMA, Field(..., description="Diameter of the cable.", gt=0)
     ]
     insulation_thickness: Annotated[
-        PositiveDistance, PINT_SCHEMA, Field(..., description="Thickness of insulation.")
+        Distance, PINT_SCHEMA, Field(..., description="Thickness of insulation.", gt=0)
     ]
     insulation_diameter: Annotated[
-        PositiveDistance, PINT_SCHEMA, Field(..., description="Diameter of the insulation.")
+        Distance, PINT_SCHEMA, Field(..., description="Diameter of the insulation.", gt=0)
     ]
     ampacity: Annotated[
-        PositiveCurrent, PINT_SCHEMA, Field(..., description="Ampacity of the conductor.")
+        Current, PINT_SCHEMA, Field(..., description="Ampacity of the conductor.", gt=0)
     ]
     conductor_gmr: Annotated[
-        PositiveDistance,
+        Distance,
         PINT_SCHEMA,
-        Field(..., description="Geometric mean radius of the conductor."),
+        Field(..., description="Geometric mean radius of the conductor.", gt=0),
     ]
     strand_gmr: Annotated[
-        PositiveDistance,
+        Distance,
         PINT_SCHEMA,
-        Field(..., description="Geometric mean radius of the strand."),
+        Field(..., description="Geometric mean radius of the strand.", gt=0),
     ]
     phase_ac_resistance: Annotated[
-        PositiveResistancePULength,
+        ResistancePULength,
         PINT_SCHEMA,
-        Field(..., description="Per unit length conductor ac resistance."),
+        Field(..., description="Per unit length conductor ac resistance.", gt=0),
     ]
     strand_ac_resistance: Annotated[
-        PositiveResistancePULength,
+        ResistancePULength,
         PINT_SCHEMA,
-        Field(..., description="Per unit length ac resistance of the strand."),
+        Field(..., description="Per unit length ac resistance of the strand.", gt=0),
     ]
     num_neutral_strands: Annotated[
         PositiveInt, Field(..., description="Number of neutral strands in the cable.")
     ]
     rated_voltage: Annotated[
-        PositiveVoltage, PINT_SCHEMA, Field(..., description="Rated voltage for the cable.")
+        Voltage, PINT_SCHEMA, Field(..., description="Rated voltage for the cable.", gt=0)
     ]
 
     @model_validator(mode="after")
@@ -92,16 +92,16 @@ class ConcentricCableEquipment(Component):
         """Example for concentric cable."""
         return ConcentricCableEquipment(
             name="2(7×)concentric_cable_1/3",
-            strand_diameter=PositiveDistance(0.0641, "in"),
-            conductor_diameter=PositiveDistance(0.258, "in"),
-            cable_diameter=PositiveDistance(0.98, "in"),
-            insulation_thickness=PositiveDistance(0.226, "in"),
-            insulation_diameter=PositiveDistance(0.78, "in"),
-            ampacity=PositiveCurrent(135, "ampere"),
-            conductor_gmr=PositiveDistance(0.00836, "ft"),
-            strand_gmr=PositiveDistance(0.00208, "ft"),
-            phase_ac_resistance=PositiveResistancePULength(0.945, "ohm/mi"),
-            strand_ac_resistance=PositiveResistancePULength(14.8722, "ohm/mi"),
+            strand_diameter=Distance(0.0641, "in"),
+            conductor_diameter=Distance(0.258, "in"),
+            cable_diameter=Distance(0.98, "in"),
+            insulation_thickness=Distance(0.226, "in"),
+            insulation_diameter=Distance(0.78, "in"),
+            ampacity=Current(135, "ampere"),
+            conductor_gmr=Distance(0.00836, "ft"),
+            strand_gmr=Distance(0.00208, "ft"),
+            phase_ac_resistance=ResistancePULength(0.945, "ohm/mi"),
+            strand_ac_resistance=ResistancePULength(14.8722, "ohm/mi"),
             num_neutral_strands=2,
-            rated_voltage=PositiveVoltage(15, "kilovolt"),
+            rated_voltage=Voltage(15, "kilovolt"),
         )

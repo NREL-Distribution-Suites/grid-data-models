@@ -3,7 +3,7 @@ from uuid import UUID
 import pytest
 
 from gdm.distribution.components import DistributionLoad
-from gdm.quantities import PositiveReactivePower
+from gdm.quantities import ReactivePower
 from gdm.distribution import DistributionSystem
 from gdm.distribution.equipment import (
     PhaseCapacitorEquipment,
@@ -31,7 +31,7 @@ def build_tracked_changes(
                 PropertyEdit(
                     component_uuid=capacitor.uuid,
                     name="rated_reactive_power",
-                    value=PositiveReactivePower(200, "kvar"),
+                    value=ReactivePower(200, "kvar"),
                 )
             ],
         ),

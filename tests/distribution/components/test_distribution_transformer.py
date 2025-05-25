@@ -17,8 +17,8 @@ from gdm.distribution.common import (
     SequencePair,
 )
 from gdm.quantities import (
-    PositiveApparentPower,
-    PositiveVoltage,
+    ApparentPower,
+    Voltage,
 )
 
 
@@ -37,13 +37,13 @@ def test_unequal_phase_length():
 def buses():
     bus1 = DistributionBus(
         name="Bus1",
-        rated_voltage=PositiveVoltage(12.47, "kilovolts"),
+        rated_voltage=Voltage(12.47, "kilovolts"),
         voltage_type=VoltageTypes.LINE_TO_LINE,
         phases=[Phase.A, Phase.B, Phase.C],
     )
     bus2 = DistributionBus(
         name="Bus2",
-        rated_voltage=PositiveVoltage(0.24, "kilovolts"),
+        rated_voltage=Voltage(0.24, "kilovolts"),
         voltage_type=VoltageTypes.LINE_TO_LINE,
         phases=[Phase.S1, Phase.S2, Phase.N],
     )
@@ -55,8 +55,8 @@ def ht_wdg():
     return WindingEquipment(
         resistance=0.02,
         is_grounded=False,
-        rated_voltage=PositiveVoltage(12.47, "kilovolts"),
-        rated_power=PositiveApparentPower(25, "kilova"),
+        rated_voltage=Voltage(12.47, "kilovolts"),
+        rated_power=ApparentPower(25, "kilova"),
         num_phases=1,
         tap_positions=[1.0],
         connection_type=ConnectionType.DELTA,
@@ -69,8 +69,8 @@ def lt_wdg():
     return WindingEquipment(
         resistance=0.02,
         is_grounded=False,
-        rated_voltage=PositiveVoltage(12.47, "kilovolts"),
-        rated_power=PositiveApparentPower(25, "kilova"),
+        rated_voltage=Voltage(12.47, "kilovolts"),
+        rated_power=ApparentPower(25, "kilova"),
         num_phases=1,
         tap_positions=[1.0],
         connection_type=ConnectionType.DELTA,
@@ -114,8 +114,8 @@ def test_wrong_split_phase_length(buses, lt_wdg):
         wrong_ht_wdg = WindingEquipment(
             resistance=0.02,
             is_grounded=False,
-            rated_voltage=PositiveVoltage(12.47, "kilovolts"),
-            rated_power=PositiveApparentPower(25, "kilova"),
+            rated_voltage=Voltage(12.47, "kilovolts"),
+            rated_power=ApparentPower(25, "kilova"),
             num_phases=2,  # This is wrong
             tap_positions=[1.0, 1.0],
             connection_type=ConnectionType.DELTA,
@@ -155,13 +155,13 @@ def test_wrong_voltage_connection(split_phase_tr_equipment):
     with pytest.raises(ValueError):
         bus1 = DistributionBus(
             name="Bus1",
-            rated_voltage=PositiveVoltage(8.8, "kilovolts"),  # This is wrong
+            rated_voltage=Voltage(8.8, "kilovolts"),  # This is wrong
             voltage_type=VoltageTypes.LINE_TO_LINE,
             phases=[Phase.A, Phase.B, Phase.C],
         )
         bus2 = DistributionBus(
             name="Bus2",
-            rated_voltage=PositiveVoltage(0.24, "kilovolts"),
+            rated_voltage=Voltage(0.24, "kilovolts"),
             voltage_type=VoltageTypes.LINE_TO_LINE,
             phases=[Phase.S1, Phase.S2, Phase.N],
         )

@@ -41,19 +41,17 @@ from gdm.distribution.equipment import (
 )
 
 from gdm.quantities import (
-    PositiveReactivePower,
-    PositiveApparentPower,
-    PositiveActivePower,
+    ReactivePower,
+    ApparentPower,
     CapacitancePULength,
-    PositiveResistance,
-    PositiveReactance,
+    Resistance,
+    Reactance,
     ResistancePULength,
     ActivePowerOverTime,
     ReactancePULength,
-    PositiveDistance,
-    PositiveCurrent,
-    PositiveVoltage,
-    ReactivePower,
+    Distance,
+    Current,
+    Voltage,
     ActivePower,
     Irradiance,
 )
@@ -105,14 +103,14 @@ def build_distribution_solar(bus: DistributionBus, bus_number: int):
                 update={
                     "uuid": uuid4(),
                     "name": f"inverter_equipment_{bus_number}",
-                    "rated_apparent_power": PositiveApparentPower(bus_number + 1, "kilowatt"),
+                    "rated_apparent_power": ApparentPower(bus_number + 1, "kilowatt"),
                 }
             ),
             "equipment": SolarEquipment.example().model_copy(
                 update={
                     "uuid": uuid4(),
                     "name": f"solar_equipment_{bus_number}",
-                    "rated_power": PositiveActivePower(1000, "kilowatt"),
+                    "rated_power": ActivePower(1000, "kilowatt"),
                     "resistance": 1,
                     "reactance": 1,
                 }
@@ -123,8 +121,8 @@ def build_distribution_solar(bus: DistributionBus, bus_number: int):
                     "name": f"inverter_controller_{bus_number}",
                 }
             ),
-            "array_power": PositiveActivePower(1001, "watt"),
-            "active_power": PositiveActivePower(1001, "watt"),
+            "array_power": ActivePower(1001, "watt"),
+            "active_power": ActivePower(1001, "watt"),
             "reactive_power": ReactivePower(1001, "watt"),
             "irradiance": Irradiance(1000, "watt/m^2"),
         }
@@ -151,18 +149,16 @@ def build_distribution_capacitor(bus: DistributionBus, bus_number: int):
                 update={
                     "uuid": uuid4(),
                     "name": f"capacitor_equipment_{bus_number}",
-                    "rated_voltage": PositiveVoltage(120, "volt"),
+                    "rated_voltage": Voltage(120, "volt"),
                     "voltage_type": VoltageTypes.LINE_TO_GROUND,
                     "phase_capacitors": [
                         PhaseCapacitorEquipment.example().model_copy(
                             update={
                                 "uuid": uuid4(),
                                 "name": f"phase_capacitor_{i}_{bus_number}",
-                                "rated_reactive_power": PositiveReactivePower(
-                                    bus_number + 1, "kvar"
-                                ),
-                                "resistance": PositiveResistance(1, "ohm"),
-                                "reactance": PositiveReactance(1, "ohm"),
+                                "rated_reactive_power": ReactivePower(bus_number + 1, "kvar"),
+                                "resistance": Resistance(1, "ohm"),
+                                "reactance": Reactance(1, "ohm"),
                             }
                         )
                         for i in range(3)
@@ -196,7 +192,7 @@ def build_source_bus():
         update={
             "name": "src_bus",
             "uuid": uuid4(),
-            "rated_voltage": PositiveVoltage(12.47, "kilovolt"),
+            "rated_voltage": Voltage(12.47, "kilovolt"),
         }
     )
 
@@ -208,7 +204,7 @@ def build_split_phase_distribution_buses():
                 "uuid": uuid4(),
                 "name": f"split_phase_bus_{i}",
                 "phases": [Phase.S1, Phase.S2, Phase.N],
-                "rated_voltage": PositiveVoltage(120, "volt"),
+                "rated_voltage": Voltage(120, "volt"),
                 "voltage_type": VoltageTypes.LINE_TO_GROUND,
             }
         )
@@ -232,8 +228,8 @@ def build_split_phase_distribution_xfmr(bus1: DistributionBus, bus2: Distributio
                 WindingEquipment(
                     resistance=1,
                     is_grounded=False,
-                    rated_voltage=PositiveVoltage(0.4, "kilovolt"),
-                    rated_power=PositiveApparentPower(50, "kilova"),
+                    rated_voltage=Voltage(0.4, "kilovolt"),
+                    rated_power=ApparentPower(50, "kilova"),
                     connection_type=ConnectionType.STAR,
                     num_phases=1,
                     tap_positions=[1.0],
@@ -242,8 +238,8 @@ def build_split_phase_distribution_xfmr(bus1: DistributionBus, bus2: Distributio
                 WindingEquipment(
                     resistance=1,
                     is_grounded=True,
-                    rated_voltage=PositiveVoltage(120, "volt"),
-                    rated_power=PositiveApparentPower(50, "kilova"),
+                    rated_voltage=Voltage(120, "volt"),
+                    rated_power=ApparentPower(50, "kilova"),
                     connection_type=ConnectionType.STAR,
                     num_phases=1,
                     tap_positions=[1.0],
@@ -252,8 +248,8 @@ def build_split_phase_distribution_xfmr(bus1: DistributionBus, bus2: Distributio
                 WindingEquipment(
                     resistance=1,
                     is_grounded=True,
-                    rated_voltage=PositiveVoltage(120, "volt"),
-                    rated_power=PositiveApparentPower(50, "kilova"),
+                    rated_voltage=Voltage(120, "volt"),
+                    rated_power=ApparentPower(50, "kilova"),
                     connection_type=ConnectionType.STAR,
                     num_phases=1,
                     tap_positions=[1.0],
@@ -288,7 +284,7 @@ def build_split_phase_matrix_impedance():
             ],
             "nanofarad/mi",
         ),
-        ampacity=PositiveCurrent(90, "ampere"),
+        ampacity=Current(90, "ampere"),
     )
 
 
@@ -297,7 +293,7 @@ def build_split_phase_distribution_line(
 ):
     return MatrixImpedanceBranch(
         buses=[bus1, bus2],
-        length=PositiveDistance(130.2, "meter"),
+        length=Distance(130.2, "meter"),
         phases=[Phase.S1, Phase.S2, Phase.N],
         name="DistBranch_{}_{}".format(bus1.name, bus2.name),
         equipment=matrix,
@@ -347,7 +343,7 @@ def build_split_phase_solar(bus: DistributionBus, bus_number: int):
             voltage_type=bus.voltage_type,
         ),
         inverter=InverterEquipment(
-            rated_apparent_power=PositiveApparentPower(3.8, "kva"),
+            rated_apparent_power=ApparentPower(3.8, "kva"),
             rise_limit=ActivePowerOverTime(1.1, "kW/second"),
             fall_limit=ActivePowerOverTime(1.1, "kW/second"),
             dc_to_ac_efficiency=100,
@@ -355,7 +351,7 @@ def build_split_phase_solar(bus: DistributionBus, bus_number: int):
             cutout_percent=10,
         ),
         controller=None,
-        active_power=PositiveActivePower(bus_number + 1, "kilowatt"),
+        active_power=ActivePower(bus_number + 1, "kilowatt"),
         reactive_power=ReactivePower(bus_number + 1, "kilowatt"),
         irradiance=Irradiance(1000, "watt/m^2"),
     )

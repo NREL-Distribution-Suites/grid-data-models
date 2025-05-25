@@ -4,15 +4,17 @@ from infrasys import Location
 from pydantic import Field
 
 from gdm.distribution.enums import LimitType, Phase, VoltageTypes
-from gdm.distribution.components.base.distribution_component_base import DistributionComponentBase
+from gdm.distribution.components.base.distribution_component_base import (
+    InServiceDistributionComponentBase,
+)
 from gdm.distribution.components.distribution_feeder import DistributionFeeder
 from gdm.distribution.components.distribution_substation import DistributionSubstation
 from gdm.distribution.common.limitset import VoltageLimitSet
-from gdm.quantities import PositiveVoltage
+from gdm.quantities import Voltage
 from gdm.constants import PINT_SCHEMA
 
 
-class DistributionBus(DistributionComponentBase):
+class DistributionBus(InServiceDistributionComponentBase):
     """Data model for distribution bus.
 
     Examples:
@@ -27,9 +29,9 @@ class DistributionBus(DistributionComponentBase):
         Field([], description="List of voltage limit sets for this bus."),
     ]
     rated_voltage: Annotated[
-        PositiveVoltage,
+        Voltage,
         PINT_SCHEMA,
-        Field(..., description="rated voltage for this bus."),
+        Field(..., description="rated voltage for this bus.", gt=0),
     ]
     coordinate: Annotated[
         Optional[Location],
@@ -41,17 +43,13 @@ class DistributionBus(DistributionComponentBase):
         return DistributionBus(
             voltage_type=VoltageTypes.LINE_TO_LINE,
             phases=[Phase.A, Phase.B, Phase.C],
-            rated_voltage=PositiveVoltage(400, "volt"),
+            rated_voltage=Voltage(400, "volt"),
             name="DistBus1",
             substation=DistributionSubstation.example(),
             feeder=DistributionFeeder.example(),
             voltagelimits=[
-                VoltageLimitSet(
-                    limit_type=LimitType.MIN, value=PositiveVoltage(400 * 0.9, "volt")
-                ),
-                VoltageLimitSet(
-                    limit_type=LimitType.MAX, value=PositiveVoltage(400 * 1.1, "volt")
-                ),
+                VoltageLimitSet(limit_type=LimitType.MIN, value=Voltage(400 * 0.9, "volt")),
+                VoltageLimitSet(limit_type=LimitType.MAX, value=Voltage(400 * 1.1, "volt")),
             ],
             coordinate=Location(x=20.0, y=30.0),
         )

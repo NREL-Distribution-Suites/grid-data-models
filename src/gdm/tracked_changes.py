@@ -248,6 +248,7 @@ def _apply_tracked_changes(
             )
         setattr(component, edit_model.name, edit_model.value)
         bus_names = _get_bus_names(component)
+
         _update_temporal_table(
             log,
             tracked_change.update_date,

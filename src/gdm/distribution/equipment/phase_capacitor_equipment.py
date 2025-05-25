@@ -7,9 +7,9 @@ from pydantic import Field, NonNegativeInt, PositiveInt, model_validator
 from infrasys import Component
 
 from gdm.quantities import (
-    PositiveResistance,
-    PositiveReactance,
-    PositiveReactivePower,
+    Resistance,
+    Reactance,
+    ReactivePower,
 )
 from gdm.constants import PINT_SCHEMA
 
@@ -18,25 +18,19 @@ class PhaseCapacitorEquipment(Component):
     """Data model for phase capacitor."""
 
     resistance: Annotated[
-        PositiveResistance,
+        Resistance,
         PINT_SCHEMA,
-        Field(
-            PositiveResistance(0, "ohm"),
-            description="Positive resistance for the capacitor.",
-        ),
+        Field(Resistance(0, "ohm"), description="Positive resistance for the capacitor.", ge=0),
     ]
     reactance: Annotated[
-        PositiveReactance,
+        Reactance,
         PINT_SCHEMA,
-        Field(
-            PositiveReactance(0, "ohm"),
-            description="Positive reactance for the capacitor.",
-        ),
+        Field(Reactance(0, "ohm"), description="Positive reactance for the capacitor.", ge=0),
     ]
     rated_reactive_power: Annotated[
-        PositiveReactivePower,
+        ReactivePower,
         PINT_SCHEMA,
-        Field(..., description="Rated reactive power of this capacitor."),
+        Field(..., description="Rated reactive power of this capacitor.", gt=0),
     ]
     num_banks_on: Annotated[
         NonNegativeInt, Field(..., description="Number of banks currently on.")
@@ -86,7 +80,7 @@ class PhaseCapacitorEquipment(Component):
         """Example for phase capacitor equipment."""
         return PhaseCapacitorEquipment(
             name="Phase-Cap-1",
-            rated_reactive_power=PositiveReactivePower(200, "kvar"),
+            rated_reactive_power=ReactivePower(200, "kvar"),
             num_banks=1,
             num_banks_on=1,
         )

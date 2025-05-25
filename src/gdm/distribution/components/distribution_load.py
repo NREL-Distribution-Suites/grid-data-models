@@ -15,7 +15,7 @@ from gdm.distribution.components.distribution_substation import (
     DistributionSubstation,
 )
 from gdm.distribution.equipment.phase_load_equipment import PhaseLoadEquipment
-from gdm.quantities import PositiveVoltage
+from gdm.quantities import Voltage
 from gdm.distribution.equipment.load_equipment import LoadEquipment
 
 
@@ -96,7 +96,7 @@ class DistributionLoad(InServiceDistributionComponentBase):
                 phases=[Phase.A, Phase.B, Phase.C],
                 substation=DistributionSubstation.example(),
                 feeder=DistributionFeeder.example(),
-                rated_voltage=PositiveVoltage(0.4, "kilovolt"),
+                rated_voltage=Voltage(0.4, "kilovolt"),
             ),
             substation=DistributionSubstation.example(),
             feeder=DistributionFeeder.example(),

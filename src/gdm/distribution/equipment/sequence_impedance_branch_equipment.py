@@ -6,7 +6,7 @@ from infrasys import Component
 from pydantic import Field
 
 from gdm.quantities import (
-    PositiveCurrent,
+    Current,
     ResistancePULength,
     ReactancePULength,
     CapacitancePULength,
@@ -48,7 +48,7 @@ class SequenceImpedanceBranchEquipment(Component):
         Field(..., description="Per unit length zero sequence capacitance."),
     ]
     ampacity: Annotated[
-        PositiveCurrent, PINT_SCHEMA, Field(..., description="Ampacity of the conductor.")
+        Current, PINT_SCHEMA, Field(..., description="Ampacity of the conductor.", gt=0)
     ]
 
     @classmethod
@@ -62,5 +62,5 @@ class SequenceImpedanceBranchEquipment(Component):
             zero_seq_reactance=ReactancePULength(0.4, "ohm/mi"),
             pos_seq_capacitance=CapacitancePULength(900, "nanofarad/mi"),
             zero_seq_capacitance=CapacitancePULength(700, "nanofarad/mi"),
-            ampacity=PositiveCurrent(90, "ampere"),
+            ampacity=Current(90, "ampere"),
         )

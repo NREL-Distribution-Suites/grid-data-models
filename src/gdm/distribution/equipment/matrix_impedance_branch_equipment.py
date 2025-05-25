@@ -7,7 +7,7 @@ from gdm.quantities import (
     CapacitancePULength,
     ResistancePULength,
     ReactancePULength,
-    PositiveCurrent,
+    Current,
 )
 
 
@@ -41,5 +41,5 @@ class MatrixImpedanceBranchEquipment(MatrixImpedanceBranchEquipmentBase):
                 ],
                 "nanofarad/mi",
             ),
-            ampacity=PositiveCurrent(90, "ampere"),
+            ampacity=Current(90, "ampere"),
         )
