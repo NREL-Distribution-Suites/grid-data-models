@@ -5,7 +5,7 @@ from enum import Enum
 from pydantic import Field
 
 from infrasys import Location
-from gdm.quantities import PositiveDistance
+from gdm.quantities import Distance
 from gdm.structural.components.base import _GeoLocatedWithInstalledDateComponent
 from gdm.structural.components.pole import Pole
 
@@ -34,7 +34,7 @@ class _BaseTransformer(_GeoLocatedWithInstalledDateComponent, ABC):
 
 class PoleMountedTransformer(_BaseTransformer):
     mounting_height: Annotated[
-        PositiveDistance, Field(..., description="Mounting height from ground.")
+        Distance, Field(..., description="Mounting height from ground.", gt=0)
     ]
     pole: Annotated[
         Pole,
@@ -46,11 +46,11 @@ class PoleMountedTransformer(_BaseTransformer):
         return PoleMountedTransformer(
             name="Transformer-1",
             location=Location(x=10.0, y=20.0),
-            elevation=PositiveDistance(234, "meter"),
+            elevation=Distance(234, "meter"),
             installed_date=datetime(2016, 1, 1, 0, 0, 0),
             power_system_resource_name="Transformer-1",
             insulation_class=InsulationClass.NEMA_A,
-            mounting_height=PositiveDistance(10, "meter"),
+            mounting_height=Distance(10, "meter"),
             pole=Pole.example(),
         )
 
@@ -61,7 +61,7 @@ class PadMountTransformer(_BaseTransformer):
         return PadMountTransformer(
             name="Transformer-2",
             location=Location(x=10.0, y=20.0),
-            elevation=PositiveDistance(234, "meter"),
+            elevation=Distance(234, "meter"),
             installed_date=datetime(2016, 1, 1, 0, 0, 0),
             power_system_resource_name="Transformer-2",
             insulation_class=InsulationClass.NEMA_A,
@@ -74,7 +74,7 @@ class GroundVaultTransformer(_BaseTransformer):
         return GroundVaultTransformer(
             name="Transformer-3",
             location=Location(x=10.0, y=20.0),
-            elevation=PositiveDistance(234, "meter"),
+            elevation=Distance(234, "meter"),
             installed_date=datetime(2016, 1, 1, 0, 0, 0),
             power_system_resource_name="Transformer-3",
             insulation_class=InsulationClass.NEMA_A,

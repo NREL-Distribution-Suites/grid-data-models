@@ -6,9 +6,9 @@ from typing import Annotated
 from infrasys import Component
 from pydantic import Field, model_validator
 
+from gdm.distribution.enums import ConnectionType, VoltageTypes, TransformerMounting
 from gdm.distribution.common.sequence_pair import SequencePair
-from gdm.distribution.enums import ConnectionType, VoltageTypes
-from gdm.quantities import PositiveApparentPower, PositiveVoltage
+from gdm.quantities import ApparentPower, Voltage
 from gdm.constants import PINT_SCHEMA
 
 
@@ -28,18 +28,18 @@ class WindingEquipment(Component):
     ]
     is_grounded: Annotated[bool, Field(..., description="Is this winding grounded or not.")]
     rated_voltage: Annotated[
-        PositiveVoltage,
+        Voltage,
         PINT_SCHEMA,
-        Field(..., description="rated voltage rating for this winding."),
+        Field(..., description="rated voltage rating for this winding.", gt=0),
     ]
     voltage_type: Annotated[
         VoltageTypes,
         Field(..., description="Set voltage type for rated voltage."),
     ]
     rated_power: Annotated[
-        PositiveApparentPower,
+        ApparentPower,
         PINT_SCHEMA,
-        Field(..., description="Rated power for this winding."),
+        Field(..., description="Rated power for this winding.", gt=0),
     ]
     num_phases: Annotated[
         int,
@@ -97,8 +97,8 @@ class WindingEquipment(Component):
         return WindingEquipment(
             resistance=1,
             is_grounded=False,
-            rated_voltage=PositiveVoltage(12.47, "kilovolt"),
-            rated_power=PositiveApparentPower(500, "kilova"),
+            rated_voltage=Voltage(12.47, "kilovolt"),
+            rated_power=ApparentPower(500, "kilova"),
             connection_type=ConnectionType.STAR,
             num_phases=3,
             tap_positions=[1.0, 1.0, 1.0],
@@ -110,6 +110,10 @@ class WindingEquipment(Component):
 class DistributionTransformerEquipment(Component):
     """Data model for distribution transformer info."""
 
+    mounting: Annotated[
+        TransformerMounting,
+        Field(TransformerMounting.POLE_MOUNT, description="Transformer mounting type."),
+    ]
     pct_no_load_loss: Annotated[
         float,
         Field(
@@ -196,12 +200,13 @@ class DistributionTransformerEquipment(Component):
             pct_no_load_loss=0.1,
             pct_full_load_loss=1,
             is_center_tapped=False,
+            mounting=TransformerMounting.PAD_MOUNT,
             windings=[
                 WindingEquipment(
                     resistance=1,
                     is_grounded=False,
-                    rated_voltage=PositiveVoltage(12.47, "kilovolt"),
-                    rated_power=PositiveApparentPower(56, "kilova"),
+                    rated_voltage=Voltage(12.47, "kilovolt"),
+                    rated_power=ApparentPower(56, "kilova"),
                     connection_type=ConnectionType.STAR,
                     num_phases=3,
                     tap_positions=[1.0, 1.0, 1.0],
@@ -210,8 +215,8 @@ class DistributionTransformerEquipment(Component):
                 WindingEquipment(
                     resistance=1,
                     is_grounded=False,
-                    rated_voltage=PositiveVoltage(0.4, "kilovolt"),
-                    rated_power=PositiveApparentPower(56, "kilova"),
+                    rated_voltage=Voltage(0.4, "kilovolt"),
+                    rated_power=ApparentPower(56, "kilova"),
                     connection_type=ConnectionType.STAR,
                     num_phases=3,
                     tap_positions=[1.0, 1.0, 1.0],

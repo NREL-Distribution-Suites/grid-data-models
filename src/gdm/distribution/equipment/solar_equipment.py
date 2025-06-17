@@ -5,7 +5,7 @@ from typing import Annotated
 from infrasys import Component
 from pydantic import Field
 
-from gdm.quantities import PositiveActivePower, PositiveVoltage
+from gdm.quantities import ActivePower, Voltage
 from gdm.distribution.enums import VoltageTypes
 from gdm.distribution.common.curve import Curve
 from gdm.constants import PINT_SCHEMA
@@ -15,9 +15,9 @@ class SolarEquipment(Component):
     """Data model for Solar Model."""
 
     rated_power: Annotated[
-        PositiveActivePower,
+        ActivePower,
         PINT_SCHEMA,
-        Field(..., description="Maximum power of the PV array for 1.0 kW/m^2 irradiance."),
+        Field(..., description="Maximum power of the PV array for 1.0 kW/m^2 irradiance.", gt=0),
     ]
     power_temp_curve: Annotated[
         Curve | None,
@@ -44,8 +44,8 @@ class SolarEquipment(Component):
         ),
     ]
     rated_voltage: Annotated[
-        PositiveVoltage,
-        Field(..., description="Rated voltage for this solar equipment."),
+        Voltage,
+        Field(..., description="Rated voltage for this solar equipment.", gt=0),
     ]
     voltage_type: Annotated[
         VoltageTypes,
@@ -57,10 +57,10 @@ class SolarEquipment(Component):
         "Example for a solar Equipment"
         return SolarEquipment(
             name="solar-install1",
-            rated_power=PositiveActivePower(4, "kW"),
+            rated_power=ActivePower(4, "kW"),
             power_temp_curve=None,
             resistance=50,
             reactance=0,
-            rated_voltage=PositiveVoltage(12.47, "kilovolt"),
+            rated_voltage=Voltage(12.47, "kilovolt"),
             voltage_type=VoltageTypes.LINE_TO_LINE,
         )

@@ -6,7 +6,7 @@ from infrasys import Component
 from infrasys.quantities import Angle, Resistance, Voltage
 from pydantic import Field
 
-from gdm.quantities import Reactance, PositiveVoltage
+from gdm.quantities import Reactance
 from gdm.distribution.enums import VoltageTypes
 from gdm.constants import PINT_SCHEMA
 
@@ -19,7 +19,7 @@ class PhaseVoltageSourceEquipment(Component):
     x0: Annotated[Reactance, PINT_SCHEMA, Field(..., description="Zero sequence reactance.")]
     x1: Annotated[Reactance, PINT_SCHEMA, Field(..., description="Positive sequence reactane.")]
     voltage: Annotated[
-        Voltage, PINT_SCHEMA, Field(..., description="Voltage for this substation.")
+        Voltage, PINT_SCHEMA, Field(..., description="Voltage for this substation.", gt=0)
     ]
     voltage_type: VoltageTypes = (VoltageTypes.LINE_TO_LINE,)
     angle: Annotated[Angle, PINT_SCHEMA, Field(..., description="Angle for the voltage")]
@@ -33,7 +33,7 @@ class PhaseVoltageSourceEquipment(Component):
             r1=Resistance(0.001, "ohm"),
             x0=Reactance(0.001, "ohm"),
             x1=Reactance(0.001, "ohm"),
-            voltage=PositiveVoltage(132.0, "kilovolt"),
+            voltage=Voltage(132.0, "kilovolt"),
             voltage_type=VoltageTypes.LINE_TO_LINE,
             angle=Angle(180, "degree"),
         )

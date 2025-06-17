@@ -16,7 +16,7 @@ from gdm.distribution.components.base.distribution_component_base import (
 )
 from gdm.distribution.equipment.battery_equipment import BatteryEquipment
 from gdm.distribution.components.distribution_bus import DistributionBus
-from gdm.quantities import PositiveVoltage, ActivePower, ReactivePower
+from gdm.quantities import Voltage, ActivePower, ReactivePower
 from gdm.distribution.components.distribution_substation import (
     DistributionSubstation,
 )
@@ -171,7 +171,7 @@ class DistributionBattery(InServiceDistributionComponentBase):
             bus=DistributionBus(
                 voltage_type="line-to-ground",
                 name="Battery-DistBus1",
-                rated_voltage=PositiveVoltage(400, "volt"),
+                rated_voltage=Voltage(400, "volt"),
                 phases=[Phase.A, Phase.B, Phase.C],
                 substation=DistributionSubstation.example(),
                 feeder=DistributionFeeder.example(),

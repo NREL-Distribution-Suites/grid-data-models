@@ -5,7 +5,7 @@ from typing import Annotated
 from infrasys import Component
 from pydantic import Field
 
-from gdm.quantities import PositiveActivePower, EnergyDC, PositiveVoltage
+from gdm.quantities import ActivePower, EnergyDC, Voltage
 from gdm.distribution.enums import VoltageTypes
 from gdm.constants import PINT_SCHEMA
 
@@ -20,9 +20,9 @@ class BatteryEquipment(Component):
     ]
 
     rated_power: Annotated[
-        PositiveActivePower,
+        ActivePower,
         PINT_SCHEMA,
-        Field(..., description="Rated power of the battery"),
+        Field(..., description="Rated power of the battery", ge=0),
     ]
 
     charging_efficiency: Annotated[
@@ -40,8 +40,8 @@ class BatteryEquipment(Component):
         Field(..., ge=0, le=100, description="Idling efficiency of the battery."),
     ]
     rated_voltage: Annotated[
-        PositiveVoltage,
-        Field(..., description="Rated voltage for this battery equipment."),
+        Voltage,
+        Field(..., description="Rated voltage for this battery equipment.", ge=0),
     ]
     voltage_type: Annotated[
         VoltageTypes,
@@ -54,10 +54,10 @@ class BatteryEquipment(Component):
         return BatteryEquipment(
             name="battery-install1",
             rated_energy=EnergyDC(4, "kWh"),
-            rated_power=PositiveActivePower(1, "kW"),
+            rated_power=ActivePower(1, "kW"),
             charging_efficiency=98,
             discharging_efficiency=98,
             idling_efficiency=99,
-            rated_voltage=PositiveVoltage(12.47, "kilovolt"),
+            rated_voltage=Voltage(12.47, "kilovolt"),
             voltage_type=VoltageTypes.LINE_TO_LINE,
         )

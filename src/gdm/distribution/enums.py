@@ -24,6 +24,21 @@ class ConnectionType(str, Enum):
     ZIG_ZAG = "ZIG_ZAG"
 
 
+class TransformerMounting(str, Enum):
+    """Transformer mounting type."""
+
+    POLE_MOUNT = "POLE_MOUNT"
+    PAD_MOUNT = "PAD_MOUNT"
+    UNDERGROUND_VAULT = "UNDERGROUND_VAULT"
+
+
+class LineType(str, Enum):
+    """Line type."""
+
+    OVERHEAD = "OVERHEAD"
+    UNDERGROUND = "UNDERGROUND"
+
+
 class VoltageTypes(str, Enum):
     """Identifier of voltage types referenced in distribution models."""
 

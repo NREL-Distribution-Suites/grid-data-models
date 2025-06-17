@@ -7,10 +7,10 @@ from infrasys.quantities import Time
 from pydantic import Field
 
 from gdm.quantities import (
-    PositiveActivePower,
-    PositiveReactivePower,
-    PositiveVoltage,
-    PositiveCurrent,
+    ActivePower,
+    ReactivePower,
+    Voltage,
+    Current,
 )
 from gdm.distribution.controllers.base.capacitor_controller_base import CapacitorControllerBase
 from gdm.constants import PINT_SCHEMA
@@ -20,18 +20,21 @@ class VoltageCapacitorController(CapacitorControllerBase):
     """Data model for a Capacitor Controller which uses voltage."""
 
     on_voltage: Annotated[
-        PositiveVoltage,
+        Voltage,
         PINT_SCHEMA,
         Field(
             ...,
             description="Value of the controller voltage, above which the capacitor switches on.",
+            gt=0,
         ),
     ]
 
     off_voltage: Annotated[
-        PositiveVoltage,
+        Voltage,
         PINT_SCHEMA,
-        Field(..., description="Value of the voltage, below which the capacitors switches off."),
+        Field(
+            ..., description="Value of the voltage, below which the capacitors switches off.", gt=0
+        ),
     ]
 
     pt_ratio: Annotated[
@@ -49,8 +52,8 @@ class VoltageCapacitorController(CapacitorControllerBase):
         return VoltageCapacitorController(
             delay_on=Time(20, "seconds"),
             pt_ratio=60,
-            on_voltage=PositiveVoltage(125, "volt"),
-            off_voltage=PositiveVoltage(120, "volt"),
+            on_voltage=Voltage(125, "volt"),
+            off_voltage=Voltage(120, "volt"),
         )
 
 
@@ -58,18 +61,22 @@ class ActivePowerCapacitorController(CapacitorControllerBase):
     """Data model for a Capacitor Controller which uses active power."""
 
     on_power: Annotated[
-        PositiveActivePower,
+        ActivePower,
         PINT_SCHEMA,
         Field(
-            ..., description="Value of the active power, above which the capacitor switches on."
+            ...,
+            description="Value of the active power, above which the capacitor switches on.",
+            ge=0,
         ),
     ]
 
     off_power: Annotated[
-        PositiveActivePower,
+        ActivePower,
         PINT_SCHEMA,
         Field(
-            ..., description="Value of the active power, below which the capacitor switches off."
+            ...,
+            description="Value of the active power, below which the capacitor switches off.",
+            gt=0,
         ),
     ]
 
@@ -78,8 +85,8 @@ class ActivePowerCapacitorController(CapacitorControllerBase):
         """Example for an ActivePowerCapacitorController."""
         return ActivePowerCapacitorController(
             delay_on=Time(20, "seconds"),
-            on_power=PositiveActivePower(300, "kW"),
-            off_power=PositiveActivePower(300, "kW"),
+            on_power=ActivePower(300, "kW"),
+            off_power=ActivePower(300, "kW"),
         )
 
 
@@ -87,18 +94,22 @@ class ReactivePowerCapacitorController(CapacitorControllerBase):
     """Data model for a Capacitor Controller which uses reactive power."""
 
     on_power: Annotated[
-        PositiveReactivePower,
+        ReactivePower,
         PINT_SCHEMA,
         Field(
-            ..., description="Value of the reactive power, above which the capacitor switches on."
+            ...,
+            description="Value of the reactive power, above which the capacitor switches on.",
+            gt=0,
         ),
     ]
 
     off_power: Annotated[
-        PositiveReactivePower,
+        ReactivePower,
         PINT_SCHEMA,
         Field(
-            ..., description="Value of the reactive power, below which the capacitor switches off."
+            ...,
+            description="Value of the reactive power, below which the capacitor switches off.",
+            gt=0,
         ),
     ]
 
@@ -107,8 +118,8 @@ class ReactivePowerCapacitorController(CapacitorControllerBase):
         """Example for an ReactivePowerCapacitorController."""
         return ReactivePowerCapacitorController(
             delay_on=Time(20, "seconds"),
-            on_power=PositiveReactivePower(300, "kvar"),
-            off_power=PositiveReactivePower(300, "kvar"),
+            on_power=ReactivePower(300, "kvar"),
+            off_power=ReactivePower(300, "kvar"),
         )
 
 
@@ -116,20 +127,22 @@ class CurrentCapacitorController(CapacitorControllerBase):
     """Data model for a Capacitor Controller which uses current."""
 
     on_current: Annotated[
-        PositiveCurrent,
+        Current,
         PINT_SCHEMA,
         Field(
             ...,
             description="Value of the controller current, above which the capacitor switches on.",
+            gt=0,
         ),
     ]
 
     off_current: Annotated[
-        PositiveCurrent,
+        Current,
         PINT_SCHEMA,
         Field(
             ...,
             description="Value of the controller current, below which the capacitor switches off.",
+            ge=0,
         ),
     ]
 
@@ -148,8 +161,8 @@ class CurrentCapacitorController(CapacitorControllerBase):
         return CurrentCapacitorController(
             delay_on=Time(20, "seconds"),
             ct_ratio=10,
-            on_current=PositiveCurrent(110, "ampere"),
-            off_current=PositiveCurrent(110, "ampere"),
+            on_current=Current(110, "ampere"),
+            off_current=Current(110, "ampere"),
         )
 
 

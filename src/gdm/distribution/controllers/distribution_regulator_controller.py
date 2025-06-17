@@ -9,8 +9,8 @@ from pydantic import Field
 from gdm.distribution.components.distribution_bus import DistributionBus
 from gdm.distribution.enums import Phase
 from gdm.quantities import (
-    PositiveVoltage,
-    PositiveCurrent,
+    Voltage,
+    Current,
 )
 
 from gdm.constants import PINT_SCHEMA
@@ -26,28 +26,19 @@ class RegulatorController(Component):
         Field(..., description="Delay for the first tap change operation"),
     ]
     v_setpoint: Annotated[
-        PositiveVoltage,
+        Voltage,
         PINT_SCHEMA,
-        Field(
-            ...,
-            description="The target control voltage for regulator controller.",
-        ),
+        Field(..., description="The target control voltage for regulator controller.", gt=0),
     ]
     min_v_limit: Annotated[
-        PositiveVoltage,
+        Voltage,
         PINT_SCHEMA,
-        Field(
-            ...,
-            description="The minimum voltage limit for regulator controller.",
-        ),
+        Field(..., description="The minimum voltage limit for regulator controller.", gt=0),
     ]
     max_v_limit: Annotated[
-        PositiveVoltage,
+        Voltage,
         PINT_SCHEMA,
-        Field(
-            ...,
-            description="The maximum voltage limit for regulator controller.",
-        ),
+        Field(..., description="The maximum voltage limit for regulator controller.", gt=0),
     ]
     pt_ratio: Annotated[
         float,
@@ -72,27 +63,30 @@ class RegulatorController(Component):
         ),
     ]
     ldc_R: Annotated[
-        Optional[PositiveVoltage],
+        Optional[Voltage],
         PINT_SCHEMA,
         Field(
             None,
             description="R setting on the line drop compensator of the regulator in Volts.",
+            ge=0,
         ),
     ]
     ldc_X: Annotated[
-        Optional[PositiveVoltage],
+        Optional[Voltage],
         PINT_SCHEMA,
         Field(
             None,
             description="X setting on the line drop compensator of the regulator in Volts.",
+            ge=0,
         ),
     ]
     ct_primary: Annotated[
-        Optional[PositiveCurrent],
+        Optional[Current],
         PINT_SCHEMA,
         Field(
             None,
             description="Current at which the line drop compensator voltages match the R and X settings.",
+            ge=0,
         ),
     ]
     max_step: Annotated[
@@ -103,9 +97,9 @@ class RegulatorController(Component):
         ),
     ]
     bandwidth: Annotated[
-        PositiveVoltage,
+        Voltage,
         PINT_SCHEMA,
-        Field(..., description="The total voltage bandwidth for the controller"),
+        Field(..., description="The total voltage bandwidth for the controller", ge=0),
     ]
     controlled_bus: Annotated[
         DistributionBus,
@@ -122,15 +116,15 @@ class RegulatorController(Component):
         """Example for a Regulator Controller."""
         return RegulatorController(
             delay=Time(10, "seconds"),
-            v_setpoint=PositiveVoltage(120, "volts"),
-            min_v_limit=PositiveVoltage(132, "volts"),
-            max_v_limit=PositiveVoltage(102, "volts"),
+            v_setpoint=Voltage(120, "volts"),
+            min_v_limit=Voltage(132, "volts"),
+            max_v_limit=Voltage(102, "volts"),
             is_reversible=False,
             use_ldc=True,
-            ct_primary=PositiveCurrent(0.1, "ampere"),
+            ct_primary=Current(0.1, "ampere"),
             pt_ratio=60,
             max_step=16,
-            bandwidth=PositiveVoltage(3, "volts"),
+            bandwidth=Voltage(3, "volts"),
             controlled_bus=DistributionBus.example(),
             controlled_phase=Phase.A,
         )

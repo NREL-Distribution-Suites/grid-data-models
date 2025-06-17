@@ -5,11 +5,12 @@ from typing import Annotated
 from infrasys import Component
 from pydantic import Field, model_validator
 
+from gdm.distribution.enums import LineType
 from gdm.quantities import (
     ResistancePULength,
     ReactancePULength,
     CapacitancePULength,
-    PositiveCurrent,
+    Current,
 )
 
 from gdm.constants import PINT_SCHEMA
@@ -18,6 +19,14 @@ from gdm.constants import PINT_SCHEMA
 class MatrixImpedanceBranchEquipmentBase(Component):
     """Data model for impedance based branch."""
 
+    construction: Annotated[
+        LineType,
+        PINT_SCHEMA,
+        Field(
+            LineType.OVERHEAD,
+            description="Construction type of MatrixImpedanceBranchEquipmentBase.",
+        ),
+    ]
     r_matrix: Annotated[
         ResistancePULength,
         PINT_SCHEMA,
@@ -34,7 +43,7 @@ class MatrixImpedanceBranchEquipmentBase(Component):
         Field(..., description="Per unit length capacitance matrix."),
     ]
     ampacity: Annotated[
-        PositiveCurrent, PINT_SCHEMA, Field(..., description="Ampacity of the conductor.")
+        Current, PINT_SCHEMA, Field(..., description="Ampacity of the conductor.", gt=0)
     ]
 
     @model_validator(mode="after")

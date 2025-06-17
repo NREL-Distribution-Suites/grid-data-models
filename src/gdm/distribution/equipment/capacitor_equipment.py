@@ -7,7 +7,7 @@ from pydantic import Field
 
 from gdm.distribution.equipment.phase_capacitor_equipment import PhaseCapacitorEquipment
 from gdm.distribution.enums import ConnectionType, VoltageTypes
-from gdm.quantities import PositiveVoltage
+from gdm.quantities import Voltage
 
 
 class CapacitorEquipment(Component):
@@ -25,8 +25,8 @@ class CapacitorEquipment(Component):
         Field(ConnectionType.STAR, description="Connection type for this capacitor."),
     ]
     rated_voltage: Annotated[
-        PositiveVoltage,
-        Field(..., description="Rated voltage for this capacitor."),
+        Voltage,
+        Field(..., description="Rated voltage for this capacitor.", gt=0),
     ]
     voltage_type: Annotated[
         VoltageTypes,
@@ -40,6 +40,6 @@ class CapacitorEquipment(Component):
             name="capacitor-equipment-1",
             phase_capacitors=[PhaseCapacitorEquipment.example()] * 3,
             connection_type=ConnectionType.STAR,
-            rated_voltage=PositiveVoltage(12.47, "kilovolt"),
+            rated_voltage=Voltage(12.47, "kilovolt"),
             voltage_type=VoltageTypes.LINE_TO_LINE,
         )

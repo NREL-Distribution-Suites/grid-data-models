@@ -5,7 +5,7 @@ import pytest
 
 from pydantic import ValidationError
 
-from gdm.quantities import PositiveCurrent, PositiveDistance, PositiveResistancePULength
+from gdm.quantities import Current, Distance, ResistancePULength
 from gdm.distribution.equipment import BareConductorEquipment
 from gdm.dataset.dataset_system import DatasetSystem
 from gdm.dataset.cost_model import CostModel
@@ -32,12 +32,12 @@ def test_dataset_system(dataset_system):
     )
     new_conductor = BareConductorEquipment(
         name="24_AWGSLD_Copper",
-        conductor_diameter=PositiveDistance(0.0201, "in"),
-        conductor_gmr=PositiveDistance(0.00065, "ft"),
-        ampacity=PositiveCurrent(1, "ampere"),
-        ac_resistance=PositiveResistancePULength(151.62, "ohm/m"),
-        dc_resistance=PositiveResistancePULength(151.62, "ohm/m"),
-        emergency_ampacity=PositiveCurrent(1, "ampere"),
+        conductor_diameter=Distance(0.0201, "in"),
+        conductor_gmr=Distance(0.00065, "ft"),
+        ampacity=Current(1, "ampere"),
+        ac_resistance=ResistancePULength(151.62, "ohm/m"),
+        dc_resistance=ResistancePULength(151.62, "ohm/m"),
+        emergency_ampacity=Current(1, "ampere"),
     )
     dataset_system.add_component(new_conductor)
     dataset_system.add_cost(

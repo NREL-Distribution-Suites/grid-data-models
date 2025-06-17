@@ -15,7 +15,7 @@ from gdm.distribution.equipment.distribution_transformer_equipment import (
 )
 from gdm.distribution.components.distribution_bus import DistributionBus
 from gdm.distribution.enums import Phase, VoltageTypes
-from gdm.quantities import PositiveVoltage
+from gdm.quantities import Voltage
 
 
 class DistributionRegulator(DistributionTransformerBase):
@@ -48,7 +48,7 @@ class DistributionRegulator(DistributionTransformerBase):
                 DistributionBus(
                     voltage_type=VoltageTypes.LINE_TO_LINE,
                     name="Regulator-DistBus1",
-                    rated_voltage=PositiveVoltage(12.47, "kilovolt"),
+                    rated_voltage=Voltage(12.47, "kilovolt"),
                     substation=DistributionSubstation.example(),
                     feeder=DistributionFeeder.example(),
                     phases=[Phase.A, Phase.B, Phase.C],
@@ -56,7 +56,7 @@ class DistributionRegulator(DistributionTransformerBase):
                 DistributionBus(
                     voltage_type=VoltageTypes.LINE_TO_LINE,
                     name="Regulator-DistBus2",
-                    rated_voltage=PositiveVoltage(0.4, "kilovolt"),
+                    rated_voltage=Voltage(0.4, "kilovolt"),
                     substation=DistributionSubstation.example(),
                     feeder=DistributionFeeder.example(),
                     phases=[Phase.A, Phase.B, Phase.C],

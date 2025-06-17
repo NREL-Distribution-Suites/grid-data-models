@@ -11,9 +11,7 @@ from gdm.distribution.enums import Phase
 from gdm.distribution.components.base.distribution_component_base import (
     InServiceDistributionComponentBase,
 )
-from gdm.quantities import (
-    PositiveDistance,
-)
+from gdm.quantities import Distance
 from gdm.constants import PINT_SCHEMA
 
 
@@ -24,9 +22,7 @@ class DistributionBranchBase(InServiceDistributionComponentBase, ABC):
         list[DistributionBus],
         Field(..., description="List of buses connecting a branch."),
     ]
-    length: Annotated[
-        PositiveDistance, PINT_SCHEMA, Field(..., description="Length of the branch.")
-    ]
+    length: Annotated[Distance, PINT_SCHEMA, Field(..., description="Length of the branch.", gt=0)]
     phases: Annotated[
         list[Phase],
         Field(..., description="List of phases in the same order as conductors."),

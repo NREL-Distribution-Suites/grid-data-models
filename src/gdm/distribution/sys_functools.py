@@ -29,7 +29,7 @@ from gdm.exceptions import (
     GDMQuantityError,
     GDMQuantityUnitsError,
 )
-from gdm.quantities import PositiveActivePower, ActivePower
+from gdm.quantities import ActivePower
 
 
 def get_timeseries_actual_data(
@@ -110,7 +110,7 @@ def _get_solar_power(
     return ActivePower(
         np.clip(
             dc_power,
-            a_min=PositiveActivePower(0, dc_power.units),
+            a_min=ActivePower(0, dc_power.units),
             a_max=solar.equipment.rated_power.to("kilova"),
         ).magnitude,
         dc_power.units,

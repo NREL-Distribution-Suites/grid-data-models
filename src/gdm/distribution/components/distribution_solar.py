@@ -5,7 +5,7 @@ from typing import Annotated
 from pydantic import Field, model_validator
 
 from gdm.distribution.controllers.distribution_inverter_controller import InverterController
-from gdm.quantities import PositiveVoltage, PositiveActivePower, ReactivePower, Irradiance
+from gdm.quantities import Voltage, ActivePower, ReactivePower, Irradiance
 from gdm.distribution.components.distribution_feeder import DistributionFeeder
 from gdm.distribution.equipment.inverter_equipment import InverterEquipment
 from gdm.distribution.components.base.distribution_component_base import (
@@ -41,11 +41,11 @@ class DistributionSolar(InServiceDistributionComponentBase):
     ]
     irradiance: Annotated[
         Irradiance,
-        Field(..., description="Irradiance incident on the PV array."),
+        Field(..., description="Irradiance incident on the PV array.", ge=0),
     ]
     active_power: Annotated[
-        PositiveActivePower,
-        Field(..., description="Active power output of the inverter."),
+        ActivePower,
+        Field(..., description="Active power output of the inverter.", ge=0),
     ]
     reactive_power: Annotated[
         ReactivePower,
@@ -152,7 +152,7 @@ class DistributionSolar(InServiceDistributionComponentBase):
             bus=DistributionBus(
                 voltage_type="line-to-ground",
                 name="Solar-DistBus1",
-                rated_voltage=PositiveVoltage(400, "volt"),
+                rated_voltage=Voltage(400, "volt"),
                 phases=[Phase.A, Phase.B, Phase.C],
                 substation=DistributionSubstation.example(),
                 feeder=DistributionFeeder.example(),
@@ -163,7 +163,7 @@ class DistributionSolar(InServiceDistributionComponentBase):
             equipment=SolarEquipment.example(),
             inverter=InverterEquipment.example(),
             controller=InverterController.example(),
-            active_power=PositiveActivePower(1000, "watt"),
+            active_power=ActivePower(1000, "watt"),
             reactive_power=ReactivePower(1000, "watt"),
             irradiance=Irradiance(1000, "watt/m^2"),
         )

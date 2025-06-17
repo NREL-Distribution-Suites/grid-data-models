@@ -13,7 +13,7 @@ from gdm.distribution.components.base.distribution_component_base import (
 from gdm.distribution.components.distribution_feeder import DistributionFeeder
 from gdm.distribution.components.distribution_substation import DistributionSubstation
 from gdm.distribution.equipment.phase_capacitor_equipment import PhaseCapacitorEquipment
-from gdm.quantities import PositiveVoltage
+from gdm.quantities import Voltage
 from gdm.distribution.enums import Phase
 from gdm.distribution.controllers.distribution_capacitor_controller import (
     VoltageCapacitorController,
@@ -117,7 +117,7 @@ class DistributionCapacitor(InServiceDistributionComponentBase):
             bus=DistributionBus(
                 voltage_type="line-to-ground",
                 name="Capacitor-DistBus1",
-                rated_voltage=PositiveVoltage(400, "volt"),
+                rated_voltage=Voltage(400, "volt"),
                 phases=[Phase.A, Phase.B, Phase.C],
                 substation=DistributionSubstation.example(),
                 feeder=DistributionFeeder.example(),

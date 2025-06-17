@@ -4,6 +4,7 @@ from collections import defaultdict
 from typing import Annotated, Type
 import importlib.metadata
 from pathlib import Path
+import tempfile
 
 from infrasys.time_series_models import TimeSeriesData, SingleTimeSeries
 from infrasys import Component, System
@@ -424,3 +425,17 @@ class DistributionSystem(System):
                     name=f"Edges -{color_line_by.value} - {edge_option}",
                 )
             )
+
+    def deepcopy(self) -> "DistributionSystem":
+        system = None
+        with tempfile.TemporaryDirectory() as tmpdir:
+            self.to_json(Path(tmpdir) / "test.json")
+            system = DistributionSystem.from_json(Path(tmpdir) / "test.json")
+            system.auto_add_composed_components = True
+
+        # system = DistributionSystem(auto_add_composed_components=True)
+        # for component in self.iter_all_components():
+        #     new_component = self.deepcopy_component(component)
+        #     system.add_component(new_component)
+
+        return system

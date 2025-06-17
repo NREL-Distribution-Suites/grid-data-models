@@ -1,7 +1,7 @@
 import pytest
 
 from gdm.distribution.components import MatrixImpedanceBranch, DistributionBus
-from gdm.quantities import PositiveVoltage
+from gdm.quantities import Voltage
 from gdm.distribution.enums import Phase
 
 
@@ -56,8 +56,8 @@ def test_duplicate_phases():
 def test_connecting_buses_with_different_voltage():
     branch = MatrixImpedanceBranch.example()
     bus1, bus2 = branch.buses
-    bus1.rated_voltage = PositiveVoltage(12.47, "kilovolts")
-    bus2.rated_voltage = PositiveVoltage(12.48, "kilovolts")
+    bus1.rated_voltage = Voltage(12.47, "kilovolts")
+    bus2.rated_voltage = Voltage(12.48, "kilovolts")
     with pytest.raises(ValueError):
         MatrixImpedanceBranch(
             name=branch.name,

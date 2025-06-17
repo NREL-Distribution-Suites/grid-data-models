@@ -4,7 +4,7 @@ from typing import Annotated, Self
 from pydantic import Field
 from infrasys import Location
 
-from gdm.quantities import PositiveDistance
+from gdm.quantities import Distance
 from gdm.structural.components.base import _GeoLocatedWithInstalledDateComponent
 
 
@@ -19,7 +19,7 @@ class Building(_GeoLocatedWithInstalledDateComponent):
         return Building(
             name="Customer1",
             location=Location(x=10.0, y=20.0),
-            elevation=PositiveDistance(234, "meter"),
+            elevation=Distance(234, "meter"),
             installed_date=datetime(2016, 1, 1, 0, 0, 0),
             power_system_resource_name="Customer1",
         )
