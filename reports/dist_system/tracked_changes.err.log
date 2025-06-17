@@ -1,0 +1,56 @@
+Traceback (most recent call last):
+  File "/opt/hostedtoolcache/Python/3.12.10/x64/lib/python3.12/site-packages/jupyter_core/utils/__init__.py", line 154, in wrapped
+    asyncio.get_running_loop()
+RuntimeError: no running event loop
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/opt/hostedtoolcache/Python/3.12.10/x64/lib/python3.12/site-packages/jupyter_cache/executors/utils.py", line 58, in single_nb_execution
+    executenb(
+  File "/opt/hostedtoolcache/Python/3.12.10/x64/lib/python3.12/site-packages/nbclient/client.py", line 1319, in execute
+    return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.10/x64/lib/python3.12/site-packages/jupyter_core/utils/__init__.py", line 158, in wrapped
+    return loop.run_until_complete(inner)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.10/x64/lib/python3.12/asyncio/base_events.py", line 691, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.10/x64/lib/python3.12/site-packages/nbclient/client.py", line 709, in async_execute
+    await self.async_execute_cell(
+  File "/opt/hostedtoolcache/Python/3.12.10/x64/lib/python3.12/site-packages/nbclient/client.py", line 1062, in async_execute_cell
+    await self._check_raise_for_error(cell, cell_index, exec_reply)
+  File "/opt/hostedtoolcache/Python/3.12.10/x64/lib/python3.12/site-packages/nbclient/client.py", line 918, in _check_raise_for_error
+    raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
+nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
+------------------
+from gdm.distribution import DistributionSystem
+from gdm.quantities import PositiveDistance
+from gdmloader.constants import GCS_CASE_SOURCE
+from gdmloader.source import SystemLoader
+
+loader = SystemLoader()
+loader.add_source(GCS_CASE_SOURCE)
+base_model: DistributionSystem  = loader.load_dataset(
+    DistributionSystem, GCS_CASE_SOURCE.name, "three_feeder_switch"
+)
+base_model.auto_add_composed_components = True
+base_model.info()
+------------------
+
+----- stderr -----
+/opt/hostedtoolcache/Python/3.12.10/x64/lib/python3.12/site-packages/pydantic/_internal/_generate_schema.py:502: UserWarning: Ellipsis is not a Python type (it may be an instance of an object), Pydantic will allow any object with no validation since we cannot even enforce that the input is an instance of the given type. To get rid of this error wrap the type with `pydantic.SkipValidation`.
+  warn(
+------------------
+
+[31m---------------------------------------------------------------------------[39m
+[31mImportError[39m                               Traceback (most recent call last)
+[36mCell[39m[36m [39m[32mIn[1][39m[32m, line 2[39m
+[32m      1[39m [38;5;28;01mfrom[39;00m[38;5;250m [39m[34;01mgdm[39;00m[34;01m.[39;00m[34;01mdistribution[39;00m[38;5;250m [39m[38;5;28;01mimport[39;00m DistributionSystem
+[32m----> [39m[32m2[39m [38;5;28;01mfrom[39;00m[38;5;250m [39m[34;01mgdm[39;00m[34;01m.[39;00m[34;01mquantities[39;00m[38;5;250m [39m[38;5;28;01mimport[39;00m PositiveDistance
+[32m      3[39m [38;5;28;01mfrom[39;00m[38;5;250m [39m[34;01mgdmloader[39;00m[34;01m.[39;00m[34;01mconstants[39;00m[38;5;250m [39m[38;5;28;01mimport[39;00m GCS_CASE_SOURCE
+[32m      4[39m [38;5;28;01mfrom[39;00m[38;5;250m [39m[34;01mgdmloader[39;00m[34;01m.[39;00m[34;01msource[39;00m[38;5;250m [39m[38;5;28;01mimport[39;00m SystemLoader
+
+[31mImportError[39m: cannot import name 'PositiveDistance' from 'gdm.quantities' (/opt/hostedtoolcache/Python/3.12.10/x64/lib/python3.12/site-packages/gdm/quantities.py)
+
