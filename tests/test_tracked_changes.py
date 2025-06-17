@@ -105,8 +105,9 @@ def test_scenario_update_filter_by_scenario_name(distribution_system_with_single
     updated_system = apply_updates_to_system(
         tracked_changes=tracked_changes, system=system, catalog=catalog
     )
-    capacitor = updated_system.get_component_by_uuid(cap_uuid)
-    assert capacitor.rated_reactive_power.to("kilovar").magnitude == 200.0
+    capacitor_new = updated_system.get_component_by_uuid(cap_uuid)
+
+    assert capacitor_new.rated_reactive_power.to("kilovar").magnitude == 200.0
 
 
 def test_scenario_update_filter_by_scenario_name_and_date(

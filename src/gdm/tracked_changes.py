@@ -1,5 +1,5 @@
-from datetime import date
 from typing import Any, Annotated
+from datetime import date
 
 from infrasys.models import InfraSysBaseModel
 from gdm.distribution import DistributionSystem, CatalogSystem
@@ -170,14 +170,15 @@ def apply_updates_to_system(
         raise ValueError("Scenario name should be consistant across all tracked changes.")
 
     log = []
+    system_copy = system.deepcopy()
     for change in tracked_changes:
-        system = _apply_tracked_changes(
-            system=system, tracked_change=change, catalog=catalog, log=log
+        system_copy = _apply_tracked_changes(
+            system=system_copy, tracked_change=change, catalog=catalog, log=log
         )
 
     # Log the system updates.
     _update_log(log)
-    return system
+    return system_copy
 
 
 def _apply_tracked_changes(
@@ -247,6 +248,7 @@ def _apply_tracked_changes(
                 f"{component.label} does not have a property called {edit_model.name}"
             )
         setattr(component, edit_model.name, edit_model.value)
+        component = system.get_component_by_uuid(edit_model.component_uuid)
         bus_names = _get_bus_names(component)
 
         _update_temporal_table(

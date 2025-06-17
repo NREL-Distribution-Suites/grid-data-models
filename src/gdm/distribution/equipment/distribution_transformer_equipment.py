@@ -6,8 +6,8 @@ from typing import Annotated
 from infrasys import Component
 from pydantic import Field, model_validator
 
+from gdm.distribution.enums import ConnectionType, VoltageTypes, TransformerMounting
 from gdm.distribution.common.sequence_pair import SequencePair
-from gdm.distribution.enums import ConnectionType, VoltageTypes
 from gdm.quantities import ApparentPower, Voltage
 from gdm.constants import PINT_SCHEMA
 
@@ -110,6 +110,10 @@ class WindingEquipment(Component):
 class DistributionTransformerEquipment(Component):
     """Data model for distribution transformer info."""
 
+    mounting: Annotated[
+        TransformerMounting,
+        Field(TransformerMounting.POLE_MOUNT, description="Transformer mounting type."),
+    ]
     pct_no_load_loss: Annotated[
         float,
         Field(
@@ -196,6 +200,7 @@ class DistributionTransformerEquipment(Component):
             pct_no_load_loss=0.1,
             pct_full_load_loss=1,
             is_center_tapped=False,
+            mounting=TransformerMounting.PAD_MOUNT,
             windings=[
                 WindingEquipment(
                     resistance=1,
