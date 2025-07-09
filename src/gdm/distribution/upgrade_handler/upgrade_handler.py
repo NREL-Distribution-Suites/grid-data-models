@@ -3,7 +3,7 @@ from collections import Counter
 from pydantic import BaseModel, model_validator
 from semver import Version
 
-from gdm.distribution.upgrade_handler.from__2_0_1__to__2_1_0 import from__2_0_1__to__2_1_0
+from gdm.distribution.upgrade_handler.from__2_0_1__to__2_1_1 import from__2_0_1__to__2_1_1
 
 
 class SemanticVersion(Version):
@@ -36,9 +36,9 @@ class UpgradeSchema(BaseModel):
 class UpgradeHandler(BaseModel):
     upgrade_schemas: list[UpgradeSchema] = [
         UpgradeSchema(
-            method=from__2_0_1__to__2_1_0,
+            method=from__2_0_1__to__2_1_1,
             from_version="2.0.1",
-            to_version="2.1.0",
+            to_version="2.1.1",
         ),
     ]
 

@@ -7,9 +7,9 @@ from pathlib import Path
 import tempfile
 
 from infrasys.time_series_models import TimeSeriesData, SingleTimeSeries
+from shapely import Point, LineString, union_all
 from infrasys import Component, System
 from pydantic import BaseModel, Field
-from shapely import Point, LineString, union_all
 import plotly.graph_objects as go
 from loguru import logger
 import geopandas as gpd
@@ -22,7 +22,7 @@ from gdm.distribution.components.base.distribution_transformer_base import (
     DistributionTransformerBase,
 )
 from gdm.distribution.enums import Phase
-from gdm.distribution.components.distribution_bus import DistributionBus
+from gdm.distribution.components import DistributionBus, GeometryBranch
 from gdm.distribution.enums import ColorNodeBy, ColorLineBy
 from gdm.distribution.components.base.distribution_branch_base import (
     DistributionBranchBase,
@@ -244,8 +244,8 @@ class DistributionSystem(System):
                 edge_data["Name"].append(data["name"])
                 edge_data["Length"].append(length)
                 edge_data["Type"].append(data["type"].__name__)
-                edge_data["Latitude"].append([x1, x2])
-                edge_data["Longitude"].append([bus1.coordinate.y, bus2.coordinate.y])
+                edge_data["Latitude"].append([bus1.coordinate.y, bus2.coordinate.y])
+                edge_data["Longitude"].append([x1, x2])
 
         edge_df = pd.DataFrame(edge_data)
         geometry = [
@@ -433,9 +433,23 @@ class DistributionSystem(System):
             system = DistributionSystem.from_json(Path(tmpdir) / "test.json")
             system.auto_add_composed_components = True
 
+        # @dan how do i get this to work?
+
         # system = DistributionSystem(auto_add_composed_components=True)
         # for component in self.iter_all_components():
         #     new_component = self.deepcopy_component(component)
         #     system.add_component(new_component)
 
         return system
+
+    def convert_geometry_to_matrix_representation(self):
+        logger.info("Converting models from GeometryBranch to MatrixImpedanceBranch...")
+        auto_add = self.auto_add_composed_components
+        self.auto_add_composed_components = True
+        branches = list(self.get_components(GeometryBranch))
+        for branch in branches:
+            impedence_branch = branch.to_maxtrix_representation()
+            self.remove_component(branch, cascade_down=True)
+            self.add_component(impedence_branch)
+        self.auto_add_composed_components = auto_add
+        logger.info(f"GeometryBranch models converted -> {len(branches)}")

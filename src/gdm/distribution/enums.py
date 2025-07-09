@@ -84,3 +84,15 @@ class ColorLineBy(str, Enum):
     PHASE = "Phases"
     DEFAULT = "Default"
     EQUIPMENT_TYPE = "Type"
+
+
+class WireInsulationType(Enum):
+    AIR = 1.0  # Air insulation
+    PVC = 3.18  # Polyvinyl Chloride
+    XLPE = 2.3  # Cross-Linked Polyethylene
+    EPR = 2.5  # Ethylene Propylene Rubber
+    PE = 2.25  # Polyethylene
+    TEFLON = 2.1  # PTFE (Polytetrafluoroethylene)
+    SILICONE_RUBBER = 3.5  # Silicone Rubber
+    PAPER = 3.7  # Oil-impregnated paper
+    MICA = 6.0  # Mica-based insulation
