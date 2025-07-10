@@ -18,9 +18,11 @@ from gdm.distribution.components.distribution_bus import DistributionBus
 from gdm.distribution.enums import Phase
 from gdm.quantities import Voltage, Distance
 
+from gdm.distribution.components.matrix_impedance_branch import MatrixImpedanceBranch
+
 
 class GeometryBranch(DistributionBranchBase):
-    """Data model for geometry based lines."""
+    """Data model for distribution branches based on line geometry."""
 
     equipment: Annotated[
         GeometryBranchEquipment,
@@ -33,6 +35,19 @@ class GeometryBranch(DistributionBranchBase):
             msg = "Number of phases is not equal to number of wires."
             raise ValueError(msg)
         return self
+
+    def to_matrix_representation(self) -> MatrixImpedanceBranch:
+        """Convert geometry branch to matrix representation."""
+        return MatrixImpedanceBranch(
+            uuid=self.uuid,
+            buses=self.buses,
+            length=self.length,
+            phases=self.phases,
+            substation=self.substation,
+            feeder=self.feeder,
+            name=self.name,
+            equipment=self.equipment.to_matrix_representation(self.phases.count(Phase.N)),
+        )
 
     @classmethod
     def example(cls) -> "GeometryBranch":

@@ -3,6 +3,7 @@
 from typing import Annotated
 from itertools import product
 from abc import ABC
+import math
 
 from pydantic import model_validator, Field
 
@@ -47,7 +48,11 @@ class DistributionBranchBase(InServiceDistributionComponentBase, ABC):
             )
             raise ValueError(msg)
 
-        if self.buses[0].rated_voltage != self.buses[1].rated_voltage:
+        if not math.isclose(
+            self.buses[0].rated_voltage.magnitude,
+            self.buses[1].rated_voltage.magnitude,
+            rel_tol=0.001,  # 10^-3
+        ):
             msg = (
                 f"From bus {self.buses[0].rated_voltage=}"
                 f"and to bus voltage {self.buses[1].rated_voltage=} rating should be same."

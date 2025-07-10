@@ -7,6 +7,7 @@ parts:
   - caption: Installation
     chapters:
     - file: installation
+    - file: new_features
     - file: gdmloader/gdmloader
   - caption: Tutorial
     chapters:
