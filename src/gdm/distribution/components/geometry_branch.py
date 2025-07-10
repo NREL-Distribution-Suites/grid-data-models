@@ -22,7 +22,7 @@ from gdm.distribution.components.matrix_impedance_branch import MatrixImpedanceB
 
 
 class GeometryBranch(DistributionBranchBase):
-    """Data model for geometry based lines."""
+    """Data model for distribution branches based on line geometry."""
 
     equipment: Annotated[
         GeometryBranchEquipment,
@@ -36,7 +36,8 @@ class GeometryBranch(DistributionBranchBase):
             raise ValueError(msg)
         return self
 
-    def to_maxtrix_representation(self) -> MatrixImpedanceBranch:
+    def to_matrix_representation(self) -> MatrixImpedanceBranch:
+        """Convert geometry branch to matrix representation."""
         return MatrixImpedanceBranch(
             uuid=self.uuid,
             buses=self.buses,

@@ -78,16 +78,16 @@ class GeometryBranchEquipment(Component):
         else:
             return z
 
-    def _calculate_capcitance_matrix(
+    def _calculate_capacitance_matrix(
         self,
         coords: list[tuple[float, float]],
         dist_matrix: npt.NDArray,
         num_neutral,
     ):
-        permitivity = 0.01424 * self.insulation.value
+        permittivity = 0.01424 * self.insulation.value
         reflections = coords * np.array([1, -1])
         s = self._pairwise_distances(coords, reflections)
-        p = 1 / (2 * np.pi * permitivity) * np.log(s / dist_matrix)
+        p = 1 / (2 * np.pi * permittivity) * np.log(s / dist_matrix)
         return np.linalg.inv(self._kron_reduction(p, num_neutral))
 
     def _get_branch_info(self):
@@ -159,7 +159,7 @@ class GeometryBranchEquipment(Component):
             dist_matrix, diag_real_values, n_neut, freq, resistivity
         )
         np.fill_diagonal(dist_matrix, radii)
-        c_reduced = self._calculate_capcitance_matrix(coords, dist_matrix, n_neut)
+        c_reduced = self._calculate_capacitance_matrix(coords, dist_matrix, n_neut)
         np.fill_diagonal(c_reduced, ys)
 
         return MatrixImpedanceBranchEquipment(
@@ -174,7 +174,7 @@ class GeometryBranchEquipment(Component):
             uuid=self.uuid,
         )
 
-    def _overhead_config(
+    def _conductor_config(
         self, num_neutral: int, freq: float = 60.0, resistivity: float = 100
     ) -> MatrixImpedanceBranchEquipment:
         coords, gmrs, resistance, ampacity, radii = self._get_branch_info()
@@ -187,7 +187,7 @@ class GeometryBranchEquipment(Component):
             dist_matrix, resistance, num_neutral, freq, resistivity
         )
         np.fill_diagonal(dist_matrix, radii)
-        c_reduced = self._calculate_capcitance_matrix(coords, dist_matrix, num_neutral)
+        c_reduced = self._calculate_capacitance_matrix(coords, dist_matrix, num_neutral)
         return MatrixImpedanceBranchEquipment(
             r_matrix=ResistancePULength(np.real(z_reduced), "ohm/mile"),
             x_matrix=ReactancePULength(np.imag(z_reduced), "ohm/mile"),
@@ -203,12 +203,13 @@ class GeometryBranchEquipment(Component):
     def to_matrix_representation(
         self, num_neutral: int, freq: float = 60.0, resistivity: float = 100
     ) -> MatrixImpedanceBranchEquipment:
+        """Convert geometry branch equipment to matrix representation."""
         if num_neutral >= len(self.conductors):
             msg = f"Number of neutrals ({num_neutral}) should be less than the total number of conductors ({len(self.conductors)})"
             raise ValueError(msg)
 
         if isinstance(self.conductors[0], BareConductorEquipment):
-            return self._overhead_config(num_neutral)
+            return self._conductor_config(num_neutral)
         elif isinstance(self.conductors[0], ConcentricCableEquipment):
             return self._concentric_cable_config()
         else:

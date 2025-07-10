@@ -47,7 +47,9 @@ CN_336 = ConcentricCableEquipment(
 
 
 def test_kron_reduction_overhead_three_phase_with_neutral():
-    # KERSTINGS EXAMPLE 1
+    # William H Kerstings, Distribution System Modeling and Analysis,
+    # Z calculation - Chapter 4, example 4.1
+    # C calculation - Chapter 5, example 5.1
     equip = GeometryBranchEquipment(
         name="test_kron_reduction_overhead_three_phase_with_neutral",
         conductors=[ACSR_336, ACSR_336, ACSR_336, ACSR_4_0],
@@ -121,7 +123,9 @@ def test_kron_reduction_overhead_one_phase():
 
 
 def test_kron_reduction_underground_three_phase():
-    # KERSTINGS EXAMPLE 2
+    # William H Kerstings, Distribution System Modeling and Analysis,
+    # Z calculation - Chapter 4, example 4.2
+    # C calculation - Chapter 5, example 5.2
     equip = GeometryBranchEquipment(
         name="test_kron_reduction_underground_three_phase",
         conductors=[CN_336, CN_336, CN_336],
@@ -169,10 +173,10 @@ def test_kron_reduction_underground_one_phase():
 
 def test_geometry_barnch_with_conductors():
     g = GeometryBranch.example()
-    g.to_maxtrix_representation()
+    g.to_matrix_representation()
 
 
 def test_geometry_barnch_with_cables():
     g = GeometryBranch.example()
     g.equipment.conductors = [CN_336, CN_336, CN_336]
-    g.to_maxtrix_representation()
+    g.to_matrix_representation()

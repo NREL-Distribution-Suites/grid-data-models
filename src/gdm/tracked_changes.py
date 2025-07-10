@@ -1,5 +1,5 @@
 from typing import Any, Annotated
-from datetime import date
+from datetime import datetime
 
 from infrasys.models import InfraSysBaseModel
 from gdm.distribution import DistributionSystem, CatalogSystem
@@ -32,7 +32,7 @@ class TrackedChange(InfraSysBaseModel):
         ),
     ]
     update_date: Annotated[
-        date | None,
+        datetime | None,
         Field(
             None,
             description="If these changes are to be applied on specific date, provide a date, else leave it blank",
@@ -52,18 +52,46 @@ class TrackedChange(InfraSysBaseModel):
 def filter_tracked_changes_by_name_and_date(
     tracked_changes: list[TrackedChange],
     scenario_name: str | None = None,
-    update_date: date | None = None,
+    update_date: datetime | None = None,
 ) -> list[TrackedChange]:
     """
-    Filters a list of TrackedChange objects based on the provided name and/or update_date.
+    Filters a list of tracked changes based on scenario name and/or update date.
 
-    Args:
-        tracked_changes (list[TrackedChange]): The list of TrackedChange objects to filter.
-        name (str, optional): The name to filter by. Defaults to None.
-        update_date (date, optional): The update date to filter by. Defaults to None.
+    This function allows filtering of tracked changes by either scenario name or update date.
+    At least one of these parameters must be provided. If both are provided, the function
+    returns changes that match the scenario name and have an update date less than or equal
+    to the specified date.
 
-    Returns:
-        list[TrackedChange]: A list of TrackedChange objects that match the filtering criteria.
+    Parameters
+    ----------
+    tracked_changes : list[TrackedChange]
+        A list of TrackedChange objects to be filtered.
+    scenario_name : str, optional
+        The name of the scenario to filter by. If None, filtering by scenario name is skipped.
+    update_date : datetime, optional
+        The date to filter by. If None, filtering by date is skipped.
+
+    Returns
+    -------
+    list[TrackedChange]
+        A list of TrackedChange objects that match the specified filters.
+
+    Raises
+    ------
+    ValueError
+        If neither 'scenario_name' nor 'update_date' is provided.
+    AssertionError
+        If filtering by update_date and any TrackedChange object has a None update_date.
+
+    Examples
+    --------
+    >>> changes = filter_tracked_changes_by_name_and_date(tracked_changes, scenario_name="Scenario A")
+    >>> changes = filter_tracked_changes_by_name_and_date(
+    ...     tracked_changes, update_date=datetime(2023, 1, 1)
+    ... )
+    >>> changes = filter_tracked_changes_by_name_and_date(
+    ...     tracked_changes, "Scenario A", datetime(2023, 1, 1)
+    ... )
     """
 
     if scenario_name is None and update_date is None:
@@ -92,7 +120,7 @@ def filter_tracked_changes_by_name_and_date(
 
 def _update_temporal_table(
     updates: list,
-    update_date: date,
+    update_date: datetime,
     change_type: str,
     component: Component,
     bus_names: str,
@@ -140,24 +168,46 @@ def apply_updates_to_system(
     tracked_changes: list[TrackedChange],
     system: DistributionSystem,
     catalog: DistributionSystem,
-    system_date: date | None = None,
+    system_date: datetime | None = None,
 ):
     """
-    Applies a series of tracked changes from an update scenario to a distribution system.
+    Applies a series of tracked changes to a distribution system model.
 
-    This function iterates over the list of tracked changes in the given
-    `update_scenario` and applies each set of changes to the `system` using the
-    `_apply_tracked_changes` function. It logs the changes applied and updates the
-    system accordingly.
+    This function processes a list of `TrackedChange` objects and applies the specified
+    additions, deletions, and edits to the given `system`. The changes are applied in
+    chronological order based on the `update_date` of each tracked change. If a `system_date`
+    is provided, only changes with an `update_date` less than or equal to this date are applied.
 
-    Args:
-        update_scenario (UpdateScenario): The scenario containing tracked changes to be applied.
-        system (DistributionSystem): The distribution system to which changes are applied.
-        catalog (DistributionSystem): The catalog used to retrieve components by UUID.
-        system_date : date The date up to which changes should be applied.
+    Parameters
+    ----------
+    tracked_changes : list[TrackedChange]
+        A list of `TrackedChange` objects containing the changes to be applied.
+    system : DistributionSystem
+        The distribution system to which the changes will be applied.
+    catalog : DistributionSystem
+        The catalog used to retrieve components by UUID for additions.
+    system_date : datetime, optional
+        The cutoff date for applying changes. Only changes with an `update_date` less than
+        or equal to this date will be applied. If None, all changes are applied.
 
-    Returns:
-        DistributionSystem: The updated distribution system with all changes from the scenario applied.
+    Returns
+    -------
+    DistributionSystem
+        The updated distribution system with the applied changes.
+
+    Raises
+    ------
+    ValueError
+        If the scenario names are not consistent across all tracked changes.
+    AttributeError
+        If an edit specifies a property that does not exist on a component.
+
+    Examples
+    --------
+    >>> updated_system = apply_updates_to_system(tracked_changes, system, catalog)
+    >>> updated_system = apply_updates_to_system(
+    ...     tracked_changes, system, catalog, datetime(2023, 1, 1)
+    ... )
     """
 
     if None not in [change.update_date for change in tracked_changes]:
