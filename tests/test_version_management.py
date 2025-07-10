@@ -1,10 +1,13 @@
 from gdm.distribution import DistributionSystem
+import gdm
 import json
+
+import gdm.version
 
 
 def test_version_control(tmp_path, distribution_system_with_single_timeseries):
     system: DistributionSystem = distribution_system_with_single_timeseries
-    print(f"{system.data_format_version=}")
+    assert system.data_format_version == gdm.version.VERSION
     system.to_json(tmp_path / "model.json")
     with open(tmp_path / "model.json", "r") as f:
         data = json.load(f)
@@ -14,4 +17,4 @@ def test_version_control(tmp_path, distribution_system_with_single_timeseries):
         json.dump(data, file, indent=4)
 
     new_system = DistributionSystem.from_json(tmp_path / "model.json")
-    print(f"{new_system.data_format_version=}")
+    assert new_system.data_format_version == gdm.version.VERSION

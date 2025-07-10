@@ -31,11 +31,11 @@ class TrackedChange(InfraSysBaseModel):
             description="If these changes represent a scenario that needs to be tracked, provide a name, otherwise, use the default value",
         ),
     ]
-    update_date: Annotated[
+    timestamp: Annotated[
         datetime | None,
         Field(
             None,
-            description="If these changes are to be applied on specific date, provide a date, else leave it blank",
+            description="If these changes are to be applied on specific timestamp, provide a timestamp, else leave it blank",
         ),
     ]
     additions: Annotated[
@@ -52,7 +52,7 @@ class TrackedChange(InfraSysBaseModel):
 def filter_tracked_changes_by_name_and_date(
     tracked_changes: list[TrackedChange],
     scenario_name: str | None = None,
-    update_date: datetime | None = None,
+    timestamp: datetime | None = None,
 ) -> list[TrackedChange]:
     """
     Filters a list of tracked changes based on scenario name and/or update date.
@@ -68,7 +68,7 @@ def filter_tracked_changes_by_name_and_date(
         A list of TrackedChange objects to be filtered.
     scenario_name : str, optional
         The name of the scenario to filter by. If None, filtering by scenario name is skipped.
-    update_date : datetime, optional
+    timestamp : datetime, optional
         The date to filter by. If None, filtering by date is skipped.
 
     Returns
@@ -79,24 +79,24 @@ def filter_tracked_changes_by_name_and_date(
     Raises
     ------
     ValueError
-        If neither 'scenario_name' nor 'update_date' is provided.
+        If neither 'scenario_name' nor 'timestamp' is provided.
     AssertionError
-        If filtering by update_date and any TrackedChange object has a None update_date.
+        If filtering by timestamp and any TrackedChange object has a None timestamp.
 
     Examples
     --------
     >>> changes = filter_tracked_changes_by_name_and_date(tracked_changes, scenario_name="Scenario A")
     >>> changes = filter_tracked_changes_by_name_and_date(
-    ...     tracked_changes, update_date=datetime(2023, 1, 1)
+    ...     tracked_changes, timestamp=datetime(2023, 1, 1)
     ... )
     >>> changes = filter_tracked_changes_by_name_and_date(
     ...     tracked_changes, "Scenario A", datetime(2023, 1, 1)
     ... )
     """
 
-    if scenario_name is None and update_date is None:
+    if scenario_name is None and timestamp is None:
         raise ValueError(
-            "At least one of 'scenario_name' or 'update_date' must be provided for filtering."
+            "At least one of 'scenario_name' or 'timestamp' must be provided for filtering."
         )
 
     if scenario_name:
@@ -106,12 +106,12 @@ def filter_tracked_changes_by_name_and_date(
     else:
         tracked_changes_filt = tracked_changes
 
-    if update_date:
+    if timestamp:
         assert (
-            None not in [change.update_date for change in tracked_changes_filt]
-        ), "When filtering by update_date, for all TrackedChange objects update_date should be a valid date"
+            None not in [change.timestamp for change in tracked_changes_filt]
+        ), "When filtering by timestamp, for all TrackedChange objects timestamp should be a valid date"
         tracked_changes_by_date = [
-            change for change in tracked_changes_filt if change.update_date <= update_date
+            change for change in tracked_changes_filt if change.timestamp <= timestamp
         ]
         return tracked_changes_by_date
     else:
@@ -120,7 +120,7 @@ def filter_tracked_changes_by_name_and_date(
 
 def _update_temporal_table(
     updates: list,
-    update_date: datetime,
+    timestamp: datetime,
     change_type: str,
     component: Component,
     bus_names: str,
@@ -135,7 +135,7 @@ def _update_temporal_table(
 
     Args:
         updates (list): The list to which the update details will be appended.
-        update_date (date): The date of the update.
+        timestamp (date): The date of the update.
         change_type (str): The type of change being recorded.
         component (Component): The component associated with the change.
         bus_names (str): The names of the buses affected by the change.
@@ -143,7 +143,7 @@ def _update_temporal_table(
     """
     updates.append(
         [
-            str(update_date),
+            str(timestamp),
             change_type,
             str(component.uuid),
             component.label.split(".")[0],
@@ -175,8 +175,8 @@ def apply_updates_to_system(
 
     This function processes a list of `TrackedChange` objects and applies the specified
     additions, deletions, and edits to the given `system`. The changes are applied in
-    chronological order based on the `update_date` of each tracked change. If a `system_date`
-    is provided, only changes with an `update_date` less than or equal to this date are applied.
+    chronological order based on the `timestamp` of each tracked change. If a `system_date`
+    is provided, only changes with an `timestamp` less than or equal to this date are applied.
 
     Parameters
     ----------
@@ -187,7 +187,7 @@ def apply_updates_to_system(
     catalog : DistributionSystem
         The catalog used to retrieve components by UUID for additions.
     system_date : datetime, optional
-        The cutoff date for applying changes. Only changes with an `update_date` less than
+        The cutoff date for applying changes. Only changes with an `timestamp` less than
         or equal to this date will be applied. If None, all changes are applied.
 
     Returns
@@ -210,10 +210,10 @@ def apply_updates_to_system(
     ... )
     """
 
-    if None not in [change.update_date for change in tracked_changes]:
-        tracked_changes = sorted(tracked_changes, key=lambda x: x.update_date, reverse=False)
+    if None not in [change.timestamp for change in tracked_changes]:
+        tracked_changes = sorted(tracked_changes, key=lambda x: x.timestamp, reverse=False)
     if system_date:
-        tracked_changes = list(filter(lambda x: x.update_date <= system_date, tracked_changes))
+        tracked_changes = list(filter(lambda x: x.timestamp <= system_date, tracked_changes))
 
     unique_scenarios = {change.scenario_name for change in tracked_changes}
     if len(unique_scenarios) != 1:
@@ -268,7 +268,7 @@ def _apply_tracked_changes(
             bus_names = _get_bus_names(component)
             _update_temporal_table(
                 log,
-                tracked_change.update_date,
+                tracked_change.timestamp,
                 "Addition",
                 component,
                 bus_names,
@@ -283,7 +283,7 @@ def _apply_tracked_changes(
             bus_names = _get_bus_names(component)
             _update_temporal_table(
                 log,
-                tracked_change.update_date,
+                tracked_change.timestamp,
                 "Deletion",
                 component,
                 bus_names,
@@ -303,7 +303,7 @@ def _apply_tracked_changes(
 
         _update_temporal_table(
             log,
-            tracked_change.update_date,
+            tracked_change.timestamp,
             "Edit",
             component,
             bus_names,
