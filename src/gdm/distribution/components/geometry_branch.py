@@ -36,8 +36,35 @@ class GeometryBranch(DistributionBranchBase):
             raise ValueError(msg)
         return self
 
-    def to_matrix_representation(self) -> MatrixImpedanceBranch:
-        """Convert geometry branch to matrix representation."""
+    def to_matrix_representation(
+        self, frequency_hz: float = 60, soil_resistivity_ohm_m: float = 100
+    ) -> MatrixImpedanceBranch:
+        """
+        Converts the geometry-based branch model to a matrix impedance representation.
+
+        This method transforms the current `GeometryBranch` instance into a `MatrixImpedanceBranch`
+        by calculating the impedance matrix based on the specified frequency and soil resistivity.
+        The conversion process involves using the equipment's matrix representation method to obtain
+        the necessary impedance data.
+
+        Parameters
+        ----------
+        frequency_hz : float, optional
+            The frequency in hertz used for impedance calculations. Defaults to 60 Hz.
+        soil_resistivity_ohm_m : float, optional
+            The soil resistivity in ohm-meters used for impedance calculations. Defaults to 100 ohm-m.
+
+        Returns
+        -------
+        MatrixImpedanceBranch
+            A new instance of `MatrixImpedanceBranch` representing the converted geometry branch.
+
+        Notes
+        -----
+        - The method uses the number of neutral phases to assist in the impedance calculation.
+        - This conversion is essential for systems that require matrix impedance representations
+        for detailed electrical analysis.
+        """
         return MatrixImpedanceBranch(
             uuid=self.uuid,
             buses=self.buses,
@@ -46,7 +73,9 @@ class GeometryBranch(DistributionBranchBase):
             substation=self.substation,
             feeder=self.feeder,
             name=self.name,
-            equipment=self.equipment.to_matrix_representation(self.phases.count(Phase.N)),
+            equipment=self.equipment.to_matrix_representation(
+                self.phases.count(Phase.N), frequency_hz, soil_resistivity_ohm_m
+            ),
         )
 
     @classmethod

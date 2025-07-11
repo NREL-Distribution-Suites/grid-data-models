@@ -5,6 +5,7 @@ from typing import Annotated
 from infrasys import Component
 from pydantic import Field, PositiveInt, model_validator
 
+from gdm.distribution.enums import WireInsulationType
 from gdm.quantities import (
     ResistancePULength,
     Distance,
@@ -63,6 +64,11 @@ class ConcentricCableEquipment(Component):
     rated_voltage: Annotated[
         Voltage, PINT_SCHEMA, Field(..., description="Rated voltage for the cable.", gt=0)
     ]
+    insulation: Annotated[
+        WireInsulationType,
+        PINT_SCHEMA,
+        Field(WireInsulationType.PE, description="Wire insulation type"),
+    ]
 
     @model_validator(mode="after")
     def validate_fields(self) -> "ConcentricCableEquipment":
@@ -84,7 +90,6 @@ class ConcentricCableEquipment(Component):
                 f" {self.strand_diameter}"
             )
             raise ValueError(msg)
-
         return self
 
     @classmethod
@@ -104,4 +109,5 @@ class ConcentricCableEquipment(Component):
             strand_ac_resistance=ResistancePULength(14.8722, "ohm/mi"),
             num_neutral_strands=2,
             rated_voltage=Voltage(15, "kilovolt"),
+            insulation=WireInsulationType.XLPE,
         )
