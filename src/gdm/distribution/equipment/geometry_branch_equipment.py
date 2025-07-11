@@ -115,7 +115,9 @@ class GeometryBranchEquipment(Component):
             else:
                 return result
 
-    def _concentric_cable_config(self, freq: float = 60.0, resistivity: float = 100):
+    def _concentric_cable_config(
+        self, frequency_hz: float = 60, soil_resistivity_ohm_m: float = 100
+    ):
         ampacity = sum([g.ampacity for g in self.conductors]) / len(self.conductors)
         coords = np.array(
             [
@@ -156,7 +158,7 @@ class GeometryBranchEquipment(Component):
         diag_real_values = np.array([r_c] * n_cond + [r_cn] * n_neut)
 
         z_reduced = self._calculate_impedance_matrix(
-            dist_matrix, diag_real_values, n_neut, freq, resistivity
+            dist_matrix, diag_real_values, n_neut, frequency_hz, soil_resistivity_ohm_m
         )
         np.fill_diagonal(dist_matrix, radii)
         c_reduced = self._calculate_capacitance_matrix(coords, dist_matrix, n_neut)
@@ -175,7 +177,7 @@ class GeometryBranchEquipment(Component):
         )
 
     def _conductor_config(
-        self, num_neutral: int, freq: float = 60.0, resistivity: float = 100
+        self, num_neutral: int, frequency_hz: float = 60, soil_resistivity_ohm_m: float = 100
     ) -> MatrixImpedanceBranchEquipment:
         coords, gmrs, resistance, ampacity, radii = self._get_branch_info()
 
@@ -184,7 +186,7 @@ class GeometryBranchEquipment(Component):
         np.fill_diagonal(dist_matrix, gmrs)
 
         z_reduced = self._calculate_impedance_matrix(
-            dist_matrix, resistance, num_neutral, freq, resistivity
+            dist_matrix, resistance, num_neutral, frequency_hz, soil_resistivity_ohm_m
         )
         np.fill_diagonal(dist_matrix, radii)
         c_reduced = self._calculate_capacitance_matrix(coords, dist_matrix, num_neutral)
@@ -201,7 +203,7 @@ class GeometryBranchEquipment(Component):
         )
 
     def to_matrix_representation(
-        self, num_neutral: int, freq: float = 60.0, resistivity: float = 100
+        self, num_neutral: int, frequency_hz: float = 60, soil_resistivity_ohm_m: float = 100
     ) -> MatrixImpedanceBranchEquipment:
         """Convert geometry branch equipment to matrix representation."""
         if num_neutral >= len(self.conductors):
@@ -209,9 +211,9 @@ class GeometryBranchEquipment(Component):
             raise ValueError(msg)
 
         if isinstance(self.conductors[0], BareConductorEquipment):
-            return self._conductor_config(num_neutral)
+            return self._conductor_config(num_neutral, frequency_hz, soil_resistivity_ohm_m)
         elif isinstance(self.conductors[0], ConcentricCableEquipment):
-            return self._concentric_cable_config()
+            return self._concentric_cable_config(frequency_hz, soil_resistivity_ohm_m)
         else:
             raise NotImplementedError(
                 f"No implementation for conductor type {self.conductors[0].__class__.__name__}"

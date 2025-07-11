@@ -667,24 +667,36 @@ class DistributionSystem(System):
 
         return system
 
-    def convert_geometry_to_matrix_representation(self):
-        """Converts all GeometryBranch components in the distribution system to MatrixImpedanceBranch components.
+    def convert_geometry_to_matrix_representation(
+        self, frequency_hz: float = 60, soil_resistivity_ohm_m: float = 100
+    ) -> None:
+        """
+        Converts geometry-based branch models to matrix impedance representations.
 
-        This method iterates over all GeometryBranch components in the system, converts each to its
-        corresponding MatrixImpedanceBranch representation, and replaces the original component with
-        the new one. The conversion process is logged, and the number of converted components is
-        reported.
+        This method iterates over all components of type `GeometryBranch` within the distribution system
+        and converts them to `MatrixImpedanceBranch` models. The conversion process involves calculating
+        the impedance matrix based on the specified frequency and soil resistivity parameters. The original
+        geometry-based branches are removed from the system and replaced with their matrix impedance counterparts.
+
+        Parameters
+        ----------
+        frequency_hz : float, optional
+            The frequency in hertz used for impedance calculations. Defaults to 60 Hz.
+        soil_resistivity_ohm_m : float, optional
+            The soil resistivity in ohm-meters used for impedance calculations. Defaults to 100 ohm-m.
 
         Notes
         -----
-        - The method temporarily sets `auto_add_composed_components` to True to facilitate the
-        conversion process and restores it to its original state afterward.
-        - The conversion is performed in-place, modifying the existing system.
+        - The method temporarily enables the automatic addition of composed components to ensure that
+        the converted branches are properly integrated into the system.
+        - After conversion, the original `GeometryBranch` components are removed, and the new
+        `MatrixImpedanceBranch` components are added to the system.
+        - This conversion is useful for systems that require matrix impedance representations for
+        detailed electrical analysis.
 
         Logs
         ----
-        - Logs the start of the conversion process.
-        - Logs the number of GeometryBranch models converted to MatrixImpedanceBranch models.
+        - Logs the start and completion of the conversion process, including the number of branches converted.
         """
 
         logger.info("Converting models from GeometryBranch to MatrixImpedanceBranch...")
@@ -692,7 +704,9 @@ class DistributionSystem(System):
         self.auto_add_composed_components = True
         branches = list(self.get_components(GeometryBranch))
         for branch in branches:
-            impedence_branch = branch.to_matrix_representation()
+            impedence_branch = branch.to_matrix_representation(
+                frequency_hz, soil_resistivity_ohm_m
+            )
             self.remove_component(branch, cascade_down=True)
             self.add_component(impedence_branch)
         self.auto_add_composed_components = auto_add

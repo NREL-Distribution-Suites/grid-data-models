@@ -27,7 +27,7 @@ def _replace_value(d, target, new):
             d[k] = new
 
 
-def from__2_0_1__to__2_1_1(data: dict, from_version: str, to_version: str) -> dict:
+def from__2_0_1__to__2_1_2(data: dict, from_version: str, to_version: str) -> dict:
     logger.info(f"Upgrading DistributionSystem from verion {from_version} to {to_version}")
     data["data_format_version"] = str(to_version)
     number_of_components_before = len(data["components"])

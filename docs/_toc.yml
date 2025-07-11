@@ -7,10 +7,10 @@ parts:
   - caption: Installation
     chapters:
     - file: installation
-    - file: new_features
     - file: gdmloader/gdmloader
   - caption: Tutorial
     chapters:
+    - file: new_features
     - file: gdm_intro/data_models
     - file: gdm_intro/units
     - file: gdm_intro/timeseries
