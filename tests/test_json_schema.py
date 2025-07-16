@@ -66,6 +66,15 @@ from gdm.distribution.common import (
     Curve,
 )
 
+from gdm.distribution.market import (
+    DistributionTariff,
+    SeasonalTOURates,
+    TOURatePeriod,
+    DemandCharge,
+    FixedCharge,
+    TieredRate,
+)
+
 CLASSES_TO_CHECK_JSON_SCHEMA = [
     DistributionVoltageSource,
     SequenceImpedanceBranch,
@@ -121,6 +130,12 @@ CLASSES_TO_CHECK_JSON_SCHEMA = [
     VoltageLimitSet,
     ThermalLimitSet,
     Curve,
+    DistributionTariff,
+    SeasonalTOURates,
+    TOURatePeriod,
+    DemandCharge,
+    FixedCharge,
+    TieredRate,
 ]
 
 
