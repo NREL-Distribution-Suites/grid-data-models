@@ -11,7 +11,7 @@ from gdm.distribution.controllers.base.inverter_controller_base import (
     ReactivePowerInverterControllerBase,
     ActivePowerInverterControllerBase,
 )
-from gdm.distribution.market.tarrif import DistributionTariff
+from gdm.distribution.market.tariff import DistributionTariff
 from gdm.quantities import ActivePower, ActivePowerOverTime
 from gdm.distribution.enums import ControllerSupport
 from gdm.distribution.common.curve import Curve

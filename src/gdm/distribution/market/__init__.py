@@ -1,4 +1,4 @@
-from gdm.distribution.market.tarrif import (
+from gdm.distribution.market.tariff import (
     DistributionTariff,
     SeasonalTOURates,
     TOURatePeriod,
