@@ -86,6 +86,13 @@ class ColorLineBy(str, Enum):
     EQUIPMENT_TYPE = "Type"
 
 
+class MapType(str, Enum):
+    """Map type choices for the distribution system plot"""
+    
+    SCATTER_MAP = "Scattermap"
+    SCATTER_GEO = "Scattergeo"
+
+
 class PlotingStyle(str, Enum):
     OPEN_STREET_MAP = "open-street-map"
     CARTO_POSITRON = "carto-positron"

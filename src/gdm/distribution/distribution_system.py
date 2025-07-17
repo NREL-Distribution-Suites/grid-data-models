@@ -21,9 +21,9 @@ import shapely
 from gdm.distribution.components.base.distribution_transformer_base import (
     DistributionTransformerBase,
 )
+from gdm.distribution.enums import ColorNodeBy, ColorLineBy, PlotingStyle, MapType
 from gdm.distribution.enums import Phase
 from gdm.distribution.components import DistributionBus, GeometryBranch
-from gdm.distribution.enums import ColorNodeBy, ColorLineBy, PlotingStyle
 from gdm.distribution.components.base.distribution_branch_base import (
     DistributionBranchBase,
 )
@@ -496,7 +496,9 @@ class DistributionSystem(System):
         color_node_by: ColorNodeBy = ColorNodeBy.PHASE,
         color_line_by: ColorLineBy = ColorLineBy.EQUIPMENT_TYPE,
         show_legend: bool = True,
+        map_type: MapType = MapType.SCATTER_GEO,
         style: PlotingStyle = PlotingStyle.CARTO_POSITRON,
+        zoom_level: int = 11,
         **kwargs,
     ) -> None:
         """Generates an interactive plot of the distribution system using Plotly.
@@ -548,18 +550,28 @@ class DistributionSystem(System):
 
         fig = go.Figure()
 
-        self._add_edge_traces(fig, edges_gdf, color_line_by)
-        self._add_node_traces(fig, nodes_gdf, color_node_by)
+        self._add_edge_traces(fig, edges_gdf, color_line_by, map_type)
+        self._add_node_traces(fig, nodes_gdf, color_node_by, map_type)
 
-        fig.update_layout(
-            # title=f"Flood: {flood_example.name}",
-            map={
-                "style": style.value,
-                "center": {"lon": center.x, "lat": center.y},
-                "zoom": 11,
-            },
-            showlegend=True if show_legend else False,
-        )
+        if map_type == MapType.SCATTER_MAP:
+            fig.update_layout(
+                map={
+                    "style": style.value,
+                    "center": {"lon": center.x, "lat": center.y},
+                    "zoom": zoom_level,
+                },
+                showlegend=True if show_legend else False,
+            )
+        else:
+            fig.update_layout(
+                geo=dict(
+                    center=dict(lat=center.y, lon=center.x),  
+                    projection_scale=zoom_level,  
+                    showland=kwargs.get("showland", True),
+                    landcolor=kwargs.get("landcolor", "lightgray"),
+                ),
+                showlegend=True if show_legend else False,
+            )
 
         if show:
             fig.show()
@@ -573,7 +585,10 @@ class DistributionSystem(System):
             else:
                 raise FileNotFoundError("Provided path does not exist")
 
-    def _add_node_traces(self, fig, nodes_gdf, color_node_by):
+    def _add_node_traces(self, fig, nodes_gdf, color_node_by, map_type: MapType):
+        
+        map_obj = getattr(go, map_type.value)
+
         if color_node_by == ColorNodeBy.DEFAULT:
             options = ["default"]
         else:
@@ -589,7 +604,7 @@ class DistributionSystem(System):
             ]
 
             fig.add_trace(
-                go.Scattermap(
+                map_obj(
                     lon=filt_gdf.geometry.x,
                     lat=filt_gdf.geometry.y,
                     mode="markers",
@@ -601,7 +616,10 @@ class DistributionSystem(System):
                 )
             )
 
-    def _add_edge_traces(self, fig, edges_gdf, color_line_by):
+    def _add_edge_traces(self, fig, edges_gdf, color_line_by, map_type: MapType):
+        
+        map_obj = getattr(go, map_type.value)
+
         if color_line_by == ColorLineBy.DEFAULT:
             edge_options = ["default"]
         else:
@@ -639,7 +657,7 @@ class DistributionSystem(System):
                     types = np.append(types, None)
 
             fig.add_trace(
-                go.Scattermap(
+                map_obj(
                     lon=lons,
                     lat=lats,
                     mode="lines",
