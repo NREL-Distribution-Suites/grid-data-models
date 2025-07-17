@@ -584,6 +584,8 @@ class DistributionSystem(System):
                 raise NotADirectoryError("Provided path is not a directory")
             else:
                 raise FileNotFoundError("Provided path does not exist")
+        
+        return fig
 
     def _add_node_traces(self, fig, nodes_gdf, color_node_by, map_type: MapType):
         
