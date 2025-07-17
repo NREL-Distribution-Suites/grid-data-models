@@ -23,7 +23,7 @@ from gdm.distribution.components.base.distribution_transformer_base import (
 )
 from gdm.distribution.enums import Phase
 from gdm.distribution.components import DistributionBus, GeometryBranch
-from gdm.distribution.enums import ColorNodeBy, ColorLineBy
+from gdm.distribution.enums import ColorNodeBy, ColorLineBy, PlotingStyle
 from gdm.distribution.components.base.distribution_branch_base import (
     DistributionBranchBase,
 )
@@ -372,8 +372,8 @@ class DistributionSystem(System):
                 edge_data["Name"].append(data["name"])
                 edge_data["Length"].append(length)
                 edge_data["Type"].append(data["type"].__name__)
-                edge_data["Latitude"].append([bus1.coordinate.y, bus2.coordinate.y])
-                edge_data["Longitude"].append([x1, x2])
+                edge_data["Latitude"].append([x1, x2])
+                edge_data["Longitude"].append([bus1.coordinate.y, bus2.coordinate.y])
 
         edge_df = pd.DataFrame(edge_data)
         geometry = [
@@ -404,8 +404,8 @@ class DistributionSystem(System):
                 node_data["Type"].append(DistributionBus.__name__)
                 node_data["kV"].append(bus.rated_voltage.to("kilovolt").magnitude)
                 node_data["Phases"].append(",".join([phs.value for phs in bus.phases]))
-                node_data["Latitude"].append(bus.coordinate.y)
-                node_data["Longitude"].append(bus.coordinate.x)
+                node_data["Latitude"].append(bus.coordinate.x)
+                node_data["Longitude"].append(bus.coordinate.y)
                 system_crs = bus.coordinate.crs
 
         nodes_df = pd.DataFrame(node_data)
@@ -492,11 +492,11 @@ class DistributionSystem(System):
     def plot(
         self,
         export_path: Path | None = None,
-        zoom_level: int = 24,
         show: bool = True,
         color_node_by: ColorNodeBy = ColorNodeBy.PHASE,
         color_line_by: ColorLineBy = ColorLineBy.EQUIPMENT_TYPE,
         show_legend: bool = True,
+        style: PlotingStyle = PlotingStyle.CARTO_POSITRON,
         **kwargs,
     ) -> None:
         """Generates an interactive plot of the distribution system using Plotly.
@@ -543,30 +543,23 @@ class DistributionSystem(System):
         system_gdf = self.to_gdf()
 
         nodes_gdf = system_gdf[system_gdf.Type == "DistributionBus"].copy()
-        nodes_gdf["lon"] = nodes_gdf.geometry.y
-        nodes_gdf["lat"] = nodes_gdf.geometry.x
-
         edges_gdf = system_gdf[system_gdf.Type != "DistributionBus"].copy()
         center = union_all(nodes_gdf.geometry).centroid
 
         fig = go.Figure()
 
-        self._add_node_traces(fig, nodes_gdf, color_node_by)
         self._add_edge_traces(fig, edges_gdf, color_line_by)
+        self._add_node_traces(fig, nodes_gdf, color_node_by)
 
         fig.update_layout(
-            # title=f"GDM plot for {self.name} distribution system",
-            geo=dict(
-                center=dict(lat=center.x, lon=center.y),  # Set center
-                projection_scale=zoom_level,  # Adjust zoom (lower value = more zoomed-in)
-                showland=kwargs.get("showland", True),
-                landcolor=kwargs.get("landcolor", "lightgray"),
-            ),
-            legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
+            # title=f"Flood: {flood_example.name}",
+            map={
+                "style": style.value,
+                "center": {"lon": center.x, "lat": center.y},
+                "zoom": 11,
+            },
+            showlegend=True if show_legend else False,
         )
-
-        if not show_legend:
-            fig.update_layout(showlegend=False)
 
         if show:
             fig.show()
@@ -591,17 +584,22 @@ class DistributionSystem(System):
             else:
                 filt_gdf = nodes_gdf[nodes_gdf[color_node_by.value] == option]
             text = [
-                f"Name: {n} \nType: {t} \nPhases: {p} \nkV: {v}"
+                f"<br> <b>Name:</b> {n} <br> <b>Type:</b> {t} <br> <b>Phases:</b> {p} <br> <b>kV:</b> {v}"
                 for n, t, p, v in zip(filt_gdf.Name, filt_gdf.Type, filt_gdf.Phases, filt_gdf.kV)
             ]
+
+            print(filt_gdf)
+
             fig.add_trace(
-                go.Scattergeo(
-                    lon=filt_gdf.geometry.y,
-                    lat=filt_gdf.geometry.x,
+                go.Scattermap(
+                    lon=filt_gdf.geometry.x,
+                    lat=filt_gdf.geometry.y,
                     mode="markers",
-                    hoverinfo=["lon", "lat", "text", "name"],
+                    hovertext=text,
                     text=text,
                     name=f"Nodes - {color_node_by.value} - {option}",
+                    textfont=dict(size=12, color="black"),
+                    textposition="top center",
                 )
             )
 
@@ -633,14 +631,17 @@ class DistributionSystem(System):
                     lats = np.append(lats, y)
                     lons = np.append(lons, x)
                     types = np.append(types, [model_type] * len(y))
-                    names = np.append(names, [f"Name: {name}, Type: {model_type}"] * len(y))
+                    names = np.append(
+                        names,
+                        [f"<br> <b>Name:</b> {name} <br> <b>Type:</b> {model_type}"] * len(y),
+                    )
                     lats = np.append(lats, None)
                     lons = np.append(lons, None)
                     names = np.append(names, None)
                     types = np.append(types, None)
 
             fig.add_trace(
-                go.Scattergeo(
+                go.Scattermap(
                     lon=lons,
                     lat=lats,
                     mode="lines",
