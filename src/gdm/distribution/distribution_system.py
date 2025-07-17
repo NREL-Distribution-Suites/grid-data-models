@@ -588,8 +588,6 @@ class DistributionSystem(System):
                 for n, t, p, v in zip(filt_gdf.Name, filt_gdf.Type, filt_gdf.Phases, filt_gdf.kV)
             ]
 
-            print(filt_gdf)
-
             fig.add_trace(
                 go.Scattermap(
                     lon=filt_gdf.geometry.x,
