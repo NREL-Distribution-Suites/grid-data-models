@@ -565,8 +565,8 @@ class DistributionSystem(System):
         else:
             fig.update_layout(
                 geo=dict(
-                    center=dict(lat=center.y, lon=center.x),  
-                    projection_scale=zoom_level,  
+                    center=dict(lat=center.y, lon=center.x),
+                    projection_scale=zoom_level,
                     showland=kwargs.get("showland", True),
                     landcolor=kwargs.get("landcolor", "lightgray"),
                 ),
@@ -584,11 +584,10 @@ class DistributionSystem(System):
                 raise NotADirectoryError("Provided path is not a directory")
             else:
                 raise FileNotFoundError("Provided path does not exist")
-        
+
         return fig
 
     def _add_node_traces(self, fig, nodes_gdf, color_node_by, map_type: MapType):
-        
         map_obj = getattr(go, map_type.value)
 
         if color_node_by == ColorNodeBy.DEFAULT:
@@ -619,7 +618,6 @@ class DistributionSystem(System):
             )
 
     def _add_edge_traces(self, fig, edges_gdf, color_line_by, map_type: MapType):
-        
         map_obj = getattr(go, map_type.value)
 
         if color_line_by == ColorLineBy.DEFAULT:
