@@ -86,6 +86,13 @@ class ColorLineBy(str, Enum):
     EQUIPMENT_TYPE = "Type"
 
 
+class PlotingStyle(str, Enum):
+    OPEN_STREET_MAP = "open-street-map"
+    CARTO_POSITRON = "carto-positron"
+    CARTO_DARKMATTER = "carto-darkmatter"
+    WHITE_BG = "white-bg"
+
+
 class WireInsulationType(Enum):
     AIR = 1.0  # Air insulation
     PVC = 3.18  # Polyvinyl Chloride
@@ -96,3 +103,27 @@ class WireInsulationType(Enum):
     SILICONE_RUBBER = 3.5  # Silicone Rubber
     PAPER = 3.7  # Oil-impregnated paper
     MICA = 6.0  # Mica-based insulation
+
+
+class TOUPeriodType(str, Enum):
+    PEAK = "peak"
+    OFF_PEAK = "off_peak"
+    MID_PEAK = "mid_peak"
+
+
+class Season(str, Enum):
+    SUMMER = "summer"
+    WINTER = "winter"
+    SHOULDER = "shoulder"
+
+
+class CustomerClass(str, Enum):
+    RESIDENTIAL = "residential"
+    COMMERCIAL = "commercial"
+    INDUSTRIAL = "industrial"
+
+
+class BillingDemandBasis(str, Enum):
+    PEAK_15MIN = "peak_15min"
+    PEAK_HOUR = "peak_hour"
+    CONTRACT_DEMAND = "contract_demand"

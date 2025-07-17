@@ -4,6 +4,7 @@ from pydantic import BaseModel, model_validator
 from semver import Version
 
 from gdm.distribution.upgrade_handler.from__2_0_1__to__2_1_2 import from__2_0_1__to__2_1_2
+from gdm.distribution.upgrade_handler.from__2_1_2__to__2_1_3 import from__2_1_2__to__2_1_3
 
 
 class SemanticVersion(Version):
@@ -39,6 +40,11 @@ class UpgradeHandler(BaseModel):
             method=from__2_0_1__to__2_1_2,
             from_version="2.0.1",
             to_version="2.1.2",
+        ),
+        UpgradeSchema(
+            method=from__2_1_2__to__2_1_3,
+            from_version="2.1.2",
+            to_version="2.1.3",
         ),
     ]
 

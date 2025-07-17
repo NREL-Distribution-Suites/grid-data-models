@@ -68,6 +68,14 @@ from gdm.distribution.common import (
     Curve,
 )
 
+from gdm.distribution.market import (
+    DistributionTariff,
+    SeasonalTOURates,
+    TOURatePeriod,
+    DemandCharge,
+    FixedCharge,
+    TieredRate,
+)
 
 DIST_INTERFACES = [
     DistributionVoltageSource,
@@ -124,6 +132,12 @@ DIST_INTERFACES = [
     VoltageLimitSet,
     ThermalLimitSet,
     Curve,
+    DistributionTariff,
+    SeasonalTOURates,
+    TOURatePeriod,
+    DemandCharge,
+    FixedCharge,
+    TieredRate,
 ]
 
 

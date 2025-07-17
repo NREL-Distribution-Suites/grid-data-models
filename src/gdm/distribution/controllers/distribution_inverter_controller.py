@@ -11,8 +11,9 @@ from gdm.distribution.controllers.base.inverter_controller_base import (
     ReactivePowerInverterControllerBase,
     ActivePowerInverterControllerBase,
 )
-from gdm.distribution.enums import ControllerSupport
+from gdm.distribution.market.tariff import DistributionTariff
 from gdm.quantities import ActivePower, ActivePowerOverTime
+from gdm.distribution.enums import ControllerSupport
 from gdm.distribution.common.curve import Curve
 
 
@@ -208,7 +209,7 @@ class TimeOfUseControlSetting(ActivePowerInverterControllerBase):
     """
 
     supported_by: Literal[ControllerSupport.BATTERY_ONLY] = ControllerSupport.BATTERY_ONLY
-    tarriff: ...
+    tarriff: DistributionTariff
     charging_power: Annotated[
         ActivePower, Field(..., description="The power to charge the battery after TOU window.")
     ]
@@ -216,7 +217,10 @@ class TimeOfUseControlSetting(ActivePowerInverterControllerBase):
     @classmethod
     def example(cls) -> "TimeOfUseControlSetting":
         "Example of a battery time of use controller"
-        return TimeOfUseControlSetting(charging_power=ActivePower(1000, "watt"), tarriff=...)
+        return TimeOfUseControlSetting(
+            charging_power=ActivePower(1000, "watt"),
+            tarriff=DistributionTariff.example(),
+        )
 
 
 class DemandChargeControlSetting(ActivePowerInverterControllerBase):
@@ -227,7 +231,7 @@ class DemandChargeControlSetting(ActivePowerInverterControllerBase):
     """
 
     supported_by: Literal[ControllerSupport.BATTERY_ONLY] = ControllerSupport.BATTERY_ONLY
-    tarriff: ...
+    tarriff: DistributionTariff
     charging_power: Annotated[
         ActivePower,
         Field(..., description="The power to charge the battery after demand change window."),
@@ -236,7 +240,10 @@ class DemandChargeControlSetting(ActivePowerInverterControllerBase):
     @classmethod
     def example(cls) -> "DemandChargeControlSetting":
         "Example of a battery demand charge controller"
-        return DemandChargeControlSetting(charging_power=ActivePower(1000, "watt"), tarriff=...)
+        return DemandChargeControlSetting(
+            charging_power=ActivePower(1000, "watt"),
+            tarriff=DistributionTariff.example(),
+        )
 
 
 class InverterController(Component):
