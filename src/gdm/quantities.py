@@ -3,7 +3,6 @@
 # pylint:disable=unused-argument
 # pylint:disable=super-init-not-called
 
-
 from infrasys.base_quantity import BaseQuantity, ureg
 from infrasys.quantities import Resistance, Current, Distance, Voltage, ActivePower  # noqa
 
