@@ -1,5 +1,5 @@
 ---
-title: 'Grid-Data-Models (GDM): Standardized, Unit-Aware Data Models for Distribution System Modeling and Interoperability.'
+title: 'Grid-Data-Models (GDM): Standardized, Unit-Aware Data Models for Distribution System Modeling and Interoperability'
 tags:
   - python
   - power distribution systems
@@ -24,7 +24,10 @@ authors:
     affiliation: 1
   - name: Daniel Thom
     affiliation: 1
+  - name: Abodh Poudyal
+    affiliation: 1
 
+ 
 affiliations:
  - name: National Renewable Energy Laboratory (NREL), Golden, CO, USA
    index: 1
