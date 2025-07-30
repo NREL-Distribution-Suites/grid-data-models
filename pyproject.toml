@@ -38,7 +38,7 @@ doc = [
   "sphinx",
   "pydata-sphinx-theme",
   "myst-parser",
-  "autodoc_pydantic[erdantic]",
+  "autodoc_pydantic",
   "sphinxcontrib-mermaid",
 ]
 

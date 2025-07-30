@@ -7,7 +7,8 @@ from pathlib import Path
 import tempfile
 
 from infrasys.time_series_models import TimeSeriesData, SingleTimeSeries
-from shapely import Point, LineString, union_all
+from shapely.geometry import Point, LineString
+from shapely.set_operations import union_all
 from infrasys import Component, System
 from pydantic import BaseModel, Field
 import plotly.graph_objects as go
