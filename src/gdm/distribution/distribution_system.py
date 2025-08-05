@@ -24,6 +24,9 @@ from gdm.distribution.components.base.distribution_transformer_base import (
 from gdm.distribution.enums import ColorNodeBy, ColorLineBy, PlotingStyle, MapType
 from gdm.distribution.enums import Phase
 from gdm.distribution.components import DistributionBus, GeometryBranch
+from gdm.distribution.components.base.distribution_switch_base import (
+    DistributionSwitchBase,
+)
 from gdm.distribution.components.base.distribution_branch_base import (
     DistributionBranchBase,
 )
@@ -196,10 +199,18 @@ class DistributionSystem(System):
         ) + list(self.get_components(DistributionTransformerBase))
 
         for edge in edges:
+            data = {
+                "name": edge.name,
+                "type": edge.__class__,
+                "is_closed": True,
+                "in_service": edge.in_service,
+            }
+            if isinstance(edge, DistributionSwitchBase):
+                data["is_closed"] = True if len(edge.is_closed) == sum(edge.is_closed) else False
             graph.add_edge(
                 edge.buses[0].name,
                 edge.buses[1].name,
-                **{"name": edge.name, "type": edge.__class__},
+                **data,
             )
         return graph
 
@@ -272,7 +283,7 @@ class DistributionSystem(System):
 
         return subtree_system
 
-    def get_directed_graph(self) -> nx.DiGraph:
+    def get_directed_graph(self, return_radial_network: bool = True) -> nx.DiGraph:
         """Constructs a directed graph representation of the distribution system.
 
         This method generates a directed graph using NetworkX, where nodes represent distribution
@@ -292,9 +303,37 @@ class DistributionSystem(System):
         - The directed graph is useful for analyzing the flow of electricity and identifying
         subsystems within the distribution network.
         """
-        logger.info(f"Building directed graph for {self.name}")
         ugraph = self.get_undirected_graph()
-        return nx.dfs_tree(ugraph, source=self.get_source_bus().name)
+        logger.info(f"Creating directed graph with source bus -> {self.get_source_bus().name}")
+        pruned_edges_tuples = [
+            (u, v, d) for u, v, d in ugraph.edges(data=True) if not d.get("is_closed")
+        ]
+
+        for u, v, _ in pruned_edges_tuples:
+            ugraph.remove_edge(u, v)
+            logger.info(f"  An open switch edge ({u}, {v}) has been removed.")
+
+        dfs_tree: nx.DiGraph = nx.dfs_tree(ugraph, source=self.get_source_bus().name)
+        dfs_edge_names = [ugraph.get_edge_data(u, v)["name"] for u, v in dfs_tree.edges]
+        ug_edge_names = [data["name"] for _, _, data in ugraph.edges(data=True)]
+        pruned_edges = set(ug_edge_names) - set(dfs_edge_names)
+
+        if return_radial_network:
+            for edge in pruned_edges:
+                logger.warning(
+                    f"Edge {edge} is not an open switch, but has been pruned from DFS tree."
+                )
+            return dfs_tree
+
+        pruned_edges_tuples.extend(
+            [
+                (u, v, data)
+                for u, v, data in ugraph.edges(data=True)
+                if data["name"] in pruned_edges
+            ]
+        )
+        dfs_tree.add_edges_from(pruned_edges_tuples)
+        return dfs_tree
 
     def get_split_phase_mapping(self) -> dict[str, set[Phase]]:
         """Generates a mapping of components to their split-phase configurations.
@@ -499,6 +538,7 @@ class DistributionSystem(System):
         map_type: MapType = MapType.SCATTER_GEO,
         style: PlotingStyle = PlotingStyle.CARTO_POSITRON,
         zoom_level: int = 11,
+        flip_coordinates: bool = False,
         **kwargs,
     ) -> None:
         """Generates an interactive plot of the distribution system using Plotly.
@@ -550,8 +590,8 @@ class DistributionSystem(System):
 
         fig = go.Figure()
 
-        self._add_edge_traces(fig, edges_gdf, color_line_by, map_type)
-        self._add_node_traces(fig, nodes_gdf, color_node_by, map_type)
+        self._add_edge_traces(fig, edges_gdf, color_line_by, map_type, flip_coordinates)
+        self._add_node_traces(fig, nodes_gdf, color_node_by, map_type, flip_coordinates)
 
         if map_type == MapType.SCATTER_MAP:
             fig.update_layout(
@@ -587,7 +627,9 @@ class DistributionSystem(System):
 
         return fig
 
-    def _add_node_traces(self, fig, nodes_gdf, color_node_by, map_type: MapType):
+    def _add_node_traces(
+        self, fig, nodes_gdf, color_node_by, map_type: MapType, flip_coordinates: bool
+    ):
         map_obj = getattr(go, map_type.value)
 
         if color_node_by == ColorNodeBy.DEFAULT:
@@ -604,10 +646,17 @@ class DistributionSystem(System):
                 for n, t, p, v in zip(filt_gdf.Name, filt_gdf.Type, filt_gdf.Phases, filt_gdf.kV)
             ]
 
+            if not flip_coordinates:
+                lon = filt_gdf.geometry.y
+                lat = filt_gdf.geometry.x
+            else:
+                lon = filt_gdf.geometry.x
+                lat = filt_gdf.geometry.y
+
             fig.add_trace(
                 map_obj(
-                    lon=filt_gdf.geometry.x,
-                    lat=filt_gdf.geometry.y,
+                    lon=lon,
+                    lat=lat,
                     mode="markers",
                     hovertext=text,
                     text=text,
@@ -617,7 +666,9 @@ class DistributionSystem(System):
                 )
             )
 
-    def _add_edge_traces(self, fig, edges_gdf, color_line_by, map_type: MapType):
+    def _add_edge_traces(
+        self, fig, edges_gdf, color_line_by, map_type: MapType, flip_coordinates: bool
+    ):
         map_obj = getattr(go, map_type.value)
 
         if color_line_by == ColorLineBy.DEFAULT:
@@ -643,7 +694,10 @@ class DistributionSystem(System):
                 else:
                     continue
                 for linestring in linestrings:
-                    x, y = linestring.xy
+                    if not flip_coordinates:
+                        y, x = linestring.xy
+                    else:
+                        x, y = linestring.xy
                     lats = np.append(lats, y)
                     lons = np.append(lons, x)
                     types = np.append(types, [model_type] * len(y))

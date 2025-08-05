@@ -90,6 +90,16 @@ def test_system_plotting(distribution_system_with_single_timeseries, tmp_path):
     export_path = tmp_path / "test_model_5_plot.html"
     assert export_path.exists()
 
+    model.name = "test_model_6"
+    model.plot(tmp_path, show=False, flip_coordinates=True)
+    export_path = tmp_path / "test_model_6_plot.html"
+    assert export_path.exists()
+
+    model.name = "test_model_7"
+    model.plot(tmp_path, show=False, flip_coordinates=False)
+    export_path = tmp_path / "test_model_7_plot.html"
+    assert export_path.exists()
+
     with pytest.raises(NotADirectoryError):
         model.plot(tmp_path / "test_model_plot.html", zoom_level=1, show=False)
 
