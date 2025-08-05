@@ -283,7 +283,7 @@ class DistributionSystem(System):
 
         return subtree_system
 
-    def get_directed_graph(self) -> nx.DiGraph:
+    def get_directed_graph(self, return_radial_network: bool = True) -> nx.DiGraph:
         """Constructs a directed graph representation of the distribution system.
 
         This method generates a directed graph using NetworkX, where nodes represent distribution
@@ -303,9 +303,37 @@ class DistributionSystem(System):
         - The directed graph is useful for analyzing the flow of electricity and identifying
         subsystems within the distribution network.
         """
-        logger.info(f"Building directed graph for {self.name}")
         ugraph = self.get_undirected_graph()
-        return nx.dfs_tree(ugraph, source=self.get_source_bus().name)
+        logger.info(f"Creating directed graph with source bus -> {self.get_source_bus().name}")
+        pruned_edges_tuples = [
+            (u, v, d) for u, v, d in ugraph.edges(data=True) if not d.get("is_closed")
+        ]
+
+        for u, v, _ in pruned_edges_tuples:
+            ugraph.remove_edge(u, v)
+            logger.info(f"  An open switch edge ({u}, {v}) has been removed.")
+
+        dfs_tree: nx.DiGraph = nx.dfs_tree(ugraph, source=self.get_source_bus().name)
+        dfs_edge_names = [ugraph.get_edge_data(u, v)["name"] for u, v in dfs_tree.edges]
+        ug_edge_names = [data["name"] for _, _, data in ugraph.edges(data=True)]
+        pruned_edges = set(ug_edge_names) - set(dfs_edge_names)
+
+        if return_radial_network:
+            for edge in pruned_edges:
+                logger.warning(
+                    f"Edge {edge} is not an open switch, but has been pruned from DFS tree."
+                )
+            return dfs_tree
+
+        pruned_edges_tuples.extend(
+            [
+                (u, v, data)
+                for u, v, data in ugraph.edges(data=True)
+                if data["name"] in pruned_edges
+            ]
+        )
+        dfs_tree.add_edges_from(pruned_edges_tuples)
+        return dfs_tree
 
     def get_split_phase_mapping(self) -> dict[str, set[Phase]]:
         """Generates a mapping of components to their split-phase configurations.
