@@ -5,6 +5,7 @@ from semver import Version
 
 from gdm.distribution.upgrade_handler.from__2_0_1__to__2_1_2 import from__2_0_1__to__2_1_2
 from gdm.distribution.upgrade_handler.from__2_1_2__to__2_1_3 import from__2_1_2__to__2_1_3
+from gdm.distribution.upgrade_handler.from__2_1_3__to__2_1_4 import from__2_1_3__to__2_1_4
 
 
 class SemanticVersion(Version):
@@ -45,6 +46,11 @@ class UpgradeHandler(BaseModel):
             method=from__2_1_2__to__2_1_3,
             from_version="2.1.2",
             to_version="2.1.3",
+        ),
+        UpgradeSchema(
+            method=from__2_1_3__to__2_1_4,
+            from_version="2.1.3",
+            to_version="2.1.4",
         ),
     ]
 

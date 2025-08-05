@@ -24,6 +24,9 @@ from gdm.distribution.components.base.distribution_transformer_base import (
 from gdm.distribution.enums import ColorNodeBy, ColorLineBy, PlotingStyle, MapType
 from gdm.distribution.enums import Phase
 from gdm.distribution.components import DistributionBus, GeometryBranch
+from gdm.distribution.components.base.distribution_switch_base import (
+    DistributionSwitchBase,
+)
 from gdm.distribution.components.base.distribution_branch_base import (
     DistributionBranchBase,
 )
@@ -196,10 +199,18 @@ class DistributionSystem(System):
         ) + list(self.get_components(DistributionTransformerBase))
 
         for edge in edges:
+            data = {
+                "name": edge.name,
+                "type": edge.__class__,
+                "is_closed": True,
+                "in_service": edge.in_service,
+            }
+            if isinstance(edge, DistributionSwitchBase):
+                data["is_closed"] = True if len(edge.is_closed) == sum(edge.is_closed) else False
             graph.add_edge(
                 edge.buses[0].name,
                 edge.buses[1].name,
-                **{"name": edge.name, "type": edge.__class__},
+                **data,
             )
         return graph
 
@@ -499,6 +510,7 @@ class DistributionSystem(System):
         map_type: MapType = MapType.SCATTER_GEO,
         style: PlotingStyle = PlotingStyle.CARTO_POSITRON,
         zoom_level: int = 11,
+        flip_coordinates: bool = False,
         **kwargs,
     ) -> None:
         """Generates an interactive plot of the distribution system using Plotly.
@@ -550,8 +562,8 @@ class DistributionSystem(System):
 
         fig = go.Figure()
 
-        self._add_edge_traces(fig, edges_gdf, color_line_by, map_type)
-        self._add_node_traces(fig, nodes_gdf, color_node_by, map_type)
+        self._add_edge_traces(fig, edges_gdf, color_line_by, map_type, flip_coordinates)
+        self._add_node_traces(fig, nodes_gdf, color_node_by, map_type, flip_coordinates)
 
         if map_type == MapType.SCATTER_MAP:
             fig.update_layout(
@@ -587,7 +599,9 @@ class DistributionSystem(System):
 
         return fig
 
-    def _add_node_traces(self, fig, nodes_gdf, color_node_by, map_type: MapType):
+    def _add_node_traces(
+        self, fig, nodes_gdf, color_node_by, map_type: MapType, flip_coordinates: bool
+    ):
         map_obj = getattr(go, map_type.value)
 
         if color_node_by == ColorNodeBy.DEFAULT:
@@ -604,10 +618,17 @@ class DistributionSystem(System):
                 for n, t, p, v in zip(filt_gdf.Name, filt_gdf.Type, filt_gdf.Phases, filt_gdf.kV)
             ]
 
+            if not flip_coordinates:
+                lon = filt_gdf.geometry.y
+                lat = filt_gdf.geometry.x
+            else:
+                lon = filt_gdf.geometry.x
+                lat = filt_gdf.geometry.y
+
             fig.add_trace(
                 map_obj(
-                    lon=filt_gdf.geometry.x,
-                    lat=filt_gdf.geometry.y,
+                    lon=lon,
+                    lat=lat,
                     mode="markers",
                     hovertext=text,
                     text=text,
@@ -617,7 +638,9 @@ class DistributionSystem(System):
                 )
             )
 
-    def _add_edge_traces(self, fig, edges_gdf, color_line_by, map_type: MapType):
+    def _add_edge_traces(
+        self, fig, edges_gdf, color_line_by, map_type: MapType, flip_coordinates: bool
+    ):
         map_obj = getattr(go, map_type.value)
 
         if color_line_by == ColorLineBy.DEFAULT:
@@ -643,7 +666,10 @@ class DistributionSystem(System):
                 else:
                     continue
                 for linestring in linestrings:
-                    x, y = linestring.xy
+                    if not flip_coordinates:
+                        y, x = linestring.xy
+                    else:
+                        x, y = linestring.xy
                     lats = np.append(lats, y)
                     lons = np.append(lons, x)
                     types = np.append(types, [model_type] * len(y))
