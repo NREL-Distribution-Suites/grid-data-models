@@ -7,14 +7,22 @@ from abc import ABC
 from infrasys.quantities import Voltage
 from pydantic import Field, model_validator
 
-from gdm.distribution.enums import Phase, VoltageTypes
-from gdm.distribution.components.distribution_bus import DistributionBus
-from gdm.distribution.components.base.distribution_component_base import (
-    InServiceDistributionComponentBase,
-)
 from gdm.distribution.equipment.distribution_transformer_equipment import (
     DistributionTransformerEquipment,
 )
+from gdm.distribution.components.base.distribution_component_base import (
+    InServiceDistributionComponentBase,
+)
+from gdm.distribution.components.distribution_bus import DistributionBus
+from gdm.distribution.enums import Phase, VoltageTypes, ConnectionType
+from gdm.quantities import Impedance
+
+conn_multipliers = {
+    (ConnectionType.DELTA, ConnectionType.STAR): (1 / 3, 1.732),
+    (ConnectionType.STAR, ConnectionType.STAR): (1, 1),
+    (ConnectionType.DELTA, ConnectionType.DELTA): (1, 1),
+    (ConnectionType.STAR, ConnectionType.DELTA): (1 / 3, 1),
+}
 
 
 def get_phase_voltage_in_kv(
@@ -66,6 +74,22 @@ class DistributionTransformerBase(InServiceDistributionComponentBase, ABC):
                 raise ValueError(
                     "Center tapped transformer must have same bus on the secondary side (bus 2 and 3)."
                 )
+
+    def get_sc_impedance(self) -> Impedance:
+        """Get admittance matrix for the transformer."""
+        tr_phases = self.winding_phases[0]
+        n_phases = len(tr_phases)
+
+        conns = tuple([wdg.connection_type for wdg in self.equipment.windings])
+        v2 = self.equipment.windings[1].rated_voltage.to("volts").magnitude
+        s = self.equipment.windings[0].rated_power.to("watt").magnitude
+
+        a1, a2 = conn_multipliers[conns]
+        z_sc = (
+            sum(wdg.resistance for wdg in self.equipment.windings) / 100.0
+            + 1j * self.equipment.winding_reactances[0] * a1 / 100.0
+        )
+        return Impedance(z_sc * v2**2 / s * n_phases * a2, "ohm")
 
     @model_validator(mode="after")
     def validate_fields_base(self) -> "DistributionTransformerBase":

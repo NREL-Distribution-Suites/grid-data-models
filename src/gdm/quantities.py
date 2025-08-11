@@ -84,3 +84,21 @@ class Irradiance(BaseQuantity):
     """Quantity representing irradiance in kilowatt per meter**2"""
 
     __base_unit__ = "kilowatt/meter**2"
+
+
+class Admittance(BaseQuantity):
+    """Quantity representing admittance in siemens."""
+
+    __base_unit__ = "siemens"
+
+
+class Frequency(BaseQuantity):
+    """Quantity representing frequency in hertz."""
+
+    __base_unit__ = "hertz"
+
+
+class Impedance(BaseQuantity):
+    """Quantity representing impedance in ohms."""
+
+    __base_unit__ = "ohm"
