@@ -8,4 +8,4 @@ class DistributionFeeder(Component):
 
     @classmethod
     def example(cls) -> "DistributionFeeder":
-        return DistributionFeeder(name="Test Feeder")
+        return DistributionFeeder(name="test_feeder")

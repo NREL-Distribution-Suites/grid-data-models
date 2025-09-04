@@ -1,3 +1,7 @@
+
+
+[![Upload to PyPi](https://github.com/NREL-Distribution-Suites/grid-data-models/actions/workflows/publish_to_pypi.yml/badge.svg)](https://github.com/NREL-Distribution-Suites/grid-data-models/actions/workflows/publish_to_pypi.yml) •  [![Pytest](https://github.com/NREL-Distribution-Suites/grid-data-models/actions/workflows/pull_request_tests.yml/badge.svg)](https://github.com/NREL-Distribution-Suites/grid-data-models/actions/workflows/pull_request_tests.yml) •  [![deploy-book](https://github.com/NREL-Distribution-Suites/grid-data-models/actions/workflows/deploy.yml/badge.svg)](https://github.com/NREL-Distribution-Suites/grid-data-models/actions/workflows/deploy.yml) • ![PyPI - Downloads](https://img.shields.io/pypi/dm/grid-data-models) •  [![codecov](https://codecov.io/github/NREL-Distribution-Suites/grid-data-models/branch/main/graph/badge.svg?token=K0X11EXOX8)](https://codecov.io/github/NREL-Distribution-Suites/grid-data-models) •  [![CodeFactor](https://www.codefactor.io/repository/github/nrel-distribution-suites/grid-data-models/badge)](https://www.codefactor.io/repository/github/nrel-distribution-suites/grid-data-models)
+
 # Grid Data Models (GDM)
 
 GDM is a python package containing data models for power system assets and datasets. This package is actively being developed at [National Renewable Energy Laboratory (NREL)](https://www.nrel.gov/).

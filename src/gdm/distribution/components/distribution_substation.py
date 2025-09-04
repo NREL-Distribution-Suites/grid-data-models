@@ -18,6 +18,6 @@ class DistributionSubstation(Component):
     @classmethod
     def example(cls) -> "DistributionSubstation":
         return DistributionSubstation(
-            name="Test Substation",
+            name="test_substation",
             feeders=[DistributionFeeder.example()],
         )
