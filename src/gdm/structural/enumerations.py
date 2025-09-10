@@ -254,6 +254,13 @@ class MountingTypesLV(StrEnum):
     INDOOR = "Indoor"
 
 class MountingTypesFuses(StrEnum):
+    POLE = "Pole-Mounted" # MV cutouts, expulsion fuses on distribution poles
+    PANEL = "Panel-Mounted" # LV cartridge fuses in control panels or switchboards
+    SWITCHGEAR = "Switchgear-Mounted" # Ampgard or other cubicles for MV fuses
+    DIN = "DIN Rail" # smaller cartridge fuses for LV protection
+    INDOOR = "Indoor"
+
+class FuseTypes(StrEnum):
     INLINE = "Inline"
     EXPULSION = "Expulsion"
     CUTOUT = "Cutout"
@@ -295,6 +302,16 @@ class FuseTimeCurrentCharacteristic(StrEnum):
     TIME_DELAY = "Time Delay"
     VERY_FAST_ACTING = "Very Fast Acting"
     ULTRA_FAST_ACTING = "Ultra Fast Acting"
+
+class FuseClasses(StrEnum):
+    CLASS_CC = "Class CC"   # (midget)
+    CLASS_J = "Class J"
+    CLASS_H = "Class H"
+    CLASS_K5 = "Class K5"
+    CLASS_L = "Class L"
+    CLASS_T = "Class T"
+    RK1 = "RK1"         # R subclass, offers advanced current limitations and short-circuit protection
+    RK5 = "RK5"         # R subclass, less limiting than RK1
 
 class UnitCostCategory(StrEnum):
     CATEGORY_1 = "12/16kV 480 volt transformer - includes 100' Sec. cable length"
