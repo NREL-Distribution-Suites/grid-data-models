@@ -1,26 +1,18 @@
 from typing import Literal, Annotated, Optional
-from pydantic import BaseModel, Field, field_validator
+from pydantic import Field, field_validator
+from infrasys import Component
+from gdm.structural.base_classes import BaseEquipment, BaseDimension
 
 from gdm.structural.enumerations import (
     EquipmentType,
-    DimensionLengthUnits,
-    MountingTypesFuses,
+    MountingTypesLVFuses,
+    MountingTypesMVFuses,
     HousingMaterial,
     FuseTimeCurrentCharacteristic,
     FuseClasses,
     FuseTypes,
     NEMARating
     )
-
-class BaseDimension(BaseModel):
-    dimension_length : Annotated[float, Field(description="The dimension of the equipment. Can be length, width or height")]
-    units: Annotated[DimensionLengthUnits, Field(description="unit for the dimension length")]
-
-class BaseEquipment(BaseModel):
-    equipment_id: Annotated[str, Field(min_length=10, max_length=40, description="Equipment identifier.")]
-    equipment_type: Annotated[EquipmentType, Field(description="Equipment type")]
-    weight_in_pounds: Annotated[float, Field(description="The weight of the equipment in pounds")]
-    unit_cost_in_usd: Annotated[float, Field(description="The cost of the equipment in USD")]
 
 # Voltage and interrupting rating limitations for LV fuses based on fuse class
 FuseClass_Limitations = {
@@ -34,7 +26,7 @@ FuseClass_Limitations = {
     FuseClasses.RK5: {"voltage": [0.25, 0.6], "interrupting_kA": [200], "current_limiting": True},
 }
 
-class FuseLV(BaseEquipment):
+class Fuse(BaseEquipment):
     equipment_type: Annotated[Literal[EquipmentType.FUSE], Field(description="Equipment type") ] = EquipmentType.FUSE
     fuse_type: Annotated[FuseTypes | None, Field(description="Type of the fuse (e.g., Expulsion, Cutout, Cartridge, etc.)")]
     current_limiting: Annotated[bool | None, Field(description="Indicates if the fuse is current limiting")]
@@ -44,7 +36,8 @@ class FuseLV(BaseEquipment):
     time_current_characteristic: Annotated[FuseTimeCurrentCharacteristic | None, Field(description="Time-current characteristic of the fuse")]
     fuse_class: Annotated[Optional[FuseClasses] | None, Field(description="Fuse class of LV (e.g., Class H, Class K, Class T, etc.)")]
     number_of_poles: Annotated[int | None, Field(description="Number of poles of the fuse (e.g., 1, 2, 3)")]
-    mounting_type: Annotated[MountingTypesFuses | None, Field(description="Mounting type of the fuse")]
+    mounting_type_LV: Annotated[MountingTypesLVFuses | None, Field(description="Mounting type of the LV fuse")]
+    mounting_type_MV: Annotated[MountingTypesMVFuses | None, Field(description="Mounting type of the MV fuse")]
     housing_material: Annotated[HousingMaterial | None, Field(description="Housing material of the fuse")]
     NEMA_rating: Annotated[NEMARating | None, Field(description="NEMA rating of the fuse (e.g., NEMA 1, NEMA 3R, NEMA 4X)")]
     IP_rating: Annotated[int | None, Field(description="Insert the number of the IP rating of the fuse (e.g., 54 for IP54)")]
@@ -67,3 +60,17 @@ class FuseLV(BaseEquipment):
             raise ValueError("Interrupting rating not valid for selected fuse class")
         if current_limiting != data["current_limiting"] and v is not None:
             raise ValueError("Current limiting flag doesn't match fuse class")
+        return v
+        
+    @field_validator("mounting_type_LV", "mounting_type_MV", always=True)
+    def check_mounting_type(cls, v, values, field):
+        if values.get("voltage_rating") is not None:
+            if values["voltage_rating"] <= 1 and field.name == "mounting_type_MV" and v is not None:
+                raise ValueError("Mounting type for MV fuse should not be provided for voltage ratings <= 1 kV")
+            if values["voltage_rating"] > 1 and field.name == "mounting_type_LV" and v is not None:
+                raise ValueError("Mounting type for LV fuse should not be provided for voltage ratings > 1 kV")
+        return v
+    
+class BaseFuse(Component):
+    electrical_properties: None
+    physical_properties: Annotated[Fuse | None , Field(description="Physical properties of the fuse")]

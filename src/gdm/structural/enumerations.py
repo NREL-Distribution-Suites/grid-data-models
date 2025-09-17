@@ -210,26 +210,21 @@ class CircuitBreakerMountingType(StrEnum):
     DIN_RAIL = "DIN Rail" # Slap-on
     ENCLOSED_RACK = "Enclosed Rack" # Mounted within complete enclosure or rack
 
-class RelayTypes(StrEnum):
-    OVERCURRENT = "Overcurrent"
-    DISTANCE = "Distance"
-    DIFFERENTIAL = "Differential"
-    REFLEX = "Reflex"
-    DIRECTIONAL = "Directional"
-    UNDER_VOLTAGE = "Under Voltage"
-    OVER_VOLTAGE = "Over Voltage"
-    FREQUENCY = "Frequency"
-    TEMPERATURE = "Temperature"
-    PHASE_ANGLE = "Phase Angle"
-    GROUND_FAULT = "Ground Fault"
-    VOLTAGE_RELAY = "Voltage Relay"
-    CURRENT_RELAY = "Current Relay"
-    TIME_DELAY = "Time Delay"
-    PROTECTIVE_RELAY = "Protective Relay"
-    NUMERIC_RELAY = "Numeric Relay"
-    MICROPROCESSOR_BASED = "Microprocessor-Based Relay"
-    SOLID_STATE = "Solid State Relay"
-    ELECTROMECHANICAL = "Electromechanical Relay"
+class ProtectionRelayOperatingPrinciple(StrEnum):
+    ELECTROMECHANICAL = "Electromechanical"
+    SOLID_STATE = "Solid State"
+    MICROPROCESSOR_BASED = "Microprocessor-Based"
+
+class ProtectionRelayTypes(StrEnum):
+    DISTANCE = "Distance Relay" # Used in longer MV feeders or subtransmission (33–69 kV)
+    DIFFERENTIAL = "Differential Relay" # For transformers, busbars, generators, large motors
+    THERMAL = "Thermal Relay"
+    GROUND = "Earth Fault/Ground Fault Relay" # Essential in MV distribution where neutral grounding exists
+    OVERCURRENT = "Overcurrent Relay" # Protects feeders, transformers, and equipment from short-circuits and overloads
+    VOLTAGE_RELAY = "Voltage Relay" # Common in capacitor banks, feeders, and load shedding
+    FREQUENCY = "Frequency Relay" # Used in DG and load management applications
+    DIRECTIONAL = "Directional Relay" # Distinguish between forward and reverse faults
+    RECLOSING = "Reclosing Relay" # Control reclosing of breakers after transient faults, common in overhead distribution feeders
 
 class RelayCommunicationProtocols(StrEnum):
     MODBUS = "Modbus"
@@ -238,14 +233,14 @@ class RelayCommunicationProtocols(StrEnum):
     PROPRIETARY = "Proprietary"
     OTHER = "Other"
 
-class MountingTypesMV(StrEnum):
+class MountingTypesMVSwitch(StrEnum):
     POLE = "Pole-Mounted"
     PAD = "Pad-Mounted"
     WALL = "Wall-Mounted"
     INDOOR = "Indoor"
     UNDERGROUND = "Underground"
 
-class MountingTypesLV(StrEnum):
+class MountingTypesLVSwitch(StrEnum):
     CONDUIT = "Conduit-Mounted"
     PANEL = "Panel-Mounted"
     SURFACE = "Surface-Mounted"
@@ -253,12 +248,19 @@ class MountingTypesLV(StrEnum):
     DIN = "DIN Rail"
     INDOOR = "Indoor"
 
-class MountingTypesFuses(StrEnum):
-    POLE = "Pole-Mounted" # MV cutouts, expulsion fuses on distribution poles
+class MountingTypesLVFuses(StrEnum):
     PANEL = "Panel-Mounted" # LV cartridge fuses in control panels or switchboards
-    SWITCHGEAR = "Switchgear-Mounted" # Ampgard or other cubicles for MV fuses
     DIN = "DIN Rail" # smaller cartridge fuses for LV protection
-    INDOOR = "Indoor"
+    INLINE = "Inline" # inline fuse holders for LV fuses
+    CARTRIDGE = "Cartridge" # LV cartridge fuses in holders or switchgear
+
+class MountingTypesMVFuses(StrEnum):
+    CUTOUT = "Cutout" # MV cutouts on distribution poles
+    EXPULSION = "Expulsion" # Expulsion fuses in outdoor switchgear or cabinets
+    SWITCHGEAR = "Switchgear-Mounted" # Ampgard or other cubicles for MV fuses
+    INDOOR = "Indoor" # Indoor fuse holders or switchgear
+    PAD = "Pad-Mounted" # Pad-mounted fuse enclosures
+    POLE = "Pole-Mounted" # Pole-mounted fuse enclosures
 
 class FuseTypes(StrEnum):
     INLINE = "Inline"
@@ -266,12 +268,30 @@ class FuseTypes(StrEnum):
     CUTOUT = "Cutout"
     CARTRIDGE = "Cartridge"
 
-class MountingTypesRelays(StrEnum):
-    PANEL = "Panel-Mounted"
-    DIN = "DIN Rail"
-    SURFACE = "Surface-Mounted"
-    WALL = "Wall-Mounted"
-    INDOOR = "Indoor"
+class ProtectionRelayMountingTypes(StrEnum):
+    PANEL = "Panel-Mounted" # Suitable for a variety of applications where secure mounting on a flat surface is required
+    RACK = "Rack-Mounted" # Common in control rooms and substations for organized installation of multiple relays
+    DIN = "DIN Rail" # Common in industrial settings for quick and organized installation of components in control cabinets
+
+class SwitchgearControlTypes(StrEnum):
+    LOCAL = "Local"
+    REMOTE = "Remote"
+    AUTOMATIC = "Automatic"
+    MANUAL = "Manual"
+
+class SwitchgearBusConfig(StrEnum):
+    SINGLE_BUS = "Single Bus"   #Baseline cost
+    MAIN_TIE_MAIN = "Main-Tie-Main" # +20-40% cost
+    RING_BUS = "Ring Bus"   # +30-50% cost
+    DOUBLE_BUS = "Double Bus"  # +50-70% cost
+    DOUBLE_BREAKER = "Double Bus, Double Breaker"  # +50-100% cost
+
+class SwitchgearTypes(StrEnum):
+    METAL_ENCLOSED = "Metal-Enclosed"
+    METAL_CLAD = "Metal-Clad"
+    GAS_INSULATED = "Gas-Insulated"
+    DRAW_OUT = "Draw-Out"
+    FIXED = "Fixed"
 
 class RecloserControlTypes(StrEnum):
     HYDRAULIC = "Hydraulic"
@@ -287,6 +307,13 @@ class InsulationMedium(StrEnum):
     AIR = "Air"
     VACUUM = "Vacuum"
     SF6 = "SF6"
+
+class SwitchgearInsulationMedium(StrEnum):
+    AIR = "Air"
+    VACUUM = "Vacuum"
+    SF6 = "SF6"
+    OIL = "Oil"
+    HYBRID = "Hybrid"  # Combination of different insulation mediums (e.g., SF6 and vacuum)
 
 class HousingMaterial(StrEnum):
     POLYMERIC = "Polymeric"
@@ -312,6 +339,44 @@ class FuseClasses(StrEnum):
     CLASS_T = "Class T"
     RK1 = "RK1"         # R subclass, offers advanced current limitations and short-circuit protection
     RK5 = "RK5"         # R subclass, less limiting than RK1
+
+class SwitchingSequence(StrEnum):
+    MBB = "Make-Before-Break" 
+    BBM = "Break-Before-Make"  
+
+class SwitchPoleConfiguration(StrEnum):
+    SINGLE_POLE = "Single-Pole"
+    THREE_POLE = "Three-Pole"
+    GANG_OPERATED = "Gang Operated"
+
+class SwitchOperatingMechanism(StrEnum):
+    MANUAL = "Manual"
+    REMOTE_SCADA = "Remote_SCADA"
+    SPRING_ASSISTED = "Spring-Assisted"
+    MOTORIZED = "Motorized"
+
+class LimitSwitchActuatorTypes(StrEnum):
+    PLUNGER = "Plunger"
+    LEVER = "Lever"
+    ROLLER = "Roller"
+    ROLLER_LEVER = "Roller Lever"
+    WHISKER = "Whisker"
+    OTHER = "Other"
+
+class LimitSwitchOperationTypes(StrEnum):
+    MOMENTARY = "Momentary (spring return after actuation)"
+    MAINTAINED = "Maintained (stays in position until reset)"
+    SNAP_ACTION = "Snap Action (quick make/break regardless of actuator speed)"
+    SLOW_ACTION = "Slow Action (contacts follow actuator motion gradually)"
+    ROTARY = "Rotary (actuated by rotation of shaft/arm)"
+    LINEAR = "Linear (actuated by straight-line motion)"
+    
+class DisconnectSwitchTypes(StrEnum):
+    VERTICAL_BREAK = "Vertical Break"
+    HORIZONTAL_BREAK = "Horizontal Break"
+    PANTOGRAPH = "Pantograph"
+    FUSED = "Fused"
+    NON_FUSED = "Non-Fused"
 
 class UnitCostCategory(StrEnum):
     CATEGORY_1 = "12/16kV 480 volt transformer - includes 100' Sec. cable length"
@@ -354,13 +419,11 @@ class DataSource(StrEnum):
     RESEARCH_ORGANIZATION = "RESEARCH_ORGANIZATION"
 
 class DataSourceType(StrEnum):
-    
     WEBSITE = "WEBSITE"
     PDF = "PDF"
     API = "API"
 
 class UtilityType(StrEnum):
-    
     INVESTOR_OWNED = "INVESTOR_OWNED"
     MANICUPALITY = "MANICUPALITY"
     COOPERATIVE = "COOPERATIVE"

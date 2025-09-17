@@ -1,5 +1,7 @@
 from typing import Literal, Annotated
+from infrasys import Component
 from pydantic import BaseModel, Field
+from gdm.structural.base_classes import BaseEquipment, BaseDimension
 
 from gdm.structural.enumerations import (
     EquipmentType,
@@ -11,16 +13,6 @@ from gdm.structural.enumerations import (
     LocationType,
     NEMARating
     )
-
-class BaseDimension(BaseModel):
-    dimension_length : Annotated[float, Field(description="The dimension of the equipment. Can be length, width or height")]
-    units: Annotated[DimensionLengthUnits, Field(description="unit for the dimension length")]
-
-class BaseEquipment(BaseModel):
-    equipment_id: Annotated[str, Field(min_length=10, max_length=40, description="Equipment identifier.")]
-    equipment_type: Annotated[EquipmentType, Field(description="Equipment type")]
-    weight_in_pounds: Annotated[float, Field(description="The weight of the equipment in pounds")]
-    unit_cost_in_usd: Annotated[float, Field(description="The cost of the equipment in USD")]
 
 class ACCircuitBreaker(BaseModel):
     voltage_rating_ac: Annotated[float | None, Field(description="AC voltage rating of the circuit breaker in kV")]
@@ -48,7 +40,7 @@ class CircuitBreaker(BaseEquipment):
     equipment_type: Annotated[Literal[EquipmentType.CIRCUIT_BREAKER], Field(description="Equipment type") ] = EquipmentType.CIRCUIT_BREAKER
     breaker_type: Annotated[CircuitBreakerTypes | None, Field(description="Type of circuit breaker")] 
     trip_curve: Annotated[TrippingCurves | None, Field(description="Trip curve type of the circuit breaker")]
-    operating_mechanism: Annotated[CircuitBreakerOperatingMechanism | None, Field(description="Operating mechanism of the circuit breaker (e.g., Spring, Hydraulic, Pneumatic)")]
+    operating_mechanism: Annotated[CircuitBreakerOperatingMechanism | None, Field(description="Operating mechanism of the circuit breaker")]
     poles: Annotated[int | None, Field(description="Number of poles in the circuit breaker ")] 
     mounting_type: Annotated[CircuitBreakerMountingType | None, Field(description="Mounting type of the circuit breaker")]
     tripping_time: Annotated[float | None, Field(description="Tripping time of the circuit breaker in seconds")]
@@ -62,3 +54,7 @@ class CircuitBreaker(BaseEquipment):
     width: Annotated[BaseDimension | None, Field(description="Width of the circuit breaker")]
     depth: Annotated[BaseDimension | None, Field(description="Depth of the circuit breaker")]
     weight_in_pounds: Annotated[float | None, Field(description="The weight of the equipment in pounds")]
+
+class BaseCircuitBreaker(Component):
+    electrical_properties: None
+    physical_properties: Annotated[CircuitBreaker | None , Field(description="Physical properties of the circuit breaker")]
