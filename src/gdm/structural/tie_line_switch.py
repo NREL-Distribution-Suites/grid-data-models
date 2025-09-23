@@ -24,9 +24,9 @@ class TieLineSwitch(BaseEquipment):
     operating_mechanism: Annotated[SwitchOperatingMechanism | None, Field(description="Operating mechanism of the tie-line switch")]
     mounting_type_LV: Annotated[MountingTypesLVSwitch | None, Field(description="Mounting type of the LV tie-line switch")]
     mounting_type_MV: Annotated[MountingTypesMVSwitch | None, Field(description="Mounting type of the MV tie-line switch")]
-    NEMA_rating: Annotated[Optional[NEMARating], Field(description="NEMA rating of the tie-line switch")] = None
-    IP_rating: Annotated[Optional[int], Field(description="Insert the number of the IP rating of the tie-line switch (e.g., 54 for IP54)")] = None
-
+    NEMA_rating: Annotated[Optional[NEMARating], Field(description="NEMA rating of the tie-line switch")] 
+    IP_rating: Annotated[Optional[int], Field(description="Insert the number of the IP rating of the tie-line switch (e.g., 54 for IP54)")]
+    
     height: Annotated[BaseDimension | None, Field(description="Height of the tie-line switch")]
     width: Annotated[BaseDimension | None, Field(description="Width of the tie-line switch")]
     depth: Annotated[BaseDimension | None, Field(description="Depth of the tie-line switch")]

@@ -9,7 +9,9 @@ from gdm.structural.enumerations import (
     MountingTypesMVSwitch,
     LimitSwitchActuatorTypes,
     LimitSwitchOperationTypes,
-    HousingMaterial,
+    LimitSwitchHousingMaterial,
+    LimitSwitchContactConfiguration,
+    ProximityLimitSwitchOutputType,
     NEMARating
     )
 
@@ -19,15 +21,16 @@ class MechanicalLimitSwitch(BaseModel):
     actuator_type: Annotated[LimitSwitchActuatorTypes | None, Field(description="Type of actuator for the limit switch")]
     mechanical_life: Annotated[Optional[int] | None, Field(description="Mechanical life of the mechanical limit switch in number of operations")]
     operation_type: Annotated[LimitSwitchOperationTypes | None, Field(description="Operation type of the limit switch")]
+    contact_configuration: Annotated[Optional[LimitSwitchContactConfiguration] | None, Field(description="Contact configuration of the mechanical limit switch")]
 
 class ElectromechanicalLimitSwitch(BaseModel):
-    contact_configuration: Annotated[Optional[str] | None, Field(description="Contact configuration of the electrical limit switch (e.g., SPST, SPDT, DPDT)")]
+    contact_configuration: Annotated[Optional[LimitSwitchContactConfiguration] | None, Field(description="Contact configuration of the electrical limit switch")]
 
 class ProximityLimitSwitch(BaseModel):
     sensing_distance: Annotated[Optional[float] | None, Field(description="Sensing distance of the proximity limit switch in mm")]
-    output_type: Annotated[Optional[str] | None, Field(description="Output type of the proximity limit switch (e.g., NPN, PNP, Analog)")]
-    housing_material: Annotated[Optional[HousingMaterial] | None, Field(description="Housing material of the proximity limit switch (e.g., Plastic, Metal)")]
+    output_type: Annotated[Optional[ProximityLimitSwitchOutputType] | None, Field(description="Output type of the proximity limit switch")]
     response_time: Annotated[Optional[float] | None, Field(description="Response time of the proximity limit switch in ms")]
+    contact_type_NO: Annotated[Optional[bool] | None, Field(description="Contact type of the proximity limit switch, select True for Normally Open (NO) or False for Normally Closed (NC)")]
 
 class MagneticLimitSwitch(BaseModel):
     magnetic_field_strength: Annotated[Optional[float] | None, Field(description="Magnetic field strength of the magnetic limit switch in mT")]
@@ -44,8 +47,9 @@ class LimitSwitch(BaseEquipment):
     number_of_poles: Annotated[int | None, Field(description="Number of poles in the limit switch")]
     mounting_type_LV: Annotated[MountingTypesLVSwitch | None, Field(description="Mounting type of the LV limit switch")]
     mounting_type_MV: Annotated[MountingTypesMVSwitch | None, Field(description="Mounting type of the MV limit switch")]
-    NEMA_rating: Annotated[Optional[NEMARating], Field(description="NEMA rating of the tie-line switch")] = None
-    IP_rating: Annotated[Optional[int], Field(description="Insert the number of the IP rating of the tie-line switch (e.g., 54 for IP54)")] = None
+    housing_material: Annotated[Optional[LimitSwitchHousingMaterial] | None, Field(description="Housing material of the limit switch")]
+    NEMA_rating: Annotated[Optional[NEMARating], Field(description="NEMA rating of the tie-line switch")]
+    IP_rating: Annotated[Optional[int], Field(description="Insert the number of the IP rating of the tie-line switch (e.g., 54 for IP54)")] 
 
     height: Annotated[BaseDimension | None, Field(description="Height of the limit switch")]
     width: Annotated[BaseDimension | None, Field(description="Width of the limit switch")]

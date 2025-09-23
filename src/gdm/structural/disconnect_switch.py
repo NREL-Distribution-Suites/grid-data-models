@@ -22,14 +22,16 @@ class DisconnectSwitch(BaseEquipment):
     voltage_rating: Annotated[float | None, Field(description="Voltage rating of the disconnect switch in kV")]
     current_rating: Annotated[float | None, Field(description="Current rating of the disconnect switch in Amperes")]
     interrupting_rating: Annotated[float | None, Field(description="Interrupting rating (kAIC) of the disconnect switch in kA")]
+    creepage_distance: Annotated[float | None, Field(description="Creepage distance of the disconnect switch in mm")]
+    fused: Annotated[bool | None, Field(description="Indicates whether the disconnect switch is fused (True) or not (False)")]
     operating_mechanism: Annotated[SwitchOperatingMechanism | None, Field(description="Operating mechanism of the disconnect switch")]
     pole_configuration: Annotated[SwitchPoleConfiguration | None, Field(description="Pole configuration of the disconnect switch")]
     mounting_type_LV: Annotated[MountingTypesLVSwitch | None, Field(description="Mounting type of the LV disconnect switch")]
     mounting_type_MV: Annotated[MountingTypesMVSwitch | None, Field(description="Mounting type of the MV disconnect switch")]
     insulation_medium: Annotated[InsulationMedium | None, Field(description="Insulation medium of the disconnect switch")]
     switching_sequence: Annotated[Optional[SwitchingSequence] | None, Field(description="Switching sequence of the disconnect switch")]
-    NEMA_rating: Annotated[Optional[NEMARating], Field(description="NEMA rating of the disconnect switch")] = None
-    IP_rating: Annotated[Optional[int], Field(description="Insert the number of the IP rating of the disconnect switch (e.g., 54 for IP54)")] = None
+    NEMA_rating: Annotated[Optional[NEMARating], Field(description="NEMA rating of the disconnect switch")]
+    IP_rating: Annotated[Optional[int], Field(description="Insert the number of the IP rating of the disconnect switch (e.g., 54 for IP54)")] 
 
     height: Annotated[BaseDimension | None, Field(description="Height of the disconnect switch")]
     width: Annotated[BaseDimension | None, Field(description="Width of the disconnect switch")]

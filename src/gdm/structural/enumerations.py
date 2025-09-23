@@ -373,14 +373,31 @@ class LimitSwitchOperationTypes(StrEnum):
     
 class DisconnectSwitchTypes(StrEnum):
     VERTICAL_BREAK = "Vertical Break"
+    CENTER_BREAK = "Center Break"
     HORIZONTAL_BREAK = "Horizontal Break"
+    DOUBLE_BREAK = "Double End Break"
+    SIDE_BREAK = "Side Break"
     PANTOGRAPH = "Pantograph"
-    FUSED = "Fused"
-    NON_FUSED = "Non-Fused"
+
+class LimitSwitchHousingMaterial(StrEnum):
+    ZINC_DIE_CAST = "Zinc Die-Cast"
+    STAINLESS_STEEL = "Stainless Steel"
+    ALUMINUM = "Aluminum"
+    PLASTIC = "Plastic"
+
+class LimitSwitchContactConfiguration(StrEnum):
+    SPST = "SPST (Single Pole - Single Throw)"
+    SPDT = "SPDT (Single Pole - Double Throw)"
+    DPDT = "DPDT (Double Pole - Double Throw)"
+
+class ProximityLimitSwitchOutputType(StrEnum):
+    NPN = "NPN (Negative-Positive-Negative)"
+    PNP = "PNP (Positive-Negative-Positive)"
+    ANALOG = "Analog (Continuous Signal)"
 
 class UnitCostCategory(StrEnum):
     CATEGORY_1 = "12/16kV 480 volt transformer - includes 100' Sec. cable length"
-    CATEGORY_2 = "Overhead to Underground (UG)- Set Pole and make up Cable"
+    CATEGORY_2 = "Overhead to Underground (UG) - Set Pole and make up Cable"
     CATEGORY_3 = "Overhead (OH) Service"
     CATEGORY_4 = "Underground to Underground - Cable with Terminators"
     CATEGORY_5 = "Metering"
