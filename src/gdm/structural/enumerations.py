@@ -340,6 +340,59 @@ class FuseClasses(StrEnum):
     RK1 = "RK1"         # R subclass, offers advanced current limitations and short-circuit protection
     RK5 = "RK5"         # R subclass, less limiting than RK1
 
+class FuseCutoutStyle(StrEnum):
+    DROP_OUT = "Drop-Out"
+    HINGE = "Hinge / Swing-Arm"
+    DOUBLE_BREAK = "Double-Break"
+    EXPULSION = "Expulsion"
+    NON_EXPULSION = "Non-Expulsion"  # solid blade / solid link
+    VISIBLE_BREAK = "Visible Break"
+
+class FuseCutoutTypes(StrEnum):
+    INTERCHANGEABLE = "Interchangeable" # Most common, works with components of various manufacturers
+    LOADBREAK = "Loadbreak" # Second most common, not interchangeable, ability for a cutout on a live circuit to be opened without the use special tooling
+    LINKBREAK = "Linkbreak" # least common, easy operation, allows a lineman to manually break the fuse inside of the folder
+
+class FuseCutoutLinkTypes(StrEnum):
+    FAST = "Fast" 
+    MEDIUM = "Medium" 
+    SLOW = "Slow"  
+    VERY_SLOW = "Very Slow" 
+
+    '''E_RATED = "E-Rated" # Transformer & feeder protection
+    R_RATED = "R-Rated" # Motor circuit
+    K_RATED = "K-Rated" # fast link with nominal speed ratio of 7 (eaton)
+    T_RATED = "T-Rated" # slow link with nominal speed ratio of 12 (eaton)
+    N_RATED = "N-Rated" # fast, ratio 6 through 11 (eaton)
+    S_RATED = "S-Rated" # very slow, ratio 15 through 30 (eaton)
+    D_RATED = "D-Rated" # very slow, ratio 7 through 46 (eaton)
+    QR_RATED = "QR-Rated"
+    QA_RATED = "QA-Rated" # Medium'''
+
+class FuseCutoutTimeCurrentCharacteristic(StrEnum):
+    SLOW_BLOW = "Slow-Blow"  # Allows for temporary overloads without blowing (eg motor start), more common in LV
+    FAST_BLOW = "Fast-Blow"  # Quick response for sensitive electronic devices
+
+class FuseCutoutMountingTypes(StrEnum):
+    POLE_MOUNTED = "Pole-Mounted"
+    PAD_MOUNTED = "Pad-Mounted"
+    WALL_MOUNTED = "Wall-Mounted"
+    BAY_MOUNTED = "Bay-Mounted / Vault"
+    UNDERGROUND = "Underground"
+    INDOOR = "Indoor"
+
+class GroundRodMaterial(StrEnum):
+    COPPER = "Copper"
+    COPPER_CLAD = "Copper-Clad/Copper-Bonded Steel"
+    GALVANIZED_STEEL = "Galvanized Steel"
+    STAINLESS_STEEL = "Stainless Steel"
+
+class GroundRodInstallationType(StrEnum):
+    DRIVEN = "Driven"
+    BONDED = "Bonded"
+    CHEMICALLY_ENHANCED = "Chemically Enhanced"
+    PLATE = "Plate"
+
 class SwitchingSequence(StrEnum):
     MBB = "Make-Before-Break" 
     BBM = "Break-Before-Make"  
