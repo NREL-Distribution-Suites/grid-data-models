@@ -51,3 +51,7 @@ class TimeseriesVariableDoesNotExist(GDMBaseException):
 
 class UnsupportedVariableError(GDMBaseException):
     """Raised if variable is not supported for some purpose."""
+
+
+class NonuniqueCommponentsTypesInParallel(GDMBaseException):
+    """Raised if two components of different type are connected in parallel between two node (e.g. switch and a transformer)."""

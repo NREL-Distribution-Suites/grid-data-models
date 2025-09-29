@@ -5,9 +5,16 @@ import networkx as nx
 import pytest
 from uuid import uuid4
 
-from gdm.distribution.components import DistributionLoad, DistributionBus, MatrixImpedanceSwitch
-from .get_sample_system import get_three_bus_system
+from gdm.distribution.components import (
+    DistributionLoad,
+    DistributionBus,
+    MatrixImpedanceSwitch,
+    DistributionTransformer,
+)
+from gdm.exceptions import NonuniqueCommponentsTypesInParallel
 from gdm.distribution import DistributionSystem
+
+from .get_sample_system import get_three_bus_system
 
 
 @pytest.fixture
@@ -25,6 +32,27 @@ def test_distribution_graph(distribution_system: DistributionSystem):
         distribution_system.get_bus_connected_components("Bus-3", DistributionLoad)[0],
         DistributionLoad,
     )
+
+
+def test_distribution_graph_multiple_edges_different_types(
+    simple_distribution_system: DistributionSystem,
+):
+    """Tests distribution graph."""
+    system = simple_distribution_system.deepcopy()
+    system.auto_add_composed_components = True
+
+    xfmr = next(system.get_components(DistributionTransformer))
+    switch = MatrixImpedanceSwitch.example()
+    switch.buses = xfmr.buses
+    switch.is_closed = [False, False, False]
+
+    switch_copy = switch.model_copy(update={"uuid": uuid4()})
+    system.add_component(switch_copy)
+
+    graph_instance = system.get_undirected_graph()
+
+    with pytest.raises(NonuniqueCommponentsTypesInParallel):
+        system.get_cycles(graph_instance)
 
 
 def test_distribution_graph_multiple_edges(simple_distribution_system: DistributionSystem):

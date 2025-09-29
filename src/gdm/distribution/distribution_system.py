@@ -38,6 +38,7 @@ from gdm.distribution.components.distribution_vsource import (
     DistributionVoltageSource,
 )
 from gdm.exceptions import (
+    NonuniqueCommponentsTypesInParallel,
     MultipleOrEmptyVsourceFound,
 )
 
@@ -361,11 +362,6 @@ class DistributionSystem(System):
                 else:
                     bus_2 = cycle[cycle.index(bus_1) + 1]
                 dfs_tree.remove_edge(bus_1, bus_2)
-
-            if self.get_cycles(dfs_tree):
-                raise ValueError(
-                    "Unable to remove cycles from the undirected graph. Cannot be represented as a directed graph."
-                )
 
         dfs_edge_names = [
             ugraph.get_edge_data(u, v, k)["name"] for u, v, k in dfs_tree.edges(keys=True)
@@ -847,10 +843,10 @@ class DistributionSystem(System):
                 u, v = cycle
                 model_types = {graph[u][v][k]["type"] for k in graph[u][v]}
                 if len(model_types) != 1:
-                    raise ValueError(
+                    models = ", ".join([x.__name__ for x in model_types])
+                    raise NonuniqueCommponentsTypesInParallel(
                         f"Only same models types can be connected in parallel."
-                        f"Model connected in parallel: {','.join(model_types)} "
-                        f"betweem nodes {u} and {v}."
+                        f"\n{models} type model connected in parallel between nodes {u} and {v}."
                     )
             else:
                 reduced_cycles.append(cycle)
