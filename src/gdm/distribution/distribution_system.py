@@ -5,6 +5,7 @@ from typing import Annotated, Type
 import importlib.metadata
 from pathlib import Path
 import tempfile
+import random
 
 from infrasys.time_series_models import TimeSeriesData, SingleTimeSeries
 from shapely import Point, LineString, union_all
@@ -171,7 +172,7 @@ class DistributionSystem(System):
             raise MultipleOrEmptyVsourceFound(msg)
         return buses[0]
 
-    def get_undirected_graph(self) -> nx.Graph:
+    def get_undirected_graph(self) -> nx.MultiGraph:
         """Constructs an undirected graph representation of the distribution system.
 
         This method generates an undirected graph using NetworkX, where nodes represent distribution
@@ -189,7 +190,7 @@ class DistributionSystem(System):
         - The graph is useful for analyzing the connectivity and topology of the distribution network.
         - Each edge in the graph includes metadata such as the component's name and type.
         """
-        graph = nx.Graph()
+        graph = nx.MultiGraph()
         node: DistributionBus
         for node in self.get_components(DistributionBus):
             graph.add_node(node.name)
@@ -283,6 +284,41 @@ class DistributionSystem(System):
 
         return subtree_system
 
+    def _dfs_multidigraph(self, G: nx.MultiGraph, source: str) -> nx.MultiDiGraph:
+        """
+        Build a directed DFS tree as a MultiDiGraph from an undirected graph.
+
+        This helper constructs a directed view of the network using a depth-first
+        search traversal starting at the given source node. Only the DFS tree edges
+        are included; back/forward/cross edges that would create cycles are omitted.
+        The direction of each edge is oriented away from the source along the DFS
+        traversal order.
+
+        Parameters
+        ----------
+        G : nx.MultiGraph
+            The undirected graph to traverse (e.g., the system's connectivity graph).
+            MultiGraph is supported; edges are added without per-edge keys.
+        source : str
+            The name/identifier of the source node from which DFS starts.
+
+        Returns
+        -------
+        nx.MultiDiGraph
+            A directed graph containing the DFS tree edges oriented from parent to child.
+
+        Notes
+        -----
+        - This function is intended to produce a radial representation rooted at the
+        source node, suitable for further pruning/augmentation in get_directed_graph.
+        - If G is disconnected, only the component reachable from the source is included.
+        - Edge iteration uses networkx.edge_dfs to respect DFS order.
+        """
+        T = nx.MultiDiGraph()
+        for u, v, k in nx.edge_dfs(G, source=source):
+            T.add_edge(u, v, key=k, **G[u][v][k])
+        return T
+
     def get_directed_graph(self, return_radial_network: bool = True) -> nx.DiGraph:
         """Constructs a directed graph representation of the distribution system.
 
@@ -306,15 +342,34 @@ class DistributionSystem(System):
         ugraph = self.get_undirected_graph()
         logger.info(f"Creating directed graph with source bus -> {self.get_source_bus().name}")
         pruned_edges_tuples = [
-            (u, v, d) for u, v, d in ugraph.edges(data=True) if not d.get("is_closed")
+            (u, v, k, d)
+            for u, v, k, d in ugraph.edges(data=True, keys=True)
+            if not d.get("is_closed")
         ]
 
-        for u, v, _ in pruned_edges_tuples:
-            ugraph.remove_edge(u, v)
-            logger.info(f"  An open switch edge ({u}, {v}) has been removed.")
+        for u, v, k, d in pruned_edges_tuples:
+            ugraph.remove_edge(u, v, k)
+            logger.info(f"  An open switch edge ({u}, {v}, {k}) has been removed.")
 
-        dfs_tree: nx.DiGraph = nx.dfs_tree(ugraph, source=self.get_source_bus().name)
-        dfs_edge_names = [ugraph.get_edge_data(u, v)["name"] for u, v in dfs_tree.edges]
+        dfs_tree = self._dfs_multidigraph(ugraph, source=self.get_source_bus().name)
+
+        if return_radial_network:
+            for cycle in self.get_cycles(dfs_tree):
+                bus_1 = random.choice(cycle)
+                if cycle.index(bus_1) == len(cycle) - 1:
+                    bus_2 = cycle[0]
+                else:
+                    bus_2 = cycle[cycle.index(bus_1) + 1]
+                dfs_tree.remove_edge(bus_1, bus_2)
+
+            if self.get_cycles(dfs_tree):
+                raise ValueError(
+                    "Unable to remove cycles from the undirected graph. Cannot be represented as a directed graph."
+                )
+
+        dfs_edge_names = [
+            ugraph.get_edge_data(u, v, k)["name"] for u, v, k in dfs_tree.edges(keys=True)
+        ]
         ug_edge_names = [data["name"] for _, _, data in ugraph.edges(data=True)]
         pruned_edges = set(ug_edge_names) - set(dfs_edge_names)
 
@@ -782,3 +837,22 @@ class DistributionSystem(System):
             self.add_component(impedence_branch)
         self.auto_add_composed_components = auto_add
         logger.info(f"GeometryBranch models converted -> {len(branches)}")
+
+    @staticmethod
+    def get_cycles(graph: nx.MultiDiGraph | nx.MultiGraph) -> list[list[str]]:
+        cycles = list(nx.simple_cycles(graph))
+        reduced_cycles = []
+        for cycle in cycles:
+            if len(cycle) == 2:
+                u, v = cycle
+                model_types = {graph[u][v][k]["type"] for k in graph[u][v]}
+                if len(model_types) != 1:
+                    raise ValueError(
+                        f"Only same models types can be connected in parallel."
+                        f"Model connected in parallel: {','.join(model_types)} "
+                        f"betweem nodes {u} and {v}."
+                    )
+            else:
+                reduced_cycles.append(cycle)
+
+        return reduced_cycles
