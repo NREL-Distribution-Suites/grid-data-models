@@ -780,5 +780,24 @@ class DistributionSystem(System):
             )
             self.remove_component(branch, cascade_down=True)
             self.add_component(impedence_branch)
+
+            for bus in impedence_branch.buses:
+                if Phase.N not in bus.phases:
+                    continue
+                safe_to_remove_neutral = True
+                for component_types in self.get_component_types():
+                    connected_components = self.get_bus_connected_components(
+                        bus.name, component_types
+                    )
+                    if connected_components:
+                        for component in connected_components:
+                            if hasattr(component, "phases") and Phase.N in component.phases:
+                                safe_to_remove_neutral = False
+                                break
+                        if not safe_to_remove_neutral:
+                            break
+                if safe_to_remove_neutral:
+                    bus.phases = [p for p in bus.phases if p != Phase.N]
+
         self.auto_add_composed_components = auto_add
         logger.info(f"GeometryBranch models converted -> {len(branches)}")
