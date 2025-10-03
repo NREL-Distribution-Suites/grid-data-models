@@ -8,8 +8,8 @@ from gdm.structural.enumerations import (
     InsulationMedium,
     TrippingCurves, 
     RecloserControlTypes,
-    MountingTypesLV, 
-    MountingTypesMV, 
+    MountingTypesLVSwitch, 
+    MountingTypesMVSwitch, 
     RecloserOperatingDutyCycles,
     NEMARating
     )
@@ -22,10 +22,10 @@ class Recloser(BaseEquipment):
     interrupting_rating: Annotated[float | None, Field(description="Interrupting rating of the recloser in kA")]
     interrupting_medium: Annotated[InsulationMedium | None, Field(description="Interrupting medium of the recloser")]
     number_of_operations_at_interrupting_rating: Annotated[int | None, Field(description="Number of operations at interrupting rating")]
-    trip_curve: Annotated[TrippingCurves | None, Field(description="Trip curve type of the recloser")]
+    trip_curve: Annotated[TrippingCurves | None, Field(description="Time-Current Curve (TCC) type of the recloser")]
     control_type: Annotated[RecloserControlTypes | None, Field(description="Control type of the recloser")]
-    mounting_type_LV: Annotated[MountingTypesLV | None, Field(description="Mounting type for low voltage side of the recloser")]
-    mounting_type_MV: Annotated[MountingTypesMV | None, Field(description="Mounting type for medium voltage side of the recloser")]
+    mounting_type_LV: Annotated[MountingTypesLVSwitch | None, Field(description="Mounting type for low voltage side of the recloser")]
+    mounting_type_MV: Annotated[MountingTypesMVSwitch | None, Field(description="Mounting type for medium voltage side of the recloser")]
     withstand_voltage_dry: Annotated[float | None, Field(description="Withstand voltage in dry conditions in kV")]
     withstand_voltage_wet: Annotated[float | None, Field(description="Withstand voltage in wet conditions in kV")]
     operating_duty_cycle: Annotated[RecloserOperatingDutyCycles | None, Field(description="Operating duty cycle of the recloser")]

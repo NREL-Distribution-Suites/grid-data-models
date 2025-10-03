@@ -9,7 +9,8 @@ from gdm.structural.enumerations import (
     ProtectionRelayMountingTypes,
     ProtectionRelayTypes,
     ProtectionRelayOperatingPrinciple,
-    RelayCommunicationProtocols
+    RelayCommunicationProtocols,
+    RelayContactConfiguration
     )
 
 class Relay(BaseEquipment):
@@ -21,9 +22,11 @@ class Relay(BaseEquipment):
     current_rating: Annotated[float | None, Field(description="Current rating of the relay in Amperes")]
     operating_principle: Annotated[ProtectionRelayOperatingPrinciple | None, Field(description="Operating principle of the relay")]
     communication_protocols: Annotated[RelayCommunicationProtocols | None, Field(description="Communication protocols supported by the relay")]
+    contact_configuration: Annotated[Optional[RelayContactConfiguration] | None, Field(description="Contact configuration of the relay")]
     mounting_type: Annotated[ProtectionRelayMountingTypes | None, Field(description="Mounting type of the relay")]
-    NEMA_rating: Annotated[NEMARating | None, Field(description="NEMA rating of the relay (e.g., NEMA 1, NEMA 3R, NEMA 4X)")]
-    IP_rating: Annotated[int | None, Field(description="Insert the number of the IP rating of the relay (e.g., 54 for IP54)")]
+    time_delay_settings: Annotated[float | None, Field(description="Time delay settings of the relay in seconds")]
+    NEMA_rating: Annotated[Optional[NEMARating] | None, Field(description="NEMA rating of the relay (e.g., NEMA 1, NEMA 3R, NEMA 4X)")]
+    IP_rating: Annotated[Optional[int] | None, Field(description="Insert the number of the IP rating of the relay (e.g., 54 for IP54)")]
 
     height: Annotated[BaseDimension | None, Field(description="Height of the relay")]
     width: Annotated[BaseDimension | None, Field(description="Width of the relay")]

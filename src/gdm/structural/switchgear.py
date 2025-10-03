@@ -6,8 +6,8 @@ from gdm.structural.base_classes import BaseEquipment, BaseDimension
 from gdm.structural.enumerations import (
     EquipmentType,
     SwitchgearTypes,
-    MountingTypesLV,
-    MountingTypesMV,
+    MountingTypesLVSwitch,
+    MountingTypesMVSwitch,
     NEMARating,
     SwitchgearInsulationMedium,
     SwitchgearBusConfig,
@@ -21,8 +21,8 @@ class Switchgear(BaseEquipment):
     voltage_rating: Annotated[float | None, Field(description="Voltage rating of the switchgear in kV")]
     current_rating: Annotated[float | None, Field(description="Current rating of the switchgear in Amperes")]
     interrupting_rating: Annotated[float | None, Field(description="Interrupting rating (kAIC) of the switchgear in kA")]
-    mounting_type_LV: Annotated[MountingTypesLV | None, Field(description="Mounting type of the LV switchgear")]
-    mounting_type_MV: Annotated[MountingTypesMV | None, Field(description="Mounting type of the MV switchgear")]
+    mounting_type_LV: Annotated[MountingTypesLVSwitch | None, Field(description="Mounting type of the LV switchgear")]
+    mounting_type_MV: Annotated[MountingTypesMVSwitch | None, Field(description="Mounting type of the MV switchgear")]
     number_of_phases: Annotated[int | None, Field(description="Number of phases in the switchgear (1 for single-phase, 3 for three-phase)")]
     number_of_bays: Annotated[int | None, Field(description="Number of bays in the switchgear")]
     insulation_medium: Annotated[SwitchgearInsulationMedium | None, Field(description="Insulation medium of the switchgear")]

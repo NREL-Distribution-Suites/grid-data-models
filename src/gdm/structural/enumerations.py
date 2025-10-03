@@ -272,6 +272,8 @@ class ProtectionRelayMountingTypes(StrEnum):
     PANEL = "Panel-Mounted" # Suitable for a variety of applications where secure mounting on a flat surface is required
     RACK = "Rack-Mounted" # Common in control rooms and substations for organized installation of multiple relays
     DIN = "DIN Rail" # Common in industrial settings for quick and organized installation of components in control cabinets
+    SOCKET = "Socket-Mounted" # Allows for easy replacement and maintenance of relays
+    WALL = "Wall-Mounted" # Suitable for locations where space is limited or specific positioning is required
 
 class SwitchgearControlTypes(StrEnum):
     LOCAL = "Local"
@@ -442,6 +444,13 @@ class LimitSwitchContactConfiguration(StrEnum):
     SPST = "SPST (Single Pole - Single Throw)"
     SPDT = "SPDT (Single Pole - Double Throw)"
     DPDT = "DPDT (Double Pole - Double Throw)"
+
+class RelayContactConfiguration(StrEnum):
+    SPST = "SPST (Single Pole - Single Throw)"
+    SPDT = "SPDT (Single Pole - Double Throw)"
+    DPDT = "DPDT (Double Pole - Double Throw)"
+    ThreePDT = "3PDT (Three Pole - Double Throw)"
+    FourPDT = "4PDT (Four Pole - Double Throw)"
 
 class ProximityLimitSwitchOutputType(StrEnum):
     NPN = "NPN (Negative-Positive-Negative)"
