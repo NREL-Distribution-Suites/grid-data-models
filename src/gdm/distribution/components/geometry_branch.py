@@ -65,11 +65,14 @@ class GeometryBranch(DistributionBranchBase):
         - This conversion is essential for systems that require matrix impedance representations
         for detailed electrical analysis.
         """
+        updated_phases = self.phases
+        if Phase.N in self.phases:
+            updated_phases = [p for p in self.phases if p != Phase.N]
         return MatrixImpedanceBranch(
             uuid=self.uuid,
             buses=self.buses,
             length=self.length,
-            phases=self.phases,
+            phases=updated_phases,
             substation=self.substation,
             feeder=self.feeder,
             name=self.name,
