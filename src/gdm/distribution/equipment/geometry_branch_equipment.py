@@ -47,48 +47,28 @@ class GeometryBranchEquipment(Component):
     def _pairwise_distances(A, B):
         return np.linalg.norm(A[:, np.newaxis, :] - B[np.newaxis, :, :], axis=2)
 
-    @staticmethod
-    def _kron_reduction(z: Component, num_neutral: int):
-        n_phases = len(z) - num_neutral
-        z_aa = z[:n_phases, :n_phases]
-        z_an = z[:n_phases, n_phases:]
-        z_na = z[n_phases:, :n_phases]
-        z_nn = z[n_phases:, n_phases:]
-
-        z_reduced = np.squeeze(z_aa - z_an @ np.linalg.inv(z_nn) @ z_na)
-
-        if np.prod(z_reduced.shape) == 1:
-            return np.array([[z_reduced]])
-        else:
-            return z_reduced
-
     def _calculate_impedance_matrix(
         self,
         dist_matrix: npt.NDArray,
         resistance_arr: list[float] | npt.NDArray,
-        num_neutral: int,
         freq: float = 60.0,
         resistivity: float = 100.0,
     ):
         log_term = np.log(1 / dist_matrix) + 7.6786 + 0.5 * np.log(resistivity / freq)
         z = freq * 0.00158836 + 1j * freq * 0.00202237 * log_term
         z[np.diag_indices(len(resistance_arr))] += resistance_arr
-        if num_neutral:
-            return self._kron_reduction(z, num_neutral)
-        else:
-            return z
+        return z
 
     def _calculate_capacitance_matrix(
         self,
         coords: list[tuple[float, float]],
         dist_matrix: npt.NDArray,
-        num_neutral,
     ):
         permittivity = 0.01424 * self.insulation.value
         reflections = coords * np.array([1, -1])
         s = self._pairwise_distances(coords, reflections)
         p = 1 / (2 * np.pi * permittivity) * np.log(s / dist_matrix)
-        return np.linalg.inv(self._kron_reduction(p, num_neutral))
+        return np.linalg.inv(p)
 
     def _get_branch_info(self):
         coordinates = np.array(
@@ -157,17 +137,17 @@ class GeometryBranchEquipment(Component):
         dist_matrix[dist_matrix == 0] = rad
         diag_real_values = np.array([r_c] * n_cond + [r_cn] * n_neut)
 
-        z_reduced = self._calculate_impedance_matrix(
-            dist_matrix, diag_real_values, n_neut, frequency_hz, soil_resistivity_ohm_m
+        z_calc = self._calculate_impedance_matrix(
+            dist_matrix, diag_real_values, frequency_hz, soil_resistivity_ohm_m
         )
         np.fill_diagonal(dist_matrix, radii)
-        c_reduced = self._calculate_capacitance_matrix(coords, dist_matrix, n_neut)
-        np.fill_diagonal(c_reduced, ys)
+        c_calc = self._calculate_capacitance_matrix(coords, dist_matrix)
+        np.fill_diagonal(c_calc, ys)
 
         return MatrixImpedanceBranchEquipment(
-            r_matrix=ResistancePULength(np.real(z_reduced), "ohm/mile"),
-            x_matrix=ReactancePULength(np.imag(z_reduced), "ohm/mile"),
-            c_matrix=CapacitancePULength(c_reduced, "microfarad/mile"),
+            r_matrix=ResistancePULength(np.real(z_calc), "ohm/mile"),
+            x_matrix=ReactancePULength(np.imag(z_calc), "ohm/mile"),
+            c_matrix=CapacitancePULength(c_calc, "microfarad/mile"),
             ampacity=ampacity.to("ampere").magnitude,
             construction=LineType.OVERHEAD
             if np.mean(self.vertical_positions) > 0
@@ -177,7 +157,7 @@ class GeometryBranchEquipment(Component):
         )
 
     def _conductor_config(
-        self, num_neutral: int, frequency_hz: float = 60, soil_resistivity_ohm_m: float = 100
+        self, frequency_hz: float = 60, soil_resistivity_ohm_m: float = 100
     ) -> MatrixImpedanceBranchEquipment:
         coords, gmrs, resistance, ampacity, radii = self._get_branch_info()
 
@@ -185,15 +165,15 @@ class GeometryBranchEquipment(Component):
         dist_matrix = np.linalg.norm(diff, axis=2)
         np.fill_diagonal(dist_matrix, gmrs)
 
-        z_reduced = self._calculate_impedance_matrix(
-            dist_matrix, resistance, num_neutral, frequency_hz, soil_resistivity_ohm_m
+        z_calc = self._calculate_impedance_matrix(
+            dist_matrix, resistance, frequency_hz, soil_resistivity_ohm_m
         )
         np.fill_diagonal(dist_matrix, radii)
-        c_reduced = self._calculate_capacitance_matrix(coords, dist_matrix, num_neutral)
+        c_calc = self._calculate_capacitance_matrix(coords, dist_matrix)
         return MatrixImpedanceBranchEquipment(
-            r_matrix=ResistancePULength(np.real(z_reduced), "ohm/mile"),
-            x_matrix=ReactancePULength(np.imag(z_reduced), "ohm/mile"),
-            c_matrix=CapacitancePULength(c_reduced, "microfarad/mile"),
+            r_matrix=ResistancePULength(np.real(z_calc), "ohm/mile"),
+            x_matrix=ReactancePULength(np.imag(z_calc), "ohm/mile"),
+            c_matrix=CapacitancePULength(c_calc, "microfarad/mile"),
             ampacity=ampacity.to("ampere").magnitude,
             construction=LineType.OVERHEAD
             if np.mean(self.vertical_positions) > 0
@@ -203,15 +183,12 @@ class GeometryBranchEquipment(Component):
         )
 
     def to_matrix_representation(
-        self, num_neutral: int, frequency_hz: float = 60, soil_resistivity_ohm_m: float = 100
+        self, frequency_hz: float = 60, soil_resistivity_ohm_m: float = 100
     ) -> MatrixImpedanceBranchEquipment:
         """Convert geometry branch equipment to matrix representation."""
-        if num_neutral >= len(self.conductors):
-            msg = f"Number of neutrals ({num_neutral}) should be less than the total number of conductors ({len(self.conductors)})"
-            raise ValueError(msg)
 
         if isinstance(self.conductors[0], BareConductorEquipment):
-            return self._conductor_config(num_neutral, frequency_hz, soil_resistivity_ohm_m)
+            return self._conductor_config(frequency_hz, soil_resistivity_ohm_m)
         elif isinstance(self.conductors[0], ConcentricCableEquipment):
             return self._concentric_cable_config(frequency_hz, soil_resistivity_ohm_m)
         else:

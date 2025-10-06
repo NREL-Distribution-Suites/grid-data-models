@@ -24,7 +24,7 @@ from gdm.distribution.components.base.distribution_transformer_base import (
 )
 from gdm.distribution.enums import ColorNodeBy, ColorLineBy, PlotingStyle, MapType
 from gdm.distribution.enums import Phase
-from gdm.distribution.components import DistributionBus, GeometryBranch
+from gdm.distribution.components import DistributionBus, GeometryBranch, MatrixImpedanceBranch
 from gdm.distribution.components.base.distribution_switch_base import (
     DistributionSwitchBase,
 )
@@ -41,6 +41,7 @@ from gdm.exceptions import (
     NonuniqueCommponentsTypesInParallel,
     MultipleOrEmptyVsourceFound,
 )
+from infrasys.exceptions import ISNotStored
 
 
 class UserAttributes(BaseModel):
@@ -829,10 +830,27 @@ class DistributionSystem(System):
             impedence_branch = branch.to_matrix_representation(
                 frequency_hz, soil_resistivity_ohm_m
             )
-            self.remove_component(branch, cascade_down=True)
+            try:
+                self.remove_component(branch, cascade_down=True)
+            except ISNotStored:
+                try:
+                    self.remove_component(branch, cascade_down=False)
+                except ISNotStored:
+                    pass
             self.add_component(impedence_branch)
+
         self.auto_add_composed_components = auto_add
         logger.info(f"GeometryBranch models converted -> {len(branches)}")
+
+    def kron_reduce(self, frequency_hz: float = 60, soil_resistivity_ohm_m: float = 100):
+        self.convert_geometry_to_matrix_representation(frequency_hz, soil_resistivity_ohm_m)
+        branches = list(self.get_components(MatrixImpedanceBranch))
+        for branch in branches:
+            branch.kron_reduce()
+
+        for bus in self.get_components(DistributionBus):
+            if Phase.N in bus.phases:
+                bus.phases = [p for p in bus.phases if p != Phase.N]
 
     @staticmethod
     def get_cycles(graph: nx.MultiDiGraph | nx.MultiGraph) -> list[list[str]]:

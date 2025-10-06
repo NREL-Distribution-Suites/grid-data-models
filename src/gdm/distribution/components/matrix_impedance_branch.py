@@ -31,12 +31,17 @@ class MatrixImpedanceBranch(DistributionBranchBase):
             self.equipment.x_matrix,
             self.equipment.c_matrix,
         ]:
-            ph_wo_neutral = set(self.phases) - set(Phase.N)
-            if set(mat.shape) != {len(ph_wo_neutral)}:
+            if set(mat.shape) != {len(self.phases)}:
                 msg = f"Length of matrix {mat=} did not match number of phases {self.phases=}"
                 raise ValueError(msg)
 
         return self
+
+    def kron_reduce(self) -> None:
+        """Kron reduce the branch to remove neutral."""
+
+        self.equipment.kron_reduce(self.phases)
+        self.phases = [p for p in self.phases if p != Phase.N]
 
     @classmethod
     def example(cls) -> "MatrixImpedanceBranch":
