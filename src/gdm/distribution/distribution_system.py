@@ -436,19 +436,25 @@ class DistributionSystem(System):
         return split_phase_map
 
     def _build_edge_geodataframe(self, graph) -> gpd.GeoDataFrame:
-        """Returns geo dataframes for the edges
+        """
+        Builds a GeoDataFrame containing edge information for distribution edges.
 
-        Returns
-        -------
-        gpd.GeoDataFrame
-           geodataframe with edge info
+        This method collects data from all distribution edge components, including
+        their names, types, lengths, phases, and coordinates. It constructs
+        a GeoDataFrame with this information, using the bus coordinates to create
+        line geometries. The coordinate reference system (CRS) is determined from
+        the bus data, defaulting to EPSG:4326 if not specified.
+
+        Returns:
+            gpd.GeoDataFrame: A GeoDataFrame with edge information and geometries.
         """
         edge_data = defaultdict(list)
+        system_crs = None
         for u, v, data in graph.edges(data=True):
             bus1 = self.get_component(DistributionBus, u)
             bus2 = self.get_component(DistributionBus, v)
-            x1, x2 = bus1.coordinate.x, bus2.coordinate.x
-            y1, y2 = bus1.coordinate.y, bus2.coordinate.y
+            x1, y1 = bus1.coordinate.x, bus1.coordinate.y
+            x2, y2 = bus2.coordinate.x, bus2.coordinate.y
 
             if not ((x1 == 0 and y1 == 0) or (x2 == 0 and y2 == 0)):
                 component = self.get_component(data["type"], data["name"])
@@ -463,15 +469,18 @@ class DistributionSystem(System):
                 edge_data["Name"].append(data["name"])
                 edge_data["Length"].append(length)
                 edge_data["Type"].append(data["type"].__name__)
-                edge_data["Latitude"].append([x1, x2])
-                edge_data["Longitude"].append([bus1.coordinate.y, bus2.coordinate.y])
+                edge_data["X"].append([x1, x2])
+                edge_data["Y"].append([y1, y2])
+                system_crs = bus1.coordinate.crs
 
         edge_df = pd.DataFrame(edge_data)
         geometry = [
-            LineString([Point(xy) for xy in zip(*xys)])
-            for xys in zip(edge_df["Longitude"], edge_df["Latitude"])
+            LineString([Point(x, y) for x, y in zip(xs, ys)])
+            for xs, ys in zip(edge_df["X"], edge_df["Y"])
         ]
-        gdf_edges = gpd.GeoDataFrame(edge_df, geometry=geometry, crs="EPSG:4326")
+        gdf_edges = gpd.GeoDataFrame(
+            edge_df, geometry=geometry, crs="EPSG:4326" if system_crs is None else system_crs
+        )
         return gdf_edges
 
     def _build_node_geodataframe(self) -> gpd.GeoDataFrame:
@@ -495,14 +504,14 @@ class DistributionSystem(System):
                 node_data["Type"].append(DistributionBus.__name__)
                 node_data["kV"].append(bus.rated_voltage.to("kilovolt").magnitude)
                 node_data["Phases"].append(",".join([phs.value for phs in bus.phases]))
-                node_data["Latitude"].append(bus.coordinate.x)
-                node_data["Longitude"].append(bus.coordinate.y)
+                node_data["X"].append(bus.coordinate.x)
+                node_data["Y"].append(bus.coordinate.y)
                 system_crs = bus.coordinate.crs
 
         nodes_df = pd.DataFrame(node_data)
         gdf_nodes = gpd.GeoDataFrame(
             nodes_df,
-            geometry=gpd.points_from_xy(nodes_df.Longitude, nodes_df.Latitude),
+            geometry=gpd.points_from_xy(nodes_df.X, nodes_df.Y),
             crs="EPSG:4326" if system_crs is None else system_crs,
         )
         return gdf_nodes
@@ -567,18 +576,17 @@ class DistributionSystem(System):
         -----
         - The method uses the `to_gdf` method to generate the GeoDataFrame representation
         of the distribution system.
-        - The coordinate reference system is set to EPSG:4326 for compatibility with most
-        geographic information systems.
+        - The coordinate reference system (CRS) is determined from
+        the distribution system bus data, defaulting to EPSG:4326 if not specified.
 
         Logs
         ----
         - Logs the completion of the GeoJSON export process.
         """
-        logger.info(f"Exporting GeoJSON to {export_file}")
         export_file = Path(export_file)
         system_gdf = self.to_gdf()
-        with open(export_file, "w") as f:
-            f.write(system_gdf.to_json())
+        system_gdf.to_file(export_file, driver="GeoJSON")
+        logger.info(f"GeoJSON export completed in CRS {system_gdf.crs}: {export_file}")
 
     def plot(
         self,
