@@ -1,17 +1,29 @@
 from collections import Counter
 
-from pydantic import BaseModel, model_validator
+from pydantic import (
+    GetCoreSchemaHandler,
+    model_validator,
+    SkipValidation,
+    ConfigDict,
+    BaseModel,
+)
+from pydantic_core import core_schema
+
 from semver import Version
 
 from gdm.distribution.upgrade_handler.from__2_0_1__to__2_1_2 import from__2_0_1__to__2_1_2
 from gdm.distribution.upgrade_handler.from__2_1_2__to__2_1_3 import from__2_1_2__to__2_1_3
 from gdm.distribution.upgrade_handler.from__2_1_3__to__2_1_4 import from__2_1_3__to__2_1_4
+from gdm.distribution.upgrade_handler.from__2_1_4__to__2_1_5 import from__2_1_4__to__2_1_5
 
 
 class SemanticVersion(Version):
     @classmethod
-    def __get_validators__(cls):
-        yield cls.parse
+    def __get_pydantic_core_schema__(cls, source_type, handler: GetCoreSchemaHandler):
+        return core_schema.with_info_after_validator_function(
+            cls.parse,  # your parsing function
+            core_schema.str_schema(),  # input type is a string
+        )
 
     @classmethod
     def __get_pydantic_json_schema__(cls, field_schema):
@@ -19,12 +31,11 @@ class SemanticVersion(Version):
 
 
 class UpgradeSchema(BaseModel):
-    method: callable
+    method: SkipValidation
     from_version: SemanticVersion
     to_version: SemanticVersion
 
-    class Config:
-        arbitrary_types_allowed = True
+    model_config = ConfigDict(arbitrary_types_allowed=True)
 
     @model_validator(mode="after")
     def validate_version(self):
@@ -51,6 +62,11 @@ class UpgradeHandler(BaseModel):
             method=from__2_1_3__to__2_1_4,
             from_version="2.1.3",
             to_version="2.1.4",
+        ),
+        UpgradeSchema(
+            method=from__2_1_4__to__2_1_5,
+            from_version="2.1.4",
+            to_version="2.1.5",
         ),
     ]
 

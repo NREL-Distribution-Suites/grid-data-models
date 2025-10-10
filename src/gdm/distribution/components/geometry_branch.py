@@ -20,6 +20,10 @@ from gdm.quantities import Voltage, Distance
 
 from gdm.distribution.components.matrix_impedance_branch import MatrixImpedanceBranch
 
+from gdm.distribution.equipment import (
+    ConcentricCableEquipment,
+)
+
 
 class GeometryBranch(DistributionBranchBase):
     """Data model for distribution branches based on line geometry."""
@@ -65,6 +69,11 @@ class GeometryBranch(DistributionBranchBase):
         - This conversion is essential for systems that require matrix impedance representations
         for detailed electrical analysis.
         """
+        equipment = self.equipment.to_matrix_representation(frequency_hz, soil_resistivity_ohm_m)
+        if isinstance(self.equipment.conductors[0], ConcentricCableEquipment):
+            phases = self.phases + [Phase.N for _ in self.phases]
+            equipment.kron_reduce(phases)
+
         return MatrixImpedanceBranch(
             uuid=self.uuid,
             buses=self.buses,
@@ -73,9 +82,7 @@ class GeometryBranch(DistributionBranchBase):
             substation=self.substation,
             feeder=self.feeder,
             name=self.name,
-            equipment=self.equipment.to_matrix_representation(
-                self.phases.count(Phase.N), frequency_hz, soil_resistivity_ohm_m
-            ),
+            equipment=equipment,
         )
 
     @classmethod

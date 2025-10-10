@@ -1,8 +1,10 @@
 """This module contains matrix impedance branch equipment."""
+import numpy as np
 
 from gdm.distribution.equipment.base.matrix_impedance_branch_equipment_base import (
     MatrixImpedanceBranchEquipmentBase,
 )
+from gdm.distribution.enums import Phase
 from gdm.quantities import (
     CapacitancePULength,
     ResistancePULength,
@@ -12,6 +14,33 @@ from gdm.quantities import (
 
 
 class MatrixImpedanceBranchEquipment(MatrixImpedanceBranchEquipmentBase):
+    @staticmethod
+    def _reduce(h: np.ndarray, keep_idx: list[Phase], elim_idx: list[Phase]) -> np.ndarray:
+        h_aa = h[np.ix_(keep_idx, keep_idx)]
+        h_an = h[np.ix_(keep_idx, elim_idx)]
+        h_na = h[np.ix_(elim_idx, keep_idx)]
+        h_nn = h[np.ix_(elim_idx, elim_idx)]
+
+        h_reduced = np.squeeze(h_aa - h_an @ np.linalg.inv(h_nn) @ h_na)
+
+        if np.prod(h_reduced.shape) == 1:
+            h_reduced = np.array([[h_reduced]])
+        return h_reduced
+
+    def kron_reduce(self, phases: list[Phase]) -> "MatrixImpedanceBranchEquipment":
+        z = (self.r_matrix + 1j * self.x_matrix).magnitude
+
+        keep = [p for p in phases if p != Phase.N]
+        keep_idx = [phases.index(p) for p in keep]
+        elim_idx = [i for i in range(len(phases)) if i not in keep_idx]
+
+        z = self._reduce(z, keep_idx, elim_idx)
+        c = self._reduce(self.c_matrix.magnitude, keep_idx, elim_idx)
+
+        object.__setattr__(self, "r_matrix", ResistancePULength(np.real(z), self.r_matrix.units))
+        object.__setattr__(self, "x_matrix", ReactancePULength(np.imag(z), self.x_matrix.units))
+        object.__setattr__(self, "c_matrix", CapacitancePULength(c, self.c_matrix.units))
+
     @classmethod
     def example(cls) -> "MatrixImpedanceBranchEquipment":
         """Example for matrix impedance model."""
