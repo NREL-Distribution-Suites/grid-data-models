@@ -850,7 +850,17 @@ class DistributionSystem(System):
 
         for bus in self.get_components(DistributionBus):
             if Phase.N in bus.phases:
-                bus.phases = [p for p in bus.phases if p != Phase.N]
+                safe_to_remove_neutral = True
+                for component_types in self.get_component_types():
+                    connected_components = self.get_bus_connected_components(
+                        bus.name, component_types
+                    )
+                    if connected_components:
+                        for component in connected_components:
+                            if hasattr(component, "phases") and Phase.N in component.phases:
+                                component.phases = [p for p in component.phases if p != Phase.N]
+                if safe_to_remove_neutral:
+                    bus.phases = [p for p in bus.phases if p != Phase.N]
 
     @staticmethod
     def get_cycles(graph: nx.MultiDiGraph | nx.MultiGraph) -> list[list[str]]:

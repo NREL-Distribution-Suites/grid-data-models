@@ -23,13 +23,25 @@ from gdm.distribution.sys_functools import (
 def _get_three_phase_buses(
     dist_system: DistributionSystem,
 ) -> list[str]:
-    return [
+    three_phase_buses = [
         bus.name
         for bus in dist_system.get_components(
             DistributionBus,
             filter_func=lambda x: set((Phase.A, Phase.B, Phase.C)).issubset(x.phases),
         )
     ]
+    graph = dist_system.get_undirected_graph()
+    subgraph = graph.subgraph(three_phase_buses)
+    connected_components = list(nx.connected_components(subgraph))
+
+    max_size = 0
+    max_size_set = three_phase_buses
+    for island in connected_components:
+        if len(island) > max_size:
+            max_size = len(island)
+            max_size_set = island
+
+    return max_size_set
 
 
 def _get_primary_buses(dist_system: DistributionSystem) -> list[str]:
