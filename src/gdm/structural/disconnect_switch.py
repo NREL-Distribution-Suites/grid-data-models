@@ -70,6 +70,7 @@ class DisconnectSwitch(BaseEquipment):
     def check_switching_sequence(cls, v, values):
         if v is not None and values.get("pole_configuration") == SwitchPoleConfiguration.SINGLE_POLE:
             raise ValueError("Switching sequence does not apply to single pole disconnect switches")
+        return v
 
 class BaseDisconnectSwitch(Component):
     electrical_properties: None
