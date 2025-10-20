@@ -2,7 +2,7 @@ from pathlib import Path
 import shutil
 import click
 
-from gdm.distribution.network.reducer import reduce_to_three_phase_system
+from gdm.distribution.model_reduction.reducer import reduce_to_three_phase_system
 from gdm.distribution.distribution_system import DistributionSystem
 from gdm.exceptions import FolderAlreadyExistsError
 
@@ -35,12 +35,12 @@ from gdm.exceptions import FolderAlreadyExistsError
 )
 @click.option(
     "-ts",
-    "--timeseries",
+    "--time-series",
     is_flag=True,
     default=False,
     help="Delete target GDM file forcefully if exists.",
 )
-def reduce(gdm_file: str, target_file: str, force: bool, reducer: str, timeseries: bool):
+def reduce(gdm_file: str, target_file: str, force: bool, reducer: str, time_series: bool):
     target_file: Path = Path(target_file)
     if force and target_file.exists():
         shutil.rmtree(target_file.parent / f"{target_file.stem}_time_series")
@@ -54,6 +54,6 @@ def reduce(gdm_file: str, target_file: str, force: bool, reducer: str, timeserie
     sys = DistributionSystem.from_json(gdm_file)
     reducer_func = {"three_phase": reduce_to_three_phase_system}
     new_sys_name = sys.name + "_reduced" if sys.name else None
-    new_sys = reducer_func[reducer](sys, new_sys_name, timeseries)
+    new_sys = reducer_func[reducer](sys, new_sys_name, time_series)
     new_sys.to_json(target_file)
     click.echo(str(target_file))

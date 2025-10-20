@@ -238,7 +238,7 @@ class DistributionSystem(System):
         self,
         bus_names: list[str],
         name: str,
-        keep_timeseries: bool = False,
+        keep_time_series: bool = False,
         time_series_type: Type[TimeSeriesData] = SingleTimeSeries,
     ) -> "DistributionSystem":
         """Method to get subsystem from list of buses.
@@ -249,8 +249,8 @@ class DistributionSystem(System):
             List of bus names
         name: str
             Name of the subsystem.
-        keep_timeseries: bool
-            Set this flag to retain timeseries data associated with the component.
+        keep_time_series: bool
+            Set this flag to retain time series data associated with the component.
         time_series_type: Type[TimeSeriesData]
             Type of time series data. Defaults to: SingleTimeSeries
         Returns
@@ -270,7 +270,7 @@ class DistributionSystem(System):
             parent_components = self.list_parent_components(self.get_component(DistributionBus, u))
             self._add_to_subsystem(subtree_system, parent_components, bus_names)
 
-        if keep_timeseries:
+        if keep_time_series:
             for comp in subtree_system.get_components(
                 Component,
                 filter_func=lambda x: self.has_time_series(x, time_series_type=time_series_type),

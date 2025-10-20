@@ -14,9 +14,9 @@ from gdm.distribution.distribution_system import (
 )
 from gdm.distribution.enums import Phase
 from gdm.distribution.sys_functools import (
-    get_aggregated_load_timeseries,
-    get_aggregated_solar_timeseries,
-    get_aggregated_battery_timeseries,
+    get_aggregated_load_time_series,
+    get_aggregated_solar_time_series,
+    get_aggregated_battery_time_series,
 )
 
 
@@ -73,13 +73,13 @@ def _reduce_system(
     dist_system: DistributionSystem,
     bus_subset: list[DistributionBus],
     name: str,
-    agg_timeseries: bool = False,
+    agg_time_series: bool = False,
     time_series_type: Type[TimeSeriesData] = SingleTimeSeries,
 ) -> DistributionSystem:
     reduced_system = dist_system.get_subsystem(
         bus_subset,
         name,
-        keep_timeseries=agg_timeseries,
+        keep_time_series=agg_time_series,
         time_series_type=time_series_type,
     )
 
@@ -87,9 +87,9 @@ def _reduce_system(
     original_tree = dist_system.get_directed_graph()
     reduced_network_tree = original_tree.subgraph(bus_subset)
     ts_agg_func_mapper: dict[Union[Type[DistributionLoad], Type[DistributionSolar]], Callable] = {
-        DistributionLoad: get_aggregated_load_timeseries,
-        DistributionSolar: get_aggregated_solar_timeseries,
-        DistributionBattery: get_aggregated_battery_timeseries,
+        DistributionLoad: get_aggregated_load_time_series,
+        DistributionSolar: get_aggregated_solar_time_series,
+        DistributionBattery: get_aggregated_battery_time_series,
     }
     for node in reduced_network_tree.nodes():
         if reduced_network_tree.out_degree(node) < original_tree.out_degree(node):
@@ -114,7 +114,7 @@ def _reduce_system(
                 # print(model_type.__name__, agg_component)
                 reduced_system.add_component(agg_component)
                 agg_comp = reduced_system.get_component(model_type, agg_component.name)
-                if agg_timeseries:
+                if agg_time_series:
                     comps = list(subtree_system.get_components(model_type))
                     ts_metadata = dist_system.list_time_series_metadata(
                         comps[0], time_series_type=time_series_type
@@ -134,18 +134,18 @@ def _reduce_system(
 def reduce_to_three_phase_system(
     dist_system: DistributionSystem,
     name: str,
-    agg_timeseries: bool = False,
+    agg_time_series: bool = False,
     time_series_type: Type[TimeSeriesData] = SingleTimeSeries,
 ) -> DistributionSystem:
     three_phase_buses = _get_three_phase_buses(dist_system)
-    return _reduce_system(dist_system, three_phase_buses, name, agg_timeseries, time_series_type)
+    return _reduce_system(dist_system, three_phase_buses, name, agg_time_series, time_series_type)
 
 
 def reduce_to_primary_system(
     dist_system: DistributionSystem,
     name: str,
-    agg_timeseries: bool = False,
+    agg_time_series: bool = False,
     time_series_type: Type[TimeSeriesData] = SingleTimeSeries,
 ) -> DistributionSystem:
     primary_buses = _get_primary_buses(dist_system)
-    return _reduce_system(dist_system, primary_buses, name, agg_timeseries, time_series_type)
+    return _reduce_system(dist_system, primary_buses, name, agg_time_series, time_series_type)

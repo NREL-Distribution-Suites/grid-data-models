@@ -5,8 +5,8 @@ import json
 import gdm.version
 
 
-def test_version_control(tmp_path, distribution_system_with_single_timeseries):
-    system: DistributionSystem = distribution_system_with_single_timeseries
+def test_version_control(tmp_path, distribution_system_with_single_time_series):
+    system: DistributionSystem = distribution_system_with_single_time_series
     assert system.data_format_version == gdm.version.VERSION
     system.to_json(tmp_path / "model.json")
     with open(tmp_path / "model.json", "r") as f:
