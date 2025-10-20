@@ -9,8 +9,8 @@ from infrasys import NonSequentialTimeSeries, SingleTimeSeries
 from gdm.distribution.distribution_system import DistributionSystem
 from gdm.distribution.components import DistributionLoad, DistributionSolar
 from gdm.distribution.sys_functools import (
-    get_combined_solar_timeseries_df,
-    get_combined_load_timeseries_df,
+    get_combined_solar_time_series_df,
+    get_combined_load_time_series_df,
 )
 from gdm.exceptions import (
     IncompatibleTimeSeries,
@@ -28,21 +28,21 @@ class CustomTimeSeries:
     "A dummy time series class for test"
 
 
-def process_timeseries(df: pd.DataFrame, value_column: str) -> pd.DataFrame:
+def process_time_series(df: pd.DataFrame, value_column: str) -> pd.DataFrame:
     """Aggregate and pivot the time series DataFrame."""
     grouped_df = df.groupby(["variable_name", "timestamp"], as_index=False).sum([value_column])
     pivoted_df = grouped_df.pivot(index="timestamp", columns="variable_name", values=value_column)
     return pivoted_df
 
 
-def test_combined_single_timeseries_on_smartds(distribution_system_with_single_timeseries):
+def test_combined_single_time_series_on_smartds(distribution_system_with_single_time_series):
     """Test the integration of load and solar time series with OpenDSS results."""
 
-    gdm_sys: DistributionSystem = distribution_system_with_single_timeseries
+    gdm_sys: DistributionSystem = distribution_system_with_single_time_series
 
     # Process load and solar time series
-    load_df = process_timeseries(
-        get_combined_load_timeseries_df(
+    load_df = process_time_series(
+        get_combined_load_time_series_df(
             gdm_sys,
             {"active_power": "kilowatts", "reactive_power": "kilovar"},
             time_series_type=SingleTimeSeries,
@@ -62,8 +62,8 @@ def test_combined_single_timeseries_on_smartds(distribution_system_with_single_t
     assert np.array_equal(load_df["active_power"].values, np.array([1, 2, 3, 4, 5]) * num_loads)
     assert np.array_equal(load_df["reactive_power"].values, np.array(total_reactive_power))
 
-    solar_df = process_timeseries(
-        get_combined_solar_timeseries_df(
+    solar_df = process_time_series(
+        get_combined_solar_time_series_df(
             gdm_sys, {"irradiance": "kilowatts"}, time_series_type=SingleTimeSeries
         ),
         value_column="value",
@@ -77,16 +77,16 @@ def test_combined_single_timeseries_on_smartds(distribution_system_with_single_t
     )
 
 
-def test_combined_nonsequential_timeseries_on_smartds(
-    distribution_system_with_nonsequential_timeseries,
+def test_combined_nonsequential_time_series_on_smartds(
+    distribution_system_with_nonsequential_time_series,
 ):
     """Test the integration of load and solar time series with OpenDSS results."""
 
-    gdm_sys: DistributionSystem = distribution_system_with_nonsequential_timeseries
+    gdm_sys: DistributionSystem = distribution_system_with_nonsequential_time_series
 
     # Process load and solar time series
-    load_df = process_timeseries(
-        get_combined_load_timeseries_df(
+    load_df = process_time_series(
+        get_combined_load_time_series_df(
             gdm_sys,
             {"active_power": "kilowatts", "reactive_power": "kilovar"},
             time_series_type=NonSequentialTimeSeries,
@@ -106,8 +106,8 @@ def test_combined_nonsequential_timeseries_on_smartds(
     assert np.array_equal(load_df["active_power"].values, np.array([1, 2, 3, 4, 5]) * num_loads)
     assert np.array_equal(load_df["reactive_power"].values, np.array(total_reactive_power))
 
-    solar_df = process_timeseries(
-        get_combined_solar_timeseries_df(
+    solar_df = process_time_series(
+        get_combined_solar_time_series_df(
             gdm_sys, {"irradiance": "kilowatts"}, time_series_type=NonSequentialTimeSeries
         ),
         value_column="value",
@@ -121,19 +121,19 @@ def test_combined_nonsequential_timeseries_on_smartds(
     )
 
 
-def test_incompatible_timeseries_error(distribution_system_with_nonsequential_timeseries):
-    """Test to raise error when incompatible timeseries is passed"""
-    gdm_sys = distribution_system_with_nonsequential_timeseries
+def test_incompatible_time_series_error(distribution_system_with_nonsequential_time_series):
+    """Test to raise error when incompatible time series is passed"""
+    gdm_sys = distribution_system_with_nonsequential_time_series
 
     with pytest.raises(IncompatibleTimeSeries):
-        get_combined_load_timeseries_df(
+        get_combined_load_time_series_df(
             gdm_sys,
             {"active_power": "kilowatts", "reactive_power": "kilovar"},
             time_series_type=CustomTimeSeries,
         )
 
     with pytest.raises(IncompatibleTimeSeries):
-        get_combined_solar_timeseries_df(
+        get_combined_solar_time_series_df(
             gdm_sys,
             {"irradiance": "kilowatts"},
             time_series_type=CustomTimeSeries,
@@ -141,10 +141,10 @@ def test_incompatible_timeseries_error(distribution_system_with_nonsequential_ti
 
 
 def test_nocomponents_error_nonsequential_time_series(
-    distribution_system_with_nonsequential_timeseries,
+    distribution_system_with_nonsequential_time_series,
 ):
     """Test to raise error when components are not found"""
-    gdm_sys = distribution_system_with_nonsequential_timeseries
+    gdm_sys = distribution_system_with_nonsequential_time_series
 
     loads = list(gdm_sys.get_components(DistributionLoad))
     solars = list(gdm_sys.get_components(DistributionSolar))
@@ -155,14 +155,14 @@ def test_nocomponents_error_nonsequential_time_series(
         gdm_sys.remove_component(each_solar)
 
     with pytest.raises(NoComponentsFoundError):
-        get_combined_load_timeseries_df(
+        get_combined_load_time_series_df(
             gdm_sys,
             {"active_power": "kilowatts", "reactive_power": "kilovar"},
             time_series_type=NonSequentialTimeSeries,
         )
 
     with pytest.raises(NoComponentsFoundError):
-        get_combined_solar_timeseries_df(
+        get_combined_solar_time_series_df(
             gdm_sys,
             {"irradiance": "kilowatts"},
             time_series_type=NonSequentialTimeSeries,
@@ -170,10 +170,10 @@ def test_nocomponents_error_nonsequential_time_series(
 
 
 def test_nocomponents_error_single_time_series(
-    distribution_system_with_single_timeseries,
+    distribution_system_with_single_time_series,
 ):
     """Test to raise error when components are not found"""
-    gdm_sys = distribution_system_with_single_timeseries
+    gdm_sys = distribution_system_with_single_time_series
 
     loads = list(gdm_sys.get_components(DistributionLoad))
     solars = list(gdm_sys.get_components(DistributionSolar))
@@ -184,26 +184,26 @@ def test_nocomponents_error_single_time_series(
         gdm_sys.remove_component(each_solar)
 
     with pytest.raises(NoComponentsFoundError):
-        get_combined_load_timeseries_df(
+        get_combined_load_time_series_df(
             gdm_sys,
             {"active_power": "kilowatts", "reactive_power": "kilovar"},
             time_series_type=SingleTimeSeries,
         )
 
     with pytest.raises(NoComponentsFoundError):
-        get_combined_solar_timeseries_df(
+        get_combined_solar_time_series_df(
             gdm_sys,
             {"irradiance": "kilowatts"},
             time_series_type=SingleTimeSeries,
         )
 
 
-def test_time_series_data_error_nonsequential(distribution_system_with_nonsequential_timeseries):
+def test_time_series_data_error_nonsequential(distribution_system_with_nonsequential_time_series):
     """Test to raise error when time series data is missing"""
-    gdm_sys = distribution_system_with_nonsequential_timeseries
+    gdm_sys = distribution_system_with_nonsequential_time_series
 
     with pytest.raises(NoTimeSeriesDataFound):
-        get_combined_load_timeseries_df(
+        get_combined_load_time_series_df(
             gdm_sys,
             {"active_power": "kilowatts", "reactive_power": "kilovar"},
             # SingleTimeSeries for NonSequentialTimeSeries gives empty metadata
@@ -211,17 +211,17 @@ def test_time_series_data_error_nonsequential(distribution_system_with_nonsequen
         )
 
     with pytest.raises(NoTimeSeriesDataFound):
-        get_combined_solar_timeseries_df(
+        get_combined_solar_time_series_df(
             gdm_sys,
             {"irradiance": "kilowatts"},
             time_series_type=SingleTimeSeries,
         )
 
 
-def test_time_series_data_error_single_time_series(distribution_system_with_single_timeseries):
-    gdm_sys2 = distribution_system_with_single_timeseries
+def test_time_series_data_error_single_time_series(distribution_system_with_single_time_series):
+    gdm_sys2 = distribution_system_with_single_time_series
     with pytest.raises(NoTimeSeriesDataFound):
-        get_combined_load_timeseries_df(
+        get_combined_load_time_series_df(
             gdm_sys2,
             {"active_power": "kilowatts", "reactive_power": "kilovar"},
             # SingleTimeSeries for NonSequentialTimeSeries gives empty metadata
@@ -229,7 +229,7 @@ def test_time_series_data_error_single_time_series(distribution_system_with_sing
         )
 
     with pytest.raises(NoTimeSeriesDataFound):
-        get_combined_solar_timeseries_df(
+        get_combined_solar_time_series_df(
             gdm_sys2,
             {"irradiance": "kilowatts"},
             time_series_type=NonSequentialTimeSeries,
@@ -237,12 +237,12 @@ def test_time_series_data_error_single_time_series(distribution_system_with_sing
 
 
 def test_time_series_variable_error_nonsequential_time_series(
-    distribution_system_with_nonsequential_timeseries,
+    distribution_system_with_nonsequential_time_series,
 ):
     """Test to raise error when variable of interest does not exist"""
-    gdm_sys = distribution_system_with_nonsequential_timeseries
+    gdm_sys = distribution_system_with_nonsequential_time_series
     with pytest.raises(TimeseriesVariableDoesNotExist):
-        get_combined_load_timeseries_df(
+        get_combined_load_time_series_df(
             gdm_sys,
             {"active_power": "kilowatts", "reactive_power": "kilovar"},
             var_of_interest={"active_load"},
@@ -250,7 +250,7 @@ def test_time_series_variable_error_nonsequential_time_series(
         )
 
     with pytest.raises(TimeseriesVariableDoesNotExist):
-        get_combined_solar_timeseries_df(
+        get_combined_solar_time_series_df(
             gdm_sys,
             {"irradiance": "kilowatts"},
             var_of_interest={"active_solar"},
@@ -259,13 +259,13 @@ def test_time_series_variable_error_nonsequential_time_series(
 
 
 def test_time_series_variable_error_single_time_series(
-    distribution_system_with_single_timeseries,
+    distribution_system_with_single_time_series,
 ):
     """Test to raise error when variable of interest does not exist"""
-    gdm_sys = distribution_system_with_single_timeseries
+    gdm_sys = distribution_system_with_single_time_series
 
     with pytest.raises(TimeseriesVariableDoesNotExist):
-        get_combined_load_timeseries_df(
+        get_combined_load_time_series_df(
             gdm_sys,
             {"active_power": "kilowatts", "reactive_power": "kilovar"},
             var_of_interest={"active_load"},
@@ -273,7 +273,7 @@ def test_time_series_variable_error_single_time_series(
         )
 
     with pytest.raises(TimeseriesVariableDoesNotExist):
-        get_combined_solar_timeseries_df(
+        get_combined_solar_time_series_df(
             gdm_sys,
             {"irradiance": "kilowatts"},
             var_of_interest={"active_solar"},
@@ -313,7 +313,7 @@ def test_quantity_error(simple_distribution_system):
         use_actual=False,
     )
     with pytest.raises(GDMQuantityError):
-        get_combined_load_timeseries_df(
+        get_combined_load_time_series_df(
             gdm_sys,
             {"active_power": "kilowatts", "reactive_power": "kilovar"},
             var_of_interest={"active_power"},
@@ -321,7 +321,7 @@ def test_quantity_error(simple_distribution_system):
         )
 
     with pytest.raises(GDMQuantityError):
-        get_combined_solar_timeseries_df(
+        get_combined_solar_time_series_df(
             gdm_sys,
             {"active_power": "kilowatts", "reactive_power": "kilovar"},
             var_of_interest={"irradiance"},
@@ -344,7 +344,7 @@ def test_quantity_error(simple_distribution_system):
         use_actual=True,
     )
     with pytest.raises(GDMQuantityUnitsError):
-        get_combined_solar_timeseries_df(
+        get_combined_solar_time_series_df(
             gdm_sys2,
             {"active_power": "kilowatts", "reactive_power": "kilovar"},
             var_of_interest={"active_power"},

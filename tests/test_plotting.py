@@ -12,8 +12,8 @@ def random_lat_lon():
     return lat, lon
 
 
-def test_gdf_conversion(distribution_system_with_single_timeseries, tmp_path):
-    model: DistributionSystem = distribution_system_with_single_timeseries
+def test_gdf_conversion(distribution_system_with_single_time_series, tmp_path):
+    model: DistributionSystem = distribution_system_with_single_time_series
     buses = model.get_components(DistributionBus)
     model.name = "test_model"
     for bus in buses:
@@ -36,8 +36,8 @@ def test_gdf_conversion(distribution_system_with_single_timeseries, tmp_path):
     assert (tmp_path / f"{model.name}_gdf.geojson").exists()
 
 
-def test_system_gdf_failure(distribution_system_with_single_timeseries, tmp_path):
-    model: DistributionSystem = distribution_system_with_single_timeseries
+def test_system_gdf_failure(distribution_system_with_single_time_series, tmp_path):
+    model: DistributionSystem = distribution_system_with_single_time_series
     buses = model.get_components(DistributionBus)
     model.name = "test_model"
     for bus in buses:
@@ -48,8 +48,8 @@ def test_system_gdf_failure(distribution_system_with_single_timeseries, tmp_path
         model.plot(tmp_path / "test_model_plot.html", zoom_level=1, show=False)
 
 
-def test_system_plotting(distribution_system_with_single_timeseries, tmp_path):
-    model: DistributionSystem = distribution_system_with_single_timeseries
+def test_system_plotting(distribution_system_with_single_time_series, tmp_path):
+    model: DistributionSystem = distribution_system_with_single_time_series
     buses = model.get_components(DistributionBus)
     model.name = "test_model"
     for bus in buses:
@@ -104,8 +104,8 @@ def test_system_plotting(distribution_system_with_single_timeseries, tmp_path):
         model.plot(tmp_path / "test_model_plot.html", zoom_level=1, show=False)
 
 
-def test_system_plotting_failure(distribution_system_with_single_timeseries, tmp_path):
-    model: DistributionSystem = distribution_system_with_single_timeseries
+def test_system_plotting_failure(distribution_system_with_single_time_series, tmp_path):
+    model: DistributionSystem = distribution_system_with_single_time_series
     buses = model.get_components(DistributionBus)
     model.name = "test_model"
     for bus in buses:

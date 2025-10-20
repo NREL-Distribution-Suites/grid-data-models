@@ -13,7 +13,7 @@ parts:
     - file: new_features
     - file: gdm_intro/data_models
     - file: gdm_intro/units
-    - file: gdm_intro/timeseries
+    - file: gdm_intro/time_series
     - file: dist_system/import_export
     - file: dist_system/plotting
   - caption: Advanced Usage

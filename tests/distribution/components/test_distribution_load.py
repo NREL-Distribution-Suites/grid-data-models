@@ -44,7 +44,7 @@ def test_invalid_power_system_load():
         )
 
 
-def test_timeseries_load_aggregation():
+def test_time_series_load_aggregation():
     loads = [
         DistributionLoad.example().model_copy(
             update={

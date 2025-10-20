@@ -38,11 +38,11 @@ class NoComponentsFoundError(GDMBaseException):
 
 
 class IncompatibleTimeSeries(GDMBaseException):
-    """Raised if incompatible timeseries is passed as time_series_type."""
+    """Raised if incompatible time series is passed as time_series_type."""
 
 
 class NoTimeSeriesDataFound(GDMBaseException):
-    """Raised if no timeseries data found for a component when it is expected."""
+    """Raised if no time series data found for a component when it is expected."""
 
 
 class TimeseriesVariableDoesNotExist(GDMBaseException):

@@ -6,9 +6,9 @@ from gdm.distribution import DistributionSystem
 
 
 def test_serialization_deserialization_single_time_series(
-    tmp_path, distribution_system_with_single_timeseries
+    tmp_path, distribution_system_with_single_time_series
 ):
-    system = distribution_system_with_single_timeseries
+    system = distribution_system_with_single_time_series
     components = list(system.iter_all_components())
     num_components = len(components)
 
@@ -49,9 +49,9 @@ def test_serialization_deserialization_single_time_series(
 
 
 def test_serialization_deserialization_non_sequential_time_series(
-    tmp_path, distribution_system_with_nonsequential_timeseries
+    tmp_path, distribution_system_with_nonsequential_time_series
 ):
-    system = distribution_system_with_nonsequential_timeseries
+    system = distribution_system_with_nonsequential_time_series
     components = list(system.iter_all_components())
     num_components = len(components)
 
@@ -92,13 +92,13 @@ def test_serialization_deserialization_non_sequential_time_series(
 
 
 def test_serialization_deserialization_single_time_series_with_reduction(
-    tmp_path, distribution_system_with_single_timeseries
+    tmp_path, distribution_system_with_single_time_series
 ):
-    gdm_system: DistributionSystem = distribution_system_with_single_timeseries
+    gdm_system: DistributionSystem = distribution_system_with_single_time_series
     system = reduce_to_three_phase_system(
         gdm_system,
         name="reduced_system_single_ts",
-        agg_timeseries=True,
+        agg_time_series=True,
         time_series_type=SingleTimeSeries,
     )
     components = list(system.iter_all_components())
@@ -140,13 +140,13 @@ def test_serialization_deserialization_single_time_series_with_reduction(
 
 
 def test_serialization_deserialization_non_sequential_time_series_with_reduction(
-    tmp_path, distribution_system_with_nonsequential_timeseries
+    tmp_path, distribution_system_with_nonsequential_time_series
 ):
-    gdm_system: DistributionSystem = distribution_system_with_nonsequential_timeseries
+    gdm_system: DistributionSystem = distribution_system_with_nonsequential_time_series
     system = reduce_to_three_phase_system(
         gdm_system,
         name="reduced_system_nonsequential_ts",
-        agg_timeseries=True,
+        agg_time_series=True,
         time_series_type=NonSequentialTimeSeries,
     )
     components = list(system.iter_all_components())

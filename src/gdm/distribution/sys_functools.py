@@ -32,7 +32,7 @@ from gdm.exceptions import (
 from gdm.quantities import ActivePower
 
 
-def get_timeseries_actual_data(
+def get_time_series_actual_data(
     ts_data: SingleTimeSeries | NonSequentialTimeSeries,
 ) -> Quantity:
     """Function to return denormalized load power, if normalized."""
@@ -70,9 +70,9 @@ def _get_load_power(
 
     user_attr = UserAttributes.model_validate(metadata.user_attributes)
 
-    # the denormalized data here is the timeseries multiplier of the peak
+    # the denormalized data here is the time series multiplier of the peak
     # use_actual identifies this as actual time series values rather than multiplier
-    denormalized_data = get_timeseries_actual_data(ts_data)
+    denormalized_data = get_time_series_actual_data(ts_data)
     if user_attr.use_actual:
         return denormalized_data
 
@@ -96,7 +96,7 @@ def _get_solar_power(
         msg = f"The {metadata.type} data is not a GDM quantity: {type(ts_data.data)}"
         raise GDMQuantityError(msg)
 
-    denormalized_data = get_timeseries_actual_data(ts_data)
+    denormalized_data = get_time_series_actual_data(ts_data)
 
     user_attr = UserAttributes.model_validate(metadata.user_attributes)
     if user_attr.use_actual:
@@ -117,7 +117,7 @@ def _get_solar_power(
     )
 
 
-def _check_for_timeseries_metadata_consistency(ts_metadata: list[TimeSeriesMetadata]):
+def _check_for_time_series_metadata_consistency(ts_metadata: list[TimeSeriesMetadata]):
     # Extract unique properties from ts_data
 
     user_attrs = [
@@ -129,17 +129,17 @@ def _check_for_timeseries_metadata_consistency(ts_metadata: list[TimeSeriesMetad
     # Validate uniformity across properties
     if any(len(prop) != 1 for prop in unique_props.values()):
         inconsistent_props = {k: v for k, v in unique_props.items() if len(v) > 1}
-        msg = f"Inconsistent timeseries data: {inconsistent_props}"
+        msg = f"Inconsistent time series data: {inconsistent_props}"
         raise InconsistentTimeseriesAggregation(msg)
 
 
 @singledispatch
-def _check_for_timeseries_consistency(times_series_sample, ts_list):
+def _check_for_time_series_consistency(times_series_sample, ts_list):
     msg = f"Incompatible time series model: {type(times_series_sample)}"
     raise IncompatibleTimeSeries(msg)
 
 
-@_check_for_timeseries_consistency.register(SingleTimeSeries)
+@_check_for_time_series_consistency.register(SingleTimeSeries)
 def _(times_series_sample, ts_list) -> None:
     # Extract unique properties from SingleTimeSeries list
     unique_props = {
@@ -152,12 +152,14 @@ def _(times_series_sample, ts_list) -> None:
     # Validate uniformity across properties
     if any(len(prop) != 1 for prop in unique_props.values()):
         inconsistent_props = {k: v for k, v in unique_props.items() if len(v) > 1}
-        msg = f"Inconsistent timeseries data: {inconsistent_props} for {type(times_series_sample)}"
+        msg = (
+            f"Inconsistent time series data: {inconsistent_props} for {type(times_series_sample)}"
+        )
         raise InconsistentTimeseriesAggregation(msg)
     return None
 
 
-@_check_for_timeseries_consistency.register(NonSequentialTimeSeries)
+@_check_for_time_series_consistency.register(NonSequentialTimeSeries)
 def _(times_series_sample, ts_list) -> None:
     # Extract unique properties from SingleTimeSeries list
     unique_props = {
@@ -170,12 +172,14 @@ def _(times_series_sample, ts_list) -> None:
     # Validate uniformity across properties
     if any(len(prop) != 1 for prop in unique_props.values()):
         inconsistent_props = {k: v for k, v in unique_props.items() if len(v) > 1}
-        msg = f"Inconsistent timeseries data: {inconsistent_props} for {type(times_series_sample)}"
+        msg = (
+            f"Inconsistent time series data: {inconsistent_props} for {type(times_series_sample)}"
+        )
         raise InconsistentTimeseriesAggregation(msg)
     return None
 
 
-def get_aggregated_solar_timeseries(
+def get_aggregated_solar_time_series(
     sys: DistributionSystem,
     solars: list[DistributionSolar],
     var_name: str,
@@ -188,9 +192,9 @@ def get_aggregated_solar_timeseries(
     sys: DistributionSystem
         Instance of the DistributionSystem
     solars: list[DistributionSolar]
-        List of solar for aggregating timeseries data.
+        List of solar for aggregating time series data.
     var_name: str
-        Variable name for which to combine timeseries data.
+        Variable name for which to combine time series data.
     time_series_type: Type[TimeSeriesData]
         Type of time series data. Defaults to: SingleTimeSeries
 
@@ -203,20 +207,20 @@ def get_aggregated_solar_timeseries(
         raise IncompatibleTimeSeries(msg)
 
     if var_name not in ["irradiance"]:
-        msg = f"{var_name=} is not supported for solar timeseries aggregation."
+        msg = f"{var_name=} is not supported for solar time series aggregation."
         raise UnsupportedVariableError(msg)
 
     ts_components: list[TimeSeriesData] = [
         sys.get_time_series(solar, var_name, time_series_type=time_series_type) for solar in solars
     ]
     times_series_sample = ts_components[0]
-    _check_for_timeseries_consistency(times_series_sample, ts_components)
+    _check_for_time_series_consistency(times_series_sample, ts_components)
 
     ts_metadata: list[TimeSeriesMetadata] = [
         sys.list_time_series_metadata(solar, var_name, time_series_type=time_series_type)[0]
         for solar in solars
     ]
-    _check_for_timeseries_metadata_consistency(ts_metadata)
+    _check_for_time_series_metadata_consistency(ts_metadata)
     ts_solar_data = [
         _get_solar_power(solar, ts_data, metadata)
         for solar, ts_data, metadata in zip(solars, ts_components, ts_metadata)
@@ -238,7 +242,7 @@ def get_aggregated_solar_timeseries(
         )
 
 
-def get_aggregated_battery_timeseries(
+def get_aggregated_battery_time_series(
     sys: DistributionSystem, batteries: list[DistributionBattery], var_name: str
 ) -> SingleTimeSeries:
     """Method to return combined battery time series data.
@@ -248,7 +252,7 @@ def get_aggregated_battery_timeseries(
     sys: DistributionSystem
         Instance of the DistributionSystem
     batteries: list[DistributionBattery]
-        List of battery for aggregating timeseries data.
+        List of battery for aggregating time series data.
     var_name: str
         Variable name used for time series aggregation.
 
@@ -259,11 +263,11 @@ def get_aggregated_battery_timeseries(
     ts_components: list[SingleTimeSeries] = [
         sys.get_time_series(battery, var_name) for battery in batteries
     ]
-    _check_for_timeseries_consistency(ts_components)
+    _check_for_time_series_consistency(ts_components)
     ts_metadata: list[SingleTimeSeriesMetadata] = [
         sys.list_time_series_metadata(battery, var_name)[0] for battery in batteries
     ]
-    _check_for_timeseries_metadata_consistency(ts_metadata)
+    _check_for_time_series_metadata_consistency(ts_metadata)
     ts_battery_data = [
         _get_load_power(battery, ts_data, metadata)
         for battery, ts_data, metadata in zip(batteries, ts_components, ts_metadata)
@@ -277,7 +281,7 @@ def get_aggregated_battery_timeseries(
     )
 
 
-def get_aggregated_load_timeseries(
+def get_aggregated_load_time_series(
     sys: DistributionSystem,
     loads: list[DistributionLoad],
     var_name: str,
@@ -290,7 +294,7 @@ def get_aggregated_load_timeseries(
     sys: DistributionSystem
         Instance of the DistributionSystem
     loads: list[DistributionLoad]
-        List of loads for aggregating timeseries data.
+        List of loads for aggregating time series data.
     var_name: str
         Variable name used for time series aggregation.
     time_series_type: Type[TimeSeriesData]
@@ -310,12 +314,12 @@ def get_aggregated_load_timeseries(
 
     times_series_sample = ts_components[0]
 
-    _check_for_timeseries_consistency(times_series_sample, ts_components)
+    _check_for_time_series_consistency(times_series_sample, ts_components)
     ts_metadata: list[TimeSeriesMetadata] = [
         sys.list_time_series_metadata(load, var_name, time_series_type=time_series_type)[0]
         for load in loads
     ]
-    _check_for_timeseries_metadata_consistency(ts_metadata)
+    _check_for_time_series_metadata_consistency(ts_metadata)
     ts_load_data = [
         _get_load_power(load, ts_data, metadata)
         for load, ts_data, metadata in zip(loads, ts_components, ts_metadata)
@@ -371,9 +375,9 @@ def _get_combined_single_time_series_df(
     NoComponentsFoundError
         If no components of the specified type are found.
     NoTimeSeriesDataFound
-        If no timeseries data is found for a component.
+        If no time series data is found for a component.
     TypeError
-        If timeseries data is not of type SingleTimeSeries.
+        If time series data is not of type SingleTimeSeries.
     TimeseriesVariableDoesNotExist
         If specified variables do not exist for the given component.
     """
@@ -388,7 +392,7 @@ def _get_combined_single_time_series_df(
         ts_metadata = sys.list_time_series_metadata(component, time_series_type=time_series_type)
 
         if not ts_metadata:
-            msg = f"No timeseries data found for {component=}."
+            msg = f"No time series data found for {component=}."
             raise NoTimeSeriesDataFound(msg)
 
         avail_vars = {md.variable_name for md in ts_metadata}
@@ -463,9 +467,9 @@ def _get_combined_nonsequential_time_series_df(
     NoComponentsFoundError
         If no components of the specified type are found.
     NoTimeSeriesDataFound
-        If no timeseries data is found for a component.
+        If no time series data is found for a component.
     TypeError
-        If timeseries data is not of type NonSequentialTimeSeries.
+        If time series data is not of type NonSequentialTimeSeries.
     TimeseriesVariableDoesNotExist
         If specified variables do not exist for the given component.
     """
@@ -480,7 +484,7 @@ def _get_combined_nonsequential_time_series_df(
         ts_metadata = sys.list_time_series_metadata(component, time_series_type=time_series_type)
 
         if not ts_metadata:
-            msg = f"No timeseries data found for {component=}."
+            msg = f"No time series data found for {component=}."
             raise NoTimeSeriesDataFound(msg)
 
         avail_vars = {md.variable_name for md in ts_metadata}
@@ -517,14 +521,14 @@ def _get_combined_nonsequential_time_series_df(
     return pd.concat(dfs, ignore_index=True) if dfs else pd.DataFrame()
 
 
-def get_combined_load_timeseries_df(
+def get_combined_load_time_series_df(
     sys: DistributionSystem,
     unit_conversion: dict[str, str],
     var_of_interest: set[str] = {"active_power", "reactive_power"},
     time_series_type: Type[TimeSeriesData] = SingleTimeSeries,
 ) -> pd.DataFrame:
     """
-    Function for returning combined timeseries dataframe for load components.
+    Function for returning combined time series dataframe for load components.
 
     Parameters
     ----------
@@ -559,18 +563,18 @@ def get_combined_load_timeseries_df(
             time_series_type=time_series_type,
         )
     else:
-        msg = f"get_combined_load_timeseries_df not implemented for {time_series_type.__name__}"
+        msg = f"get_combined_load_time_series_df not implemented for {time_series_type.__name__}"
         raise IncompatibleTimeSeries(msg)
 
 
-def get_combined_solar_timeseries_df(
+def get_combined_solar_time_series_df(
     sys: DistributionSystem,
     unit_conversion: dict[str, str],
     var_of_interest: set[str] = {"irradiance"},
     time_series_type: Type[TimeSeriesData] = SingleTimeSeries,
 ) -> pd.DataFrame:
     """
-    Function for returning combined timeseries dataframe for solar components.
+    Function for returning combined time series dataframe for solar components.
 
     Parameters
     ----------
@@ -607,5 +611,5 @@ def get_combined_solar_timeseries_df(
         )
         return solar_df.replace("irradiance", "active_power")
     else:
-        msg = f"get_combined_load_timeseries_df not implemented for {time_series_type.__name__}"
+        msg = f"get_combined_load_time_series_df not implemented for {time_series_type.__name__}"
         raise IncompatibleTimeSeries(msg)

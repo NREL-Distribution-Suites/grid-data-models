@@ -5,8 +5,8 @@ from infrasys.time_series_models import SingleTimeSeries, NonSequentialTimeSerie
 
 from gdm.distribution.model_reduction import reduce_to_three_phase_system, reduce_to_primary_system
 from gdm.distribution.sys_functools import (
-    get_aggregated_load_timeseries,
-    get_aggregated_solar_timeseries,
+    get_aggregated_load_time_series,
+    get_aggregated_solar_time_series,
 )
 from gdm.distribution.components import DistributionLoad, DistributionBus, DistributionSolar
 from gdm.distribution import DistributionSystem
@@ -33,30 +33,30 @@ def get_total_kvar(load: DistributionLoad):
     )
 
 
-def test_three_phase_network_reducer_with_single_timeseries(
-    distribution_system_with_single_timeseries,
+def test_three_phase_network_reducer_with_single_time_series(
+    distribution_system_with_single_time_series,
 ):
-    gdm_sys: DistributionSystem = distribution_system_with_single_timeseries
+    gdm_sys: DistributionSystem = distribution_system_with_single_time_series
     reduce_to_three_phase_system(
-        gdm_sys, name="reduced_system", agg_timeseries=True, time_series_type=SingleTimeSeries
+        gdm_sys, name="reduced_system", agg_time_series=True, time_series_type=SingleTimeSeries
     )
 
 
-def test_three_phase_network_reducer_with_nonsequential_timeseries(
-    distribution_system_with_nonsequential_timeseries,
+def test_three_phase_network_reducer_with_nonsequential_time_series(
+    distribution_system_with_nonsequential_time_series,
 ):
-    gdm_sys: DistributionSystem = distribution_system_with_nonsequential_timeseries
+    gdm_sys: DistributionSystem = distribution_system_with_nonsequential_time_series
     reduce_to_three_phase_system(
         gdm_sys,
         name="reduced_system",
-        agg_timeseries=True,
+        agg_time_series=True,
         time_series_type=NonSequentialTimeSeries,
     )
 
 
-def test_three_phase_network_reducer(distribution_system_with_single_timeseries):
-    gdm_sys: DistributionSystem = distribution_system_with_single_timeseries
-    reducer = reduce_to_three_phase_system(gdm_sys, name="reduced_system", agg_timeseries=False)
+def test_three_phase_network_reducer(distribution_system_with_single_time_series):
+    gdm_sys: DistributionSystem = distribution_system_with_single_time_series
+    reducer = reduce_to_three_phase_system(gdm_sys, name="reduced_system", agg_time_series=False)
     bus = list(reducer.get_components(DistributionBus))[0]
 
     split_phase_mapping = gdm_sys.get_split_phase_mapping()
@@ -79,16 +79,16 @@ def test_three_phase_network_reducer(distribution_system_with_single_timeseries)
         Original: {get_total_kvar(gdm_total_load)} Mvar"""
 
 
-def test_incompatible_timeseries_and_unsupported_variable_error(
-    distribution_system_with_nonsequential_timeseries,
+def test_incompatible_time_series_and_unsupported_variable_error(
+    distribution_system_with_nonsequential_time_series,
 ):
-    """Test to raise error when incompatible timeseries is passed"""
-    gdm_sys = distribution_system_with_nonsequential_timeseries
+    """Test to raise error when incompatible time series is passed"""
+    gdm_sys = distribution_system_with_nonsequential_time_series
     loads = list(gdm_sys.get_components(DistributionLoad))
     solars = list(gdm_sys.get_components(DistributionSolar))
 
     with pytest.raises(IncompatibleTimeSeries):
-        get_aggregated_load_timeseries(
+        get_aggregated_load_time_series(
             gdm_sys,
             loads,
             "active_power",
@@ -96,7 +96,7 @@ def test_incompatible_timeseries_and_unsupported_variable_error(
         )
 
     with pytest.raises(IncompatibleTimeSeries):
-        get_aggregated_solar_timeseries(
+        get_aggregated_solar_time_series(
             gdm_sys,
             solars,
             "irradiance",
@@ -104,7 +104,7 @@ def test_incompatible_timeseries_and_unsupported_variable_error(
         )
 
     with pytest.raises(UnsupportedVariableError):
-        get_aggregated_solar_timeseries(
+        get_aggregated_solar_time_series(
             gdm_sys,
             solars,
             "active_solar",
@@ -170,14 +170,14 @@ def test_time_series_consistencies(simple_distribution_system):
         use_actual=False,
     )
     with pytest.raises(InconsistentTimeseriesAggregation):
-        get_aggregated_load_timeseries(
+        get_aggregated_load_time_series(
             gdm_sys,
             loads,
             "active_power",
             time_series_type=SingleTimeSeries,
         )
     with pytest.raises(InconsistentTimeseriesAggregation):
-        get_aggregated_solar_timeseries(
+        get_aggregated_solar_time_series(
             gdm_sys,
             pvs,
             "irradiance",
@@ -209,7 +209,7 @@ def test_time_series_metadata_consistencies(simple_distribution_system):
         use_actual=True,
     )
     with pytest.raises(InconsistentTimeseriesAggregation):
-        get_aggregated_load_timeseries(
+        get_aggregated_load_time_series(
             gdm_sys,
             loads,
             "active_power",
@@ -256,7 +256,7 @@ def test_time_series_metadata_consistencies(simple_distribution_system):
         use_actual=True,
     )
     with pytest.raises(InconsistentTimeseriesAggregation):
-        get_aggregated_load_timeseries(
+        get_aggregated_load_time_series(
             gdm_sys2,
             loads,
             "active_power",
@@ -281,7 +281,7 @@ def test_time_series_unsupported_var(simple_distribution_system):
         use_actual=False,
     )
     with pytest.raises(UnsupportedVariableError):
-        get_aggregated_load_timeseries(
+        get_aggregated_load_time_series(
             gdm_sys,
             loads,
             "active_load",
@@ -289,9 +289,9 @@ def test_time_series_unsupported_var(simple_distribution_system):
         )
 
 
-def test_reduce_to_primary_system(distribution_system_with_single_timeseries):
-    gdm_sys: DistributionSystem = distribution_system_with_single_timeseries
-    reducer = reduce_to_primary_system(gdm_sys, name="reduced_system", agg_timeseries=False)
+def test_reduce_to_primary_system(distribution_system_with_single_time_series):
+    gdm_sys: DistributionSystem = distribution_system_with_single_time_series
+    reducer = reduce_to_primary_system(gdm_sys, name="reduced_system", agg_time_series=False)
     bus = list(reducer.get_components(DistributionBus))[0]
 
     split_phase_mapping = gdm_sys.get_split_phase_mapping()

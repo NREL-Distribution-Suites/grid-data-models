@@ -418,8 +418,8 @@ def sample_distribution_system() -> DistributionSystem:
     return system
 
 
-@pytest.fixture(name="distribution_system_with_single_timeseries")
-def sample_distribution_system_with_single_timeseries(
+@pytest.fixture(name="distribution_system_with_single_time_series")
+def sample_distribution_system_with_single_time_series(
     simple_distribution_system,
 ) -> DistributionSystem:
     system = simple_distribution_system
@@ -464,8 +464,8 @@ def sample_distribution_system_with_single_timeseries(
     return system
 
 
-@pytest.fixture(name="distribution_system_with_nonsequential_timeseries")
-def sample_distribution_system_with_nonsequential_timeseries(
+@pytest.fixture(name="distribution_system_with_nonsequential_time_series")
+def sample_distribution_system_with_nonsequential_time_series(
     simple_distribution_system,
 ) -> DistributionSystem:
     system = simple_distribution_system

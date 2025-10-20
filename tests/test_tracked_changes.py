@@ -54,8 +54,8 @@ def build_tracked_changes(
     return update_scenario, capacitor.uuid, load1.uuid, load2.uuid
 
 
-def test_tracked_changes_by_date(distribution_system_with_single_timeseries):
-    system: DistributionSystem = distribution_system_with_single_timeseries
+def test_tracked_changes_by_date(distribution_system_with_single_time_series):
+    system: DistributionSystem = distribution_system_with_single_time_series
 
     tracked_changes, cap_uuid, load_1_uuid, load_2_uuid = build_tracked_changes(system)
 
@@ -73,8 +73,8 @@ def test_tracked_changes_by_date(distribution_system_with_single_timeseries):
     )
 
 
-def test_scenario_update(distribution_system_with_single_timeseries):
-    system: DistributionSystem = distribution_system_with_single_timeseries
+def test_scenario_update(distribution_system_with_single_time_series):
+    system: DistributionSystem = distribution_system_with_single_time_series
     tracked_changes, cap_uuid, _, _ = build_tracked_changes(system)
     catalog = DistributionSystem(auto_add_composed_components=True)
     load_equipment = LoadEquipment.example().model_copy(
@@ -88,8 +88,8 @@ def test_scenario_update(distribution_system_with_single_timeseries):
         apply_updates_to_system(tracked_changes=tracked_changes, system=system, catalog=catalog)
 
 
-def test_scenario_update_filter_by_scenario_name(distribution_system_with_single_timeseries):
-    system: DistributionSystem = distribution_system_with_single_timeseries
+def test_scenario_update_filter_by_scenario_name(distribution_system_with_single_time_series):
+    system: DistributionSystem = distribution_system_with_single_time_series
     tracked_changes, cap_uuid, _, _ = build_tracked_changes(system)
     tracked_changes = filter_tracked_changes_by_name_and_date(
         tracked_changes, scenario_name="scenario_1"
@@ -111,9 +111,9 @@ def test_scenario_update_filter_by_scenario_name(distribution_system_with_single
 
 
 def test_scenario_update_filter_by_scenario_name_and_date(
-    distribution_system_with_single_timeseries,
+    distribution_system_with_single_time_series,
 ):
-    system: DistributionSystem = distribution_system_with_single_timeseries
+    system: DistributionSystem = distribution_system_with_single_time_series
     tracked_changes, cap_uuid, _, _ = build_tracked_changes(system)
     tracked_changes = filter_tracked_changes_by_name_and_date(
         tracked_changes,
