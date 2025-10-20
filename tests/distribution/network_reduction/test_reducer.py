@@ -14,7 +14,7 @@ from gdm.distribution import DistributionSystem
 from gdm.exceptions import (
     IncompatibleTimeSeries,
     UnsupportedVariableError,
-    InconsistentTimeseriesAggregation,
+    InconsistentTimeSeriesAggregation,
 )
 from gdm.quantities import ActivePower, Irradiance
 
@@ -169,14 +169,14 @@ def test_time_series_consistencies(simple_distribution_system):
         profile_name="pv_profile",
         use_actual=False,
     )
-    with pytest.raises(InconsistentTimeseriesAggregation):
+    with pytest.raises(InconsistentTimeSeriesAggregation):
         get_aggregated_load_time_series(
             gdm_sys,
             loads,
             "active_power",
             time_series_type=SingleTimeSeries,
         )
-    with pytest.raises(InconsistentTimeseriesAggregation):
+    with pytest.raises(InconsistentTimeSeriesAggregation):
         get_aggregated_solar_time_series(
             gdm_sys,
             pvs,
@@ -208,7 +208,7 @@ def test_time_series_metadata_consistencies(simple_distribution_system):
         profile_name="load_profile_kw1",
         use_actual=True,
     )
-    with pytest.raises(InconsistentTimeseriesAggregation):
+    with pytest.raises(InconsistentTimeSeriesAggregation):
         get_aggregated_load_time_series(
             gdm_sys,
             loads,
@@ -255,7 +255,7 @@ def test_time_series_metadata_consistencies(simple_distribution_system):
         profile_name="load_profile_kw1",
         use_actual=True,
     )
-    with pytest.raises(InconsistentTimeseriesAggregation):
+    with pytest.raises(InconsistentTimeSeriesAggregation):
         get_aggregated_load_time_series(
             gdm_sys2,
             loads,

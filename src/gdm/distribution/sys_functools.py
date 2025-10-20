@@ -20,10 +20,10 @@ from gdm.distribution.components.distribution_solar import DistributionSolar
 from gdm.distribution.components.distribution_battery import DistributionBattery
 from gdm.distribution.distribution_system import DistributionSystem, UserAttributes
 from gdm.exceptions import (
-    InconsistentTimeseriesAggregation,
+    InconsistentTimeSeriesAggregation,
     NoComponentsFoundError,
     NoTimeSeriesDataFound,
-    TimeseriesVariableDoesNotExist,
+    TimeSeriesVariableDoesNotExist,
     UnsupportedVariableError,
     IncompatibleTimeSeries,
     GDMQuantityError,
@@ -130,7 +130,7 @@ def _check_for_time_series_metadata_consistency(ts_metadata: list[TimeSeriesMeta
     if any(len(prop) != 1 for prop in unique_props.values()):
         inconsistent_props = {k: v for k, v in unique_props.items() if len(v) > 1}
         msg = f"Inconsistent time series data: {inconsistent_props}"
-        raise InconsistentTimeseriesAggregation(msg)
+        raise InconsistentTimeSeriesAggregation(msg)
 
 
 @singledispatch
@@ -155,7 +155,7 @@ def _(times_series_sample, ts_list) -> None:
         msg = (
             f"Inconsistent time series data: {inconsistent_props} for {type(times_series_sample)}"
         )
-        raise InconsistentTimeseriesAggregation(msg)
+        raise InconsistentTimeSeriesAggregation(msg)
     return None
 
 
@@ -175,7 +175,7 @@ def _(times_series_sample, ts_list) -> None:
         msg = (
             f"Inconsistent time series data: {inconsistent_props} for {type(times_series_sample)}"
         )
-        raise InconsistentTimeseriesAggregation(msg)
+        raise InconsistentTimeSeriesAggregation(msg)
     return None
 
 
@@ -378,7 +378,7 @@ def _get_combined_single_time_series_df(
         If no time series data is found for a component.
     TypeError
         If time series data is not of type SingleTimeSeries.
-    TimeseriesVariableDoesNotExist
+    TimeSeriesVariableDoesNotExist
         If specified variables do not exist for the given component.
     """
     dfs = []
@@ -399,7 +399,7 @@ def _get_combined_single_time_series_df(
 
         if not var_of_interest.issubset(avail_vars):
             msg = f"{avail_vars=}. Only {var_of_interest=} is supported for dataframe computation."
-            raise TimeseriesVariableDoesNotExist(msg)
+            raise TimeSeriesVariableDoesNotExist(msg)
 
         for var in var_of_interest & avail_vars:
             ts_data: SingleTimeSeries = sys.get_time_series(
@@ -470,7 +470,7 @@ def _get_combined_nonsequential_time_series_df(
         If no time series data is found for a component.
     TypeError
         If time series data is not of type NonSequentialTimeSeries.
-    TimeseriesVariableDoesNotExist
+    TimeSeriesVariableDoesNotExist
         If specified variables do not exist for the given component.
     """
     dfs = []
@@ -491,7 +491,7 @@ def _get_combined_nonsequential_time_series_df(
 
         if not var_of_interest.issubset(avail_vars):
             msg = f"{avail_vars=}. Only {var_of_interest=} is supported for dataframe computation."
-            raise TimeseriesVariableDoesNotExist(msg)
+            raise TimeSeriesVariableDoesNotExist(msg)
 
         for var in var_of_interest & avail_vars:
             ts_data: NonSequentialTimeSeries = sys.get_time_series(

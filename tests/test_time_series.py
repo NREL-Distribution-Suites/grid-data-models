@@ -16,7 +16,7 @@ from gdm.exceptions import (
     IncompatibleTimeSeries,
     NoComponentsFoundError,
     NoTimeSeriesDataFound,
-    TimeseriesVariableDoesNotExist,
+    TimeSeriesVariableDoesNotExist,
     GDMQuantityError,
     GDMQuantityUnitsError,
 )
@@ -241,7 +241,7 @@ def test_time_series_variable_error_nonsequential_time_series(
 ):
     """Test to raise error when variable of interest does not exist"""
     gdm_sys = distribution_system_with_nonsequential_time_series
-    with pytest.raises(TimeseriesVariableDoesNotExist):
+    with pytest.raises(TimeSeriesVariableDoesNotExist):
         get_combined_load_time_series_df(
             gdm_sys,
             {"active_power": "kilowatts", "reactive_power": "kilovar"},
@@ -249,7 +249,7 @@ def test_time_series_variable_error_nonsequential_time_series(
             time_series_type=NonSequentialTimeSeries,
         )
 
-    with pytest.raises(TimeseriesVariableDoesNotExist):
+    with pytest.raises(TimeSeriesVariableDoesNotExist):
         get_combined_solar_time_series_df(
             gdm_sys,
             {"irradiance": "kilowatts"},
@@ -264,7 +264,7 @@ def test_time_series_variable_error_single_time_series(
     """Test to raise error when variable of interest does not exist"""
     gdm_sys = distribution_system_with_single_time_series
 
-    with pytest.raises(TimeseriesVariableDoesNotExist):
+    with pytest.raises(TimeSeriesVariableDoesNotExist):
         get_combined_load_time_series_df(
             gdm_sys,
             {"active_power": "kilowatts", "reactive_power": "kilovar"},
@@ -272,7 +272,7 @@ def test_time_series_variable_error_single_time_series(
             time_series_type=SingleTimeSeries,
         )
 
-    with pytest.raises(TimeseriesVariableDoesNotExist):
+    with pytest.raises(TimeSeriesVariableDoesNotExist):
         get_combined_solar_time_series_df(
             gdm_sys,
             {"irradiance": "kilowatts"},
