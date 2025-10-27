@@ -67,7 +67,8 @@ class GeometryBranch(DistributionBranchBase):
         -----
         - The method uses the number of neutral phases to assist in the impedance calculation.
         - This conversion is essential for systems that require matrix impedance representations
-        for detailed electrical analysis.
+            for detailed electrical analysis.
+
         """
         equipment = self.equipment.to_matrix_representation(frequency_hz, soil_resistivity_ohm_m)
         if isinstance(self.equipment.conductors[0], ConcentricCableEquipment):
