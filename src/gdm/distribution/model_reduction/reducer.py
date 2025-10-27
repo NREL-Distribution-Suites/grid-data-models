@@ -31,6 +31,7 @@ def _get_three_phase_buses(
         )
     ]
     graph = dist_system.get_undirected_graph()
+
     subgraph = graph.subgraph(three_phase_buses)
     connected_components = list(nx.connected_components(subgraph))
 
