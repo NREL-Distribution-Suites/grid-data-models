@@ -5,6 +5,8 @@ from gdm.distribution.components import DistributionBus
 from gdm.distribution import DistributionSystem
 import pytest
 
+SHOW = True
+
 
 def random_lat_lon():
     lat = random.uniform(-90, 90)  # Latitude range from -90 to 90
@@ -45,7 +47,7 @@ def test_system_gdf_failure(distribution_system_with_single_timeseries, tmp_path
         bus.coordinate.crs = "epsg:4326"
 
     with pytest.raises(FileNotFoundError):
-        model.plot(tmp_path / "test_model_plot.html", zoom_level=1, show=False)
+        model.plot(tmp_path / "test_model_plot.html", zoom_level=1, show=SHOW)
 
 
 def test_system_plotting(distribution_system_with_single_timeseries, tmp_path):
@@ -55,27 +57,27 @@ def test_system_plotting(distribution_system_with_single_timeseries, tmp_path):
     for bus in buses:
         bus.coordinate.x, bus.coordinate.y = random_lat_lon()
         bus.coordinate.crs = "epsg:4326"
-    model.plot(tmp_path, zoom_level=1, show=False, color_node_by=ColorNodeBy.PHASE)
+    model.plot(tmp_path, zoom_level=1, show=SHOW, color_node_by=ColorNodeBy.PHASE)
     export_path = tmp_path / "test_model_plot.html"
     assert export_path.exists()
 
     model.name = "test_model_1"
-    model.plot(tmp_path, zoom_level=1, show=False, color_node_by=ColorNodeBy.EQUIPMENT_TYPE)
+    model.plot(tmp_path, zoom_level=1, show=SHOW, color_node_by=ColorNodeBy.EQUIPMENT_TYPE)
     export_path = tmp_path / "test_model_1_plot.html"
     assert export_path.exists()
 
     model.name = "test_model_2"
-    model.plot(tmp_path, zoom_level=1, show=False, color_node_by=ColorNodeBy.VOLTAGE_LEVEL)
+    model.plot(tmp_path, zoom_level=1, show=SHOW, color_node_by=ColorNodeBy.VOLTAGE_LEVEL)
     export_path = tmp_path / "test_model_2_plot.html"
     assert export_path.exists()
 
     model.name = "test_model_3"
-    model.plot(tmp_path, zoom_level=1, show=False, color_line_by=ColorLineBy.EQUIPMENT_TYPE)
+    model.plot(tmp_path, zoom_level=1, show=SHOW, color_line_by=ColorLineBy.EQUIPMENT_TYPE)
     export_path = tmp_path / "test_model_3_plot.html"
     assert export_path.exists()
 
     model.name = "test_model_4"
-    model.plot(tmp_path, zoom_level=1, show=False, color_line_by=ColorLineBy.PHASE)
+    model.plot(tmp_path, zoom_level=1, show=SHOW, color_line_by=ColorLineBy.PHASE)
     export_path = tmp_path / "test_model_4_plot.html"
     assert export_path.exists()
 
@@ -83,7 +85,7 @@ def test_system_plotting(distribution_system_with_single_timeseries, tmp_path):
     model.plot(
         tmp_path,
         zoom_level=1,
-        show=False,
+        show=SHOW,
         color_line_by=ColorLineBy.DEFAULT,
         color_node_by=ColorNodeBy.DEFAULT,
     )
@@ -91,17 +93,17 @@ def test_system_plotting(distribution_system_with_single_timeseries, tmp_path):
     assert export_path.exists()
 
     model.name = "test_model_6"
-    model.plot(tmp_path, show=False, flip_coordinates=True)
+    model.plot(tmp_path, show=SHOW, flip_coordinates=True)
     export_path = tmp_path / "test_model_6_plot.html"
     assert export_path.exists()
 
     model.name = "test_model_7"
-    model.plot(tmp_path, show=False, flip_coordinates=False)
+    model.plot(tmp_path, show=SHOW, flip_coordinates=False)
     export_path = tmp_path / "test_model_7_plot.html"
     assert export_path.exists()
 
     with pytest.raises(NotADirectoryError):
-        model.plot(tmp_path / "test_model_plot.html", zoom_level=1, show=False)
+        model.plot(tmp_path / "test_model_plot.html", zoom_level=1, show=SHOW)
 
 
 def test_system_plotting_failure(distribution_system_with_single_timeseries, tmp_path):
@@ -113,4 +115,4 @@ def test_system_plotting_failure(distribution_system_with_single_timeseries, tmp
         bus.coordinate.crs = "epsg:4326"
 
     with pytest.raises(FileNotFoundError):
-        model.plot(tmp_path / "test_model_plot.html", zoom_level=1, show=False)
+        model.plot(tmp_path / "test_model_plot.html", zoom_level=1, show=SHOW)
