@@ -653,11 +653,16 @@ class DistributionSystem(System):
         self._add_edge_traces(fig, edges_gdf, color_line_by, map_type, flip_coordinates)
         self._add_node_traces(fig, nodes_gdf, color_node_by, map_type, flip_coordinates)
 
+        if flip_coordinates:
+            center_x, center_y = center.x, center.y
+        else:
+            center_y, center_x = center.x, center.y
+
         if map_type == MapType.SCATTER_MAP:
             fig.update_layout(
                 map={
                     "style": style.value,
-                    "center": {"lon": center.x, "lat": center.y},
+                    "center": {"lon": center_x, "lat": center_y},
                     "zoom": zoom_level,
                 },
                 showlegend=True if show_legend else False,
@@ -665,7 +670,7 @@ class DistributionSystem(System):
         else:
             fig.update_layout(
                 geo=dict(
-                    center=dict(lat=center.y, lon=center.x),
+                    center=dict(lat=center_y, lon=center_x),
                     projection_scale=zoom_level,
                     showland=kwargs.get("showland", True),
                     landcolor=kwargs.get("landcolor", "lightgray"),
