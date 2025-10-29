@@ -4,11 +4,11 @@ import json
 
 import gdm.version
 
-def fix_version(version):
-    if version.count('.') >= 3:
-        return version.rsplit('.', 1)[0]
-    return version
 
+def fix_version(version):
+    if version.count(".") >= 3:
+        return version.rsplit(".", 1)[0]
+    return version
 
 
 def test_version_control(tmp_path, distribution_system_with_single_timeseries):

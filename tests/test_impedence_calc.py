@@ -227,7 +227,7 @@ def my_system():
         )
         geometry_branch.buses[1] = geometry_branch.buses[1].model_copy(
             update={
-                "name": f"bus_{i+1}",
+                "name": f"bus_{i + 1}",
                 "phases": [Phase.A, Phase.B, Phase.C, Phase.N],
             }
         )
@@ -255,7 +255,7 @@ def my_system():
         )
         geometry_branch.buses[0] = bus_1
         geometry_branch.buses[1] = geometry_branch.buses[1].model_copy(
-            update={"name": f"bus_{i+20}"}
+            update={"name": f"bus_{i + 20}"}
         )
 
         system.add_component(geometry_branch)
