@@ -5,7 +5,7 @@ from gdm.distribution.components import DistributionBus
 from gdm.distribution import DistributionSystem
 import pytest
 
-SHOW = True
+SHOW = False
 
 
 def random_lat_lon():

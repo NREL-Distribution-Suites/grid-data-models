@@ -4,10 +4,16 @@ import json
 
 import gdm.version
 
+def fix_version(version):
+    if version.count('.') >= 3:
+        return version.rsplit('.', 1)[0]
+    return version
+
+
 
 def test_version_control(tmp_path, distribution_system_with_single_timeseries):
     system: DistributionSystem = distribution_system_with_single_timeseries
-    assert system.data_format_version.split("+")[0].split("-")[0] == gdm.version.VERSION.split("+")[0].split("-")[0]
+    assert fix_version(system.data_format_version) == fix_version(gdm.version.VERSION)
     system.to_json(tmp_path / "model.json")
     with open(tmp_path / "model.json", "r") as f:
         data = json.load(f)
@@ -17,4 +23,4 @@ def test_version_control(tmp_path, distribution_system_with_single_timeseries):
         json.dump(data, file, indent=4)
 
     new_system = DistributionSystem.from_json(tmp_path / "model.json")
-    assert new_system.data_format_version.split("+")[0].split("-")[0] == gdm.version.VERSION.split("+")[0].split("-")[0]
+    assert fix_version(new_system.data_format_version) == fix_version(gdm.version.VERSION)
