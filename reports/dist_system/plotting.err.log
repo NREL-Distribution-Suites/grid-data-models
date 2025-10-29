@@ -1,0 +1,61 @@
+Traceback (most recent call last):
+  File "/opt/hostedtoolcache/Python/3.12.11/x64/lib/python3.12/site-packages/jupyter_cache/executors/utils.py", line 58, in single_nb_execution
+    executenb(
+  File "/opt/hostedtoolcache/Python/3.12.11/x64/lib/python3.12/site-packages/nbclient/client.py", line 1319, in execute
+    return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.11/x64/lib/python3.12/site-packages/jupyter_core/utils/__init__.py", line 165, in wrapped
+    return loop.run_until_complete(inner)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.11/x64/lib/python3.12/asyncio/base_events.py", line 691, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.11/x64/lib/python3.12/site-packages/nbclient/client.py", line 709, in async_execute
+    await self.async_execute_cell(
+  File "/opt/hostedtoolcache/Python/3.12.11/x64/lib/python3.12/site-packages/nbclient/client.py", line 1062, in async_execute_cell
+    await self._check_raise_for_error(cell, cell_index, exec_reply)
+  File "/opt/hostedtoolcache/Python/3.12.11/x64/lib/python3.12/site-packages/nbclient/client.py", line 918, in _check_raise_for_error
+    raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
+nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
+------------------
+## Plotting using Matplotlib
+
+df = distribution_system.to_gdf()
+df.plot()
+------------------
+
+
+[31m---------------------------------------------------------------------------[39m
+[31mValueError[39m                                Traceback (most recent call last)
+[36mCell[39m[36m [39m[32mIn[7][39m[32m, line 4[39m
+[32m      1[39m [38;5;66;03m## Plotting using Matplotlib[39;00m
+[32m      3[39m df = distribution_system.to_gdf()
+[32m----> [39m[32m4[39m [43mdf[49m[43m.[49m[43mplot[49m[43m([49m[43m)[49m
+
+[36mFile [39m[32m/opt/hostedtoolcache/Python/3.12.11/x64/lib/python3.12/site-packages/geopandas/plotting.py:962[39m, in [36mGeoplotAccessor.__call__[39m[34m(self, *args, **kwargs)[39m
+[32m    960[39m kind = kwargs.pop([33m"[39m[33mkind[39m[33m"[39m, [33m"[39m[33mgeo[39m[33m"[39m)
+[32m    961[39m [38;5;28;01mif[39;00m kind == [33m"[39m[33mgeo[39m[33m"[39m:
+[32m--> [39m[32m962[39m     [38;5;28;01mreturn[39;00m [43mplot_dataframe[49m[43m([49m[43mdata[49m[43m,[49m[43m [49m[43m*[49m[43margs[49m[43m,[49m[43m [49m[43m*[49m[43m*[49m[43mkwargs[49m[43m)[49m
+[32m    963[39m [38;5;28;01mif[39;00m kind [38;5;129;01min[39;00m [38;5;28mself[39m._pandas_kinds:
+[32m    964[39m     [38;5;66;03m# Access pandas plots[39;00m
+[32m    965[39m     [38;5;28;01mreturn[39;00m PlotAccessor(data)(kind=kind, **kwargs)
+
+[36mFile [39m[32m/opt/hostedtoolcache/Python/3.12.11/x64/lib/python3.12/site-packages/geopandas/plotting.py:662[39m, in [36mplot_dataframe[39m[34m(df, column, cmap, color, ax, cax, categorical, legend, scheme, k, vmin, vmax, markersize, figsize, legend_kwds, categories, classification_kwds, missing_kwds, aspect, autolim, **style_kwds)[39m
+[32m    660[39m     bounds = df.total_bounds
+[32m    661[39m     y_coord = np.mean([bounds[[32m1[39m], bounds[[32m3[39m]])
+[32m--> [39m[32m662[39m     [43max[49m[43m.[49m[43mset_aspect[49m[43m([49m[32;43m1[39;49m[43m [49m[43m/[49m[43m [49m[43mnp[49m[43m.[49m[43mcos[49m[43m([49m[43my_coord[49m[43m [49m[43m*[49m[43m [49m[43mnp[49m[43m.[49m[43mpi[49m[43m [49m[43m/[49m[43m [49m[32;43m180[39;49m[43m)[49m[43m)[49m
+[32m    663[39m     [38;5;66;03m# formula ported from R package sp[39;00m
+[32m    664[39m     [38;5;66;03m# https://github.com/edzer/sp/blob/master/R/mapasp.R[39;00m
+[32m    665[39m [38;5;28;01melse[39;00m:
+[32m    666[39m     ax.set_aspect([33m"[39m[33mequal[39m[33m"[39m)
+
+[36mFile [39m[32m/opt/hostedtoolcache/Python/3.12.11/x64/lib/python3.12/site-packages/matplotlib/axes/_base.py:1728[39m, in [36m_AxesBase.set_aspect[39m[34m(self, aspect, adjustable, anchor, share)[39m
+[32m   1726[39m     aspect = [38;5;28mfloat[39m(aspect)  [38;5;66;03m# raise ValueError if necessary[39;00m
+[32m   1727[39m     [38;5;28;01mif[39;00m aspect <= [32m0[39m [38;5;129;01mor[39;00m [38;5;129;01mnot[39;00m np.isfinite(aspect):
+[32m-> [39m[32m1728[39m         [38;5;28;01mraise[39;00m [38;5;167;01mValueError[39;00m([33m"[39m[33maspect must be finite and positive [39m[33m"[39m)
+[32m   1730[39m [38;5;28;01mif[39;00m share:
+[32m   1731[39m     axes = {sibling [38;5;28;01mfor[39;00m name [38;5;129;01min[39;00m [38;5;28mself[39m._axis_names
+[32m   1732[39m             [38;5;28;01mfor[39;00m sibling [38;5;129;01min[39;00m [38;5;28mself[39m._shared_axes[name].get_siblings([38;5;28mself[39m)}
+
+[31mValueError[39m: aspect must be finite and positive 
+
