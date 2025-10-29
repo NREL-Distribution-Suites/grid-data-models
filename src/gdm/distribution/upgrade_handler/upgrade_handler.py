@@ -17,6 +17,12 @@ from gdm.distribution.upgrade_handler.from__2_1_3__to__2_1_4 import from__2_1_3_
 from gdm.distribution.upgrade_handler.from__2_1_4__to__2_1_5 import from__2_1_4__to__2_1_5
 
 
+def fix_version(version):
+    if version.count(".") >= 3:
+        return version.rsplit(".", 1)[0]
+    return version
+
+
 class SemanticVersion(Version):
     @classmethod
     def __get_pydantic_core_schema__(cls, source_type, handler: GetCoreSchemaHandler):
@@ -44,6 +50,14 @@ class UpgradeSchema(BaseModel):
                 f"from_version {str(self.from_version)} should be lower than the to_version {str(self.to_version)}"
             )
         return self
+
+    @model_validator(mode="before")
+    @classmethod
+    def preprocess_input(cls, data):
+        data["from_version"] = fix_version(data["from_version"])
+        data["to_version"] = fix_version(data["to_version"])
+
+        return data
 
 
 class UpgradeHandler(BaseModel):
@@ -84,6 +98,9 @@ class UpgradeHandler(BaseModel):
         return self
 
     def _get_upgrade_handlers(self, from_version: str, to_version: str):
+        to_version = fix_version(to_version)
+        from_version = fix_version(from_version)
+
         upgrade_handlers = sorted(self.upgrade_schemas, key=lambda x: x.from_version)
         filtered_upgrade_handlers = list(
             filter(lambda x: x.from_version >= from_version, upgrade_handlers)

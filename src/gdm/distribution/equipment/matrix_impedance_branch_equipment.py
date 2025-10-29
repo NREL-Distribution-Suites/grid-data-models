@@ -1,4 +1,5 @@
 """This module contains matrix impedance branch equipment."""
+
 import numpy as np
 
 from gdm.distribution.equipment.base.matrix_impedance_branch_equipment_base import (
