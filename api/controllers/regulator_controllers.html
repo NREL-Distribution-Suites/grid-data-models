@@ -497,32 +497,28 @@ document.write(`
 <span class="w">         </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span>
 <span class="w">      </span><span class="p">},</span>
 <span class="w">      </span><span class="nt">&quot;delay&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">         </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
 <span class="w">         </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Delay for the first tap change operation&quot;</span><span class="p">,</span>
 <span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Delay&quot;</span><span class="p">,</span>
 <span class="w">         </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span>
 <span class="w">      </span><span class="p">},</span>
 <span class="w">      </span><span class="nt">&quot;v_setpoint&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">         </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
 <span class="w">         </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;The target control voltage for regulator controller.&quot;</span><span class="p">,</span>
 <span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;V Setpoint&quot;</span><span class="p">,</span>
 <span class="w">         </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span>
 <span class="w">      </span><span class="p">},</span>
 <span class="w">      </span><span class="nt">&quot;min_v_limit&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">         </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
 <span class="w">         </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;The minimum voltage limit for regulator controller.&quot;</span><span class="p">,</span>
 <span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Min V Limit&quot;</span><span class="p">,</span>
 <span class="w">         </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span>
 <span class="w">      </span><span class="p">},</span>
 <span class="w">      </span><span class="nt">&quot;max_v_limit&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">         </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
 <span class="w">         </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;The maximum voltage limit for regulator controller.&quot;</span><span class="p">,</span>
 <span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Max V Limit&quot;</span><span class="p">,</span>
 <span class="w">         </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span>
 <span class="w">      </span><span class="p">},</span>
 <span class="w">      </span><span class="nt">&quot;pt_ratio&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">         </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Value of the voltage (potential) transformer ratio used to step down the voltage for the controller.&quot;</span><span class="p">,</span>
-<span class="w">         </span><span class="nt">&quot;minimum&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.0</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;minimum&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
 <span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Pt Ratio&quot;</span><span class="p">,</span>
 <span class="w">         </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;number&quot;</span>
 <span class="w">      </span><span class="p">},</span>
@@ -561,7 +557,6 @@ document.write(`
 <span class="w">         </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;integer&quot;</span>
 <span class="w">      </span><span class="p">},</span>
 <span class="w">      </span><span class="nt">&quot;bandwidth&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">         </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
 <span class="w">         </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;The total voltage bandwidth for the controller&quot;</span><span class="p">,</span>
 <span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Bandwidth&quot;</span><span class="p">,</span>
 <span class="w">         </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span>
@@ -641,7 +636,6 @@ document.write(`
 <span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;array&quot;</span>
 <span class="w">            </span><span class="p">},</span>
 <span class="w">            </span><span class="nt">&quot;rated_voltage&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">               </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
 <span class="w">               </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;rated voltage for this bus.&quot;</span><span class="p">,</span>
 <span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Rated Voltage&quot;</span><span class="p">,</span>
 <span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span>
@@ -801,7 +795,6 @@ document.write(`
 <span class="w">               </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Limit type used.&quot;</span>
 <span class="w">            </span><span class="p">},</span>
 <span class="w">            </span><span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">               </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
 <span class="w">               </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Voltage threshold.&quot;</span><span class="p">,</span>
 <span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Value&quot;</span><span class="p">,</span>
 <span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span>
@@ -851,6 +844,8 @@ document.write(`
 <li><p><strong>use_enum_values</strong>: <em>bool = False</em></p></li>
 <li><p><strong>arbitrary_types_allowed</strong>: <em>bool = True</em></p></li>
 <li><p><strong>populate_by_name</strong>: <em>bool = True</em></p></li>
+<li><p><strong>validate_by_alias</strong>: <em>bool = True</em></p></li>
+<li><p><strong>validate_by_name</strong>: <em>bool = True</em></p></li>
 </ul>
 </dd>
 <dt class="field-even">Fields<span class="colon">:</span></dt>
@@ -876,12 +871,12 @@ document.write(`
 </dl>
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="gdm.distribution.controllers.RegulatorController.bandwidth">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">bandwidth</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">WithJsonSchema(json_schema={'type':</span> <span class="pre">'string',</span> <span class="pre">'default':</span> <span class="pre">None},</span> <span class="pre">mode=None),</span> <span class="pre">FieldInfo(annotation=NoneType,</span> <span class="pre">required=True,</span> <span class="pre">description='The</span> <span class="pre">total</span> <span class="pre">voltage</span> <span class="pre">bandwidth</span> <span class="pre">for</span> <span class="pre">the</span> <span class="pre">controller',</span> <span class="pre">metadata=[Ge(ge=0)])]</span></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#gdm.distribution.controllers.RegulatorController.bandwidth" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">bandwidth</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">WithJsonSchema(json_schema={'type':</span> <span class="pre">'string'},</span> <span class="pre">mode=None),</span> <span class="pre">FieldInfo(annotation=NoneType,</span> <span class="pre">required=True,</span> <span class="pre">description='The</span> <span class="pre">total</span> <span class="pre">voltage</span> <span class="pre">bandwidth</span> <span class="pre">for</span> <span class="pre">the</span> <span class="pre">controller',</span> <span class="pre">metadata=[Ge(ge=0)])]</span></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#gdm.distribution.controllers.RegulatorController.bandwidth" title="Link to this definition">#</a></dt>
 <dd><p>The total voltage bandwidth for the controller</p>
 <dl class="field-list simple">
 <dt class="field-odd">Constraints<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>json_schema</strong> = {‘type’: ‘string’, ‘default’: None}</p></li>
+<li><p><strong>json_schema</strong> = {‘type’: ‘string’}</p></li>
 <li><p><strong>ge</strong> = 0</p></li>
 </ul>
 </dd>
@@ -907,7 +902,7 @@ document.write(`
 <dl class="field-list simple">
 <dt class="field-odd">Constraints<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>json_schema</strong> = {‘type’: ‘string’, ‘default’: None}</p></li>
+<li><p><strong>json_schema</strong> = {‘type’: ‘string’}</p></li>
 <li><p><strong>ge</strong> = 0</p></li>
 </ul>
 </dd>
@@ -916,12 +911,12 @@ document.write(`
 
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="gdm.distribution.controllers.RegulatorController.delay">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">delay</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">WithJsonSchema(json_schema={'type':</span> <span class="pre">'string',</span> <span class="pre">'default':</span> <span class="pre">None},</span> <span class="pre">mode=None),</span> <span class="pre">FieldInfo(annotation=NoneType,</span> <span class="pre">required=True,</span> <span class="pre">description='Delay</span> <span class="pre">for</span> <span class="pre">the</span> <span class="pre">first</span> <span class="pre">tap</span> <span class="pre">change</span> <span class="pre">operation')]</span></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#gdm.distribution.controllers.RegulatorController.delay" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">delay</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">WithJsonSchema(json_schema={'type':</span> <span class="pre">'string'},</span> <span class="pre">mode=None),</span> <span class="pre">FieldInfo(annotation=NoneType,</span> <span class="pre">required=True,</span> <span class="pre">description='Delay</span> <span class="pre">for</span> <span class="pre">the</span> <span class="pre">first</span> <span class="pre">tap</span> <span class="pre">change</span> <span class="pre">operation')]</span></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#gdm.distribution.controllers.RegulatorController.delay" title="Link to this definition">#</a></dt>
 <dd><p>Delay for the first tap change operation</p>
 <dl class="field-list simple">
 <dt class="field-odd">Constraints<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>json_schema</strong> = {‘type’: ‘string’, ‘default’: None}</p></li>
+<li><p><strong>json_schema</strong> = {‘type’: ‘string’}</p></li>
 </ul>
 </dd>
 </dl>
@@ -940,7 +935,7 @@ document.write(`
 <dl class="field-list simple">
 <dt class="field-odd">Constraints<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>json_schema</strong> = {‘type’: ‘string’, ‘default’: None}</p></li>
+<li><p><strong>json_schema</strong> = {‘type’: ‘string’}</p></li>
 <li><p><strong>ge</strong> = 0</p></li>
 </ul>
 </dd>
@@ -954,7 +949,7 @@ document.write(`
 <dl class="field-list simple">
 <dt class="field-odd">Constraints<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>json_schema</strong> = {‘type’: ‘string’, ‘default’: None}</p></li>
+<li><p><strong>json_schema</strong> = {‘type’: ‘string’}</p></li>
 <li><p><strong>ge</strong> = 0</p></li>
 </ul>
 </dd>
@@ -981,7 +976,7 @@ document.write(`
 <dl class="field-list simple">
 <dt class="field-odd">Constraints<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>json_schema</strong> = {‘type’: ‘string’, ‘default’: None}</p></li>
+<li><p><strong>json_schema</strong> = {‘type’: ‘string’}</p></li>
 <li><p><strong>gt</strong> = 0</p></li>
 </ul>
 </dd>
@@ -995,7 +990,7 @@ document.write(`
 <dl class="field-list simple">
 <dt class="field-odd">Constraints<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>json_schema</strong> = {‘type’: ‘string’, ‘default’: None}</p></li>
+<li><p><strong>json_schema</strong> = {‘type’: ‘string’}</p></li>
 <li><p><strong>gt</strong> = 0</p></li>
 </ul>
 </dd>
@@ -1034,7 +1029,7 @@ document.write(`
 <dl class="field-list simple">
 <dt class="field-odd">Constraints<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>json_schema</strong> = {‘type’: ‘string’, ‘default’: None}</p></li>
+<li><p><strong>json_schema</strong> = {‘type’: ‘string’}</p></li>
 <li><p><strong>gt</strong> = 0</p></li>
 </ul>
 </dd>

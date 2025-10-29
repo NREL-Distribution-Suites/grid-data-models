@@ -544,20 +544,18 @@ document.write(`
 <span class="w">         </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span>
 <span class="w">      </span><span class="p">},</span>
 <span class="w">      </span><span class="nt">&quot;on_voltage&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">         </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
 <span class="w">         </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Value of the controller voltage, above which the capacitor switches on.&quot;</span><span class="p">,</span>
 <span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;On Voltage&quot;</span><span class="p">,</span>
 <span class="w">         </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span>
 <span class="w">      </span><span class="p">},</span>
 <span class="w">      </span><span class="nt">&quot;off_voltage&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">         </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
 <span class="w">         </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Value of the voltage, below which the capacitors switches off.&quot;</span><span class="p">,</span>
 <span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Off Voltage&quot;</span><span class="p">,</span>
 <span class="w">         </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span>
 <span class="w">      </span><span class="p">},</span>
 <span class="w">      </span><span class="nt">&quot;pt_ratio&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">         </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Value of the voltage (potential) transformer ratio used to step down the voltage for the controller.&quot;</span><span class="p">,</span>
-<span class="w">         </span><span class="nt">&quot;minimum&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.0</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;minimum&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
 <span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Pt Ratio&quot;</span><span class="p">,</span>
 <span class="w">         </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;number&quot;</span>
 <span class="w">      </span><span class="p">}</span>
@@ -581,6 +579,8 @@ document.write(`
 <li><p><strong>use_enum_values</strong>: <em>bool = False</em></p></li>
 <li><p><strong>arbitrary_types_allowed</strong>: <em>bool = True</em></p></li>
 <li><p><strong>populate_by_name</strong>: <em>bool = True</em></p></li>
+<li><p><strong>validate_by_alias</strong>: <em>bool = True</em></p></li>
+<li><p><strong>validate_by_name</strong>: <em>bool = True</em></p></li>
 </ul>
 </dd>
 <dt class="field-even">Fields<span class="colon">:</span></dt>
@@ -603,7 +603,7 @@ document.write(`
 <dl class="field-list simple">
 <dt class="field-odd">Constraints<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>json_schema</strong> = {‘type’: ‘string’, ‘default’: None}</p></li>
+<li><p><strong>json_schema</strong> = {‘type’: ‘string’}</p></li>
 </ul>
 </dd>
 </dl>
@@ -616,7 +616,7 @@ document.write(`
 <dl class="field-list simple">
 <dt class="field-odd">Constraints<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>json_schema</strong> = {‘type’: ‘string’, ‘default’: None}</p></li>
+<li><p><strong>json_schema</strong> = {‘type’: ‘string’}</p></li>
 </ul>
 </dd>
 </dl>
@@ -629,7 +629,7 @@ document.write(`
 <dl class="field-list simple">
 <dt class="field-odd">Constraints<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>json_schema</strong> = {‘type’: ‘string’, ‘default’: None}</p></li>
+<li><p><strong>json_schema</strong> = {‘type’: ‘string’}</p></li>
 </ul>
 </dd>
 </dl>
@@ -648,7 +648,7 @@ document.write(`
 <dl class="field-list simple">
 <dt class="field-odd">Constraints<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>json_schema</strong> = {‘type’: ‘string’, ‘default’: None}</p></li>
+<li><p><strong>json_schema</strong> = {‘type’: ‘string’}</p></li>
 <li><p><strong>gt</strong> = 0</p></li>
 </ul>
 </dd>
@@ -662,7 +662,7 @@ document.write(`
 <dl class="field-list simple">
 <dt class="field-odd">Constraints<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>json_schema</strong> = {‘type’: ‘string’, ‘default’: None}</p></li>
+<li><p><strong>json_schema</strong> = {‘type’: ‘string’}</p></li>
 <li><p><strong>gt</strong> = 0</p></li>
 </ul>
 </dd>
@@ -725,13 +725,11 @@ document.write(`
 <span class="w">         </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span>
 <span class="w">      </span><span class="p">},</span>
 <span class="w">      </span><span class="nt">&quot;on_power&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">         </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
 <span class="w">         </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Value of the active power, above which the capacitor switches on.&quot;</span><span class="p">,</span>
 <span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;On Power&quot;</span><span class="p">,</span>
 <span class="w">         </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span>
 <span class="w">      </span><span class="p">},</span>
 <span class="w">      </span><span class="nt">&quot;off_power&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">         </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
 <span class="w">         </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Value of the active power, below which the capacitor switches off.&quot;</span><span class="p">,</span>
 <span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Off Power&quot;</span><span class="p">,</span>
 <span class="w">         </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span>
@@ -755,6 +753,8 @@ document.write(`
 <li><p><strong>use_enum_values</strong>: <em>bool = False</em></p></li>
 <li><p><strong>arbitrary_types_allowed</strong>: <em>bool = True</em></p></li>
 <li><p><strong>populate_by_name</strong>: <em>bool = True</em></p></li>
+<li><p><strong>validate_by_alias</strong>: <em>bool = True</em></p></li>
+<li><p><strong>validate_by_name</strong>: <em>bool = True</em></p></li>
 </ul>
 </dd>
 <dt class="field-even">Fields<span class="colon">:</span></dt>
@@ -776,7 +776,7 @@ document.write(`
 <dl class="field-list simple">
 <dt class="field-odd">Constraints<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>json_schema</strong> = {‘type’: ‘string’, ‘default’: None}</p></li>
+<li><p><strong>json_schema</strong> = {‘type’: ‘string’}</p></li>
 </ul>
 </dd>
 </dl>
@@ -789,7 +789,7 @@ document.write(`
 <dl class="field-list simple">
 <dt class="field-odd">Constraints<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>json_schema</strong> = {‘type’: ‘string’, ‘default’: None}</p></li>
+<li><p><strong>json_schema</strong> = {‘type’: ‘string’}</p></li>
 </ul>
 </dd>
 </dl>
@@ -802,7 +802,7 @@ document.write(`
 <dl class="field-list simple">
 <dt class="field-odd">Constraints<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>json_schema</strong> = {‘type’: ‘string’, ‘default’: None}</p></li>
+<li><p><strong>json_schema</strong> = {‘type’: ‘string’}</p></li>
 </ul>
 </dd>
 </dl>
@@ -821,7 +821,7 @@ document.write(`
 <dl class="field-list simple">
 <dt class="field-odd">Constraints<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>json_schema</strong> = {‘type’: ‘string’, ‘default’: None}</p></li>
+<li><p><strong>json_schema</strong> = {‘type’: ‘string’}</p></li>
 <li><p><strong>gt</strong> = 0</p></li>
 </ul>
 </dd>
@@ -835,7 +835,7 @@ document.write(`
 <dl class="field-list simple">
 <dt class="field-odd">Constraints<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>json_schema</strong> = {‘type’: ‘string’, ‘default’: None}</p></li>
+<li><p><strong>json_schema</strong> = {‘type’: ‘string’}</p></li>
 <li><p><strong>ge</strong> = 0</p></li>
 </ul>
 </dd>
@@ -885,13 +885,11 @@ document.write(`
 <span class="w">         </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span>
 <span class="w">      </span><span class="p">},</span>
 <span class="w">      </span><span class="nt">&quot;on_power&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">         </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
 <span class="w">         </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Value of the reactive power, above which the capacitor switches on.&quot;</span><span class="p">,</span>
 <span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;On Power&quot;</span><span class="p">,</span>
 <span class="w">         </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span>
 <span class="w">      </span><span class="p">},</span>
 <span class="w">      </span><span class="nt">&quot;off_power&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">         </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
 <span class="w">         </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Value of the reactive power, below which the capacitor switches off.&quot;</span><span class="p">,</span>
 <span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Off Power&quot;</span><span class="p">,</span>
 <span class="w">         </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span>
@@ -915,6 +913,8 @@ document.write(`
 <li><p><strong>use_enum_values</strong>: <em>bool = False</em></p></li>
 <li><p><strong>arbitrary_types_allowed</strong>: <em>bool = True</em></p></li>
 <li><p><strong>populate_by_name</strong>: <em>bool = True</em></p></li>
+<li><p><strong>validate_by_alias</strong>: <em>bool = True</em></p></li>
+<li><p><strong>validate_by_name</strong>: <em>bool = True</em></p></li>
 </ul>
 </dd>
 <dt class="field-even">Fields<span class="colon">:</span></dt>
@@ -936,7 +936,7 @@ document.write(`
 <dl class="field-list simple">
 <dt class="field-odd">Constraints<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>json_schema</strong> = {‘type’: ‘string’, ‘default’: None}</p></li>
+<li><p><strong>json_schema</strong> = {‘type’: ‘string’}</p></li>
 </ul>
 </dd>
 </dl>
@@ -949,7 +949,7 @@ document.write(`
 <dl class="field-list simple">
 <dt class="field-odd">Constraints<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>json_schema</strong> = {‘type’: ‘string’, ‘default’: None}</p></li>
+<li><p><strong>json_schema</strong> = {‘type’: ‘string’}</p></li>
 </ul>
 </dd>
 </dl>
@@ -962,7 +962,7 @@ document.write(`
 <dl class="field-list simple">
 <dt class="field-odd">Constraints<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>json_schema</strong> = {‘type’: ‘string’, ‘default’: None}</p></li>
+<li><p><strong>json_schema</strong> = {‘type’: ‘string’}</p></li>
 </ul>
 </dd>
 </dl>
@@ -981,7 +981,7 @@ document.write(`
 <dl class="field-list simple">
 <dt class="field-odd">Constraints<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>json_schema</strong> = {‘type’: ‘string’, ‘default’: None}</p></li>
+<li><p><strong>json_schema</strong> = {‘type’: ‘string’}</p></li>
 <li><p><strong>gt</strong> = 0</p></li>
 </ul>
 </dd>
@@ -995,7 +995,7 @@ document.write(`
 <dl class="field-list simple">
 <dt class="field-odd">Constraints<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>json_schema</strong> = {‘type’: ‘string’, ‘default’: None}</p></li>
+<li><p><strong>json_schema</strong> = {‘type’: ‘string’}</p></li>
 <li><p><strong>gt</strong> = 0</p></li>
 </ul>
 </dd>
@@ -1045,20 +1045,18 @@ document.write(`
 <span class="w">         </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span>
 <span class="w">      </span><span class="p">},</span>
 <span class="w">      </span><span class="nt">&quot;on_current&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">         </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
 <span class="w">         </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Value of the controller current, above which the capacitor switches on.&quot;</span><span class="p">,</span>
 <span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;On Current&quot;</span><span class="p">,</span>
 <span class="w">         </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span>
 <span class="w">      </span><span class="p">},</span>
 <span class="w">      </span><span class="nt">&quot;off_current&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">         </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
 <span class="w">         </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Value of the controller current, below which the capacitor switches off.&quot;</span><span class="p">,</span>
 <span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Off Current&quot;</span><span class="p">,</span>
 <span class="w">         </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span>
 <span class="w">      </span><span class="p">},</span>
 <span class="w">      </span><span class="nt">&quot;ct_ratio&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">         </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;The current transformer ratio used to step down the current for the controller.&quot;</span><span class="p">,</span>
-<span class="w">         </span><span class="nt">&quot;minimum&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.0</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;minimum&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
 <span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Ct Ratio&quot;</span><span class="p">,</span>
 <span class="w">         </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;number&quot;</span>
 <span class="w">      </span><span class="p">}</span>
@@ -1082,6 +1080,8 @@ document.write(`
 <li><p><strong>use_enum_values</strong>: <em>bool = False</em></p></li>
 <li><p><strong>arbitrary_types_allowed</strong>: <em>bool = True</em></p></li>
 <li><p><strong>populate_by_name</strong>: <em>bool = True</em></p></li>
+<li><p><strong>validate_by_alias</strong>: <em>bool = True</em></p></li>
+<li><p><strong>validate_by_name</strong>: <em>bool = True</em></p></li>
 </ul>
 </dd>
 <dt class="field-even">Fields<span class="colon">:</span></dt>
@@ -1117,7 +1117,7 @@ document.write(`
 <dl class="field-list simple">
 <dt class="field-odd">Constraints<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>json_schema</strong> = {‘type’: ‘string’, ‘default’: None}</p></li>
+<li><p><strong>json_schema</strong> = {‘type’: ‘string’}</p></li>
 </ul>
 </dd>
 </dl>
@@ -1130,7 +1130,7 @@ document.write(`
 <dl class="field-list simple">
 <dt class="field-odd">Constraints<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>json_schema</strong> = {‘type’: ‘string’, ‘default’: None}</p></li>
+<li><p><strong>json_schema</strong> = {‘type’: ‘string’}</p></li>
 </ul>
 </dd>
 </dl>
@@ -1143,7 +1143,7 @@ document.write(`
 <dl class="field-list simple">
 <dt class="field-odd">Constraints<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>json_schema</strong> = {‘type’: ‘string’, ‘default’: None}</p></li>
+<li><p><strong>json_schema</strong> = {‘type’: ‘string’}</p></li>
 </ul>
 </dd>
 </dl>
@@ -1162,7 +1162,7 @@ document.write(`
 <dl class="field-list simple">
 <dt class="field-odd">Constraints<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>json_schema</strong> = {‘type’: ‘string’, ‘default’: None}</p></li>
+<li><p><strong>json_schema</strong> = {‘type’: ‘string’}</p></li>
 <li><p><strong>ge</strong> = 0</p></li>
 </ul>
 </dd>
@@ -1176,7 +1176,7 @@ document.write(`
 <dl class="field-list simple">
 <dt class="field-odd">Constraints<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>json_schema</strong> = {‘type’: ‘string’, ‘default’: None}</p></li>
+<li><p><strong>json_schema</strong> = {‘type’: ‘string’}</p></li>
 <li><p><strong>gt</strong> = 0</p></li>
 </ul>
 </dd>
@@ -1256,6 +1256,8 @@ document.write(`
 <li><p><strong>use_enum_values</strong>: <em>bool = False</em></p></li>
 <li><p><strong>arbitrary_types_allowed</strong>: <em>bool = True</em></p></li>
 <li><p><strong>populate_by_name</strong>: <em>bool = True</em></p></li>
+<li><p><strong>validate_by_alias</strong>: <em>bool = True</em></p></li>
+<li><p><strong>validate_by_name</strong>: <em>bool = True</em></p></li>
 </ul>
 </dd>
 <dt class="field-even">Fields<span class="colon">:</span></dt>
@@ -1277,7 +1279,7 @@ document.write(`
 <dl class="field-list simple">
 <dt class="field-odd">Constraints<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>json_schema</strong> = {‘type’: ‘string’, ‘default’: None}</p></li>
+<li><p><strong>json_schema</strong> = {‘type’: ‘string’}</p></li>
 </ul>
 </dd>
 </dl>
@@ -1290,7 +1292,7 @@ document.write(`
 <dl class="field-list simple">
 <dt class="field-odd">Constraints<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>json_schema</strong> = {‘type’: ‘string’, ‘default’: None}</p></li>
+<li><p><strong>json_schema</strong> = {‘type’: ‘string’}</p></li>
 </ul>
 </dd>
 </dl>
@@ -1303,7 +1305,7 @@ document.write(`
 <dl class="field-list simple">
 <dt class="field-odd">Constraints<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>json_schema</strong> = {‘type’: ‘string’, ‘default’: None}</p></li>
+<li><p><strong>json_schema</strong> = {‘type’: ‘string’}</p></li>
 </ul>
 </dd>
 </dl>
