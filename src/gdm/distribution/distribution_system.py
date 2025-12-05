@@ -280,9 +280,9 @@ class DistributionSystem(System):
                 )
                 for metadata in ts_metadata:
                     ts_data = self.get_time_series(
-                        comp, metadata.variable_name, time_series_type=time_series_type
+                        comp, metadata.name, time_series_type=time_series_type
                     )
-                    subtree_system.add_time_series(ts_data, comp, **metadata.user_attributes)
+                    subtree_system.add_time_series(ts_data, comp, **metadata.features)
 
         return subtree_system
 

@@ -122,9 +122,9 @@ def _reduce_system(
                     )
                     for metadata in ts_metadata:
                         ts_aggregate = ts_agg_func_mapper[model_type](
-                            dist_system, comps, metadata.variable_name, time_series_type
+                            dist_system, comps, metadata.name, time_series_type
                         )
-                        user_attr = UserAttributes.model_validate(metadata.user_attributes)
+                        user_attr = UserAttributes.model_validate(metadata.features)
                         user_attr.use_actual = True
                         reduced_system.add_time_series(
                             ts_aggregate, agg_comp, **user_attr.model_dump()
