@@ -116,14 +116,14 @@ def test_time_series_consistencies(simple_distribution_system):
     gdm_sys = simple_distribution_system
     load_profile_kw_1 = SingleTimeSeries.from_array(
         data=ActivePower([1, 2, 3, 4, 5], "kilowatt"),
-        variable_name="active_power",
-        initial_time=datetime(2020, 1, 1),
+        name="active_power",
+        initial_timestamp=datetime(2020, 1, 1),
         resolution=timedelta(minutes=30),
     )
     load_profile_kw_2 = SingleTimeSeries.from_array(
         data=ActivePower([1, 2, 3, 4, 5, 6], "kilowatt"),
-        variable_name="active_power",
-        initial_time=datetime(2020, 1, 1),
+        name="active_power",
+        initial_timestamp=datetime(2020, 1, 1),
         resolution=timedelta(minutes=30),
     )
     loads = list(gdm_sys.get_components(DistributionLoad))
@@ -144,14 +144,14 @@ def test_time_series_consistencies(simple_distribution_system):
 
     irradiance_profile_1 = SingleTimeSeries.from_array(
         data=Irradiance([0, 0.5, 1, 0.5, 0], "kilowatt / meter ** 2"),
-        variable_name="irradiance",
-        initial_time=datetime(2020, 1, 1),
+        name="irradiance",
+        initial_timestamp=datetime(2020, 1, 1),
         resolution=timedelta(minutes=30),
     )
     irradiance_profile_2 = SingleTimeSeries.from_array(
         data=Irradiance([0, 0.5, 0.8, 1, 0.5, 0], "kilowatt / meter ** 2"),
-        variable_name="irradiance",
-        initial_time=datetime(2020, 1, 1),
+        name="irradiance",
+        initial_timestamp=datetime(2020, 1, 1),
         resolution=timedelta(minutes=30),
     )
     pvs: list[DistributionSolar] = list(gdm_sys.get_components(DistributionSolar))
@@ -189,8 +189,8 @@ def test_time_series_metadata_consistencies(simple_distribution_system):
     gdm_sys = simple_distribution_system
     load_profile_kw = SingleTimeSeries.from_array(
         data=ActivePower([1, 2, 3, 4, 5], "kilowatt"),
-        variable_name="active_power",
-        initial_time=datetime(2020, 1, 1),
+        name="active_power",
+        initial_timestamp=datetime(2020, 1, 1),
         resolution=timedelta(minutes=30),
     )
     loads = list(gdm_sys.get_components(DistributionLoad))
@@ -226,7 +226,7 @@ def test_time_series_metadata_consistencies(simple_distribution_system):
             datetime(2020, 2, 3),
             datetime(2020, 3, 1),
         ],
-        variable_name="active_power",
+        name="active_power",
     )
     load_profile_kw2 = NonSequentialTimeSeries.from_array(
         data=ActivePower([1, 2, 3, 4, 5, 6], "kilowatt"),
@@ -238,7 +238,7 @@ def test_time_series_metadata_consistencies(simple_distribution_system):
             datetime(2020, 3, 1),
             datetime(2020, 3, 2),
         ],
-        variable_name="active_power",
+        name="active_power",
     )
     loads = list(gdm_sys.get_components(DistributionLoad))
     gdm_sys2.add_time_series(
@@ -268,8 +268,8 @@ def test_time_series_unsupported_var(simple_distribution_system):
     gdm_sys = simple_distribution_system
     load_profile_kw = SingleTimeSeries.from_array(
         data=ActivePower([1, 2, 3, 4, 5], "kilowatt"),
-        variable_name="active_load",
-        initial_time=datetime(2020, 1, 1),
+        name="active_load",
+        initial_timestamp=datetime(2020, 1, 1),
         resolution=timedelta(minutes=30),
     )
     loads = list(gdm_sys.get_components(DistributionLoad))

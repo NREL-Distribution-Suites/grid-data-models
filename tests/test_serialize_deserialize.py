@@ -23,16 +23,16 @@ def test_serialization_deserialization_single_time_series(
         if isinstance(component, (DistributionLoad)):
             component2 = system2.get_component_by_uuid(component.uuid)
             ts1_active = system.get_time_series(
-                component, variable_name="active_power", time_series_type=SingleTimeSeries
+                component, name="active_power", time_series_type=SingleTimeSeries
             )
             ts2_active = system2.get_time_series(
-                component2, variable_name="active_power", time_series_type=SingleTimeSeries
+                component2, name="active_power", time_series_type=SingleTimeSeries
             )
             ts1_reactive = system.get_time_series(
-                component, variable_name="reactive_power", time_series_type=SingleTimeSeries
+                component, name="reactive_power", time_series_type=SingleTimeSeries
             )
             ts2_reactive = system2.get_time_series(
-                component2, variable_name="reactive_power", time_series_type=SingleTimeSeries
+                component2, name="reactive_power", time_series_type=SingleTimeSeries
             )
             assert ts1_active == ts2_active
             assert ts1_reactive == ts2_reactive
@@ -40,10 +40,10 @@ def test_serialization_deserialization_single_time_series(
         if isinstance(component, (DistributionSolar)):
             component2 = system2.get_component_by_uuid(component.uuid)
             ts1 = system.get_time_series(
-                component, variable_name="irradiance", time_series_type=SingleTimeSeries
+                component, name="irradiance", time_series_type=SingleTimeSeries
             )
             ts2 = system2.get_time_series(
-                component2, variable_name="irradiance", time_series_type=SingleTimeSeries
+                component2, name="irradiance", time_series_type=SingleTimeSeries
             )
             assert ts1 == ts2
 
@@ -64,17 +64,17 @@ def test_serialization_deserialization_non_sequential_time_series(
         if isinstance(component, (DistributionLoad)):
             component2 = system2.get_component_by_uuid(component.uuid)
             ts1_active = system.get_time_series(
-                component, variable_name="active_power", time_series_type=NonSequentialTimeSeries
+                component, name="active_power", time_series_type=NonSequentialTimeSeries
             )
             ts2_active = system2.get_time_series(
-                component2, variable_name="active_power", time_series_type=NonSequentialTimeSeries
+                component2, name="active_power", time_series_type=NonSequentialTimeSeries
             )
             ts1_reactive = system.get_time_series(
-                component, variable_name="reactive_power", time_series_type=NonSequentialTimeSeries
+                component, name="reactive_power", time_series_type=NonSequentialTimeSeries
             )
             ts2_reactive = system2.get_time_series(
                 component2,
-                variable_name="reactive_power",
+                name="reactive_power",
                 time_series_type=NonSequentialTimeSeries,
             )
             assert ts1_active == ts2_active
@@ -83,10 +83,10 @@ def test_serialization_deserialization_non_sequential_time_series(
         if isinstance(component, (DistributionSolar)):
             component2 = system2.get_component_by_uuid(component.uuid)
             ts1 = system.get_time_series(
-                component, variable_name="irradiance", time_series_type=NonSequentialTimeSeries
+                component, name="irradiance", time_series_type=NonSequentialTimeSeries
             )
             ts2 = system2.get_time_series(
-                component2, variable_name="irradiance", time_series_type=NonSequentialTimeSeries
+                component2, name="irradiance", time_series_type=NonSequentialTimeSeries
             )
             assert ts1 == ts2
 
@@ -113,17 +113,17 @@ def test_serialization_deserialization_single_time_series_with_reduction(
         if isinstance(component, (DistributionLoad)):
             component2 = system2.get_component_by_uuid(component.uuid)
             ts1_active = system.get_time_series(
-                component, variable_name="active_power", time_series_type=SingleTimeSeries
+                component, name="active_power", time_series_type=SingleTimeSeries
             )
             ts2_active = system2.get_time_series(
-                component2, variable_name="active_power", time_series_type=SingleTimeSeries
+                component2, name="active_power", time_series_type=SingleTimeSeries
             )
             ts1_reactive = system.get_time_series(
-                component, variable_name="reactive_power", time_series_type=SingleTimeSeries
+                component, name="reactive_power", time_series_type=SingleTimeSeries
             )
 
             ts2_reactive = system2.get_time_series(
-                component2, variable_name="reactive_power", time_series_type=SingleTimeSeries
+                component2, name="reactive_power", time_series_type=SingleTimeSeries
             )
             assert ts1_active == ts2_active
             assert ts1_reactive == ts2_reactive
@@ -131,10 +131,10 @@ def test_serialization_deserialization_single_time_series_with_reduction(
         if isinstance(component, (DistributionSolar)):
             component2 = system2.get_component_by_uuid(component.uuid)
             ts1 = system.get_time_series(
-                component, variable_name="irradiance", time_series_type=SingleTimeSeries
+                component, name="irradiance", time_series_type=SingleTimeSeries
             )
             ts2 = system2.get_time_series(
-                component2, variable_name="irradiance", time_series_type=SingleTimeSeries
+                component2, name="irradiance", time_series_type=SingleTimeSeries
             )
             assert ts1 == ts2
 
@@ -161,17 +161,17 @@ def test_serialization_deserialization_non_sequential_time_series_with_reduction
         if isinstance(component, (DistributionLoad)):
             component2 = system2.get_component_by_uuid(component.uuid)
             ts1_active = system.get_time_series(
-                component, variable_name="active_power", time_series_type=NonSequentialTimeSeries
+                component, name="active_power", time_series_type=NonSequentialTimeSeries
             )
             ts2_active = system2.get_time_series(
-                component2, variable_name="active_power", time_series_type=NonSequentialTimeSeries
+                component2, name="active_power", time_series_type=NonSequentialTimeSeries
             )
             ts1_reactive = system.get_time_series(
-                component, variable_name="reactive_power", time_series_type=NonSequentialTimeSeries
+                component, name="reactive_power", time_series_type=NonSequentialTimeSeries
             )
             ts2_reactive = system2.get_time_series(
                 component2,
-                variable_name="reactive_power",
+                name="reactive_power",
                 time_series_type=NonSequentialTimeSeries,
             )
             assert ts1_active == ts2_active
@@ -180,9 +180,9 @@ def test_serialization_deserialization_non_sequential_time_series_with_reduction
         if isinstance(component, (DistributionSolar)):
             component2 = system2.get_component_by_uuid(component.uuid)
             ts1 = system.get_time_series(
-                component, variable_name="irradiance", time_series_type=NonSequentialTimeSeries
+                component, name="irradiance", time_series_type=NonSequentialTimeSeries
             )
             ts2 = system2.get_time_series(
-                component2, variable_name="irradiance", time_series_type=NonSequentialTimeSeries
+                component2, name="irradiance", time_series_type=NonSequentialTimeSeries
             )
             assert ts1 == ts2

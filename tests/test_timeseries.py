@@ -30,8 +30,8 @@ class CustomTimeSeries:
 
 def process_timeseries(df: pd.DataFrame, value_column: str) -> pd.DataFrame:
     """Aggregate and pivot the time series DataFrame."""
-    grouped_df = df.groupby(["variable_name", "timestamp"], as_index=False).sum([value_column])
-    pivoted_df = grouped_df.pivot(index="timestamp", columns="variable_name", values=value_column)
+    grouped_df = df.groupby(["name", "timestamp"], as_index=False).sum([value_column])
+    pivoted_df = grouped_df.pivot(index="timestamp", columns="name", values=value_column)
     return pivoted_df
 
 
@@ -285,8 +285,8 @@ def test_quantity_error(simple_distribution_system):
     gdm_sys = simple_distribution_system
     load_profile_kw = SingleTimeSeries.from_array(
         data=[1, 2, 3, 4, 5],
-        variable_name="active_power",
-        initial_time=datetime(2020, 1, 1),
+        name="active_power",
+        initial_timestamp=datetime(2020, 1, 1),
         resolution=timedelta(minutes=30),
     )
     loads = list(gdm_sys.get_components(DistributionLoad))
@@ -300,8 +300,8 @@ def test_quantity_error(simple_distribution_system):
 
     irradiance_profile = SingleTimeSeries.from_array(
         data=[1, 2, 3, 4, 5],
-        variable_name="irradiance",
-        initial_time=datetime(2020, 1, 1),
+        name="irradiance",
+        initial_timestamp=datetime(2020, 1, 1),
         resolution=timedelta(minutes=30),
     )
     pvs: list[DistributionSolar] = list(gdm_sys.get_components(DistributionSolar))
@@ -331,8 +331,8 @@ def test_quantity_error(simple_distribution_system):
     gdm_sys2 = simple_distribution_system
     irradiance_profile = SingleTimeSeries.from_array(
         data=ActivePower([1, 2, 3, 4, 5], "kilovar"),
-        variable_name="active_power",
-        initial_time=datetime(2020, 1, 1),
+        name="active_power",
+        initial_timestamp=datetime(2020, 1, 1),
         resolution=timedelta(minutes=30),
     )
     pvs: list[DistributionSolar] = list(gdm_sys2.get_components(DistributionSolar))
