@@ -425,14 +425,14 @@ def sample_distribution_system_with_single_timeseries(
     system = simple_distribution_system
     load_profile_kw = SingleTimeSeries.from_array(
         data=ActivePower([1, 2, 3, 4, 5], "kilowatt"),
-        variable_name="active_power",
-        initial_time=datetime(2020, 1, 1),
+        name="active_power",
+        initial_timestamp=datetime(2020, 1, 1),
         resolution=timedelta(minutes=30),
     )
     load_profile_kvar = SingleTimeSeries.from_array(
         data=ActivePower([1, 2, 3, 4, 5], "kilovar"),
-        variable_name="reactive_power",
-        initial_time=datetime(2020, 1, 1),
+        name="reactive_power",
+        initial_timestamp=datetime(2020, 1, 1),
         resolution=timedelta(minutes=30),
     )
     loads: list[DistributionLoad] = list(system.get_components(DistributionLoad))
@@ -453,8 +453,8 @@ def sample_distribution_system_with_single_timeseries(
 
     irradiance_profile = SingleTimeSeries.from_array(
         data=Irradiance([0, 0.5, 1, 0.5, 0], "kilowatt / meter ** 2"),
-        variable_name="irradiance",
-        initial_time=datetime(2020, 1, 1),
+        name="irradiance",
+        initial_timestamp=datetime(2020, 1, 1),
         resolution=timedelta(minutes=30),
     )
     pvs: list[DistributionSolar] = list(system.get_components(DistributionSolar))
@@ -478,7 +478,7 @@ def sample_distribution_system_with_nonsequential_timeseries(
             datetime(2020, 2, 3),
             datetime(2020, 3, 1),
         ],
-        variable_name="active_power",
+        name="active_power",
     )
     load_profile_kvar = NonSequentialTimeSeries.from_array(
         data=ActivePower([1, 2, 3, 4, 5], "kilovar"),
@@ -489,7 +489,7 @@ def sample_distribution_system_with_nonsequential_timeseries(
             datetime(2020, 2, 3),
             datetime(2020, 3, 1),
         ],
-        variable_name="reactive_power",
+        name="reactive_power",
     )
     loads: list[DistributionLoad] = list(system.get_components(DistributionLoad))
     system.add_time_series(
@@ -516,7 +516,7 @@ def sample_distribution_system_with_nonsequential_timeseries(
             datetime(2020, 2, 3),
             datetime(2020, 3, 1),
         ],
-        variable_name="irradiance",
+        name="irradiance",
     )
     pvs: list[DistributionSolar] = list(system.get_components(DistributionSolar))
     system.add_time_series(

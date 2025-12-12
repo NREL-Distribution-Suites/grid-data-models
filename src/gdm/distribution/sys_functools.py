@@ -64,11 +64,12 @@ def _get_load_power(
     load: DistributionLoad, ts_data: TimeSeriesData, metadata: TimeSeriesMetadata
 ) -> Quantity:
     """Internal function to return load power."""
-    if metadata.quantity_metadata is None:
-        msg = f"The {metadata.type} data is not a GDM quantity: {type(ts_data.data)}"
+
+    if metadata.features is None:
+        msg = f"The {metadata.name} data is not a GDM quantity: {metadata.get_time_series_data_type()}"
         raise GDMQuantityError(msg)
 
-    user_attr = UserAttributes.model_validate(metadata.user_attributes)
+    user_attr = UserAttributes.model_validate(metadata.features)
 
     # the denormalized data here is the timeseries multiplier of the peak
     # use_actual identifies this as actual time series values rather than multiplier
@@ -76,15 +77,13 @@ def _get_load_power(
     if user_attr.use_actual:
         return denormalized_data
 
-    if metadata.variable_name in {"active_power", "reactive_power"}:
+    if metadata.name in {"active_power", "reactive_power"}:
         return denormalized_data.magnitude.tolist() * sum(
-            ph_load.real_power
-            if metadata.variable_name == "active_power"
-            else ph_load.reactive_power
+            ph_load.real_power if metadata.name == "active_power" else ph_load.reactive_power
             for ph_load in load.equipment.phase_loads
         )
     else:
-        msg = f"{metadata.variable_name} is not supported for load power calculation."
+        msg = f"{metadata.name} is not supported for load power calculation."
         raise UnsupportedVariableError(msg)
 
 
@@ -92,18 +91,25 @@ def _get_solar_power(
     solar: DistributionSolar, ts_data: TimeSeriesData, metadata: TimeSeriesMetadata
 ) -> Quantity:
     """Internal function to return time series data in kw"""
-    if metadata.quantity_metadata is None:
-        msg = f"The {metadata.type} data is not a GDM quantity: {type(ts_data.data)}"
+
+    if metadata.features is None:
+        msg = f"The {metadata.name} data is not a GDM quantity: {metadata.get_time_series_data_type()}"
         raise GDMQuantityError(msg)
 
     denormalized_data = get_timeseries_actual_data(ts_data)
 
-    user_attr = UserAttributes.model_validate(metadata.user_attributes)
+    user_attr = UserAttributes.model_validate(metadata.features)
     if user_attr.use_actual:
         if denormalized_data.units not in {"kilowatt", "watt"}:
             msg = f"Invalid unit for use_actual: {denormalized_data.units}"
             raise GDMQuantityUnitsError(msg)
+
         return denormalized_data
+
+    if not isinstance(denormalized_data, Quantity):
+        msg = f"Denormalized data is not a pint Quantity: {type(denormalized_data)}"
+        raise GDMQuantityError(msg)
+
     dc_power = denormalized_data.to("kilowatt/m^2").magnitude.tolist() * solar.active_power.to(
         "kilowatts"
     )
@@ -120,9 +126,7 @@ def _get_solar_power(
 def _check_for_timeseries_metadata_consistency(ts_metadata: list[TimeSeriesMetadata]):
     # Extract unique properties from ts_data
 
-    user_attrs = [
-        UserAttributes.model_validate(metadata.user_attributes) for metadata in ts_metadata
-    ]
+    user_attrs = [UserAttributes.model_validate(metadata.features) for metadata in ts_metadata]
     unique_props = {
         "profile_type": {user_attr.profile_type for user_attr in user_attrs},
     }
@@ -145,8 +149,8 @@ def _(times_series_sample, ts_list) -> None:
     unique_props = {
         "length": {data.length for data in ts_list},
         "resolution": {data.resolution for data in ts_list},
-        "start_time": {data.initial_time for data in ts_list},
-        "variable": {data.variable_name for data in ts_list},
+        "start_time": {data.initial_timestamp for data in ts_list},
+        "variable": {data.name for data in ts_list},
         "data_type": {type(data.data) for data in ts_list},
     }
     # Validate uniformity across properties
@@ -162,7 +166,7 @@ def _(times_series_sample, ts_list) -> None:
     # Extract unique properties from SingleTimeSeries list
     unique_props = {
         "length": {data.length for data in ts_list},
-        "variable": {data.variable_name for data in ts_list},
+        "variable": {data.name for data in ts_list},
         "data_type": {type(data.data) for data in ts_list},
         "timestamps_type": {type(data.timestamps) for data in ts_list},
     }
@@ -224,16 +228,16 @@ def get_aggregated_solar_timeseries(
     if isinstance(times_series_sample, SingleTimeSeries):
         return SingleTimeSeries(
             data=sum(ts_solar_data),
-            variable_name=var_name,
+            name=var_name,
             normalization=None,
-            initial_time=times_series_sample.initial_time,
+            initial_timestamp=times_series_sample.initial_timestamp,
             resolution=times_series_sample.resolution,
         )
     else:
         return NonSequentialTimeSeries(
             data=sum(ts_solar_data),
             timestamps=times_series_sample.timestamps,
-            variable_name=var_name,
+            name=var_name,
             normalization=None,
         )
 
@@ -270,9 +274,9 @@ def get_aggregated_battery_timeseries(
     ]
     return SingleTimeSeries(
         data=sum(ts_battery_data),
-        variable_name=var_name,
+        name=var_name,
         normalization=None,
-        initial_time=ts_components[0].initial_time,
+        initial_timestamp=ts_components[0].initial_timestamp,
         resolution=ts_components[0].resolution,
     )
 
@@ -323,16 +327,16 @@ def get_aggregated_load_timeseries(
     if isinstance(times_series_sample, SingleTimeSeries):
         return SingleTimeSeries(
             data=sum(ts_load_data),
-            variable_name=var_name,
+            name=var_name,
             normalization=None,
-            initial_time=times_series_sample.initial_time,
+            initial_timestamp=times_series_sample.initial_timestamp,
             resolution=times_series_sample.resolution,
         )
     else:
         return NonSequentialTimeSeries(
             data=sum(ts_load_data),
             timestamps=times_series_sample.timestamps,
-            variable_name=var_name,
+            name=var_name,
             normalization=None,
         )
 
@@ -391,7 +395,7 @@ def _get_combined_single_time_series_df(
             msg = f"No timeseries data found for {component=}."
             raise NoTimeSeriesDataFound(msg)
 
-        avail_vars = {md.variable_name for md in ts_metadata}
+        avail_vars = {md.name for md in ts_metadata}
 
         if not var_of_interest.issubset(avail_vars):
             msg = f"{avail_vars=}. Only {var_of_interest=} is supported for dataframe computation."
@@ -399,18 +403,25 @@ def _get_combined_single_time_series_df(
 
         for var in var_of_interest & avail_vars:
             ts_data: SingleTimeSeries = sys.get_time_series(
-                owner=component, variable_name=var, time_series_type=time_series_type
+                owner=component, name=var, time_series_type=time_series_type
             )
-            metadata = [meta for meta in ts_metadata if meta.variable_name == var][0]
+            metadata = [meta for meta in ts_metadata if meta.name == var][0]
             power_data = power_function(component, ts_data, metadata)
+
+            if var in unit_conversion and not isinstance(power_data, Quantity):
+                msg = (
+                    f"Unit conversion specified for {var}, but power data is not a pint Quantity."
+                )
+                raise GDMQuantityError(msg)
+
             dfs.append(
                 pd.DataFrame(
                     {
                         "timestamp": [
-                            ts_data.initial_time + idx * ts_data.resolution
+                            ts_data.initial_timestamp + idx * ts_data.resolution
                             for idx in range(ts_data.length)
                         ],
-                        "variable_name": [var] * ts_data.length,
+                        "name": [var] * ts_data.length,
                         "component_uuid": [component.uuid] * ts_data.length,
                         "value": (
                             power_data.to(unit_conversion[var]).magnitude
@@ -483,7 +494,7 @@ def _get_combined_nonsequential_time_series_df(
             msg = f"No timeseries data found for {component=}."
             raise NoTimeSeriesDataFound(msg)
 
-        avail_vars = {md.variable_name for md in ts_metadata}
+        avail_vars = {md.name for md in ts_metadata}
 
         if not var_of_interest.issubset(avail_vars):
             msg = f"{avail_vars=}. Only {var_of_interest=} is supported for dataframe computation."
@@ -491,15 +502,15 @@ def _get_combined_nonsequential_time_series_df(
 
         for var in var_of_interest & avail_vars:
             ts_data: NonSequentialTimeSeries = sys.get_time_series(
-                owner=component, variable_name=var, time_series_type=time_series_type
+                owner=component, name=var, time_series_type=time_series_type
             )
-            metadata = [meta for meta in ts_metadata if meta.variable_name == var][0]
+            metadata = [meta for meta in ts_metadata if meta.name == var][0]
             power_data = power_function(component, ts_data, metadata)
             dfs.append(
                 pd.DataFrame(
                     {
                         "timestamp": ts_data.timestamps,
-                        "variable_name": [var] * ts_data.length,
+                        "name": [var] * ts_data.length,
                         "component_uuid": [component.uuid] * ts_data.length,
                         "value": (
                             power_data.to(unit_conversion[var]).magnitude
