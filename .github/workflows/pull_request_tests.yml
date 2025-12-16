@@ -37,4 +37,4 @@ jobs:
         with:
           src: "check src"
           pip_install_command: "pip install -e .[dev]"
-          python_version: "3.11"
+          python_version: "3.13"
