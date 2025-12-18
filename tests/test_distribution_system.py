@@ -1,5 +1,6 @@
 from gdm.distribution import DistributionSystem
 from gdm.distribution.components import GeometryBranch, MatrixImpedanceBranch
+from gdm.distribution.equipment import GeometryBranchEquipment
 
 
 def test_distribution_system_with_timeseries(distribution_system_with_single_timeseries):
@@ -21,6 +22,8 @@ def test_geometry_conversion(distribution_system_with_single_timeseries):
     sys.add_component(new_branch)
     assert len(list(sys.get_components(MatrixImpedanceBranch))) == 17
     assert len(list(sys.get_components(GeometryBranch))) == 1
+    assert len(list(sys.get_components(GeometryBranchEquipment))) == 1
     sys.convert_geometry_to_matrix_representation()
     assert len(list(sys.get_components(MatrixImpedanceBranch))) == 18
     assert len(list(sys.get_components(GeometryBranch))) == 0
+    assert len(list(sys.get_components(GeometryBranchEquipment))) == 0

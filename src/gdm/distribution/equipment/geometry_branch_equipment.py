@@ -13,7 +13,7 @@ from gdm.distribution.equipment.matrix_impedance_branch_equipment import (
 from gdm.quantities import Distance, ResistancePULength, ReactancePULength, CapacitancePULength
 from gdm.distribution.equipment.concentric_cable_equipment import ConcentricCableEquipment
 from gdm.distribution.equipment.bare_conductor_equipment import BareConductorEquipment
-from gdm.distribution.enums import LineType, WireInsulationType, Phase
+from gdm.distribution.enums import LineType, WireInsulationType
 from gdm.constants import PINT_SCHEMA
 
 
@@ -82,7 +82,13 @@ class GeometryBranchEquipment(Component):
         )
         gmrs = [g.conductor_gmr.to("foot").magnitude for g in self.conductors]
         resistance = [g.ac_resistance.to("ohm/mile").magnitude for g in self.conductors]
-        ampacity =  sum([g.ampacity for i, g in enumerate(self.conductors) if i < len(self.conductors) - n_neutrals]) / (len(self.conductors) - n_neutrals)
+        ampacity = sum(
+            [
+                g.ampacity
+                for i, g in enumerate(self.conductors)
+                if i < len(self.conductors) - n_neutrals
+            ]
+        ) / (len(self.conductors) - n_neutrals)
         radii = [g.conductor_diameter.to("feet").magnitude / 2 for g in self.conductors]
         return coordinates, gmrs, resistance, ampacity, radii
 

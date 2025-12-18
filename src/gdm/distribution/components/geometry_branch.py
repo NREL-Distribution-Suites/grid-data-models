@@ -70,7 +70,11 @@ class GeometryBranch(DistributionBranchBase):
             for detailed electrical analysis.
 
         """
-        equipment = self.equipment.to_matrix_representation(frequency_hz, soil_resistivity_ohm_m, n_neutrals=len([phs for phs in self.phases if phs == Phase.N]))
+        equipment = self.equipment.to_matrix_representation(
+            frequency_hz,
+            soil_resistivity_ohm_m,
+            n_neutrals=len([phs for phs in self.phases if phs == Phase.N]),
+        )
         if isinstance(self.equipment.conductors[0], ConcentricCableEquipment):
             phases = self.phases + [Phase.N for _ in self.phases]
             equipment.kron_reduce(phases)

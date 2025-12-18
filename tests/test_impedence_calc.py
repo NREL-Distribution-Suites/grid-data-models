@@ -62,9 +62,9 @@ def test_kron_reduction_overhead_three_phase_with_neutral():
         horizontal_positions=Distance([-4, -1.5, 3, 0], "feet"),
         vertical_positions=Distance([29, 29, 29, 25], "feet"),
     )
-    branches = equip.to_matrix_representation()
+    branches = equip.to_matrix_representation(n_neutrals=1)
     assert branches.r_matrix.shape == (4, 4)
-
+    assert branches.ampacity == Current(300, "ampere")
     branches.kron_reduce(phases=[Phase.A, Phase.B, Phase.C, Phase.N])
 
     r_from_kerstings = np.array(
