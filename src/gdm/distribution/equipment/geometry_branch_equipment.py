@@ -70,7 +70,7 @@ class GeometryBranchEquipment(Component):
         p = 1 / (2 * np.pi * permittivity) * np.log(s / dist_matrix)
         return np.linalg.inv(p)
 
-    def _get_branch_info(self):
+    def _get_branch_info(self, n_neutrals: int = 0):
         coordinates = np.array(
             [
                 (float(x), float(y))
@@ -82,7 +82,13 @@ class GeometryBranchEquipment(Component):
         )
         gmrs = [g.conductor_gmr.to("foot").magnitude for g in self.conductors]
         resistance = [g.ac_resistance.to("ohm/mile").magnitude for g in self.conductors]
-        ampacity = sum([g.ampacity for g in self.conductors]) / len(self.conductors)
+        ampacity = sum(
+            [
+                g.ampacity
+                for i, g in enumerate(self.conductors)
+                if i < len(self.conductors) - n_neutrals
+            ]
+        ) / (len(self.conductors) - n_neutrals)
         radii = [g.conductor_diameter.to("feet").magnitude / 2 for g in self.conductors]
         return coordinates, gmrs, resistance, ampacity, radii
 
@@ -153,13 +159,12 @@ class GeometryBranchEquipment(Component):
             if np.mean(self.vertical_positions) > 0
             else LineType.UNDERGROUND,
             name=self.name,
-            uuid=self.uuid,
         )
 
     def _conductor_config(
-        self, frequency_hz: float = 60, soil_resistivity_ohm_m: float = 100
+        self, frequency_hz: float = 60, soil_resistivity_ohm_m: float = 100, n_neutrals: int = 0
     ) -> MatrixImpedanceBranchEquipment:
-        coords, gmrs, resistance, ampacity, radii = self._get_branch_info()
+        coords, gmrs, resistance, ampacity, radii = self._get_branch_info(n_neutrals)
 
         diff = coords[:, np.newaxis, :] - coords[np.newaxis, :, :]
         dist_matrix = np.linalg.norm(diff, axis=2)
@@ -179,16 +184,15 @@ class GeometryBranchEquipment(Component):
             if np.mean(self.vertical_positions) > 0
             else LineType.UNDERGROUND,
             name=self.name,
-            uuid=self.uuid,
         )
 
     def to_matrix_representation(
-        self, frequency_hz: float = 60, soil_resistivity_ohm_m: float = 100
+        self, frequency_hz: float = 60, soil_resistivity_ohm_m: float = 100, n_neutrals: int = 0
     ) -> MatrixImpedanceBranchEquipment:
         """Convert geometry branch equipment to matrix representation."""
 
         if isinstance(self.conductors[0], BareConductorEquipment):
-            return self._conductor_config(frequency_hz, soil_resistivity_ohm_m)
+            return self._conductor_config(frequency_hz, soil_resistivity_ohm_m, n_neutrals)
         elif isinstance(self.conductors[0], ConcentricCableEquipment):
             return self._concentric_cable_config(frequency_hz, soil_resistivity_ohm_m)
         else:
