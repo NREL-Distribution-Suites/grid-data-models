@@ -24,7 +24,12 @@ from gdm.distribution.components.base.distribution_transformer_base import (
 )
 from gdm.distribution.enums import ColorNodeBy, ColorLineBy, PlotingStyle, MapType
 from gdm.distribution.enums import Phase
-from gdm.distribution.components import DistributionBus, GeometryBranch, MatrixImpedanceBranch
+from gdm.distribution.components import (
+    DistributionBus,
+    GeometryBranch,
+    MatrixImpedanceBranch,
+    MatrixImpedanceSwitch,
+)
 from gdm.distribution.components.base.distribution_switch_base import (
     DistributionSwitchBase,
 )
@@ -356,13 +361,31 @@ class DistributionSystem(System):
         dfs_tree = self._dfs_multidigraph(ugraph, source=self.get_source_bus().name)
 
         if return_radial_network:
-            for cycle in self.get_cycles(dfs_tree):
-                bus_1 = random.choice(cycle)
-                if cycle.index(bus_1) == len(cycle) - 1:
-                    bus_2 = cycle[0]
+            cycles = self.get_cycles(dfs_tree)
+            while cycles:
+                cycle = cycles[0]
+                switch_buses = self.find_switch_buses_in_cycle(cycle)
+                logger.debug(f"  Cycle found: {cycle}, switch buses in cycle: {switch_buses}")
+                if switch_buses:
+                    try:
+                        dfs_tree.remove_edge(*switch_buses)
+                    except Exception:
+                        dfs_tree.remove_edge(*switch_buses[::-1])
                 else:
-                    bus_2 = cycle[cycle.index(bus_1) + 1]
-                dfs_tree.remove_edge(bus_1, bus_2)
+                    bus_1 = random.choice(cycle)
+                    if cycle.index(bus_1) == len(cycle) - 1:
+                        bus_2 = cycle[0]
+                    else:
+                        bus_2 = cycle[cycle.index(bus_1) + 1]
+                    dfs_tree.remove_edge(bus_1, bus_2)
+                    logger.warning(
+                        f"  No switch found in cycle. Removing edge ({bus_1}, {bus_2}) to break the cycle."
+                    )
+                cycles = self.get_cycles(dfs_tree)
+
+            assert (
+                self.get_cycles(dfs_tree) == []
+            ), "Cycles should not be present in the directed graph after pruning."
 
         dfs_edge_names = [
             ugraph.get_edge_data(u, v, k)["name"] for u, v, k in dfs_tree.edges(keys=True)
@@ -386,6 +409,43 @@ class DistributionSystem(System):
         )
         dfs_tree.add_edges_from(pruned_edges_tuples)
         return dfs_tree
+
+    def find_switch_buses_in_cycle(self, cycle: list[str]) -> list[str]:
+        """Finds the switch buses in a given cycle.
+
+        This method identifies the switch buses that are part of a cycle in the directed graph.
+        It checks for edges in the cycle that correspond to open switches and returns the names
+        of the buses associated with those switches.
+
+        Parameters
+        ----------
+        cycle : list[str]
+            A list of bus names that form a cycle in the directed graph.
+
+        Returns
+        -------
+        list[str]
+            A list of bus names that are associated with open switches in the cycle.
+
+        Notes
+        -----
+        - The method iterates through the edges in the cycle and checks for any open switches.
+        - It returns the names of the buses that are connected by these open switches.
+        """
+        switch_buses = []
+        for i in range(len(cycle)):
+            bus_1 = cycle[i]
+            bus_2 = cycle[(i + 1) % len(cycle)]
+            edge_data = self.get_undirected_graph().get_edge_data(bus_1, bus_2)
+            print(bus_1, bus_2, edge_data)
+            if edge_data:
+                for key, data in edge_data.items():
+                    if issubclass(data.get("type"), MatrixImpedanceSwitch):
+                        switch_buses.append(bus_1)
+                        switch_buses.append(bus_2)
+                        logger.info(f"Switch found between {bus_1} and {bus_2}")
+                        break
+        return list(set(switch_buses))
 
     def get_split_phase_mapping(self) -> dict[str, set[Phase]]:
         """Generates a mapping of components to their split-phase configurations.
