@@ -143,3 +143,32 @@ def test_distribution_graph_directed_closed_switch(
 
     log_contents = log_stream.getvalue()
     assert "| WARNING  |" in log_contents
+
+
+def test_directed_graph_multiple_loops_pruning(simple_distribution_system: DistributionSystem):
+    """Ensure get_directed_graph prunes cycles to a radial tree when requested."""
+
+    system = simple_distribution_system.deepcopy()
+    system.auto_add_composed_components = True
+
+    buses = sorted(system.get_components(DistributionBus), key=lambda x: x.name)
+
+    # Add two additional switches creating multiple loops in the network
+    sw1 = MatrixImpedanceSwitch.example()
+    sw1.buses = [buses[0], buses[4]]
+    sw1.is_closed = [True, True, True]
+    system.add_component(sw1.model_copy(update={"uuid": sw1.uuid, "name": "test_switch_1"}))
+
+    sw2 = MatrixImpedanceSwitch.example()
+    sw2.buses = [buses[1], buses[5]]
+    sw2.is_closed = [True, True, True]
+    system.add_component(sw2.model_copy(update={"uuid": sw2.uuid, "name": "test_switch_2"}))
+
+    radial = system.get_directed_graph(return_radial_network=True)
+
+    assert radial.number_of_nodes() == system.get_undirected_graph().number_of_nodes()
+    assert radial.number_of_edges() == radial.number_of_nodes() - 1
+
+    # When not requesting a radial network, pruned edges are kept
+    full = system.get_directed_graph(return_radial_network=False)
+    assert full.number_of_edges() >= radial.number_of_edges()
