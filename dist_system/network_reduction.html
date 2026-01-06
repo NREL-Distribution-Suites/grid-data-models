@@ -1,0 +1,857 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Network Reduction &#8212; Grid-Data-Models</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/autodoc_pydantic.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'dist_system/network_reduction';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Tracking Changes in GDM" href="tracked_changes.html" />
+    <link rel="prev" title="System Graphs" href="graphs.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/gdm_logo.jpeg" class="logo__image only-light" alt="Grid-Data-Models - Home"/>
+    <script>document.write(`<img src="../_static/gdm_logo.jpeg" class="logo__image only-dark" alt="Grid-Data-Models - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    Intro to Grid-Data-Models
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Installation</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installing Dependencies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gdmloader/gdmloader.html">Working with GDMLOADER</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Tutorial</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../new_features.html">Recent Feature Additions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gdm_intro/data_models.html">On GDM Data Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gdm_intro/units.html">Managing Physical Units</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gdm_intro/timeseries.html">Managing Time-Series Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="import_export.html">Importing and Exporting Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plotting.html">Plotting GDM Models</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Usage</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="graphs.html">System Graphs</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Network Reduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tracked_changes.html">Tracking Changes in GDM</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">On CIM and GDM</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../cim/index.html">CIM vs GDM a comparison</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cim/distribution-bus.html">Model Representation</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference Guides</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../api/index.html">API Reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../api/components/distribution_battery.html">Distribution Battery</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/components/distribution_bus.html">Distribution Bus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/components/distribution_branch.html">Distribution Branch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/components/distribution_capacitor.html">Distribution Capacitor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/components/distribution_feeder.html">Distribution Feeder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/components/distribution_substation.html">Distribution Substation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/components/distribution_load.html">Distribution Load</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/components/distribution_transformer.html">Distribution Transformer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/components/distribution_regulator.html">Distribution Regulator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/components/distribution_fuse.html">Distribution Fuse</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/components/distribution_switch.html">Distribution Switch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/components/distribution_recloser.html">Distribution Recloser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/components/distribution_vsource.html">Distribution Voltage Sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/components/distribution_solar.html">Distribution Solar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/equipment/battery_equipment.html">Battery Equipment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/equipment/branch_equipment.html">Distribution Branch Equipment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/equipment/capacitor_equipment.html">Capacitor Equipment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/equipment/load_equipment.html">Load Equipment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/equipment/distribution_transformer_equipment.html">Distribution Transformer Equipment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/equipment/vsource_equipment.html">Voltage Source Equipment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/equipment/distribution_wires.html">Wire Equipment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/equipment/fuse_equipment.html">Fuse Equipment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/equipment/switch_equipment.html">Switch Equipment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/equipment/recloser_equipment.html">Recloser Equipment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/equipment/solar_equipment.html">Solar Equipment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/equipment/inverter_equipment.html">Inverter Equipment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/controllers/capacitor_controllers.html">Capacitor Controllers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/controllers/regulator_controllers.html">Regulator Controller</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/controllers/inverter_controllers.html">Inverter Controller</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/controllers/switch_controllers.html">Switch Controller</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/controllers/recloser_controllers.html">Recloser Controller</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/distribution_enum.html">Distribution Enumerations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/limitset.html">Distribution Limitsets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/quantities.html">Quantities</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../cli/index.html">CLI Reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../cli/reduce.html">GDM Transformation</a></li>
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/NREL-Distribution-Suites/grid-data-models" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/NREL-Distribution-Suites/grid-data-models/issues/new?title=Issue%20on%20page%20%2Fdist_system/network_reduction.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/dist_system/network_reduction.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Network Reduction</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#three-phase-balanced-representation">Three-Phase Balanced Representation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#primary-network-representation">Primary Network Representation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#support-for-time-series-aggregation">Support for Time Series Aggregation</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="network-reduction">
+<h1>Network Reduction<a class="headerlink" href="#network-reduction" title="Link to this heading">#</a></h1>
+<p>The grid-data-models (GDM) package provides helper functions to facilitate the reduction of distribution models, making them more computationally efficient for specific analyses. Model reduction techniques are particularly useful when studying large distribution networks where simulating the entire model is unnecessary or resource-intensive.</p>
+<p>GDM currently supports two model reduction formulations:</p>
+<ul class="simple">
+<li><p>Three-phase balanced representation</p></li>
+<li><p>Primary network representation</p></li>
+</ul>
+<p>We start by loading a sample DistributionSystem.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">gdm.distribution</span><span class="w"> </span><span class="kn">import</span> <span class="n">DistributionSystem</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">gdmloader.constants</span><span class="w"> </span><span class="kn">import</span> <span class="n">GCS_CASE_SOURCE</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">gdmloader.source</span><span class="w"> </span><span class="kn">import</span> <span class="n">SystemLoader</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">display</span><span class="p">,</span> <span class="n">HTML</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">loguru</span><span class="w"> </span><span class="kn">import</span> <span class="n">logger</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">plotly.io</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pio</span>
+
+<span class="n">logger</span><span class="o">.</span><span class="n">remove</span><span class="p">()</span>
+
+<span class="c1"># Add a new sink with the desired minimum level</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="s2">&quot;WARNING&quot;</span><span class="p">)</span>
+
+<span class="n">gdm_loader</span> <span class="o">=</span> <span class="n">SystemLoader</span><span class="p">()</span>
+<span class="n">gdm_loader</span><span class="o">.</span><span class="n">add_source</span><span class="p">(</span><span class="n">GCS_CASE_SOURCE</span><span class="p">)</span>
+
+<span class="n">distribution_system</span><span class="p">:</span> <span class="n">DistributionSystem</span> <span class="o">=</span> <span class="n">gdm_loader</span><span class="o">.</span><span class="n">load_dataset</span><span class="p">(</span>
+    <span class="n">source_name</span><span class="o">=</span><span class="n">GCS_CASE_SOURCE</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+    <span class="n">system_type</span><span class="o">=</span><span class="n">DistributionSystem</span><span class="p">,</span>
+    <span class="n">dataset_name</span><span class="o">=</span><span class="s2">&quot;p1rhs7_1247&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">distribution_system</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;p1rhs7_1247&quot;</span>
+<span class="n">distribution_system</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">FileNotFoundError</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
+<span class="nn">File /opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/gdmloader/source.py:124,</span> in <span class="ni">SystemLoader.load_dataset</span><span class="nt">(self, system_type, source_name, dataset_name, version)</span>
+<span class="g g-Whitespace">    </span><span class="mi">123</span> <span class="k">try</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">124</span>     <span class="n">source</span><span class="o">.</span><span class="n">fs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">125</span>         <span class="n">remote_folder</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">126</span>         <span class="nb">str</span><span class="p">(</span><span class="n">local_folder</span><span class="p">),</span>
+<span class="g g-Whitespace">    </span><span class="mi">127</span>         <span class="n">recursive</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">128</span>     <span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">129</span> <span class="k">except</span> <span class="ne">FileNotFoundError</span><span class="p">:</span>
+
+<span class="nn">File /opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/fsspec/asyn.py:118,</span> in <span class="ni">sync_wrapper.&lt;locals&gt;.wrapper</span><span class="nt">(*args, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">117</span> <span class="bp">self</span> <span class="o">=</span> <span class="n">obj</span> <span class="ow">or</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="ne">--&gt; </span><span class="mi">118</span> <span class="k">return</span> <span class="n">sync</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">loop</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+<span class="nn">File /opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/fsspec/asyn.py:103,</span> in <span class="ni">sync</span><span class="nt">(loop, func, timeout, *args, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">102</span> <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">return_result</span><span class="p">,</span> <span class="ne">BaseException</span><span class="p">):</span>
+<span class="ne">--&gt; </span><span class="mi">103</span>     <span class="k">raise</span> <span class="n">return_result</span>
+<span class="g g-Whitespace">    </span><span class="mi">104</span> <span class="k">else</span><span class="p">:</span>
+
+<span class="nn">File /opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/fsspec/asyn.py:56,</span> in <span class="ni">_runner</span><span class="nt">(event, coro, result, timeout)</span>
+<span class="g g-Whitespace">     </span><span class="mi">55</span> <span class="k">try</span><span class="p">:</span>
+<span class="ne">---&gt; </span><span class="mi">56</span>     <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="k">await</span> <span class="n">coro</span>
+<span class="g g-Whitespace">     </span><span class="mi">57</span> <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
+
+<span class="nn">File /opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/fsspec/asyn.py:645,</span> in <span class="ni">AsyncFileSystem._get</span><span class="nt">(self, rpath, lpath, recursive, callback, maxdepth, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">644</span> <span class="n">rpath</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_strip_protocol</span><span class="p">(</span><span class="n">rpath</span><span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">645</span> <span class="n">rpaths</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_expand_path</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">646</span>     <span class="n">rpath</span><span class="p">,</span> <span class="n">recursive</span><span class="o">=</span><span class="n">recursive</span><span class="p">,</span> <span class="n">maxdepth</span><span class="o">=</span><span class="n">maxdepth</span>
+<span class="g g-Whitespace">    </span><span class="mi">647</span> <span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">648</span> <span class="k">if</span> <span class="n">source_is_str</span> <span class="ow">and</span> <span class="p">(</span><span class="ow">not</span> <span class="n">recursive</span> <span class="ow">or</span> <span class="n">maxdepth</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">):</span>
+<span class="g g-Whitespace">    </span><span class="mi">649</span>     <span class="c1"># Non-recursive glob does not copy directories</span>
+
+<span class="nn">File /opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/fsspec/asyn.py:883,</span> in <span class="ni">AsyncFileSystem._expand_path</span><span class="nt">(self, path, recursive, maxdepth)</span>
+<span class="g g-Whitespace">    </span><span class="mi">882</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+<span class="ne">--&gt; </span><span class="mi">883</span>     <span class="n">out</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_expand_path</span><span class="p">([</span><span class="n">path</span><span class="p">],</span> <span class="n">recursive</span><span class="p">,</span> <span class="n">maxdepth</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">884</span> <span class="k">else</span><span class="p">:</span>
+
+<span class="nn">File /opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/fsspec/asyn.py:912,</span> in <span class="ni">AsyncFileSystem._expand_path</span><span class="nt">(self, path, recursive, maxdepth)</span>
+<span class="g g-Whitespace">    </span><span class="mi">911</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">out</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">912</span>     <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">913</span> <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+
+<span class="ne">FileNotFoundError</span>: [&#39;gdm_data/data/DistributionSystem/2_2_1/p1rhs7_1247&#39;]
+
+<span class="n">During</span> <span class="n">handling</span> <span class="n">of</span> <span class="n">the</span> <span class="n">above</span> <span class="n">exception</span><span class="p">,</span> <span class="n">another</span> <span class="n">exception</span> <span class="n">occurred</span><span class="p">:</span>
+
+<span class="ne">ValueError</span><span class="g g-Whitespace">                                </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">line</span> <span class="mi">19</span>
+<span class="g g-Whitespace">     </span><span class="mi">16</span> <span class="n">gdm_loader</span> <span class="o">=</span> <span class="n">SystemLoader</span><span class="p">()</span>
+<span class="g g-Whitespace">     </span><span class="mi">17</span> <span class="n">gdm_loader</span><span class="o">.</span><span class="n">add_source</span><span class="p">(</span><span class="n">GCS_CASE_SOURCE</span><span class="p">)</span>
+<span class="ne">---&gt; </span><span class="mi">19</span> <span class="n">distribution_system</span><span class="p">:</span> <span class="n">DistributionSystem</span> <span class="o">=</span> <span class="n">gdm_loader</span><span class="o">.</span><span class="n">load_dataset</span><span class="p">(</span>
+<span class="g g-Whitespace">     </span><span class="mi">20</span>     <span class="n">source_name</span><span class="o">=</span><span class="n">GCS_CASE_SOURCE</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">21</span>     <span class="n">system_type</span><span class="o">=</span><span class="n">DistributionSystem</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">22</span>     <span class="n">dataset_name</span><span class="o">=</span><span class="s2">&quot;p1rhs7_1247&quot;</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">23</span> <span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">24</span> <span class="n">distribution_system</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;p1rhs7_1247&quot;</span>
+<span class="g g-Whitespace">     </span><span class="mi">25</span> <span class="n">distribution_system</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+
+<span class="nn">File /opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/gdmloader/source.py:131,</span> in <span class="ni">SystemLoader.load_dataset</span><span class="nt">(self, system_type, source_name, dataset_name, version)</span>
+<span class="g g-Whitespace">    </span><span class="mi">129</span>     <span class="k">except</span> <span class="ne">FileNotFoundError</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">130</span>         <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">remote_folder</span><span class="si">=}</span><span class="s2"> not found! Check the URL: </span><span class="si">{</span><span class="n">source</span><span class="o">.</span><span class="n">url</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">remote_folder</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="ne">--&gt; </span><span class="mi">131</span>         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">133</span> <span class="n">system_file</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">dataset_folder</span><span class="o">.</span><span class="n">rglob</span><span class="p">(</span><span class="s2">&quot;*.json&quot;</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+<span class="g g-Whitespace">    </span><span class="mi">134</span> <span class="k">return</span> <span class="n">system_type</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">system_file</span><span class="p">)</span>
+
+<span class="ne">ValueError</span>: remote_folder=&#39;gdm_data/data/DistributionSystem/2_2_1/p1rhs7_1247&#39; not found! Check the URL: https://storage.googleapis.com/gdm_data/gdm_data/data/DistributionSystem/2_2_1/p1rhs7_1247
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">gdm.distribution.enums</span><span class="w"> </span><span class="kn">import</span> <span class="n">MapType</span><span class="p">,</span> <span class="n">PlotingStyle</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">distribution_system</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="n">map_type</span><span class="o">=</span><span class="n">MapType</span><span class="o">.</span><span class="n">SCATTER_MAP</span><span class="p">,</span>
+    <span class="n">style</span><span class="o">=</span><span class="n">PlotingStyle</span><span class="o">.</span><span class="n">OPEN_STREET_MAP</span><span class="p">,</span>
+    <span class="n">flip_coordinates</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">HTML</span><span class="p">(</span><span class="n">pio</span><span class="o">.</span><span class="n">to_html</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">include_plotlyjs</span><span class="o">=</span><span class="s2">&quot;cdn&quot;</span><span class="p">,</span> <span class="n">full_html</span><span class="o">=</span><span class="kc">False</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="three-phase-balanced-representation">
+<h2>Three-Phase Balanced Representation<a class="headerlink" href="#three-phase-balanced-representation" title="Link to this heading">#</a></h2>
+<p>The model is reduced by representing only the three-phase buses in the system. This formulation is particularly useful for system-level studies where maintaining a balanced representation of the network is sufficient.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">gdm.distribution.model_reduction</span><span class="w"> </span><span class="kn">import</span> <span class="n">reduce_to_three_phase_system</span>
+
+<span class="n">three_phase_gdm_model</span><span class="p">:</span> <span class="n">DistributionSystem</span> <span class="o">=</span> <span class="n">reduce_to_three_phase_system</span><span class="p">(</span>
+    <span class="n">distribution_system</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;reduced_system&quot;</span><span class="p">,</span> <span class="n">agg_timeseries</span><span class="o">=</span><span class="kc">False</span>
+<span class="p">)</span>
+<span class="n">three_phase_gdm_model</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="font-weight: bold">System                                   </span>
+┏━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┓
+┃<span style="font-weight: bold"> Property             </span>┃<span style="font-weight: bold">          Value </span>┃
+┡━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━┩
+│ System name          │ reduced_system │
+│ Data format version  │          2.0.1 │
+│ Components attached  │           1953 │
+│ Time Series attached │              0 │
+│ Description          │                │
+└──────────────────────┴────────────────┘
+</pre>
+</div><div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="font-weight: bold">Component Information                       </span>
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┓
+┃<span style="font-weight: bold"> Type                             </span>┃<span style="font-weight: bold"> Count </span>┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━┩
+│ DistributionBus                  │   328 │
+│ DistributionLoad                 │   190 │
+│ DistributionTransformer          │    22 │
+│ DistributionTransformerEquipment │     2 │
+│ DistributionVoltageSource        │     1 │
+│ LoadEquipment                    │   190 │
+│ Location                         │   328 │
+│ MatrixImpedanceBranch            │   248 │
+│ MatrixImpedanceBranchEquipment   │     8 │
+│ MatrixImpedanceSwitch            │    57 │
+│ MatrixImpedanceSwitchEquipment   │     9 │
+│ PhaseLoadEquipment               │   556 │
+│ PhaseVoltageSourceEquipment      │     3 │
+│ VoltageLimitSet                  │     6 │
+│ VoltageSourceEquipment           │     1 │
+│ WindingEquipment                 │     4 │
+└──────────────────────────────────┴───────┘
+</pre>
+</div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">three_phase_gdm_model</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="n">map_type</span><span class="o">=</span><span class="n">MapType</span><span class="o">.</span><span class="n">SCATTER_MAP</span><span class="p">,</span>
+    <span class="n">style</span><span class="o">=</span><span class="n">PlotingStyle</span><span class="o">.</span><span class="n">OPEN_STREET_MAP</span><span class="p">,</span>
+    <span class="n">flip_coordinates</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">HTML</span><span class="p">(</span><span class="n">pio</span><span class="o">.</span><span class="n">to_html</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">include_plotlyjs</span><span class="o">=</span><span class="s2">&quot;cdn&quot;</span><span class="p">,</span> <span class="n">full_html</span><span class="o">=</span><span class="kc">False</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="primary-network-representation">
+<h2>Primary Network Representation<a class="headerlink" href="#primary-network-representation" title="Link to this heading">#</a></h2>
+<p>This approach involves lumping loads, generation, and capacitors and representing them on the primary network. All secondary networks are removed, resulting in a streamlined model that captures the essential characteristics of the primary distribution network while discarding unnecessary details.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">gdm.distribution.model_reduction</span><span class="w"> </span><span class="kn">import</span> <span class="n">reduce_to_primary_system</span>
+
+<span class="n">primary_gdm_model</span><span class="p">:</span> <span class="n">DistributionSystem</span> <span class="o">=</span> <span class="n">reduce_to_primary_system</span><span class="p">(</span>
+    <span class="n">distribution_system</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;reduced_system&quot;</span><span class="p">,</span> <span class="n">agg_timeseries</span><span class="o">=</span><span class="kc">False</span>
+<span class="p">)</span>
+<span class="n">primary_gdm_model</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="font-weight: bold">System                                   </span>
+┏━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┓
+┃<span style="font-weight: bold"> Property             </span>┃<span style="font-weight: bold">          Value </span>┃
+┡━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━┩
+│ System name          │ reduced_system │
+│ Data format version  │          2.0.1 │
+│ Components attached  │           4289 │
+│ Time Series attached │              0 │
+│ Description          │                │
+└──────────────────────┴────────────────┘
+</pre>
+</div><div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="font-weight: bold">Component Information                       </span>
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┓
+┃<span style="font-weight: bold"> Type                             </span>┃<span style="font-weight: bold"> Count </span>┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━┩
+│ DistributionBus                  │   796 │
+│ DistributionLoad                 │   502 │
+│ DistributionTransformer          │     1 │
+│ DistributionTransformerEquipment │     1 │
+│ DistributionVoltageSource        │     1 │
+│ LoadEquipment                    │   502 │
+│ Location                         │   796 │
+│ MatrixImpedanceBranch            │   629 │
+│ MatrixImpedanceBranchEquipment   │     8 │
+│ MatrixImpedanceFuse              │    81 │
+│ MatrixImpedanceFuseEquipment     │     6 │
+│ MatrixImpedanceSwitch            │    84 │
+│ MatrixImpedanceSwitchEquipment   │    15 │
+│ PhaseLoadEquipment               │   856 │
+│ PhaseVoltageSourceEquipment      │     3 │
+│ TimeCurrentCurve                 │     1 │
+│ VoltageLimitSet                  │     4 │
+│ VoltageSourceEquipment           │     1 │
+│ WindingEquipment                 │     2 │
+└──────────────────────────────────┴───────┘
+</pre>
+</div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">primary_gdm_model</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="n">map_type</span><span class="o">=</span><span class="n">MapType</span><span class="o">.</span><span class="n">SCATTER_MAP</span><span class="p">,</span>
+    <span class="n">style</span><span class="o">=</span><span class="n">PlotingStyle</span><span class="o">.</span><span class="n">OPEN_STREET_MAP</span><span class="p">,</span>
+    <span class="n">flip_coordinates</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">HTML</span><span class="p">(</span><span class="n">pio</span><span class="o">.</span><span class="n">to_html</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">include_plotlyjs</span><span class="o">=</span><span class="s2">&quot;cdn&quot;</span><span class="p">,</span> <span class="n">full_html</span><span class="o">=</span><span class="kc">False</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="support-for-time-series-aggregation">
+<h2>Support for Time Series Aggregation<a class="headerlink" href="#support-for-time-series-aggregation" title="Link to this heading">#</a></h2>
+<p>Model reduction algorithms aggregate components. Additionally, <code class="docutils literal notranslate"><span class="pre">agg_timeseries</span></code> can be set to true to aggregate time series profiles.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">infrasys.time_series_models</span><span class="w"> </span><span class="kn">import</span> <span class="n">SingleTimeSeries</span>
+
+<span class="n">three_phase_gdm_model</span><span class="p">:</span> <span class="n">DistributionSystem</span> <span class="o">=</span> <span class="n">reduce_to_three_phase_system</span><span class="p">(</span>
+    <span class="n">distribution_system</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;reduced_system&quot;</span><span class="p">,</span>
+    <span class="n">agg_timeseries</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">time_series_type</span><span class="o">=</span><span class="n">SingleTimeSeries</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./dist_system"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="graphs.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">System Graphs</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="tracked_changes.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Tracking Changes in GDM</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#three-phase-balanced-representation">Three-Phase Balanced Representation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#primary-network-representation">Primary Network Representation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#support-for-time-series-aggregation">Support for Time Series Aggregation</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Aadil Latif
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+<div class="extra_footer">
+  <p>
+© Copyright 2024, Alliance for Sustainable Energy, LLC. This work is licensed under a BSD 3-Clause License
+</p>
+
+</div>
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

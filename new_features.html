@@ -1,0 +1,862 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Recent Feature Additions &#8212; Grid-Data-Models</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/autodoc_pydantic.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'new_features';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="On GDM Data Models" href="gdm_intro/data_models.html" />
+    <link rel="prev" title="Working with GDMLOADER" href="gdmloader/gdmloader.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/gdm_logo.jpeg" class="logo__image only-light" alt="Grid-Data-Models - Home"/>
+    <script>document.write(`<img src="_static/gdm_logo.jpeg" class="logo__image only-dark" alt="Grid-Data-Models - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    Intro to Grid-Data-Models
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Installation</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installing Dependencies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gdmloader/gdmloader.html">Working with GDMLOADER</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Tutorial</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Recent Feature Additions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gdm_intro/data_models.html">On GDM Data Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gdm_intro/units.html">Managing Physical Units</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gdm_intro/timeseries.html">Managing Time-Series Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dist_system/import_export.html">Importing and Exporting Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dist_system/plotting.html">Plotting GDM Models</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Usage</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="dist_system/graphs.html">System Graphs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dist_system/network_reduction.html">Network Reduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dist_system/tracked_changes.html">Tracking Changes in GDM</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">On CIM and GDM</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="cim/index.html">CIM vs GDM a comparison</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cim/distribution-bus.html">Model Representation</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference Guides</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="api/index.html">API Reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/components/distribution_battery.html">Distribution Battery</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/components/distribution_bus.html">Distribution Bus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/components/distribution_branch.html">Distribution Branch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/components/distribution_capacitor.html">Distribution Capacitor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/components/distribution_feeder.html">Distribution Feeder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/components/distribution_substation.html">Distribution Substation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/components/distribution_load.html">Distribution Load</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/components/distribution_transformer.html">Distribution Transformer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/components/distribution_regulator.html">Distribution Regulator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/components/distribution_fuse.html">Distribution Fuse</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/components/distribution_switch.html">Distribution Switch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/components/distribution_recloser.html">Distribution Recloser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/components/distribution_vsource.html">Distribution Voltage Sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/components/distribution_solar.html">Distribution Solar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/equipment/battery_equipment.html">Battery Equipment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/equipment/branch_equipment.html">Distribution Branch Equipment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/equipment/capacitor_equipment.html">Capacitor Equipment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/equipment/load_equipment.html">Load Equipment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/equipment/distribution_transformer_equipment.html">Distribution Transformer Equipment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/equipment/vsource_equipment.html">Voltage Source Equipment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/equipment/distribution_wires.html">Wire Equipment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/equipment/fuse_equipment.html">Fuse Equipment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/equipment/switch_equipment.html">Switch Equipment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/equipment/recloser_equipment.html">Recloser Equipment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/equipment/solar_equipment.html">Solar Equipment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/equipment/inverter_equipment.html">Inverter Equipment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/controllers/capacitor_controllers.html">Capacitor Controllers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/controllers/regulator_controllers.html">Regulator Controller</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/controllers/inverter_controllers.html">Inverter Controller</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/controllers/switch_controllers.html">Switch Controller</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/controllers/recloser_controllers.html">Recloser Controller</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/distribution_enum.html">Distribution Enumerations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/limitset.html">Distribution Limitsets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/quantities.html">Quantities</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="cli/index.html">CLI Reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli/reduce.html">GDM Transformation</a></li>
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/NREL-Distribution-Suites/grid-data-models" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/NREL-Distribution-Suites/grid-data-models/issues/new?title=Issue%20on%20page%20%2Fnew_features.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/new_features.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Recent Feature Additions</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#version-2-2-1">Version 2.2.1</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deterministic-directed-graph-construction">Deterministic directed graph construction</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#matrix-impedance-calculation-fixes">Matrix impedance calculation fixes</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#correct-unit-handling-and-length-scaling">Correct unit handling and length scaling</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#kron-reduction-stability-improvements">Kron reduction stability improvements</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#notes-for-users">Notes for users</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#version-2-1-5">Version 2.1.5</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#graph-bug-fix">Graph bug fix</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gdf-bug-fix">GDF Bug Fix</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#three-phase-model-reduction-algorithm-bug-fix">Three-phase Model Reduction Algorithm Bug Fix</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#version-2-1-3">Version 2.1.3</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#plotting-bug-fix">Plotting bug fix</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tariff-model-added">Tariff model added</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#version-2-1-2">Version 2.1.2</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#support-to-line-impedance-calculations">Support to line impedance calculations</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#change-to-trackchange-object">Change to TrackChange object</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#version-2-1-0">Version 2.1.0</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#improved-validation-for-physical-quantities">Improved validation for physical quantities</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#initial-implementation-to-manage-backward-compatability-for-distributionsystems">Initial implementation to manage backward compatability for DistributionSystems</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#support-to-create-a-deepcopy-of-gdm-system">Support  to create a deepcopy of GDM system</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="recent-feature-additions">
+<h1>Recent Feature Additions<a class="headerlink" href="#recent-feature-additions" title="Link to this heading">#</a></h1>
+<section id="version-2-2-1">
+<h2>Version 2.2.1<a class="headerlink" href="#version-2-2-1" title="Link to this heading">#</a></h2>
+<section id="deterministic-directed-graph-construction">
+<h3>Deterministic directed graph construction<a class="headerlink" href="#deterministic-directed-graph-construction" title="Link to this heading">#</a></h3>
+<p>Recent fixes make the <code class="docutils literal notranslate"><span class="pre">DistributionSystem.get_directed_graph</span></code> behaviour deterministic:</p>
+<ul class="simple">
+<li><p>DFS traversal is now deterministic: neighbors and parallel edges are iterated in sorted order.</p></li>
+<li><p>Cycle pruning is deterministic: when producing a radial network the edge removed from each cycle is chosen by lexicographic edge-name ordering (with tie-breakers).</p></li>
+</ul>
+<p>These changes remove flakiness from tests that assert exact node/edge counts or specific pruned edges.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pytest<span class="w"> </span>tests/test_distribution_graph.py::test_directed_graph_multiple_loops_pruning<span class="w"> </span>-q
+</pre></div>
+</div>
+<p>If you rely on a specific choice of which parallel edge is used in analysis, prefer to inspect the undirected graph (<code class="docutils literal notranslate"><span class="pre">get_undirected_graph</span></code>) or explicitly set component names to control pruning selection.</p>
+</section>
+<section id="matrix-impedance-calculation-fixes">
+<h3>Matrix impedance calculation fixes<a class="headerlink" href="#matrix-impedance-calculation-fixes" title="Link to this heading">#</a></h3>
+<section id="correct-unit-handling-and-length-scaling">
+<h4>Correct unit handling and length scaling<a class="headerlink" href="#correct-unit-handling-and-length-scaling" title="Link to this heading">#</a></h4>
+<p>Fixed issues in <code class="docutils literal notranslate"><span class="pre">GeometryBranch.to_matrix_representation</span></code> and <code class="docutils literal notranslate"><span class="pre">convert_geometry_to_matrix_representation</span></code> where unit conversion and length scaling could produce incorrect impedance magnitudes. The conversion now consistently uses the system’s unit definitions and converts lengths before computing per-unit matrices.</p>
+</section>
+<section id="kron-reduction-stability-improvements">
+<h4>Kron reduction stability improvements<a class="headerlink" href="#kron-reduction-stability-improvements" title="Link to this heading">#</a></h4>
+<p>Improved numerical stability in <code class="docutils literal notranslate"><span class="pre">MatrixImpedanceBranch.kron_reduce()</span></code> to avoid introducing small imaginary/real artifacts during network reduction.</p>
+</section>
+<section id="notes-for-users">
+<h4>Notes for users<a class="headerlink" href="#notes-for-users" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p>If you previously converted geometry branches, re-run <code class="docutils literal notranslate"><span class="pre">convert_geometry_to_matrix_representation()</span></code> to pick up corrected impedance values.</p></li>
+<li><p>See <code class="docutils literal notranslate"><span class="pre">tests/test_impedence_calc.py</span></code> for unit tests covering these fixes.</p></li>
+</ul>
+</section>
+</section>
+</section>
+<section id="version-2-1-5">
+<h2>Version 2.1.5<a class="headerlink" href="#version-2-1-5" title="Link to this heading">#</a></h2>
+<section id="graph-bug-fix">
+<h3>Graph bug fix<a class="headerlink" href="#graph-bug-fix" title="Link to this heading">#</a></h3>
+<p>The graphs returned from GDM are type <code class="docutils literal notranslate"><span class="pre">MultiGraph</span></code> and <code class="docutils literal notranslate"><span class="pre">MultiDiGraph</span></code>. This allows user to represent multiple single-phase components as parallel edges in the graph.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>Use of multiple parallel edges results in cycles in the graph.</p></li>
+<li><p>A helper static method <code class="docutils literal notranslate"><span class="pre">get_cycles</span></code> has been added to the <code class="docutils literal notranslate"><span class="pre">DistributionSystem</span></code> class.</p>
+<ul>
+<li><p>Unlike the networkX’s ‘simple_cycles’ method, this function ignores these parallel edges connecting two nodes and only returns cycles with lengths greater than two edges.</p></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="gdf-bug-fix">
+<h3>GDF Bug Fix<a class="headerlink" href="#gdf-bug-fix" title="Link to this heading">#</a></h3>
+<p>DistributionSystem now uses system CRS when exporting to GeoDataFrame format.</p>
+</section>
+<section id="three-phase-model-reduction-algorithm-bug-fix">
+<h3>Three-phase Model Reduction Algorithm Bug Fix<a class="headerlink" href="#three-phase-model-reduction-algorithm-bug-fix" title="Link to this heading">#</a></h3>
+<p>Bug fixes in the three-phase model reduction algorithm</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">gdm.distribution.market</span><span class="w"> </span><span class="kn">import</span> <span class="n">DistributionTariff</span>
+
+<span class="n">DistributionTariff</span><span class="o">.</span><span class="n">example</span><span class="p">()</span><span class="o">.</span><span class="n">pprint</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #800080; text-decoration-color: #800080; font-weight: bold">DistributionTariff</span><span style="font-weight: bold">(</span>
+    <span style="color: #808000; text-decoration-color: #808000">name</span>=<span style="color: #008000; text-decoration-color: #008000">'Residential Summer Tariff'</span>,
+    <span style="color: #808000; text-decoration-color: #808000">utility</span>=<span style="color: #008000; text-decoration-color: #008000">'Example Utility'</span>,
+    <span style="color: #808000; text-decoration-color: #808000">customer_class</span>=<span style="font-weight: bold">&lt;</span><span style="color: #ff00ff; text-decoration-color: #ff00ff; font-weight: bold">CustomerClass.RESIDENTIAL:</span><span style="color: #000000; text-decoration-color: #000000"> </span><span style="color: #008000; text-decoration-color: #008000">'residential'</span><span style="color: #000000; text-decoration-color: #000000">&gt;,</span>
+<span style="color: #000000; text-decoration-color: #000000">    </span><span style="color: #808000; text-decoration-color: #808000">fixed_charge</span><span style="color: #000000; text-decoration-color: #000000">=</span><span style="color: #800080; text-decoration-color: #800080; font-weight: bold">FixedCharge</span><span style="color: #000000; text-decoration-color: #000000; font-weight: bold">(</span><span style="color: #808000; text-decoration-color: #808000">name</span><span style="color: #000000; text-decoration-color: #000000">=</span><span style="color: #008000; text-decoration-color: #008000">''</span><span style="color: #000000; text-decoration-color: #000000">, </span><span style="color: #808000; text-decoration-color: #808000">amount</span><span style="color: #000000; text-decoration-color: #000000">=</span><span style="color: #008080; text-decoration-color: #008080; font-weight: bold">15.0</span><span style="color: #000000; text-decoration-color: #000000">, </span><span style="color: #808000; text-decoration-color: #808000">description</span><span style="color: #000000; text-decoration-color: #000000">=</span><span style="color: #008000; text-decoration-color: #008000">'Monthly fixed customer charge'</span><span style="color: #000000; text-decoration-color: #000000; font-weight: bold">)</span><span style="color: #000000; text-decoration-color: #000000">,</span>
+<span style="color: #000000; text-decoration-color: #000000">    </span><span style="color: #808000; text-decoration-color: #808000">seasonal_tou</span><span style="color: #000000; text-decoration-color: #000000">=</span><span style="color: #000000; text-decoration-color: #000000; font-weight: bold">[</span>
+<span style="color: #000000; text-decoration-color: #000000">        </span><span style="color: #800080; text-decoration-color: #800080; font-weight: bold">SeasonalTOURates</span><span style="color: #000000; text-decoration-color: #000000; font-weight: bold">(</span>
+<span style="color: #000000; text-decoration-color: #000000">            </span><span style="color: #808000; text-decoration-color: #808000">name</span><span style="color: #000000; text-decoration-color: #000000">=</span><span style="color: #008000; text-decoration-color: #008000">''</span><span style="color: #000000; text-decoration-color: #000000">,</span>
+<span style="color: #000000; text-decoration-color: #000000">            </span><span style="color: #808000; text-decoration-color: #808000">season</span><span style="color: #000000; text-decoration-color: #000000">=&lt;Season.SUMMER: </span><span style="color: #008000; text-decoration-color: #008000">'summer'</span><span style="color: #000000; text-decoration-color: #000000">&gt;,</span>
+<span style="color: #000000; text-decoration-color: #000000">            </span><span style="color: #808000; text-decoration-color: #808000">tou_periods</span><span style="color: #000000; text-decoration-color: #000000">=</span><span style="color: #000000; text-decoration-color: #000000; font-weight: bold">[</span>
+<span style="color: #000000; text-decoration-color: #000000">                </span><span style="color: #800080; text-decoration-color: #800080; font-weight: bold">TOURatePeriod</span><span style="color: #000000; text-decoration-color: #000000; font-weight: bold">(</span>
+<span style="color: #000000; text-decoration-color: #000000">                    </span><span style="color: #808000; text-decoration-color: #808000">name</span><span style="color: #000000; text-decoration-color: #000000">=</span><span style="color: #008000; text-decoration-color: #008000">''</span><span style="color: #000000; text-decoration-color: #000000">,</span>
+<span style="color: #000000; text-decoration-color: #000000">                    </span><span style="color: #808000; text-decoration-color: #808000">start_time</span><span style="color: #000000; text-decoration-color: #000000">=</span><span style="color: #800080; text-decoration-color: #800080; font-weight: bold">datetime</span><span style="color: #800080; text-decoration-color: #800080; font-weight: bold">.time</span><span style="color: #000000; text-decoration-color: #000000; font-weight: bold">(</span><span style="color: #008080; text-decoration-color: #008080; font-weight: bold">14</span><span style="color: #000000; text-decoration-color: #000000">, </span><span style="color: #008080; text-decoration-color: #008080; font-weight: bold">0</span><span style="color: #000000; text-decoration-color: #000000; font-weight: bold">)</span><span style="color: #000000; text-decoration-color: #000000">,</span>
+<span style="color: #000000; text-decoration-color: #000000">                    </span><span style="color: #808000; text-decoration-color: #808000">end_time</span><span style="color: #000000; text-decoration-color: #000000">=</span><span style="color: #800080; text-decoration-color: #800080; font-weight: bold">datetime</span><span style="color: #800080; text-decoration-color: #800080; font-weight: bold">.time</span><span style="color: #000000; text-decoration-color: #000000; font-weight: bold">(</span><span style="color: #008080; text-decoration-color: #008080; font-weight: bold">20</span><span style="color: #000000; text-decoration-color: #000000">, </span><span style="color: #008080; text-decoration-color: #008080; font-weight: bold">0</span><span style="color: #000000; text-decoration-color: #000000; font-weight: bold">)</span><span style="color: #000000; text-decoration-color: #000000">,</span>
+<span style="color: #000000; text-decoration-color: #000000">                    </span><span style="color: #808000; text-decoration-color: #808000">rate</span><span style="color: #000000; text-decoration-color: #000000">=</span><span style="color: #008080; text-decoration-color: #008080; font-weight: bold">0.25</span><span style="color: #000000; text-decoration-color: #000000">,</span>
+<span style="color: #000000; text-decoration-color: #000000">                    </span><span style="color: #808000; text-decoration-color: #808000">period_type</span><span style="color: #000000; text-decoration-color: #000000">=&lt;TOUPeriodType.PEAK: </span><span style="color: #008000; text-decoration-color: #008000">'peak'</span><span style="color: #000000; text-decoration-color: #000000">&gt;</span>
+<span style="color: #000000; text-decoration-color: #000000">                </span><span style="color: #000000; text-decoration-color: #000000; font-weight: bold">)</span><span style="color: #000000; text-decoration-color: #000000">,</span>
+<span style="color: #000000; text-decoration-color: #000000">                </span><span style="color: #800080; text-decoration-color: #800080; font-weight: bold">TOURatePeriod</span><span style="color: #000000; text-decoration-color: #000000; font-weight: bold">(</span>
+<span style="color: #000000; text-decoration-color: #000000">                    </span><span style="color: #808000; text-decoration-color: #808000">name</span><span style="color: #000000; text-decoration-color: #000000">=</span><span style="color: #008000; text-decoration-color: #008000">''</span><span style="color: #000000; text-decoration-color: #000000">,</span>
+<span style="color: #000000; text-decoration-color: #000000">                    </span><span style="color: #808000; text-decoration-color: #808000">start_time</span><span style="color: #000000; text-decoration-color: #000000">=</span><span style="color: #800080; text-decoration-color: #800080; font-weight: bold">datetime</span><span style="color: #800080; text-decoration-color: #800080; font-weight: bold">.time</span><span style="color: #000000; text-decoration-color: #000000; font-weight: bold">(</span><span style="color: #008080; text-decoration-color: #008080; font-weight: bold">20</span><span style="color: #000000; text-decoration-color: #000000">, </span><span style="color: #008080; text-decoration-color: #008080; font-weight: bold">0</span><span style="color: #000000; text-decoration-color: #000000; font-weight: bold">)</span><span style="color: #000000; text-decoration-color: #000000">,</span>
+<span style="color: #000000; text-decoration-color: #000000">                    </span><span style="color: #808000; text-decoration-color: #808000">end_time</span><span style="color: #000000; text-decoration-color: #000000">=</span><span style="color: #800080; text-decoration-color: #800080; font-weight: bold">datetime</span><span style="color: #800080; text-decoration-color: #800080; font-weight: bold">.time</span><span style="color: #000000; text-decoration-color: #000000; font-weight: bold">(</span><span style="color: #008080; text-decoration-color: #008080; font-weight: bold">23</span><span style="color: #000000; text-decoration-color: #000000">, </span><span style="color: #008080; text-decoration-color: #008080; font-weight: bold">59</span><span style="color: #000000; text-decoration-color: #000000; font-weight: bold">)</span><span style="color: #000000; text-decoration-color: #000000">,</span>
+<span style="color: #000000; text-decoration-color: #000000">                    </span><span style="color: #808000; text-decoration-color: #808000">rate</span><span style="color: #000000; text-decoration-color: #000000">=</span><span style="color: #008080; text-decoration-color: #008080; font-weight: bold">0.15</span><span style="color: #000000; text-decoration-color: #000000">,</span>
+<span style="color: #000000; text-decoration-color: #000000">                    </span><span style="color: #808000; text-decoration-color: #808000">period_type</span><span style="color: #000000; text-decoration-color: #000000">=&lt;TOUPeriodType.OFF_PEAK: </span><span style="color: #008000; text-decoration-color: #008000">'off_peak'</span><span style="color: #000000; text-decoration-color: #000000">&gt;</span>
+<span style="color: #000000; text-decoration-color: #000000">                </span><span style="color: #000000; text-decoration-color: #000000; font-weight: bold">)</span>
+<span style="color: #000000; text-decoration-color: #000000">            </span><span style="color: #000000; text-decoration-color: #000000; font-weight: bold">]</span>
+<span style="color: #000000; text-decoration-color: #000000">        </span><span style="color: #000000; text-decoration-color: #000000; font-weight: bold">)</span><span style="color: #000000; text-decoration-color: #000000">,</span>
+<span style="color: #000000; text-decoration-color: #000000">        </span><span style="color: #800080; text-decoration-color: #800080; font-weight: bold">SeasonalTOURates</span><span style="color: #000000; text-decoration-color: #000000; font-weight: bold">(</span>
+<span style="color: #000000; text-decoration-color: #000000">            </span><span style="color: #808000; text-decoration-color: #808000">name</span><span style="color: #000000; text-decoration-color: #000000">=</span><span style="color: #008000; text-decoration-color: #008000">''</span><span style="color: #000000; text-decoration-color: #000000">,</span>
+<span style="color: #000000; text-decoration-color: #000000">            </span><span style="color: #808000; text-decoration-color: #808000">season</span><span style="color: #000000; text-decoration-color: #000000">=&lt;Season.WINTER: </span><span style="color: #008000; text-decoration-color: #008000">'winter'</span><span style="color: #000000; text-decoration-color: #000000">&gt;,</span>
+<span style="color: #000000; text-decoration-color: #000000">            </span><span style="color: #808000; text-decoration-color: #808000">tou_periods</span><span style="color: #000000; text-decoration-color: #000000">=</span><span style="color: #000000; text-decoration-color: #000000; font-weight: bold">[</span>
+<span style="color: #000000; text-decoration-color: #000000">                </span><span style="color: #800080; text-decoration-color: #800080; font-weight: bold">TOURatePeriod</span><span style="color: #000000; text-decoration-color: #000000; font-weight: bold">(</span>
+<span style="color: #000000; text-decoration-color: #000000">                    </span><span style="color: #808000; text-decoration-color: #808000">name</span><span style="color: #000000; text-decoration-color: #000000">=</span><span style="color: #008000; text-decoration-color: #008000">''</span><span style="color: #000000; text-decoration-color: #000000">,</span>
+<span style="color: #000000; text-decoration-color: #000000">                    </span><span style="color: #808000; text-decoration-color: #808000">start_time</span><span style="color: #000000; text-decoration-color: #000000">=</span><span style="color: #800080; text-decoration-color: #800080; font-weight: bold">datetime</span><span style="color: #800080; text-decoration-color: #800080; font-weight: bold">.time</span><span style="color: #000000; text-decoration-color: #000000; font-weight: bold">(</span><span style="color: #008080; text-decoration-color: #008080; font-weight: bold">14</span><span style="color: #000000; text-decoration-color: #000000">, </span><span style="color: #008080; text-decoration-color: #008080; font-weight: bold">0</span><span style="color: #000000; text-decoration-color: #000000; font-weight: bold">)</span><span style="color: #000000; text-decoration-color: #000000">,</span>
+<span style="color: #000000; text-decoration-color: #000000">                    </span><span style="color: #808000; text-decoration-color: #808000">end_time</span><span style="color: #000000; text-decoration-color: #000000">=</span><span style="color: #800080; text-decoration-color: #800080; font-weight: bold">datetime</span><span style="color: #800080; text-decoration-color: #800080; font-weight: bold">.time</span><span style="color: #000000; text-decoration-color: #000000; font-weight: bold">(</span><span style="color: #008080; text-decoration-color: #008080; font-weight: bold">20</span><span style="color: #000000; text-decoration-color: #000000">, </span><span style="color: #008080; text-decoration-color: #008080; font-weight: bold">0</span><span style="color: #000000; text-decoration-color: #000000; font-weight: bold">)</span><span style="color: #000000; text-decoration-color: #000000">,</span>
+<span style="color: #000000; text-decoration-color: #000000">                    </span><span style="color: #808000; text-decoration-color: #808000">rate</span><span style="color: #000000; text-decoration-color: #000000">=</span><span style="color: #008080; text-decoration-color: #008080; font-weight: bold">0.25</span><span style="color: #000000; text-decoration-color: #000000">,</span>
+<span style="color: #000000; text-decoration-color: #000000">                    </span><span style="color: #808000; text-decoration-color: #808000">period_type</span><span style="color: #000000; text-decoration-color: #000000">=&lt;TOUPeriodType.PEAK: </span><span style="color: #008000; text-decoration-color: #008000">'peak'</span><span style="color: #000000; text-decoration-color: #000000">&gt;</span>
+<span style="color: #000000; text-decoration-color: #000000">                </span><span style="color: #000000; text-decoration-color: #000000; font-weight: bold">)</span><span style="color: #000000; text-decoration-color: #000000">,</span>
+<span style="color: #000000; text-decoration-color: #000000">                </span><span style="color: #800080; text-decoration-color: #800080; font-weight: bold">TOURatePeriod</span><span style="color: #000000; text-decoration-color: #000000; font-weight: bold">(</span>
+<span style="color: #000000; text-decoration-color: #000000">                    </span><span style="color: #808000; text-decoration-color: #808000">name</span><span style="color: #000000; text-decoration-color: #000000">=</span><span style="color: #008000; text-decoration-color: #008000">''</span><span style="color: #000000; text-decoration-color: #000000">,</span>
+<span style="color: #000000; text-decoration-color: #000000">                    </span><span style="color: #808000; text-decoration-color: #808000">start_time</span><span style="color: #000000; text-decoration-color: #000000">=</span><span style="color: #800080; text-decoration-color: #800080; font-weight: bold">datetime</span><span style="color: #800080; text-decoration-color: #800080; font-weight: bold">.time</span><span style="color: #000000; text-decoration-color: #000000; font-weight: bold">(</span><span style="color: #008080; text-decoration-color: #008080; font-weight: bold">0</span><span style="color: #000000; text-decoration-color: #000000">, </span><span style="color: #008080; text-decoration-color: #008080; font-weight: bold">0</span><span style="color: #000000; text-decoration-color: #000000; font-weight: bold">)</span><span style="color: #000000; text-decoration-color: #000000">,</span>
+<span style="color: #000000; text-decoration-color: #000000">                    </span><span style="color: #808000; text-decoration-color: #808000">end_time</span><span style="color: #000000; text-decoration-color: #000000">=</span><span style="color: #800080; text-decoration-color: #800080; font-weight: bold">datetime</span><span style="color: #800080; text-decoration-color: #800080; font-weight: bold">.time</span><span style="color: #000000; text-decoration-color: #000000; font-weight: bold">(</span><span style="color: #008080; text-decoration-color: #008080; font-weight: bold">6</span><span style="color: #000000; text-decoration-color: #000000">, </span><span style="color: #008080; text-decoration-color: #008080; font-weight: bold">0</span><span style="color: #000000; text-decoration-color: #000000; font-weight: bold">)</span><span style="color: #000000; text-decoration-color: #000000">,</span>
+<span style="color: #000000; text-decoration-color: #000000">                    </span><span style="color: #808000; text-decoration-color: #808000">rate</span><span style="color: #000000; text-decoration-color: #000000">=</span><span style="color: #008080; text-decoration-color: #008080; font-weight: bold">0.1</span><span style="color: #000000; text-decoration-color: #000000">,</span>
+<span style="color: #000000; text-decoration-color: #000000">                    </span><span style="color: #808000; text-decoration-color: #808000">period_type</span><span style="color: #000000; text-decoration-color: #000000">=&lt;TOUPeriodType.OFF_PEAK: </span><span style="color: #008000; text-decoration-color: #008000">'off_peak'</span><span style="color: #000000; text-decoration-color: #000000">&gt;</span>
+<span style="color: #000000; text-decoration-color: #000000">                </span><span style="color: #000000; text-decoration-color: #000000; font-weight: bold">)</span>
+<span style="color: #000000; text-decoration-color: #000000">            </span><span style="color: #000000; text-decoration-color: #000000; font-weight: bold">]</span>
+<span style="color: #000000; text-decoration-color: #000000">        </span><span style="color: #000000; text-decoration-color: #000000; font-weight: bold">)</span>
+<span style="color: #000000; text-decoration-color: #000000">    </span><span style="color: #000000; text-decoration-color: #000000; font-weight: bold">]</span><span style="color: #000000; text-decoration-color: #000000">,</span>
+<span style="color: #000000; text-decoration-color: #000000">    </span><span style="color: #808000; text-decoration-color: #808000">demand_charges</span><span style="color: #000000; text-decoration-color: #000000">=</span><span style="color: #000000; text-decoration-color: #000000; font-weight: bold">[</span>
+<span style="color: #000000; text-decoration-color: #000000">        </span><span style="color: #800080; text-decoration-color: #800080; font-weight: bold">DemandCharge</span><span style="color: #000000; text-decoration-color: #000000; font-weight: bold">(</span>
+<span style="color: #000000; text-decoration-color: #000000">            </span><span style="color: #808000; text-decoration-color: #808000">name</span><span style="color: #000000; text-decoration-color: #000000">=</span><span style="color: #008000; text-decoration-color: #008000">''</span><span style="color: #000000; text-decoration-color: #000000">,</span>
+<span style="color: #000000; text-decoration-color: #000000">            </span><span style="color: #808000; text-decoration-color: #808000">rate</span><span style="color: #000000; text-decoration-color: #000000">=</span><span style="color: #008080; text-decoration-color: #008080; font-weight: bold">12.5</span><span style="color: #000000; text-decoration-color: #000000">,</span>
+<span style="color: #000000; text-decoration-color: #000000">            </span><span style="color: #808000; text-decoration-color: #808000">billing_demand_basis</span><span style="color: #000000; text-decoration-color: #000000">=&lt;BillingDemandBasis.PEAK_15MIN: </span><span style="color: #008000; text-decoration-color: #008000">'peak_15min'</span><span style="color: #000000; text-decoration-color: #000000">&gt;,</span>
+<span style="color: #000000; text-decoration-color: #000000">            </span><span style="color: #808000; text-decoration-color: #808000">time_applicability</span><span style="color: #000000; text-decoration-color: #000000">=</span><span style="color: #000000; text-decoration-color: #000000; font-weight: bold">[</span>
+<span style="color: #000000; text-decoration-color: #000000">                </span><span style="color: #800080; text-decoration-color: #800080; font-weight: bold">TOURatePeriod</span><span style="color: #000000; text-decoration-color: #000000; font-weight: bold">(</span>
+<span style="color: #000000; text-decoration-color: #000000">                    </span><span style="color: #808000; text-decoration-color: #808000">name</span><span style="color: #000000; text-decoration-color: #000000">=</span><span style="color: #008000; text-decoration-color: #008000">''</span><span style="color: #000000; text-decoration-color: #000000">,</span>
+<span style="color: #000000; text-decoration-color: #000000">                    </span><span style="color: #808000; text-decoration-color: #808000">start_time</span><span style="color: #000000; text-decoration-color: #000000">=</span><span style="color: #800080; text-decoration-color: #800080; font-weight: bold">datetime</span><span style="color: #800080; text-decoration-color: #800080; font-weight: bold">.time</span><span style="color: #000000; text-decoration-color: #000000; font-weight: bold">(</span><span style="color: #008080; text-decoration-color: #008080; font-weight: bold">14</span><span style="color: #000000; text-decoration-color: #000000">, </span><span style="color: #008080; text-decoration-color: #008080; font-weight: bold">0</span><span style="color: #000000; text-decoration-color: #000000; font-weight: bold">)</span><span style="color: #000000; text-decoration-color: #000000">,</span>
+<span style="color: #000000; text-decoration-color: #000000">                    </span><span style="color: #808000; text-decoration-color: #808000">end_time</span><span style="color: #000000; text-decoration-color: #000000">=</span><span style="color: #800080; text-decoration-color: #800080; font-weight: bold">datetime</span><span style="color: #800080; text-decoration-color: #800080; font-weight: bold">.time</span><span style="color: #000000; text-decoration-color: #000000; font-weight: bold">(</span><span style="color: #008080; text-decoration-color: #008080; font-weight: bold">20</span><span style="color: #000000; text-decoration-color: #000000">, </span><span style="color: #008080; text-decoration-color: #008080; font-weight: bold">0</span><span style="color: #000000; text-decoration-color: #000000; font-weight: bold">)</span><span style="color: #000000; text-decoration-color: #000000">,</span>
+<span style="color: #000000; text-decoration-color: #000000">                    </span><span style="color: #808000; text-decoration-color: #808000">rate</span><span style="color: #000000; text-decoration-color: #000000">=</span><span style="color: #008080; text-decoration-color: #008080; font-weight: bold">0.25</span><span style="color: #000000; text-decoration-color: #000000">,</span>
+<span style="color: #000000; text-decoration-color: #000000">                    </span><span style="color: #808000; text-decoration-color: #808000">period_type</span><span style="color: #000000; text-decoration-color: #000000">=&lt;TOUPeriodType.PEAK: </span><span style="color: #008000; text-decoration-color: #008000">'peak'</span><span style="font-weight: bold">&gt;</span>
+                <span style="font-weight: bold">)</span>
+            <span style="font-weight: bold">]</span>
+        <span style="font-weight: bold">)</span>
+    <span style="font-weight: bold">]</span>,
+    <span style="color: #808000; text-decoration-color: #808000">tiered_energy_charges</span>=<span style="font-weight: bold">[</span><span style="color: #800080; text-decoration-color: #800080; font-weight: bold">TieredRate</span><span style="font-weight: bold">(</span><span style="color: #808000; text-decoration-color: #808000">name</span>=<span style="color: #008000; text-decoration-color: #008000">''</span>, <span style="color: #808000; text-decoration-color: #808000">upper_limit_kwh</span>=<span style="color: #008080; text-decoration-color: #008080; font-weight: bold">500.0</span>, <span style="color: #808000; text-decoration-color: #808000">rate</span>=<span style="color: #008080; text-decoration-color: #008080; font-weight: bold">0.12</span><span style="font-weight: bold">)]</span>
+<span style="font-weight: bold">)</span>
+</pre>
+</div></div>
+</div>
+</section>
+</section>
+<section id="version-2-1-3">
+<h2>Version 2.1.3<a class="headerlink" href="#version-2-1-3" title="Link to this heading">#</a></h2>
+<section id="plotting-bug-fix">
+<h3>Plotting bug fix<a class="headerlink" href="#plotting-bug-fix" title="Link to this heading">#</a></h3>
+<p>Plotting was broken after the last release. The bug has now been fixed.</p>
+</section>
+<section id="tariff-model-added">
+<h3>Tariff model added<a class="headerlink" href="#tariff-model-added" title="Link to this heading">#</a></h3>
+<p>The tariff model can now be imported using the code snippet below. In a future release, we will add model representations for aggregators and other market models.</p>
+</section>
+</section>
+<section id="version-2-1-2">
+<h2>Version 2.1.2<a class="headerlink" href="#version-2-1-2" title="Link to this heading">#</a></h2>
+<section id="support-to-line-impedance-calculations">
+<h3>Support to line impedance calculations<a class="headerlink" href="#support-to-line-impedance-calculations" title="Link to this heading">#</a></h3>
+<p><span class="math notranslate nohighlight">\(\quad\)</span> <code class="docutils literal notranslate"><span class="pre">GeometryBranch</span></code> models can now be converted to <code class="docutils literal notranslate"><span class="pre">MatrixImpedanceBranch</span></code> model representation using the <code class="docutils literal notranslate"><span class="pre">to_matrix_representation</span></code> method.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">gdm.distribution.components</span><span class="w"> </span><span class="kn">import</span> <span class="n">GeometryBranch</span><span class="p">,</span> <span class="n">MatrixImpedanceBranch</span>
+
+<span class="n">g</span> <span class="o">=</span> <span class="n">GeometryBranch</span><span class="o">.</span><span class="n">example</span><span class="p">()</span>
+<span class="n">h</span><span class="p">:</span> <span class="n">MatrixImpedanceBranch</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">to_matrix_representation</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><span class="math notranslate nohighlight">\(\quad\)</span> All <code class="docutils literal notranslate"><span class="pre">GeometryBranch</span></code> models in a given system can noe be replaced with <code class="docutils literal notranslate"><span class="pre">MatrixImpedanceBranch</span></code> model representation using the <code class="docutils literal notranslate"><span class="pre">convert_geometry_to_matrix_representation</span></code> method for DistributionSystem objects.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">gdm.distribution</span><span class="w"> </span><span class="kn">import</span> <span class="n">DistributionSystem</span>
+
+<span class="n">sys</span> <span class="o">=</span> <span class="n">DistributionSystem</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">filename</span><span class="o">=&lt;</span><span class="n">path</span> <span class="n">to</span> <span class="n">model</span><span class="o">&gt;</span><span class="p">)</span> 
+<span class="n">sys</span><span class="o">.</span><span class="n">convert_geometry_to_matrix_representation</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="change-to-trackchange-object">
+<h3>Change to TrackChange object<a class="headerlink" href="#change-to-trackchange-object" title="Link to this heading">#</a></h3>
+<p><span class="math notranslate nohighlight">\(\quad\)</span> <code class="docutils literal notranslate"><span class="pre">update_date</span></code> has been changed to <code class="docutils literal notranslate"><span class="pre">timestamp</span></code>. Now requires datetime object rather than date object..</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">TrackedChange</span><span class="p">(</span><span class="n">InfraSysBaseModel</span><span class="p">):</span>
+    <span class="o">.</span>
+    <span class="o">.</span>
+    <span class="o">.</span>
+    
+    <span class="n">update_date</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="n">timestamp</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="kc">None</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;If these changes are to be applied on specific timestamp, provide a timestamp, else leave it blank&quot;</span><span class="p">,</span>
+        <span class="p">),</span>
+    <span class="p">]</span>
+    <span class="o">.</span>
+    <span class="o">.</span>
+    <span class="o">.</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="version-2-1-0">
+<h2>Version 2.1.0<a class="headerlink" href="#version-2-1-0" title="Link to this heading">#</a></h2>
+<section id="improved-validation-for-physical-quantities">
+<h3>Improved validation for physical quantities<a class="headerlink" href="#improved-validation-for-physical-quantities" title="Link to this heading">#</a></h3>
+<p><span class="math notranslate nohighlight">\(\quad\)</span> All Positive quantities have been removed. Additional constraints are now applied using Pydantic Field class. Reduces the number of class definations for physical quantities significantly.</p>
+</section>
+<section id="initial-implementation-to-manage-backward-compatability-for-distributionsystems">
+<h3>Initial implementation to manage backward compatability for DistributionSystems<a class="headerlink" href="#initial-implementation-to-manage-backward-compatability-for-distributionsystems" title="Link to this heading">#</a></h3>
+<p><span class="math notranslate nohighlight">\(\quad\)</span> Going forward (v2.0.0 onwards), users will be able to load older models with newer GDM installations by passing the upgrade handler object, when loading the model from a json file.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">gdm.distribution</span><span class="w"> </span><span class="kn">import</span> <span class="n">DistributionSystem</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">gdm.distribution.upgrade_handler.upgrade_handler</span><span class="w"> </span><span class="kn">import</span> <span class="n">UpgradeHandle</span>
+
+<span class="n">upgrade_handler</span> <span class="o">=</span> <span class="n">UpgradeHandler</span><span class="p">()</span>
+<span class="n">DistributionSystem</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">filename</span><span class="o">=&lt;</span><span class="n">path</span> <span class="n">to</span> <span class="n">model</span><span class="o">&gt;</span><span class="p">)</span> 
+<span class="n">upgrade_handler</span><span class="o">=</span><span class="n">upgrade_handler</span><span class="o">.</span><span class="n">upgrade</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="support-to-create-a-deepcopy-of-gdm-system">
+<h3>Support  to create a deepcopy of GDM system<a class="headerlink" href="#support-to-create-a-deepcopy-of-gdm-system" title="Link to this heading">#</a></h3>
+<p><span class="math notranslate nohighlight">\(\quad\)</span> Added functionality to easily create a deep copy of any GDM system object, ensuring that modifications to the copy do not affect the original instance.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">gdm.distribution</span><span class="w"> </span><span class="kn">import</span> <span class="n">DistributionSystem</span>
+
+<span class="n">system</span> <span class="o">=</span> <span class="n">DistributionSystem</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">filename</span><span class="o">=&lt;</span><span class="n">path</span> <span class="n">to</span> <span class="n">model</span><span class="o">&gt;</span><span class="p">)</span>
+<span class="n">system_copy</span> <span class="o">=</span> <span class="n">system</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="gdmloader/gdmloader.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Working with GDMLOADER</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="gdm_intro/data_models.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">On GDM Data Models</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#version-2-2-1">Version 2.2.1</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deterministic-directed-graph-construction">Deterministic directed graph construction</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#matrix-impedance-calculation-fixes">Matrix impedance calculation fixes</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#correct-unit-handling-and-length-scaling">Correct unit handling and length scaling</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#kron-reduction-stability-improvements">Kron reduction stability improvements</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#notes-for-users">Notes for users</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#version-2-1-5">Version 2.1.5</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#graph-bug-fix">Graph bug fix</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gdf-bug-fix">GDF Bug Fix</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#three-phase-model-reduction-algorithm-bug-fix">Three-phase Model Reduction Algorithm Bug Fix</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#version-2-1-3">Version 2.1.3</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#plotting-bug-fix">Plotting bug fix</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tariff-model-added">Tariff model added</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#version-2-1-2">Version 2.1.2</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#support-to-line-impedance-calculations">Support to line impedance calculations</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#change-to-trackchange-object">Change to TrackChange object</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#version-2-1-0">Version 2.1.0</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#improved-validation-for-physical-quantities">Improved validation for physical quantities</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#initial-implementation-to-manage-backward-compatability-for-distributionsystems">Initial implementation to manage backward compatability for DistributionSystems</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#support-to-create-a-deepcopy-of-gdm-system">Support  to create a deepcopy of GDM system</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Aadil Latif
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+<div class="extra_footer">
+  <p>
+© Copyright 2024, Alliance for Sustainable Energy, LLC. This work is licensed under a BSD 3-Clause License
+</p>
+
+</div>
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

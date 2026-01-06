@@ -1,0 +1,60 @@
+Traceback (most recent call last):
+  File "/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/jupyter_cache/executors/utils.py", line 58, in single_nb_execution
+    executenb(
+  File "/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/nbclient/client.py", line 1323, in execute
+    return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/jupyter_core/utils/__init__.py", line 165, in wrapped
+    return loop.run_until_complete(inner)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/asyncio/base_events.py", line 691, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/nbclient/client.py", line 709, in async_execute
+    await self.async_execute_cell(
+  File "/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/nbclient/client.py", line 1062, in async_execute_cell
+    await self._check_raise_for_error(cell, cell_index, exec_reply)
+  File "/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/nbclient/client.py", line 918, in _check_raise_for_error
+    raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
+nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
+------------------
+from datetime import datetime, timedelta
+from gdm.quantities import ActivePower
+from infrasys import SingleTimeSeries
+
+load_profile_kw = SingleTimeSeries.from_array(
+    data=ActivePower([1, 2, 3, 4, 5], "kilowatt"),
+    variable_name="active_power",
+    initial_time=datetime(2020, 1, 1),
+    resolution=timedelta(minutes=30),
+)
+
+system.add_time_series(
+    load_profile_kw,
+    *[load1],
+    profile_type="PMult",
+    profile_name="load_profile_kw",
+    use_actual=True,
+)
+------------------
+
+
+[31m---------------------------------------------------------------------------[39m
+[31mTypeError[39m                                 Traceback (most recent call last)
+[36mCell[39m[36m [39m[32mIn[2][39m[32m, line 5[39m
+[32m      2[39m [38;5;28;01mfrom[39;00m[38;5;250m [39m[34;01mgdm[39;00m[34;01m.[39;00m[34;01mquantities[39;00m[38;5;250m [39m[38;5;28;01mimport[39;00m ActivePower
+[32m      3[39m [38;5;28;01mfrom[39;00m[38;5;250m [39m[34;01minfrasys[39;00m[38;5;250m [39m[38;5;28;01mimport[39;00m SingleTimeSeries
+[32m----> [39m[32m5[39m load_profile_kw = [43mSingleTimeSeries[49m[43m.[49m[43mfrom_array[49m[43m([49m
+[32m      6[39m [43m    [49m[43mdata[49m[43m=[49m[43mActivePower[49m[43m([49m[43m[[49m[32;43m1[39;49m[43m,[49m[43m [49m[32;43m2[39;49m[43m,[49m[43m [49m[32;43m3[39;49m[43m,[49m[43m [49m[32;43m4[39;49m[43m,[49m[43m [49m[32;43m5[39;49m[43m][49m[43m,[49m[43m [49m[33;43m"[39;49m[33;43mkilowatt[39;49m[33;43m"[39;49m[43m)[49m[43m,[49m
+[32m      7[39m [43m    [49m[43mvariable_name[49m[43m=[49m[33;43m"[39;49m[33;43mactive_power[39;49m[33;43m"[39;49m[43m,[49m
+[32m      8[39m [43m    [49m[43minitial_time[49m[43m=[49m[43mdatetime[49m[43m([49m[32;43m2020[39;49m[43m,[49m[43m [49m[32;43m1[39;49m[43m,[49m[43m [49m[32;43m1[39;49m[43m)[49m[43m,[49m
+[32m      9[39m [43m    [49m[43mresolution[49m[43m=[49m[43mtimedelta[49m[43m([49m[43mminutes[49m[43m=[49m[32;43m30[39;49m[43m)[49m[43m,[49m
+[32m     10[39m [43m)[49m
+[32m     12[39m system.add_time_series(
+[32m     13[39m     load_profile_kw,
+[32m     14[39m     *[load1],
+[32m   (...)[39m[32m     17[39m     use_actual=[38;5;28;01mTrue[39;00m,
+[32m     18[39m )
+
+[31mTypeError[39m: SingleTimeSeries.from_array() got an unexpected keyword argument 'variable_name'
+
