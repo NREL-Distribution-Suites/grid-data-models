@@ -880,12 +880,13 @@ class DistributionSystem(System):
 
     def to_db(
         self,
-        db_path: str | Path,
+        db_path: str | Path | None = None,
+        db_url: str | None = None,
         schema_path: str | Path | None = None,
         replace: bool = True,
         initialize_schema: bool = True,
     ) -> None:
-        """Persist the system to a SQLite database.
+        """Persist the system to a database target.
 
         This implementation initializes the reference schema and stores a transactional
         system snapshot in GDM-owned additive tables.
@@ -895,6 +896,7 @@ class DistributionSystem(System):
         write_system_to_db(
             system=self,
             db_path=db_path,
+            db_url=db_url,
             schema_path=schema_path,
             replace=replace,
             initialize_schema=initialize_schema,
@@ -902,13 +904,20 @@ class DistributionSystem(System):
         )
 
     @classmethod
-    def from_db(cls, db_path: str | Path, prefer_normalized: bool = False) -> "DistributionSystem":
-        """Load a distribution system from a SQLite database.
+    def from_db(
+        cls,
+        db_path: str | Path | None = None,
+        db_url: str | None = None,
+        prefer_normalized: bool = False,
+    ) -> "DistributionSystem":
+        """Load a distribution system from a database target.
 
         Parameters
         ----------
-        db_path : str | Path
-            SQLite database path.
+        db_path : str | Path | None
+            Legacy SQLite database path.
+        db_url : str | None
+            Database URL/DSN.
         prefer_normalized : bool
             If True, attempts to reconstruct from normalized topology tables first.
             If normalized data is unavailable, falls back to stored snapshot payload.
@@ -918,6 +927,7 @@ class DistributionSystem(System):
         return load_system_from_db(
             system_cls=cls,
             db_path=db_path,
+            db_url=db_url,
             system_kind="distribution",
             prefer_normalized=prefer_normalized,
         )

@@ -5,6 +5,8 @@ from __future__ import annotations
 import sqlite3
 from pathlib import Path
 
+from gdm.db.connection import sqlite_path_from_target
+
 
 def default_schema_path() -> Path:
     """Return the default path to the SQL schema file in the repository."""
@@ -68,9 +70,11 @@ def _upsert_metadata(conn: sqlite3.Connection, key: str, value: str | None) -> N
     )
 
 
-def inspect_snapshot_metadata(db_path: str | Path) -> dict[str, str]:
+def inspect_snapshot_metadata(
+    db_path: str | Path | None = None, db_url: str | None = None
+) -> dict[str, str]:
     """Return GDM metadata key-values for debugging and validation."""
-    db_path = Path(db_path)
+    db_path = sqlite_path_from_target(db_path=db_path, db_url=db_url)
     with sqlite3.connect(db_path) as conn:
         rows = conn.execute("SELECT key, value FROM gdm_metadata").fetchall()
     return {key: value for key, value in rows}

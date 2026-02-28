@@ -31,6 +31,8 @@ from gdm.distribution.enums import (
     VoltageTypes,
 )
 from gdm.db.sqlite_store_identity import _fetch_component_uuid, _upsert_component_uuid_map
+from gdm.db.connection import sqlite_path_from_target
+from gdm.db.connection import get_backend_name
 from gdm.db.sqlite_store_schema import (
     _ensure_gdm_tables,
     _initialize_schema,
@@ -90,7 +92,8 @@ DEFAULT_DB_FORMAT_VERSION = "1"
 def write_system_to_db(
     *,
     system,
-    db_path: str | Path,
+    db_path: str | Path | None = None,
+    db_url: str | None = None,
     schema_path: str | Path | None = None,
     replace: bool = True,
     initialize_schema: bool = True,
@@ -102,8 +105,10 @@ def write_system_to_db(
     ----------
     system : System
         The GDM system instance to serialize and persist.
-    db_path : str | Path
-        Target SQLite database path.
+    db_path : str | Path | None
+        Legacy SQLite database path.
+    db_url : str | None
+        Database URL/DSN.
     schema_path : str | Path | None
         Optional path to SQL schema script. If omitted, repository default is used.
     replace : bool
@@ -114,7 +119,13 @@ def write_system_to_db(
         Logical discriminator for stored system payloads.
     """
 
-    db_path = Path(db_path)
+    backend = get_backend_name(db_path=db_path, db_url=db_url)
+    if backend != "sqlite":
+        raise NotImplementedError(
+            "PostgreSQL persistence is in progress. Current write path supports SQLite targets only."
+        )
+
+    db_path = sqlite_path_from_target(db_path=db_path, db_url=db_url)
     payload = _serialize_system_to_json_text(system)
     with sqlite3.connect(db_path) as conn:
         conn.execute("PRAGMA foreign_keys = ON")
@@ -153,7 +164,8 @@ def write_system_to_db(
 def load_system_from_db(
     *,
     system_cls: Type,
-    db_path: str | Path,
+    db_path: str | Path | None = None,
+    db_url: str | None = None,
     system_kind: str,
     prefer_normalized: bool = False,
 ) -> object:
@@ -163,8 +175,10 @@ def load_system_from_db(
     ----------
     system_cls : Type
         Target class used for deserialization (`DistributionSystem`, `CatalogSystem`).
-    db_path : str | Path
-        Source SQLite database path.
+    db_path : str | Path | None
+        Legacy SQLite database path.
+    db_url : str | None
+        Database URL/DSN.
     system_kind : str
         Logical discriminator for stored system payloads.
 
@@ -174,7 +188,13 @@ def load_system_from_db(
         Deserialized system instance.
     """
 
-    db_path = Path(db_path)
+    backend = get_backend_name(db_path=db_path, db_url=db_url)
+    if backend != "sqlite":
+        raise NotImplementedError(
+            "PostgreSQL persistence is in progress. Current load path supports SQLite targets only."
+        )
+
+    db_path = sqlite_path_from_target(db_path=db_path, db_url=db_url)
     with sqlite3.connect(db_path) as conn:
         conn.execute("PRAGMA foreign_keys = ON")
         if system_kind == "distribution" and prefer_normalized:
@@ -880,9 +900,19 @@ def _attach_time_series_from_snapshot(
                 continue
 
 
-def load_snapshot_payload(db_path: str | Path, system_kind: str) -> dict:
+def load_snapshot_payload(
+    db_path: str | Path | None = None,
+    system_kind: str = "distribution",
+    db_url: str | None = None,
+) -> dict:
     """Return raw snapshot payload as a JSON dictionary for inspection."""
-    db_path = Path(db_path)
+    backend = get_backend_name(db_path=db_path, db_url=db_url)
+    if backend != "sqlite":
+        raise NotImplementedError(
+            "PostgreSQL snapshot inspection is in progress. Current helper supports SQLite targets only."
+        )
+
+    db_path = sqlite_path_from_target(db_path=db_path, db_url=db_url)
     with sqlite3.connect(db_path) as conn:
         row = conn.execute(
             "SELECT payload_json FROM gdm_system_snapshots WHERE system_kind = ?",

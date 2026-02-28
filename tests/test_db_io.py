@@ -1,6 +1,9 @@
 import sqlite3
+import os
 from uuid import uuid4
 
+import pytest
+import psycopg
 from infrasys.time_series_models import SingleTimeSeries
 
 from gdm.distribution import CatalogSystem, DistributionSystem
@@ -49,12 +52,37 @@ from gdm.distribution.equipment.matrix_impedance_recloser_equipment import (
 from gdm.quantities import ActivePower, ReactivePower
 
 
+def _postgres_dsn_or_skip() -> str:
+    dsn = os.getenv("GDM_TEST_POSTGRES_DSN")
+    if not dsn:
+        pytest.skip("Set GDM_TEST_POSTGRES_DSN to run PostgreSQL persistence tests.")
+    return dsn
+
+
 def test_distribution_system_to_db_from_db_round_trip(tmp_path, simple_distribution_system):
     system: DistributionSystem = simple_distribution_system
     db_path = tmp_path / "distribution.sqlite"
 
     system.to_db(db_path)
     loaded_system = DistributionSystem.from_db(db_path)
+
+    initial_components = list(system.iter_all_components())
+    loaded_components = list(loaded_system.iter_all_components())
+    assert len(loaded_components) == len(initial_components)
+    assert {component.uuid for component in loaded_components} == {
+        component.uuid for component in initial_components
+    }
+
+
+def test_distribution_system_to_db_from_db_round_trip_with_sqlite_url(
+    tmp_path, simple_distribution_system
+):
+    system: DistributionSystem = simple_distribution_system
+    db_path = tmp_path / "distribution_url.sqlite"
+    db_url = f"sqlite:///{db_path}"
+
+    system.to_db(db_url=db_url)
+    loaded_system = DistributionSystem.from_db(db_url=db_url)
 
     initial_components = list(system.iter_all_components())
     loaded_components = list(loaded_system.iter_all_components())
@@ -93,6 +121,159 @@ def test_catalog_system_to_db_from_db_round_trip(tmp_path):
 
     loaded_equipment = loaded_catalog.get_component(LoadEquipment, name="catalog_load_equipment")
     assert loaded_equipment.uuid == catalog_equipment.uuid
+
+
+def test_catalog_system_to_db_from_db_round_trip_with_sqlite_url(tmp_path):
+    catalog = CatalogSystem(auto_add_composed_components=True)
+    catalog_equipment = LoadEquipment.example().model_copy(
+        update={"uuid": uuid4(), "name": "catalog_load_equipment_url"}
+    )
+    catalog.add_component(catalog_equipment)
+
+    db_path = tmp_path / "catalog_url.sqlite"
+    db_url = f"sqlite:///{db_path}"
+    catalog.to_db(db_url=db_url)
+    loaded_catalog = CatalogSystem.from_db(db_url=db_url)
+
+    loaded_equipment = loaded_catalog.get_component(
+        LoadEquipment, name="catalog_load_equipment_url"
+    )
+    assert loaded_equipment.uuid == catalog_equipment.uuid
+
+
+def test_distribution_system_to_db_from_db_round_trip_with_postgres_dsn(
+    simple_distribution_system,
+):
+    db_url = _postgres_dsn_or_skip()
+
+    system: DistributionSystem = simple_distribution_system
+    system.to_db(db_url=db_url, replace=True)
+    loaded_system = DistributionSystem.from_db(db_url=db_url)
+
+    initial_components = list(system.iter_all_components())
+    loaded_components = list(loaded_system.iter_all_components())
+    assert len(loaded_components) == len(initial_components)
+    assert {component.uuid for component in loaded_components} == {
+        component.uuid for component in initial_components
+    }
+
+
+def test_distribution_system_to_db_replace_semantics_with_postgres_dsn(
+    simple_distribution_system,
+):
+    db_url = _postgres_dsn_or_skip()
+
+    system: DistributionSystem = simple_distribution_system
+    system.to_db(db_url=db_url, replace=True)
+
+    modified_system = system.deepcopy()
+    removed_component = next(iter(modified_system.get_components(DistributionLoad)))
+    modified_system.remove_component(removed_component, cascade_down=False)
+    modified_system.to_db(db_url=db_url, replace=True)
+
+    loaded_system = DistributionSystem.from_db(db_url=db_url)
+    assert len(list(loaded_system.iter_all_components())) == len(
+        list(modified_system.iter_all_components())
+    )
+
+
+def test_catalog_system_to_db_from_db_round_trip_with_postgres_dsn():
+    db_url = _postgres_dsn_or_skip()
+
+    catalog = CatalogSystem(auto_add_composed_components=True)
+    catalog_equipment = LoadEquipment.example().model_copy(
+        update={"uuid": uuid4(), "name": "catalog_load_equipment_postgres"}
+    )
+    catalog.add_component(catalog_equipment)
+
+    catalog.to_db(db_url=db_url, replace=True)
+    loaded_catalog = CatalogSystem.from_db(db_url=db_url)
+
+    loaded_equipment = loaded_catalog.get_component(
+        LoadEquipment, name="catalog_load_equipment_postgres"
+    )
+    assert loaded_equipment.uuid == catalog_equipment.uuid
+
+
+def test_distribution_system_from_db_prefer_normalized_with_postgres_dsn(
+    simple_distribution_system,
+):
+    db_url = _postgres_dsn_or_skip()
+
+    system: DistributionSystem = simple_distribution_system
+    system.to_db(db_url=db_url, replace=True)
+
+    loaded_system = DistributionSystem.from_db(db_url=db_url, prefer_normalized=True)
+
+    expected_buses = list(system.get_components(DistributionBus))
+    expected_feeders = {component.name for component in system.get_components(DistributionFeeder)}
+    expected_substations = {
+        component.name for component in system.get_components(DistributionSubstation)
+    }
+    expected_loads = list(system.get_components(DistributionLoad))
+
+    loaded_buses = list(loaded_system.get_components(DistributionBus))
+    loaded_feeders = list(loaded_system.get_components(DistributionFeeder))
+    loaded_substations = list(loaded_system.get_components(DistributionSubstation))
+    loaded_loads = list(loaded_system.get_components(DistributionLoad))
+
+    assert len(loaded_buses) == len(expected_buses)
+    assert len(loaded_feeders) == len(expected_feeders)
+    assert len(loaded_substations) == len(expected_substations)
+    assert len(loaded_loads) == len(expected_loads)
+
+    assert {component.uuid for component in loaded_buses} == {
+        component.uuid for component in expected_buses
+    }
+    assert {component.uuid for component in loaded_loads} == {
+        component.uuid for component in expected_loads
+    }
+
+
+def test_distribution_system_from_db_prefer_normalized_attaches_time_series_with_postgres_dsn(
+    distribution_system_with_single_timeseries,
+):
+    db_url = _postgres_dsn_or_skip()
+
+    system: DistributionSystem = distribution_system_with_single_timeseries
+    system.to_db(db_url=db_url, replace=True)
+
+    original_load = next(iter(system.get_components(DistributionLoad)))
+    loaded_system = DistributionSystem.from_db(db_url=db_url, prefer_normalized=True)
+    loaded_load = loaded_system.get_component(DistributionLoad, name=original_load.name)
+
+    assert loaded_system.has_time_series(loaded_load)
+
+    original_metadata = system.list_time_series_metadata(original_load)
+    loaded_metadata = loaded_system.list_time_series_metadata(loaded_load)
+    assert len(loaded_metadata) == len(original_metadata)
+
+
+def test_postgres_table_structure_matches_sqlite_after_distribution_write(
+    simple_distribution_system,
+):
+    db_url = _postgres_dsn_or_skip()
+
+    system: DistributionSystem = simple_distribution_system
+    system.to_db(db_url=db_url, replace=True)
+
+    psycopg_dsn = db_url.replace("postgresql+psycopg://", "postgresql://", 1)
+    with psycopg.connect(psycopg_dsn) as conn:
+        with conn.cursor() as cur:
+            cur.execute(
+                """
+                SELECT EXISTS (
+                    SELECT 1
+                    FROM information_schema.tables
+                    WHERE table_schema = 'public'
+                      AND table_name = 'distribution_buses'
+                )
+                """
+            )
+            row = cur.fetchone()
+
+    assert row is not None
+    assert row[0] is True
 
 
 def test_distribution_system_from_db_prefer_normalized_topology(
