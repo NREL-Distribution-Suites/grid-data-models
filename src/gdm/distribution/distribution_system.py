@@ -2,7 +2,6 @@
 
 from collections import defaultdict
 from typing import Annotated, Type
-import importlib.metadata
 from pathlib import Path
 import tempfile
 import random
@@ -46,6 +45,7 @@ from gdm.exceptions import (
     NonuniqueCommponentsTypesInParallel,
     MultipleOrEmptyVsourceFound,
 )
+from gdm.version import VERSION
 from infrasys.exceptions import ISNotStored
 
 
@@ -70,7 +70,7 @@ class DistributionSystem(System):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         if not self.data_format_version:
-            self.data_format_version = importlib.metadata.version("grid-data-models")
+            self.data_format_version = VERSION
 
     def get_bus_connected_components(
         self, bus_name: str, component_type: Component
@@ -877,6 +877,50 @@ class DistributionSystem(System):
                     name=f"Edges -{color_line_by.value} - {edge_option}",
                 )
             )
+
+    def to_db(
+        self,
+        db_path: str | Path,
+        schema_path: str | Path | None = None,
+        replace: bool = True,
+        initialize_schema: bool = True,
+    ) -> None:
+        """Persist the system to a SQLite database.
+
+        This implementation initializes the reference schema and stores a transactional
+        system snapshot in GDM-owned additive tables.
+        """
+        from gdm.db import write_system_to_db
+
+        write_system_to_db(
+            system=self,
+            db_path=db_path,
+            schema_path=schema_path,
+            replace=replace,
+            initialize_schema=initialize_schema,
+            system_kind="distribution",
+        )
+
+    @classmethod
+    def from_db(cls, db_path: str | Path, prefer_normalized: bool = False) -> "DistributionSystem":
+        """Load a distribution system from a SQLite database.
+
+        Parameters
+        ----------
+        db_path : str | Path
+            SQLite database path.
+        prefer_normalized : bool
+            If True, attempts to reconstruct from normalized topology tables first.
+            If normalized data is unavailable, falls back to stored snapshot payload.
+        """
+        from gdm.db import load_system_from_db
+
+        return load_system_from_db(
+            system_cls=cls,
+            db_path=db_path,
+            system_kind="distribution",
+            prefer_normalized=prefer_normalized,
+        )
 
     def deepcopy(self) -> "DistributionSystem":
         """Returns a deep copy of the distribution system."""
