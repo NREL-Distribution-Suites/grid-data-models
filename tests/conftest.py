@@ -1,4 +1,6 @@
 from datetime import datetime, timedelta
+import os
+from pathlib import Path
 from uuid import uuid4
 
 import pytest
@@ -523,6 +525,90 @@ def sample_distribution_system_with_nonsequential_timeseries(
         irradiance_profile, *pvs, profile_type="PMult", profile_name="pv_profile", use_actual=False
     )
     return system
+
+
+@pytest.fixture(name="distribution_system_with_single_timeseries_sqlite_db")
+def sample_distribution_system_with_single_timeseries_sqlite_db(
+    distribution_system_with_single_timeseries,
+):
+    """Persist the single-timeseries distribution system to tests/mocks SQLite database."""
+    mock_dir = Path(__file__).resolve().parent / "mocks"
+    mock_dir.mkdir(parents=True, exist_ok=True)
+    db_path = mock_dir / "distribution_with_single_timeseries.sqlite"
+    distribution_system_with_single_timeseries.to_db(
+        db_path=db_path,
+        replace=True,
+        initialize_schema=True,
+    )
+    return db_path
+
+
+def write_sample_distribution_system_with_single_timeseries_to_sqlite_and_postgres(
+    distribution_system_with_single_timeseries: DistributionSystem,
+    sqlite_db_path: str | Path | None = None,
+    postgres_db_url: str | None = None,
+) -> dict[str, str | Path]:
+    """Persist sample_distribution_system_with_single_timeseries to SQLite and PostgreSQL.
+
+    This helper is intended for reuse in fixtures and setup code (not as a test).
+    """
+    mock_dir = Path(__file__).resolve().parent / "mocks"
+    mock_dir.mkdir(parents=True, exist_ok=True)
+    resolved_sqlite_db_path = (
+        Path(sqlite_db_path)
+        if sqlite_db_path is not None
+        else mock_dir / "distribution_with_single_timeseries.sqlite"
+    )
+
+    distribution_system_with_single_timeseries.to_db(
+        db_path=resolved_sqlite_db_path,
+        replace=True,
+        initialize_schema=True,
+    )
+
+    resolved_postgres_db_url = postgres_db_url or os.getenv("GDM_TEST_POSTGRES_DSN")
+    if not resolved_postgres_db_url:
+        raise ValueError(
+            "PostgreSQL DSN is required. Provide postgres_db_url or set GDM_TEST_POSTGRES_DSN."
+        )
+
+    distribution_system_with_single_timeseries.to_db(
+        db_url=resolved_postgres_db_url,
+        replace=True,
+        initialize_schema=True,
+    )
+
+    return {
+        "sqlite_db_path": resolved_sqlite_db_path,
+        "postgres_db_url": resolved_postgres_db_url,
+    }
+
+
+@pytest.fixture(name="distribution_system_with_single_timeseries_postgres_db")
+def sample_distribution_system_with_single_timeseries_postgres_db(
+    distribution_system_with_single_timeseries,
+):
+    """Persist the single-timeseries distribution system to PostgreSQL using DSN."""
+    db_url = os.getenv("GDM_TEST_POSTGRES_DSN")
+    if not db_url:
+        pytest.skip("Set GDM_TEST_POSTGRES_DSN to persist fixture data in PostgreSQL.")
+
+    distribution_system_with_single_timeseries.to_db(
+        db_url=db_url,
+        replace=True,
+        initialize_schema=True,
+    )
+    return db_url
+
+
+@pytest.fixture(name="distribution_system_with_single_timeseries_sqlite_and_postgres")
+def sample_distribution_system_with_single_timeseries_sqlite_and_postgres(
+    distribution_system_with_single_timeseries,
+):
+    """Persist the single-timeseries distribution system to both SQLite and PostgreSQL."""
+    return write_sample_distribution_system_with_single_timeseries_to_sqlite_and_postgres(
+        distribution_system_with_single_timeseries=distribution_system_with_single_timeseries,
+    )
 
 
 # ── MCP test fixtures ──────────────────────────────────────────────

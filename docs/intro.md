@@ -29,6 +29,13 @@ To reduce code duplication and provide client packages with a standard interface
 
 ```{tableofcontents}
 ``` -->
+
+## Persistence Guide
+
+For SQL persistence workflows (SQLite files and PostgreSQL DSNs), see:
+
+- {doc}`dist_system/sql_persistence`
+
 ## License
 
 BSD 3-Clause License

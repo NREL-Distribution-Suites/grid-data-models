@@ -9,6 +9,7 @@ __pycache__/
 *.sqlite
 *.db
 *.sql
+!src/gdm/db/distribution_schema.sql
 *.ruff_cache/
 
 # Distribution / packaging

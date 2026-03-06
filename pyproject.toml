@@ -30,6 +30,8 @@ dependencies = [
   "pandas~=2.2.3",
   "geopandas",
   "plotly",
+  "SQLAlchemy>=2.0",
+  "psycopg[binary]>=3.2",
 ]
 
 [project.optional-dependencies]
@@ -98,6 +100,10 @@ allow-direct-references = true
 [tool.ruff.lint.per-file-ignores]
 "__init__.py" = ["E402", "F401"]
 "**/{tests,docs,tools}/*" = ["E402"]
+"src/gdm/db/sqlite_store.py" = ["C901"]
+"src/gdm/db/sqlite_store_cap_voltage_xfmr_reg.py" = ["C901"]
+"src/gdm/db/sqlite_store_geometry.py" = ["C901"]
+"src/gdm/db/sqlite_store_load_solar_battery.py" = ["C901"]
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/gdm"]

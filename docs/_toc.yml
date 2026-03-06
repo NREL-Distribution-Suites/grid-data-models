@@ -15,6 +15,7 @@ parts:
     - file: gdm_intro/units
     - file: gdm_intro/timeseries
     - file: dist_system/import_export
+    - file: dist_system/sql_persistence
     - file: dist_system/plotting
   - caption: Advanced Usage
     chapters:
