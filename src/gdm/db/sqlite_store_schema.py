@@ -9,8 +9,8 @@ from gdm.db.connection import sqlite_path_from_target
 
 
 def default_schema_path() -> Path:
-    """Return the default path to the SQL schema file in the repository."""
-    return Path(__file__).resolve().parents[3] / ".dump" / "distribution_schema.sql"
+    """Return the default path to the SQL schema file bundled with the package."""
+    return Path(__file__).resolve().parent / "distribution_schema.sql"
 
 
 def _initialize_schema(conn: sqlite3.Connection, schema_path: str | Path | None) -> None:

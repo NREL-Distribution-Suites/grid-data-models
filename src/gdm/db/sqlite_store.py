@@ -15,6 +15,8 @@ from pathlib import Path
 from typing import Type
 from uuid import UUID
 
+from loguru import logger
+
 from infrasys import Location
 from infrasys.time_series_models import NonSequentialTimeSeries, SingleTimeSeries
 
@@ -223,6 +225,171 @@ def load_system_from_db(
         return system_cls.from_json(temp_json)
 
 
+def _delete_distribution_tables(conn: sqlite3.Connection, component_types: set[str]) -> None:
+    """Remove all distribution topology rows in correct dependency order."""
+    conn.execute("DELETE FROM geometry_branch_phases")
+    conn.execute("DELETE FROM geometry_branches")
+    conn.execute("DELETE FROM geometry_branch_conductors")
+    conn.execute("DELETE FROM geometry_branch_equipment")
+    conn.execute("DELETE FROM matrix_impedance_fuse_phases")
+    conn.execute("DELETE FROM fuse_phase_states")
+    conn.execute("DELETE FROM matrix_impedance_fuses")
+    conn.execute("DELETE FROM impedance_matrix_entries WHERE equipment_type = 'FUSE'")
+    conn.execute("DELETE FROM matrix_impedance_fuse_equipment")
+    conn.execute("DELETE FROM matrix_impedance_recloser_phases")
+    conn.execute("DELETE FROM recloser_phase_states")
+    conn.execute("DELETE FROM matrix_impedance_reclosers")
+    conn.execute("DELETE FROM impedance_matrix_entries WHERE equipment_type = 'RECLOSER'")
+    conn.execute("DELETE FROM matrix_impedance_recloser_equipment")
+    conn.execute("DELETE FROM recloser_reclose_intervals")
+    conn.execute("DELETE FROM recloser_controllers")
+    conn.execute("DELETE FROM recloser_controller_equipment")
+    conn.execute("DELETE FROM time_current_curve_points")
+    conn.execute("DELETE FROM time_current_curves")
+    conn.execute("DELETE FROM switch_phase_states")
+    conn.execute("DELETE FROM matrix_impedance_switch_phases")
+    conn.execute("DELETE FROM matrix_impedance_switches")
+    conn.execute("DELETE FROM impedance_matrix_entries WHERE equipment_type = 'SWITCH'")
+    conn.execute("DELETE FROM matrix_impedance_switch_equipment")
+    conn.execute("DELETE FROM switch_controllers")
+    conn.execute("DELETE FROM sequence_impedance_branch_phases")
+    conn.execute("DELETE FROM sequence_impedance_branches")
+    conn.execute("DELETE FROM sequence_impedance_branch_equipment")
+    conn.execute("DELETE FROM matrix_impedance_branch_phases")
+    conn.execute("DELETE FROM matrix_impedance_branches")
+    conn.execute("DELETE FROM impedance_matrix_entries WHERE equipment_type = 'LINE'")
+    conn.execute("DELETE FROM matrix_impedance_branch_equipment")
+    conn.execute("DELETE FROM regulator_controllers")
+    conn.execute("DELETE FROM regulator_winding_phases")
+    conn.execute("DELETE FROM regulator_winding_buses")
+    conn.execute("DELETE FROM distribution_regulators")
+    conn.execute("DELETE FROM transformer_winding_phases")
+    conn.execute("DELETE FROM transformer_winding_buses")
+    conn.execute("DELETE FROM distribution_transformers")
+    conn.execute("DELETE FROM winding_tap_positions")
+    conn.execute("DELETE FROM winding_equipment")
+    conn.execute("DELETE FROM transformer_coupling_sequences")
+    conn.execute("DELETE FROM distribution_transformer_equipment")
+    conn.execute("DELETE FROM distribution_voltage_source_phases")
+    conn.execute("DELETE FROM distribution_voltage_sources")
+    conn.execute("DELETE FROM voltage_source_phases")
+    conn.execute("DELETE FROM voltage_source_equipment")
+    conn.execute("DELETE FROM phase_voltage_source_equipment")
+    conn.execute("DELETE FROM distribution_capacitor_phases")
+    conn.execute("DELETE FROM capacitor_controllers")
+    conn.execute("DELETE FROM distribution_capacitors")
+    conn.execute("DELETE FROM capacitor_equipment_phases")
+    conn.execute("DELETE FROM capacitor_equipment")
+    conn.execute("DELETE FROM phase_capacitor_equipment")
+    conn.execute("DELETE FROM distribution_battery_phases")
+    conn.execute("DELETE FROM distribution_batteries")
+    conn.execute("DELETE FROM battery_equipment")
+    conn.execute("DELETE FROM inverter_controllers")
+    conn.execute("DELETE FROM inverter_active_power_controls")
+    conn.execute("DELETE FROM inverter_reactive_power_controls")
+    conn.execute("DELETE FROM curve_points")
+    conn.execute("DELETE FROM curves")
+    conn.execute("DELETE FROM distribution_solar_phases")
+    conn.execute("DELETE FROM distribution_solar")
+    conn.execute("DELETE FROM solar_equipment")
+    conn.execute("DELETE FROM inverter_equipment")
+    conn.execute("DELETE FROM distribution_load_phases")
+    conn.execute("DELETE FROM distribution_loads")
+    conn.execute("DELETE FROM load_equipment_phases")
+    conn.execute("DELETE FROM load_equipment")
+    conn.execute("DELETE FROM phase_load_equipment")
+    conn.execute("DELETE FROM bus_voltage_limits")
+    conn.execute("DELETE FROM bus_phases")
+    conn.execute("DELETE FROM distribution_buses")
+    conn.execute("DELETE FROM substation_feeders")
+    conn.execute("DELETE FROM distribution_substations")
+    conn.execute("DELETE FROM distribution_feeders")
+    conn.execute(
+        "DELETE FROM voltage_limit_sets WHERE id NOT IN (SELECT limit_set_id FROM bus_voltage_limits)"
+    )
+    conn.execute(
+        f"DELETE FROM gdm_component_uuid_map WHERE component_type IN ({', '.join(['?'] * len(component_types))})",
+        tuple(component_types),
+    )
+
+
+def _write_distribution_buses(
+    conn: sqlite3.Connection,
+    system: DistributionSystem,
+    substation_id_by_name: dict[str, int],
+    feeder_id_by_name: dict[str, int],
+) -> None:
+    """Persist all DistributionBus rows, phases, and voltage limits."""
+    for bus in system.get_components(DistributionBus):
+        if bus.substation is None or bus.feeder is None:
+            raise ValueError(
+                f"DistributionBus '{bus.name}' must have substation and feeder assigned for DB export"
+            )
+
+        substation_id = substation_id_by_name.get(bus.substation.name)
+        feeder_id = feeder_id_by_name.get(bus.feeder.name)
+        if substation_id is None or feeder_id is None:
+            raise ValueError(
+                f"DistributionBus '{bus.name}' references substation/feeder not present in system"
+            )
+
+        coordinate_x = bus.coordinate.x if bus.coordinate is not None else None
+        coordinate_y = bus.coordinate.y if bus.coordinate is not None else None
+
+        cursor = conn.execute(
+            """
+            INSERT INTO distribution_buses(
+                name,
+                substation_id,
+                feeder_id,
+                voltage_type,
+                rated_voltage,
+                rated_voltage_unit,
+                coordinate_x,
+                coordinate_y,
+                in_service
+            )
+            VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """,
+            (
+                bus.name,
+                substation_id,
+                feeder_id,
+                bus.voltage_type.value,
+                float(bus.rated_voltage.magnitude),
+                str(bus.rated_voltage.units),
+                coordinate_x,
+                coordinate_y,
+                1 if bus.in_service else 0,
+            ),
+        )
+        bus_id = int(cursor.lastrowid)
+        _upsert_component_uuid_map(conn, "distribution_buses", bus_id, bus.uuid)
+
+        for position_index, phase in enumerate(bus.phases):
+            conn.execute(
+                "INSERT INTO bus_phases(bus_id, phase, position_index) VALUES(?, ?, ?)",
+                (bus_id, phase.value, position_index),
+            )
+
+        for limit_set in bus.voltagelimits:
+            limit_cursor = conn.execute(
+                "INSERT INTO voltage_limit_sets(name, limit_type, value, value_unit) VALUES(?, ?, ?, ?)",
+                (
+                    limit_set.name,
+                    limit_set.limit_type.value,
+                    float(limit_set.value.magnitude),
+                    str(limit_set.value.units),
+                ),
+            )
+            limit_id = int(limit_cursor.lastrowid)
+            _upsert_component_uuid_map(conn, "voltage_limit_sets", limit_id, limit_set.uuid)
+            conn.execute(
+                "INSERT INTO bus_voltage_limits(bus_id, limit_set_id) VALUES(?, ?)",
+                (bus_id, limit_id),
+            )
+
+
 def _write_distribution_topology(conn: sqlite3.Connection, system, replace: bool) -> None:
     if not isinstance(system, DistributionSystem):
         return
@@ -303,90 +470,7 @@ def _write_distribution_topology(conn: sqlite3.Connection, system, replace: bool
     }
 
     if replace:
-        conn.execute("DELETE FROM geometry_branch_phases")
-        conn.execute("DELETE FROM geometry_branches")
-        conn.execute("DELETE FROM geometry_branch_conductors")
-        conn.execute("DELETE FROM geometry_branch_equipment")
-        conn.execute("DELETE FROM matrix_impedance_fuse_phases")
-        conn.execute("DELETE FROM fuse_phase_states")
-        conn.execute("DELETE FROM matrix_impedance_fuses")
-        conn.execute("DELETE FROM impedance_matrix_entries WHERE equipment_type = 'FUSE'")
-        conn.execute("DELETE FROM matrix_impedance_fuse_equipment")
-        conn.execute("DELETE FROM matrix_impedance_recloser_phases")
-        conn.execute("DELETE FROM recloser_phase_states")
-        conn.execute("DELETE FROM matrix_impedance_reclosers")
-        conn.execute("DELETE FROM impedance_matrix_entries WHERE equipment_type = 'RECLOSER'")
-        conn.execute("DELETE FROM matrix_impedance_recloser_equipment")
-        conn.execute("DELETE FROM recloser_reclose_intervals")
-        conn.execute("DELETE FROM recloser_controllers")
-        conn.execute("DELETE FROM recloser_controller_equipment")
-        conn.execute("DELETE FROM time_current_curve_points")
-        conn.execute("DELETE FROM time_current_curves")
-        conn.execute("DELETE FROM switch_phase_states")
-        conn.execute("DELETE FROM matrix_impedance_switch_phases")
-        conn.execute("DELETE FROM matrix_impedance_switches")
-        conn.execute("DELETE FROM impedance_matrix_entries WHERE equipment_type = 'SWITCH'")
-        conn.execute("DELETE FROM matrix_impedance_switch_equipment")
-        conn.execute("DELETE FROM switch_controllers")
-        conn.execute("DELETE FROM sequence_impedance_branch_phases")
-        conn.execute("DELETE FROM sequence_impedance_branches")
-        conn.execute("DELETE FROM sequence_impedance_branch_equipment")
-        conn.execute("DELETE FROM matrix_impedance_branch_phases")
-        conn.execute("DELETE FROM matrix_impedance_branches")
-        conn.execute("DELETE FROM impedance_matrix_entries WHERE equipment_type = 'LINE'")
-        conn.execute("DELETE FROM matrix_impedance_branch_equipment")
-        conn.execute("DELETE FROM regulator_controllers")
-        conn.execute("DELETE FROM regulator_winding_phases")
-        conn.execute("DELETE FROM regulator_winding_buses")
-        conn.execute("DELETE FROM distribution_regulators")
-        conn.execute("DELETE FROM transformer_winding_phases")
-        conn.execute("DELETE FROM transformer_winding_buses")
-        conn.execute("DELETE FROM distribution_transformers")
-        conn.execute("DELETE FROM winding_tap_positions")
-        conn.execute("DELETE FROM winding_equipment")
-        conn.execute("DELETE FROM transformer_coupling_sequences")
-        conn.execute("DELETE FROM distribution_transformer_equipment")
-        conn.execute("DELETE FROM distribution_voltage_source_phases")
-        conn.execute("DELETE FROM distribution_voltage_sources")
-        conn.execute("DELETE FROM voltage_source_phases")
-        conn.execute("DELETE FROM voltage_source_equipment")
-        conn.execute("DELETE FROM phase_voltage_source_equipment")
-        conn.execute("DELETE FROM distribution_capacitor_phases")
-        conn.execute("DELETE FROM capacitor_controllers")
-        conn.execute("DELETE FROM distribution_capacitors")
-        conn.execute("DELETE FROM capacitor_equipment_phases")
-        conn.execute("DELETE FROM capacitor_equipment")
-        conn.execute("DELETE FROM phase_capacitor_equipment")
-        conn.execute("DELETE FROM distribution_battery_phases")
-        conn.execute("DELETE FROM distribution_batteries")
-        conn.execute("DELETE FROM battery_equipment")
-        conn.execute("DELETE FROM inverter_controllers")
-        conn.execute("DELETE FROM inverter_active_power_controls")
-        conn.execute("DELETE FROM inverter_reactive_power_controls")
-        conn.execute("DELETE FROM curve_points")
-        conn.execute("DELETE FROM curves")
-        conn.execute("DELETE FROM distribution_solar_phases")
-        conn.execute("DELETE FROM distribution_solar")
-        conn.execute("DELETE FROM solar_equipment")
-        conn.execute("DELETE FROM inverter_equipment")
-        conn.execute("DELETE FROM distribution_load_phases")
-        conn.execute("DELETE FROM distribution_loads")
-        conn.execute("DELETE FROM load_equipment_phases")
-        conn.execute("DELETE FROM load_equipment")
-        conn.execute("DELETE FROM phase_load_equipment")
-        conn.execute("DELETE FROM bus_voltage_limits")
-        conn.execute("DELETE FROM bus_phases")
-        conn.execute("DELETE FROM distribution_buses")
-        conn.execute("DELETE FROM substation_feeders")
-        conn.execute("DELETE FROM distribution_substations")
-        conn.execute("DELETE FROM distribution_feeders")
-        conn.execute(
-            "DELETE FROM voltage_limit_sets WHERE id NOT IN (SELECT limit_set_id FROM bus_voltage_limits)"
-        )
-        conn.execute(
-            f"DELETE FROM gdm_component_uuid_map WHERE component_type IN ({', '.join(['?'] * len(component_types))})",
-            tuple(component_types),
-        )
+        _delete_distribution_tables(conn, component_types)
 
     feeder_id_by_name: dict[str, int] = {}
     substation_id_by_name: dict[str, int] = {}
@@ -435,74 +519,7 @@ def _write_distribution_topology(conn: sqlite3.Connection, system, replace: bool
                 (substation_id, feeder_id),
             )
 
-    for bus in system.get_components(DistributionBus):
-        if bus.substation is None or bus.feeder is None:
-            raise ValueError(
-                f"DistributionBus '{bus.name}' must have substation and feeder assigned for DB export"
-            )
-
-        substation_id = substation_id_by_name.get(bus.substation.name)
-        feeder_id = feeder_id_by_name.get(bus.feeder.name)
-        if substation_id is None or feeder_id is None:
-            raise ValueError(
-                f"DistributionBus '{bus.name}' references substation/feeder not present in system"
-            )
-
-        coordinate_x = bus.coordinate.x if bus.coordinate is not None else None
-        coordinate_y = bus.coordinate.y if bus.coordinate is not None else None
-
-        cursor = conn.execute(
-            """
-            INSERT INTO distribution_buses(
-                name,
-                substation_id,
-                feeder_id,
-                voltage_type,
-                rated_voltage,
-                rated_voltage_unit,
-                coordinate_x,
-                coordinate_y,
-                in_service
-            )
-            VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)
-            """,
-            (
-                bus.name,
-                substation_id,
-                feeder_id,
-                bus.voltage_type.value,
-                float(bus.rated_voltage.magnitude),
-                str(bus.rated_voltage.units),
-                coordinate_x,
-                coordinate_y,
-                1 if bus.in_service else 0,
-            ),
-        )
-        bus_id = int(cursor.lastrowid)
-        _upsert_component_uuid_map(conn, "distribution_buses", bus_id, bus.uuid)
-
-        for position_index, phase in enumerate(bus.phases):
-            conn.execute(
-                "INSERT INTO bus_phases(bus_id, phase, position_index) VALUES(?, ?, ?)",
-                (bus_id, phase.value, position_index),
-            )
-
-        for limit_set in bus.voltagelimits:
-            limit_cursor = conn.execute(
-                "INSERT INTO voltage_limit_sets(name, limit_type, value, value_unit) VALUES(?, ?, ?, ?)",
-                (
-                    limit_set.name,
-                    limit_set.limit_type.value,
-                    float(limit_set.value.magnitude),
-                    str(limit_set.value.units),
-                ),
-            )
-            limit_id = int(limit_cursor.lastrowid)
-            _upsert_component_uuid_map(conn, "voltage_limit_sets", limit_id, limit_set.uuid)
-            conn.execute(
-                "INSERT INTO bus_voltage_limits(bus_id, limit_set_id) VALUES(?, ?)",
-                (bus_id, limit_id),
-            )
+    _write_distribution_buses(conn, system, substation_id_by_name, feeder_id_by_name)
 
     curve_id_by_uuid: dict[UUID, int] = {}
     active_control_id_by_uuid: dict[UUID, int] = {}
@@ -897,7 +914,11 @@ def _attach_time_series_from_snapshot(
                 )
                 target_system.add_time_series(ts_data, target_component, **metadata.features)
             except Exception:
-                continue
+                logger.debug(
+                    "Failed to restore time series '{}' for component '{}'",
+                    metadata.name,
+                    source_component.name,
+                )
 
 
 def load_snapshot_payload(

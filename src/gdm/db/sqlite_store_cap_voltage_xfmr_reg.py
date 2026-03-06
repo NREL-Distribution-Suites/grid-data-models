@@ -907,6 +907,199 @@ def _write_distribution_regulators(conn: sqlite3.Connection, system: Distributio
             )
 
 
+def _load_or_cache_capacitor_equipment(
+    conn: sqlite3.Connection,
+    capacitor_equipment_id: int,
+    equipment_cache: dict[int, CapacitorEquipment],
+    phase_equipment_cache: dict[int, PhaseCapacitorEquipment],
+) -> CapacitorEquipment:
+    """Load CapacitorEquipment from DB (with caching) for a given equipment id."""
+    equipment = equipment_cache.get(capacitor_equipment_id)
+    if equipment is not None:
+        return equipment
+
+    equipment_row = conn.execute(
+        """
+        SELECT name, connection_type, rated_voltage, rated_voltage_unit, voltage_type
+        FROM capacitor_equipment
+        WHERE id = ?
+        """,
+        (capacitor_equipment_id,),
+    ).fetchone()
+    if equipment_row is None:
+        raise ValueError(f"capacitor_equipment_id={capacitor_equipment_id} not found")
+    (
+        equipment_name,
+        connection_type,
+        rated_voltage,
+        rated_voltage_unit,
+        voltage_type,
+    ) = equipment_row
+
+    phase_links = conn.execute(
+        """
+        SELECT phase_capacitor_equipment_id
+        FROM capacitor_equipment_phases
+        WHERE capacitor_equipment_id = ?
+        ORDER BY position_index
+        """,
+        (capacitor_equipment_id,),
+    ).fetchall()
+    phase_caps: list[PhaseCapacitorEquipment] = []
+    for (phase_cap_id,) in phase_links:
+        phase_cap = phase_equipment_cache.get(phase_cap_id)
+        if phase_cap is None:
+            phase_row = conn.execute(
+                """
+                SELECT
+                    name,
+                    resistance,
+                    resistance_unit,
+                    reactance,
+                    reactance_unit,
+                    rated_reactive_power,
+                    rated_reactive_power_unit,
+                    num_banks_on,
+                    num_banks
+                FROM phase_capacitor_equipment
+                WHERE id = ?
+                """,
+                (phase_cap_id,),
+            ).fetchone()
+            if phase_row is None:
+                raise ValueError(f"phase_capacitor_equipment_id={phase_cap_id} not found")
+            (
+                phase_name,
+                resistance,
+                resistance_unit,
+                reactance,
+                reactance_unit,
+                rated_reactive_power,
+                rated_reactive_power_unit,
+                num_banks_on,
+                num_banks,
+            ) = phase_row
+            phase_cap = PhaseCapacitorEquipment(
+                name=phase_name,
+                resistance=Resistance(resistance, resistance_unit),
+                reactance=Reactance(reactance, reactance_unit),
+                rated_reactive_power=ReactivePower(
+                    rated_reactive_power, rated_reactive_power_unit
+                ),
+                num_banks_on=num_banks_on,
+                num_banks=num_banks,
+            )
+            phase_cap_uuid = _fetch_component_uuid(
+                conn,
+                "phase_capacitor_equipment",
+                phase_cap_id,
+            )
+            if phase_cap_uuid is not None:
+                phase_cap = phase_cap.model_copy(update={"uuid": phase_cap_uuid})
+            phase_equipment_cache[phase_cap_id] = phase_cap
+        phase_caps.append(phase_cap)
+
+    equipment = CapacitorEquipment(
+        name=equipment_name,
+        phase_capacitors=phase_caps,
+        connection_type=ConnectionType(connection_type),
+        rated_voltage=Voltage(rated_voltage, rated_voltage_unit),
+        voltage_type=VoltageTypes(voltage_type),
+    )
+    equipment_uuid = _fetch_component_uuid(conn, "capacitor_equipment", capacitor_equipment_id)
+    if equipment_uuid is not None:
+        equipment = equipment.model_copy(update={"uuid": equipment_uuid})
+    equipment_cache[capacitor_equipment_id] = equipment
+    return equipment
+
+
+def _build_capacitor_controller(conn: sqlite3.Connection, row: tuple) -> object | None:
+    """Build a single capacitor controller from a DB row, or return None."""
+    (
+        controller_id,
+        name,
+        controller_type,
+        delay_on,
+        delay_on_unit,
+        delay_off,
+        delay_off_unit,
+        dead_time,
+        dead_time_unit,
+        on_voltage,
+        on_voltage_unit,
+        off_voltage,
+        off_voltage_unit,
+        pt_ratio,
+        on_active_power,
+        on_active_power_unit,
+        off_active_power,
+        off_active_power_unit,
+        on_reactive_power,
+        on_reactive_power_unit,
+        off_reactive_power,
+        off_reactive_power_unit,
+        on_current,
+        on_current_unit,
+        off_current,
+        off_current_unit,
+        ct_ratio,
+        on_time,
+        off_time,
+    ) = row
+
+    common = {
+        "name": name,
+        "delay_on": Time(delay_on, delay_on_unit)
+        if delay_on is not None and delay_on_unit is not None
+        else None,
+        "delay_off": Time(delay_off, delay_off_unit)
+        if delay_off is not None and delay_off_unit is not None
+        else None,
+        "dead_time": Time(dead_time, dead_time_unit)
+        if dead_time is not None and dead_time_unit is not None
+        else None,
+    }
+    controller = None
+    if controller_type == "VOLTAGE":
+        controller = VoltageCapacitorController(
+            **common,
+            on_voltage=Voltage(on_voltage, on_voltage_unit),
+            off_voltage=Voltage(off_voltage, off_voltage_unit),
+            pt_ratio=pt_ratio,
+        )
+    elif controller_type == "ACTIVE_POWER":
+        controller = ActivePowerCapacitorController(
+            **common,
+            on_power=ActivePower(on_active_power, on_active_power_unit),
+            off_power=ActivePower(off_active_power, off_active_power_unit),
+        )
+    elif controller_type == "REACTIVE_POWER":
+        controller = ReactivePowerCapacitorController(
+            **common,
+            on_power=ReactivePower(on_reactive_power, on_reactive_power_unit),
+            off_power=ReactivePower(off_reactive_power, off_reactive_power_unit),
+        )
+    elif controller_type == "CURRENT":
+        controller = CurrentCapacitorController(
+            **common,
+            on_current=Current(on_current, on_current_unit),
+            off_current=Current(off_current, off_current_unit),
+            ct_ratio=ct_ratio,
+        )
+    elif controller_type == "DAILY_TIMED":
+        controller = DailyTimedCapacitorController(
+            **common,
+            on_time=time.fromisoformat(on_time),
+            off_time=time.fromisoformat(off_time),
+        )
+
+    if controller is not None:
+        controller_uuid = _fetch_component_uuid(conn, "capacitor_controllers", controller_id)
+        if controller_uuid is not None:
+            controller = controller.model_copy(update={"uuid": controller_uuid})
+    return controller
+
+
 def _load_distribution_capacitors_from_normalized(
     conn: sqlite3.Connection,
     system: DistributionSystem,
@@ -949,102 +1142,9 @@ def _load_distribution_capacitors_from_normalized(
         ).fetchall()
         phases = [Phase(phase) for (phase,) in phase_rows]
 
-        equipment = equipment_cache.get(capacitor_equipment_id)
-        if equipment is None:
-            equipment_row = conn.execute(
-                """
-                SELECT name, connection_type, rated_voltage, rated_voltage_unit, voltage_type
-                FROM capacitor_equipment
-                WHERE id = ?
-                """,
-                (capacitor_equipment_id,),
-            ).fetchone()
-            if equipment_row is None:
-                raise ValueError(f"capacitor_equipment_id={capacitor_equipment_id} not found")
-            (
-                equipment_name,
-                connection_type,
-                rated_voltage,
-                rated_voltage_unit,
-                voltage_type,
-            ) = equipment_row
-
-            phase_links = conn.execute(
-                """
-                SELECT phase_capacitor_equipment_id
-                FROM capacitor_equipment_phases
-                WHERE capacitor_equipment_id = ?
-                ORDER BY position_index
-                """,
-                (capacitor_equipment_id,),
-            ).fetchall()
-            phase_caps: list[PhaseCapacitorEquipment] = []
-            for (phase_cap_id,) in phase_links:
-                phase_cap = phase_equipment_cache.get(phase_cap_id)
-                if phase_cap is None:
-                    phase_row = conn.execute(
-                        """
-                        SELECT
-                            name,
-                            resistance,
-                            resistance_unit,
-                            reactance,
-                            reactance_unit,
-                            rated_reactive_power,
-                            rated_reactive_power_unit,
-                            num_banks_on,
-                            num_banks
-                        FROM phase_capacitor_equipment
-                        WHERE id = ?
-                        """,
-                        (phase_cap_id,),
-                    ).fetchone()
-                    if phase_row is None:
-                        raise ValueError(f"phase_capacitor_equipment_id={phase_cap_id} not found")
-                    (
-                        phase_name,
-                        resistance,
-                        resistance_unit,
-                        reactance,
-                        reactance_unit,
-                        rated_reactive_power,
-                        rated_reactive_power_unit,
-                        num_banks_on,
-                        num_banks,
-                    ) = phase_row
-                    phase_cap = PhaseCapacitorEquipment(
-                        name=phase_name,
-                        resistance=Resistance(resistance, resistance_unit),
-                        reactance=Reactance(reactance, reactance_unit),
-                        rated_reactive_power=ReactivePower(
-                            rated_reactive_power, rated_reactive_power_unit
-                        ),
-                        num_banks_on=num_banks_on,
-                        num_banks=num_banks,
-                    )
-                    phase_cap_uuid = _fetch_component_uuid(
-                        conn,
-                        "phase_capacitor_equipment",
-                        phase_cap_id,
-                    )
-                    if phase_cap_uuid is not None:
-                        phase_cap = phase_cap.model_copy(update={"uuid": phase_cap_uuid})
-                    phase_equipment_cache[phase_cap_id] = phase_cap
-                phase_caps.append(phase_cap)
-
-            equipment = CapacitorEquipment(
-                name=equipment_name,
-                phase_capacitors=phase_caps,
-                connection_type=ConnectionType(connection_type),
-                rated_voltage=Voltage(rated_voltage, rated_voltage_unit),
-                voltage_type=VoltageTypes(voltage_type),
-            )
-            equipment_uuid = _fetch_component_uuid(
-                conn, "capacitor_equipment", capacitor_equipment_id
-            )
-            if equipment_uuid is not None:
-                equipment = equipment.model_copy(update={"uuid": equipment_uuid})
-            equipment_cache[capacitor_equipment_id] = equipment
+        equipment = _load_or_cache_capacitor_equipment(
+            conn, capacitor_equipment_id, equipment_cache, phase_equipment_cache
+        )
 
         controller_rows = conn.execute(
             """
@@ -1086,90 +1186,8 @@ def _load_distribution_capacitors_from_normalized(
         ).fetchall()
         controllers = []
         for row in controller_rows:
-            (
-                controller_id,
-                name,
-                controller_type,
-                delay_on,
-                delay_on_unit,
-                delay_off,
-                delay_off_unit,
-                dead_time,
-                dead_time_unit,
-                on_voltage,
-                on_voltage_unit,
-                off_voltage,
-                off_voltage_unit,
-                pt_ratio,
-                on_active_power,
-                on_active_power_unit,
-                off_active_power,
-                off_active_power_unit,
-                on_reactive_power,
-                on_reactive_power_unit,
-                off_reactive_power,
-                off_reactive_power_unit,
-                on_current,
-                on_current_unit,
-                off_current,
-                off_current_unit,
-                ct_ratio,
-                on_time,
-                off_time,
-            ) = row
-
-            common = {
-                "name": name,
-                "delay_on": Time(delay_on, delay_on_unit)
-                if delay_on is not None and delay_on_unit is not None
-                else None,
-                "delay_off": Time(delay_off, delay_off_unit)
-                if delay_off is not None and delay_off_unit is not None
-                else None,
-                "dead_time": Time(dead_time, dead_time_unit)
-                if dead_time is not None and dead_time_unit is not None
-                else None,
-            }
-            controller = None
-            if controller_type == "VOLTAGE":
-                controller = VoltageCapacitorController(
-                    **common,
-                    on_voltage=Voltage(on_voltage, on_voltage_unit),
-                    off_voltage=Voltage(off_voltage, off_voltage_unit),
-                    pt_ratio=pt_ratio,
-                )
-            elif controller_type == "ACTIVE_POWER":
-                controller = ActivePowerCapacitorController(
-                    **common,
-                    on_power=ActivePower(on_active_power, on_active_power_unit),
-                    off_power=ActivePower(off_active_power, off_active_power_unit),
-                )
-            elif controller_type == "REACTIVE_POWER":
-                controller = ReactivePowerCapacitorController(
-                    **common,
-                    on_power=ReactivePower(on_reactive_power, on_reactive_power_unit),
-                    off_power=ReactivePower(off_reactive_power, off_reactive_power_unit),
-                )
-            elif controller_type == "CURRENT":
-                controller = CurrentCapacitorController(
-                    **common,
-                    on_current=Current(on_current, on_current_unit),
-                    off_current=Current(off_current, off_current_unit),
-                    ct_ratio=ct_ratio,
-                )
-            elif controller_type == "DAILY_TIMED":
-                controller = DailyTimedCapacitorController(
-                    **common,
-                    on_time=time.fromisoformat(on_time),
-                    off_time=time.fromisoformat(off_time),
-                )
-
+            controller = _build_capacitor_controller(conn, row)
             if controller is not None:
-                controller_uuid = _fetch_component_uuid(
-                    conn, "capacitor_controllers", controller_id
-                )
-                if controller_uuid is not None:
-                    controller = controller.model_copy(update={"uuid": controller_uuid})
                 controllers.append(controller)
 
         capacitor = DistributionCapacitor(
