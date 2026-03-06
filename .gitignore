@@ -7,6 +7,8 @@ __pycache__/
 *.so
 *.code-workspace
 *.sqlite
+*.db
+*.sql
 *.ruff_cache/
 
 # Distribution / packaging

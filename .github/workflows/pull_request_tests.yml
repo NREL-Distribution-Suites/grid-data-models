@@ -26,9 +26,9 @@ jobs:
       GDM_TEST_POSTGRES_DSN: postgresql+psycopg://postgres:postgres@localhost:5432/gdm_test
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: ${{ matrix.python-version }}
       - name: Install dependencies
@@ -39,7 +39,7 @@ jobs:
         run: |
           pytest -v --cov --cov-report=xml
       - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@v4.0.1
+        uses: codecov/codecov-action@v5.5.2
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           slug: NREL-Distribution-Suites/grid-data-models
@@ -49,8 +49,8 @@ jobs:
     runs-on: ubuntu-latest
     name: "ruff"
     steps:
-      - uses: davidslusser/actions_python_ruff@v1.0.1
+      - uses: davidslusser/actions_python_ruff@v1.0.3
         with:
-          src: "check src"
+          command: "ruff check src"
           pip_install_command: "pip install -e .[dev]"
           python_version: "3.13"
