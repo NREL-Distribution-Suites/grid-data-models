@@ -2,7 +2,7 @@
 -- The current version of this schema only works for SQLITE >=3.45
 -- When adding new functionality, think about the following:
 --      1. Simplicity and ease of use over complexity,
---      2. Clear, concise and strict fields but allow for extensability,
+--      2. Clear, concise and strict fields but allow for extensibility,
 --      3. User friendly over performance, but consider performance always.
 -- WARNING: This script should only be used while testing the schema and should
 -- not be applied to existing datasets since it drops all existing information.
