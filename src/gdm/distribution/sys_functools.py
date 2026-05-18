@@ -18,6 +18,7 @@ import numpy as np
 from gdm.distribution.components.distribution_load import DistributionLoad
 from gdm.distribution.components.distribution_solar import DistributionSolar
 from gdm.distribution.components.distribution_battery import DistributionBattery
+from gdm.distribution.enums import Phase
 from gdm.distribution.distribution_system import DistributionSystem, UserAttributes
 from gdm.exceptions import (
     InconsistentTimeSeriesAggregation,
@@ -121,6 +122,50 @@ def _get_solar_power(
         ).magnitude,
         dc_power.units,
     )
+
+
+def _get_load_power_per_phase(
+    load: DistributionLoad, ts_data: TimeSeriesData, metadata: TimeSeriesMetadata
+) -> list[tuple[Phase, Quantity]]:
+    """Internal function to return per-phase load power as a list of (phase, power) tuples."""
+    if metadata.features is None:
+        msg = f"The {metadata.name} data is not a GDM quantity: {metadata.get_time_series_data_type()}"
+        raise GDMQuantityError(msg)
+
+    user_attr = UserAttributes.model_validate(metadata.features)
+    denormalized_data = get_time_series_actual_data(ts_data)
+
+    if user_attr.use_actual:
+        return [(phase, denormalized_data) for phase in load.phases]
+
+    if metadata.name in {"active_power", "reactive_power"}:
+        return [
+            (
+                phase,
+                denormalized_data.magnitude.tolist()
+                * (
+                    ph_load.real_power
+                    if metadata.name == "active_power"
+                    else ph_load.reactive_power
+                ),
+            )
+            for phase, ph_load in zip(load.phases, load.equipment.phase_loads)
+        ]
+    else:
+        msg = f"{metadata.name} is not supported for load power calculation."
+        raise UnsupportedVariableError(msg)
+
+
+def _get_solar_power_per_phase(
+    solar: DistributionSolar, ts_data: TimeSeriesData, metadata: TimeSeriesMetadata
+) -> list[tuple[Phase, Quantity]]:
+    """Internal function to return per-phase solar power as a list of (phase, power) tuples.
+
+    Solar has no per-phase power model, so total power is split equally across phases.
+    """
+    total_power = _get_solar_power(solar, ts_data, metadata)
+    n_phases = len(solar.phases)
+    return [(phase, total_power / n_phases) for phase in solar.phases]
 
 
 def _check_for_time_series_metadata_consistency(ts_metadata: list[TimeSeriesMetadata]):
@@ -352,6 +397,9 @@ def _get_combined_single_time_series_df(
     power_function: Callable,
     unit_conversion: dict[str, str],
     time_series_type: Type[TimeSeriesData] = SingleTimeSeries,
+    aggregate_phases: bool = True,
+    per_phase_function: Callable | None = None,
+    include_features: bool = False,
 ) -> pd.DataFrame:
     """
     Generalized function for returning combined single time series dataframe for given component type.
@@ -370,6 +418,16 @@ def _get_combined_single_time_series_df(
         Optional dictionary to perform unit conversion on data in pint quantities.
     time_series_type: Type[TimeSeriesData]
         Type of time series data. Defaults to: SingleTimeSeries
+    aggregate_phases: bool
+        If True (default), phases are summed and no ``phase`` column is added.
+        If False, one row per phase is emitted and a ``phase`` column is added.
+        Requires ``per_phase_function`` when False.
+    per_phase_function: Callable | None
+        Function with the same signature as ``power_function`` that returns
+        ``list[tuple[Phase, Quantity]]``. Required when ``aggregate_phases=False``.
+    include_features: bool
+        If True, columns for each entry in ``metadata.features`` (excluding
+        ``use_actual``) are added to the output DataFrame. Defaults to False.
     Returns
     -------
     pd.DataFrame
@@ -410,35 +468,76 @@ def _get_combined_single_time_series_df(
                 owner=component, name=var, time_series_type=time_series_type
             )
             metadata = [meta for meta in ts_metadata if meta.name == var][0]
-            power_data = power_function(component, ts_data, metadata)
-
-            if var in unit_conversion and not isinstance(power_data, Quantity):
-                msg = (
-                    f"Unit conversion specified for {var}, but power data is not a pint Quantity."
-                )
-                raise GDMQuantityError(msg)
-
-            dfs.append(
-                pd.DataFrame(
-                    {
-                        "timestamp": [
-                            ts_data.initial_timestamp + idx * ts_data.resolution
-                            for idx in range(ts_data.length)
-                        ],
-                        "name": [var] * ts_data.length,
-                        "component_uuid": [component.uuid] * ts_data.length,
-                        "value": (
-                            power_data.to(unit_conversion[var]).magnitude
-                            if var in unit_conversion
-                            else power_data
-                        ),
-                        "units": [
-                            unit_conversion[var] if var in unit_conversion else power_data.units
-                        ]
-                        * ts_data.length,
-                    }
-                )
+            timestamps = [
+                ts_data.initial_timestamp + idx * ts_data.resolution
+                for idx in range(ts_data.length)
+            ]
+            features_cols: dict = (
+                {
+                    k: [v] * ts_data.length
+                    for k, v in (metadata.features or {}).items()
+                    if k != "use_actual"
+                }
+                if include_features
+                else {}
             )
+
+            if not aggregate_phases and per_phase_function is not None:
+                phase_power_pairs: list[tuple[Phase, Quantity]] = per_phase_function(
+                    component, ts_data, metadata
+                )
+                for phase, power_data in phase_power_pairs:
+                    if var in unit_conversion and not isinstance(power_data, Quantity):
+                        msg = f"Unit conversion specified for {var}, but power data is not a pint Quantity."
+                        raise GDMQuantityError(msg)
+                    dfs.append(
+                        pd.DataFrame(
+                            {
+                                "timestamp": timestamps,
+                                "name": [var] * ts_data.length,
+                                "component_uuid": [component.uuid] * ts_data.length,
+                                "phase": [phase] * ts_data.length,
+                                "value": (
+                                    power_data.to(unit_conversion[var]).magnitude
+                                    if var in unit_conversion
+                                    else power_data
+                                ),
+                                "units": [
+                                    unit_conversion[var]
+                                    if var in unit_conversion
+                                    else power_data.units
+                                ]
+                                * ts_data.length,
+                                **features_cols,
+                            }
+                        )
+                    )
+            else:
+                power_data = power_function(component, ts_data, metadata)
+                if var in unit_conversion and not isinstance(power_data, Quantity):
+                    msg = f"Unit conversion specified for {var}, but power data is not a pint Quantity."
+                    raise GDMQuantityError(msg)
+                dfs.append(
+                    pd.DataFrame(
+                        {
+                            "timestamp": timestamps,
+                            "name": [var] * ts_data.length,
+                            "component_uuid": [component.uuid] * ts_data.length,
+                            "value": (
+                                power_data.to(unit_conversion[var]).magnitude
+                                if var in unit_conversion
+                                else power_data
+                            ),
+                            "units": [
+                                unit_conversion[var]
+                                if var in unit_conversion
+                                else power_data.units
+                            ]
+                            * ts_data.length,
+                            **features_cols,
+                        }
+                    )
+                )
 
     return pd.concat(dfs, ignore_index=True) if dfs else pd.DataFrame()
 
@@ -450,9 +549,12 @@ def _get_combined_nonsequential_time_series_df(
     power_function: Callable,
     unit_conversion: dict[str, str],
     time_series_type: Type[TimeSeriesData] = NonSequentialTimeSeries,
+    aggregate_phases: bool = True,
+    per_phase_function: Callable | None = None,
+    include_features: bool = False,
 ) -> pd.DataFrame:
     """
-    Generalized function for returning combined single time series dataframe for given component type.
+    Generalized function for returning combined nonsequential time series dataframe for given component type.
 
     Parameters
     ----------
@@ -468,6 +570,16 @@ def _get_combined_nonsequential_time_series_df(
         Optional dictionary to perform unit conversion on data in pint quantities.
     time_series_type: Type[TimeSeriesData]
         Type of time series data. Defaults to: NonSequentialTimeSeries
+    aggregate_phases: bool
+        If True (default), phases are summed and no ``phase`` column is added.
+        If False, one row per phase is emitted and a ``phase`` column is added.
+        Requires ``per_phase_function`` when False.
+    per_phase_function: Callable | None
+        Function with the same signature as ``power_function`` that returns
+        ``list[tuple[Phase, Quantity]]``. Required when ``aggregate_phases=False``.
+    include_features: bool
+        If True, columns for each entry in ``metadata.features`` (excluding
+        ``use_actual``) are added to the output DataFrame. Defaults to False.
 
     Returns
     -------
@@ -509,25 +621,66 @@ def _get_combined_nonsequential_time_series_df(
                 owner=component, name=var, time_series_type=time_series_type
             )
             metadata = [meta for meta in ts_metadata if meta.name == var][0]
-            power_data = power_function(component, ts_data, metadata)
-            dfs.append(
-                pd.DataFrame(
-                    {
-                        "timestamp": ts_data.timestamps,
-                        "name": [var] * ts_data.length,
-                        "component_uuid": [component.uuid] * ts_data.length,
-                        "value": (
-                            power_data.to(unit_conversion[var]).magnitude
-                            if var in unit_conversion
-                            else power_data
-                        ),
-                        "units": [
-                            unit_conversion[var] if var in unit_conversion else power_data.units
-                        ]
-                        * ts_data.length,
-                    }
-                )
+            features_cols: dict = (
+                {
+                    k: [v] * ts_data.length
+                    for k, v in (metadata.features or {}).items()
+                    if k != "use_actual"
+                }
+                if include_features
+                else {}
             )
+
+            if not aggregate_phases and per_phase_function is not None:
+                phase_power_pairs: list[tuple[Phase, Quantity]] = per_phase_function(
+                    component, ts_data, metadata
+                )
+                for phase, power_data in phase_power_pairs:
+                    dfs.append(
+                        pd.DataFrame(
+                            {
+                                "timestamp": ts_data.timestamps,
+                                "name": [var] * ts_data.length,
+                                "component_uuid": [component.uuid] * ts_data.length,
+                                "phase": [phase] * ts_data.length,
+                                "value": (
+                                    power_data.to(unit_conversion[var]).magnitude
+                                    if var in unit_conversion
+                                    else power_data
+                                ),
+                                "units": [
+                                    unit_conversion[var]
+                                    if var in unit_conversion
+                                    else power_data.units
+                                ]
+                                * ts_data.length,
+                                **features_cols,
+                            }
+                        )
+                    )
+            else:
+                power_data = power_function(component, ts_data, metadata)
+                dfs.append(
+                    pd.DataFrame(
+                        {
+                            "timestamp": ts_data.timestamps,
+                            "name": [var] * ts_data.length,
+                            "component_uuid": [component.uuid] * ts_data.length,
+                            "value": (
+                                power_data.to(unit_conversion[var]).magnitude
+                                if var in unit_conversion
+                                else power_data
+                            ),
+                            "units": [
+                                unit_conversion[var]
+                                if var in unit_conversion
+                                else power_data.units
+                            ]
+                            * ts_data.length,
+                            **features_cols,
+                        }
+                    )
+                )
 
     return pd.concat(dfs, ignore_index=True) if dfs else pd.DataFrame()
 
@@ -537,6 +690,8 @@ def get_combined_load_time_series_df(
     unit_conversion: dict[str, str],
     var_of_interest: set[str] = {"active_power", "reactive_power"},
     time_series_type: Type[TimeSeriesData] = SingleTimeSeries,
+    aggregate_phases: bool = True,
+    include_features: bool = False,
 ) -> pd.DataFrame:
     """
     Function for returning combined time series dataframe for load components.
@@ -551,6 +706,12 @@ def get_combined_load_time_series_df(
         Set of variable names of interest. Defaults to: {"active_power", "reactive_power"}
     time_series_type: Type[TimeSeriesData]
         Type of time series data. Defaults to: SingleTimeSeries
+    aggregate_phases: bool
+        If True (default), phase powers are summed into a single row per timestamp.
+        If False, one row per phase is emitted with a ``phase`` column.
+    include_features: bool
+        If True, columns for each entry in ``metadata.features`` (excluding
+        ``use_actual``) are added to the output DataFrame. Defaults to False.
     Returns
     -------
     pd.DataFrame
@@ -563,6 +724,9 @@ def get_combined_load_time_series_df(
             power_function=_get_load_power,
             unit_conversion=unit_conversion,
             time_series_type=time_series_type,
+            aggregate_phases=aggregate_phases,
+            per_phase_function=_get_load_power_per_phase,
+            include_features=include_features,
         )
     elif time_series_type.__name__ == "NonSequentialTimeSeries":
         return _get_combined_nonsequential_time_series_df(
@@ -572,6 +736,9 @@ def get_combined_load_time_series_df(
             power_function=_get_load_power,
             unit_conversion=unit_conversion,
             time_series_type=time_series_type,
+            aggregate_phases=aggregate_phases,
+            per_phase_function=_get_load_power_per_phase,
+            include_features=include_features,
         )
     else:
         msg = f"get_combined_load_time_series_df not implemented for {time_series_type.__name__}"
@@ -583,6 +750,8 @@ def get_combined_solar_time_series_df(
     unit_conversion: dict[str, str],
     var_of_interest: set[str] = {"irradiance"},
     time_series_type: Type[TimeSeriesData] = SingleTimeSeries,
+    aggregate_phases: bool = True,
+    include_features: bool = False,
 ) -> pd.DataFrame:
     """
     Function for returning combined time series dataframe for solar components.
@@ -597,6 +766,13 @@ def get_combined_solar_time_series_df(
         Set of variable names of interest. Defaults to: {"irradiance"}
     time_series_type: Type[TimeSeriesData]
         Type of time series data. Defaults to: SingleTimeSeries
+    aggregate_phases: bool
+        If True (default), the total solar power is returned as a single row per timestamp.
+        If False, one row per phase is emitted with a ``phase`` column; total power is
+        split equally across phases since no per-phase solar model exists.
+    include_features: bool
+        If True, columns for each entry in ``metadata.features`` (excluding
+        ``use_actual``) are added to the output DataFrame. Defaults to False.
     Returns
     -------
     pd.DataFrame
@@ -609,6 +785,9 @@ def get_combined_solar_time_series_df(
             power_function=_get_solar_power,
             unit_conversion=unit_conversion,
             time_series_type=time_series_type,
+            aggregate_phases=aggregate_phases,
+            per_phase_function=_get_solar_power_per_phase,
+            include_features=include_features,
         )
         return solar_df.replace("irradiance", "active_power")
     elif time_series_type.__name__ == "NonSequentialTimeSeries":
@@ -619,6 +798,9 @@ def get_combined_solar_time_series_df(
             power_function=_get_solar_power,
             unit_conversion=unit_conversion,
             time_series_type=time_series_type,
+            aggregate_phases=aggregate_phases,
+            per_phase_function=_get_solar_power_per_phase,
+            include_features=include_features,
         )
         return solar_df.replace("irradiance", "active_power")
     else:
