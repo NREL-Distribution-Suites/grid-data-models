@@ -136,7 +136,8 @@ def _get_load_power_per_phase(
     denormalized_data = get_time_series_actual_data(ts_data)
 
     if user_attr.use_actual:
-        return [(phase, denormalized_data) for phase in load.phases]
+        n_phases = len(load.phases)
+        return [(phase, denormalized_data / n_phases) for phase in load.phases]
 
     if metadata.name in {"active_power", "reactive_power"}:
         return [
@@ -537,6 +538,9 @@ def _get_combined_time_series_df(
                             phase=phase,
                         )
                     )
+            elif not aggregate_phases and per_phase_function is None:
+                msg = "per_phase_function is required when aggregate_phases is False."
+                raise ValueError(msg)
             else:
                 power_data = power_function(component, ts_data, metadata)
                 dfs.append(
