@@ -33,7 +33,7 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-mcp = ["mcp>=1.27.1"]
+mcp = ["mcp>=1.27.2"]
 dev = ["pre-commit", "pytest", "pytest-cov", "pytest-doctestplus", "pytest-asyncio", "ruff", "docutils"]
 doc = [
   "jupyter-book>=2.1.5,<3",
