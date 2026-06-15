@@ -166,4 +166,3 @@ cython_debug/
 .qodo
 .DS_Store
 *.dump
-uv.lock
