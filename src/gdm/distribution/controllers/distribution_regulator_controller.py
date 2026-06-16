@@ -20,6 +20,17 @@ class RegulatorController(Component):
     """Data model for a Regulator Controller."""
 
     name: Annotated[str, Field("", description="Name of the regulator controller.")]
+
+    tapped_winding: Annotated[
+        Optional[int],
+        Field(
+            2,
+            ge=1,
+            le=3,
+            description="The index of the winding on the transformer that this controller is controlling.",
+        ),
+    ]
+
     delay: Annotated[
         Optional[Time],
         PINT_SCHEMA,
