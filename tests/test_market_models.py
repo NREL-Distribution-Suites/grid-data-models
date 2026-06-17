@@ -41,8 +41,8 @@ class TestLMPRate:
 
     def test_defaults_zero_congestion_and_loss(self):
         lmp = LMPRate(energy_rate=40.0)
-        assert lmp.congestion_rate == 0.0
-        assert lmp.loss_rate == 0.0
+        assert lmp.congestion_rate == pytest.approx(0.0)
+        assert lmp.loss_rate == pytest.approx(0.0)
         assert lmp.total_lmp == pytest.approx(40.0)
 
 
