@@ -11,8 +11,8 @@ requires-python = ">=3.11"
 license = "BSD-3-Clause"
 keywords = []
 authors = [
+  { name = "Aadil Latif", email = "Aadil.Latif@nlr.gov" },
   { name = "Kapil Duwadi", email = "Kapil.Duwadi@nrel.gov" },
-  { name = "Aadil Latif", email = "Aadil.Latif@nrel.gov" },
   { name = "Tarek Elgindy", email = "tarek.elgindy@nrel.gov" },
 ]
 classifiers = [
