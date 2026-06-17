@@ -75,6 +75,19 @@ from gdm.distribution.market import (
     DemandCharge,
     FixedCharge,
     TieredRate,
+    LMPRate,
+    PricingNode,
+    AncillaryServiceRate,
+    CapacityPayment,
+    TransmissionServiceCharge,
+    WholesaleMarketTariff,
+)
+from gdm.distribution.market.aggregator import (
+    AggregatedDER,
+    AggregatedLoad,
+    DERAggregator,
+    LoadAggregator,
+    Aggregator,
 )
 
 DIST_INTERFACES = [
@@ -138,6 +151,17 @@ DIST_INTERFACES = [
     DemandCharge,
     FixedCharge,
     TieredRate,
+    LMPRate,
+    PricingNode,
+    AncillaryServiceRate,
+    CapacityPayment,
+    TransmissionServiceCharge,
+    WholesaleMarketTariff,
+    AggregatedDER,
+    AggregatedLoad,
+    DERAggregator,
+    LoadAggregator,
+    Aggregator,
 ]
 
 

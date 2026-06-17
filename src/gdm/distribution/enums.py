@@ -150,3 +150,43 @@ class BillingDemandBasis(str, Enum):
     PEAK_15MIN = "peak_15min"
     PEAK_HOUR = "peak_hour"
     CONTRACT_DEMAND = "contract_demand"
+
+
+class WholesaleMarketType(str, Enum):
+    DAY_AHEAD = "day_ahead"
+    REAL_TIME = "real_time"
+
+
+class AncillaryServiceType(str, Enum):
+    REGULATION_UP = "regulation_up"
+    REGULATION_DOWN = "regulation_down"
+    SPINNING_RESERVE = "spinning_reserve"
+    NON_SPINNING_RESERVE = "non_spinning_reserve"
+    FREQUENCY_RESPONSE = "frequency_response"
+    REACTIVE_SUPPLY = "reactive_supply"
+
+
+class CapacityMarketType(str, Enum):
+    FORWARD_CAPACITY = "forward_capacity"
+    RELIABILITY_MUST_RUN = "reliability_must_run"
+    RESOURCE_ADEQUACY = "resource_adequacy"
+
+
+class PricingNodeType(str, Enum):
+    LOAD_ZONE = "load_zone"
+    GENERATOR_NODE = "generator_node"
+    HUB = "hub"
+    INTERFACE = "interface"
+
+
+class AggregatorType(str, Enum):
+    DER = "der"
+    LOAD = "load"
+    GENERIC = "generic"
+
+
+class DemandResponseType(str, Enum):
+    ECONOMIC = "economic"
+    EMERGENCY = "emergency"
+    DIRECT_LOAD_CONTROL = "direct_load_control"
+    INTERRUPTIBLE = "interruptible"

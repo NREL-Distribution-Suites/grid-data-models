@@ -4,7 +4,16 @@ from pydantic import Field, model_validator
 from typing import List, Optional
 from infrasys import Component
 
-from gdm.distribution.enums import BillingDemandBasis, CustomerClass, Month, TOUPeriodType
+from gdm.distribution.enums import (
+    AncillaryServiceType,
+    WholesaleMarketType,
+    BillingDemandBasis,
+    CapacityMarketType,
+    PricingNodeType,
+    TOUPeriodType,
+    CustomerClass,
+    Month,
+)
 
 
 class TOURatePeriod(Component):
@@ -155,4 +164,158 @@ class DistributionTariff(Component):
             ],
             demand_charges=[DemandCharge.example()],
             tiered_energy_charges=[TieredRate.example()],
+        )
+
+
+class LMPRate(Component):
+    """Locational Marginal Price (LMP) broken into its standard components."""
+
+    name: str = ""
+    energy_rate: float = Field(..., description="Energy component of LMP in $/MWh")
+    congestion_rate: float = Field(0.0, description="Congestion component of LMP in $/MWh")
+    loss_rate: float = Field(0.0, description="Marginal loss component of LMP in $/MWh")
+
+    @property
+    def total_lmp(self) -> float:
+        """Total LMP is the sum of energy, congestion, and loss components."""
+        return self.energy_rate + self.congestion_rate + self.loss_rate
+
+    @classmethod
+    def example(cls) -> "LMPRate":
+        return LMPRate(
+            energy_rate=35.50,
+            congestion_rate=5.25,
+            loss_rate=1.10,
+        )
+
+
+class PricingNode(Component):
+    """Represents a pricing node (PNode) in the wholesale market."""
+
+    name: str = Field(..., description="Name or identifier of the pricing node")
+    node_type: PricingNodeType = Field(..., description="Type of pricing node")
+    zone: Optional[str] = Field(None, description="Load zone the node belongs to")
+
+    @classmethod
+    def example(cls) -> "PricingNode":
+        return PricingNode(
+            name="NODE_12345",
+            node_type=PricingNodeType.LOAD_ZONE,
+            zone="ZONE_A",
+        )
+
+
+class AncillaryServiceRate(Component):
+    """Rate for a specific ancillary service product."""
+
+    name: str = ""
+    service_type: AncillaryServiceType = Field(..., description="Type of ancillary service")
+    rate: float = Field(..., ge=0, description="Rate for the service in $/MW")
+    market_type: WholesaleMarketType = Field(
+        ..., description="Market in which the service is procured"
+    )
+
+    @classmethod
+    def example(cls) -> "AncillaryServiceRate":
+        return AncillaryServiceRate(
+            service_type=AncillaryServiceType.REGULATION_UP,
+            rate=12.00,
+            market_type=WholesaleMarketType.DAY_AHEAD,
+        )
+
+
+class CapacityPayment(Component):
+    """Capacity market payment structure."""
+
+    name: str = ""
+    capacity_market_type: CapacityMarketType = Field(
+        ..., description="Type of capacity market product"
+    )
+    rate: float = Field(..., ge=0, description="Capacity payment rate in $/MW-day")
+    commitment_months: List[Month] = Field(
+        ..., min_length=1, description="Months covered by the capacity commitment"
+    )
+
+    @model_validator(mode="after")
+    def check_no_duplicate_months(self) -> "CapacityPayment":
+        if len(self.commitment_months) != len(set(self.commitment_months)):
+            raise ValueError("Duplicate months are not allowed within a single CapacityPayment")
+        return self
+
+    @classmethod
+    def example(cls) -> "CapacityPayment":
+        return CapacityPayment(
+            capacity_market_type=CapacityMarketType.FORWARD_CAPACITY,
+            rate=150.00,
+            commitment_months=[Month.JUNE, Month.JULY, Month.AUGUST],
+        )
+
+
+class TransmissionServiceCharge(Component):
+    """Charge for transmission network service."""
+
+    name: str = ""
+    rate: float = Field(..., ge=0, description="Transmission service rate in $/MW")
+    description: Optional[str] = Field(
+        None, description="Description of the transmission service charge"
+    )
+
+    @classmethod
+    def example(cls) -> "TransmissionServiceCharge":
+        return TransmissionServiceCharge(
+            rate=8.75,
+            description="Network integration transmission service",
+        )
+
+
+class WholesaleMarketTariff(Component):
+    """Wholesale electricity market tariff combining LMP, ancillary services,
+    capacity, and transmission charges."""
+
+    name: str = Field(..., description="Name of the wholesale tariff")
+    market_operator: str = Field(
+        ..., description="Name of the ISO/RTO operating the market (e.g., PJM, CAISO, ERCOT)"
+    )
+    market_type: WholesaleMarketType = Field(..., description="Day-ahead or real-time market")
+    pricing_node: PricingNode = Field(..., description="Pricing node where the tariff applies")
+    lmp_rate: LMPRate = Field(..., description="Locational marginal price components")
+    ancillary_service_rates: Optional[List[AncillaryServiceRate]] = Field(
+        None, description="Ancillary service rates"
+    )
+    capacity_payments: Optional[List[CapacityPayment]] = Field(
+        None, description="Capacity market payments"
+    )
+    transmission_charges: Optional[List[TransmissionServiceCharge]] = Field(
+        None, description="Transmission service charges"
+    )
+
+    @model_validator(mode="after")
+    def check_no_duplicate_ancillary_services(self) -> "WholesaleMarketTariff":
+        if self.ancillary_service_rates:
+            service_keys = [(r.service_type, r.market_type) for r in self.ancillary_service_rates]
+            if len(service_keys) != len(set(service_keys)):
+                raise ValueError(
+                    "Duplicate ancillary service type and market type "
+                    "combinations are not allowed"
+                )
+        return self
+
+    @classmethod
+    def example(cls) -> "WholesaleMarketTariff":
+        return WholesaleMarketTariff(
+            name="PJM Day-Ahead LMP Tariff",
+            market_operator="PJM",
+            market_type=WholesaleMarketType.DAY_AHEAD,
+            pricing_node=PricingNode.example(),
+            lmp_rate=LMPRate.example(),
+            ancillary_service_rates=[
+                AncillaryServiceRate.example(),
+                AncillaryServiceRate(
+                    service_type=AncillaryServiceType.SPINNING_RESERVE,
+                    rate=6.50,
+                    market_type=WholesaleMarketType.DAY_AHEAD,
+                ),
+            ],
+            capacity_payments=[CapacityPayment.example()],
+            transmission_charges=[TransmissionServiceCharge.example()],
         )

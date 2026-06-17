@@ -21,6 +21,7 @@ from gdm.distribution.upgrade_handler.from__2_2_1__to__2_3_0 import from__2_2_1_
 from gdm.distribution.upgrade_handler.from__2_3_0__to__2_3_1 import from__2_3_0__to__2_3_1
 from gdm.distribution.upgrade_handler.from__2_3_1__to__2_3_2 import from__2_3_1__to__2_3_2
 from gdm.distribution.upgrade_handler.from__2_3_2__to__2_3_3 import from__2_3_2__to__2_3_3
+from gdm.distribution.upgrade_handler.from__2_3_3__to__2_3_4 import from__2_3_3__to__2_3_4
 
 
 def fix_version(version):
@@ -117,6 +118,11 @@ class UpgradeHandler(BaseModel):
             method=from__2_3_2__to__2_3_3,
             from_version="2.3.2",
             to_version="2.3.3",
+        ),
+        UpgradeSchema(
+            method=from__2_3_3__to__2_3_4,
+            from_version="2.3.3",
+            to_version="2.3.4",
         ),
     ]
 
