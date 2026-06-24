@@ -5,6 +5,7 @@ from gdm.distribution.equipment import (
 )
 from gdm.distribution.components import (
     GeometryBranch,
+    GeometrySwitch,
     DistributionVoltageSource,
     DistributionBus,
     MatrixImpedanceBranch,
@@ -200,6 +201,21 @@ def test_geometry_barnch_with_cables():
     g.equipment.conductors = [CN_336, CN_336, CN_336]
     branch = g.to_matrix_representation()
     assert branch.equipment.r_matrix.shape == (3, 3)
+
+
+def test_geometry_switch_with_conductors():
+    g = GeometrySwitch.example()
+    branch = g.to_matrix_representation()
+    assert branch.equipment.r_matrix.shape == (3, 3)
+    assert branch.is_closed == [True, True, True]
+
+
+def test_geometry_switch_with_cables():
+    g = GeometrySwitch.example()
+    g.equipment.conductors = [CN_336, CN_336, CN_336]
+    branch = g.to_matrix_representation()
+    assert branch.equipment.r_matrix.shape == (3, 3)
+    assert branch.is_closed == [True, True, True]
 
 
 def my_system():
