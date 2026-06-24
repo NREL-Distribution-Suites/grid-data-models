@@ -99,24 +99,19 @@ class GeometrySwitch(DistributionSwitchBase):
     @classmethod
     def example(cls) -> "GeometrySwitch":
         """Example for geometry branch."""
-        bus1 = DistributionBus(
-            voltage_type="line-to-ground",
-            phases=[Phase.A, Phase.B, Phase.C],
-            rated_voltage=Voltage(400, "volt"),
-            substation=DistributionSubstation.example(),
-            feeder=DistributionFeeder.example(),
-            name="Branch-DistBus1",
-        )
-        bus2 = DistributionBus(
-            voltage_type="line-to-ground",
-            phases=[Phase.A, Phase.B, Phase.C],
-            rated_voltage=Voltage(400, "volt"),
-            substation=DistributionSubstation.example(),
-            feeder=DistributionFeeder.example(),
-            name="Branch-DistBus2",
-        )
+        buses = [
+            DistributionBus(
+                voltage_type="line-to-ground",
+                phases=[Phase.A, Phase.B, Phase.C],
+                rated_voltage=Voltage(400, "volt"),
+                substation=DistributionSubstation.example(),
+                feeder=DistributionFeeder.example(),
+                name=bus_name,
+            )
+            for bus_name in ["Branch-DistBus1", "Branch-DistBus2"]
+        ]
         return GeometrySwitch(
-            buses=[bus1, bus2],
+            buses=buses,
             length=Distance(130.2, "meter"),
             phases=[Phase.A, Phase.B, Phase.C],
             substation=DistributionSubstation.example(),
