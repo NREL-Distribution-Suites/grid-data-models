@@ -4,8 +4,8 @@ from typing import Annotated
 
 from pydantic import Field
 
-from gdm.distribution.components.base.distribution_branch_base import (
-    DistributionBranchBase,
+from gdm.distribution.components.base.distribution_switch_base import (
+    DistributionSwitchBase,
 )
 from gdm.distribution.equipment.geometry_branch_equipment import (
     GeometryBranchEquipment,
@@ -18,14 +18,13 @@ from gdm.distribution.components.distribution_bus import DistributionBus
 from gdm.distribution.enums import Phase
 from gdm.quantities import Voltage, Distance
 
-from gdm.distribution.components.matrix_impedance_branch import MatrixImpedanceBranch
-
+from gdm.distribution.components.matrix_impedance_switch import MatrixImpedanceSwitch
 from gdm.distribution.equipment import (
     ConcentricCableEquipment,
 )
 
 
-class GeometryBranch(DistributionBranchBase):
+class GeometrySwitch(DistributionSwitchBase):
     """Data model for distribution branches based on line geometry."""
 
     equipment: Annotated[
@@ -33,7 +32,7 @@ class GeometryBranch(DistributionBranchBase):
         Field(..., description="Geometry branch equipment."),
     ]
 
-    def validate_fields(self) -> "GeometryBranch":
+    def validate_fields(self) -> "GeometrySwitch":
         """Custom validator for geometry branch fields."""
         if len(self.phases) != len(self.equipment.conductors):
             msg = "Number of phases is not equal to number of wires."
@@ -42,7 +41,7 @@ class GeometryBranch(DistributionBranchBase):
 
     def to_matrix_representation(
         self, frequency_hz: float = 60, soil_resistivity_ohm_m: float = 100
-    ) -> MatrixImpedanceBranch:
+    ) -> MatrixImpedanceSwitch:
         """
         Converts the geometry-based branch model to a matrix impedance representation.
 
@@ -79,7 +78,7 @@ class GeometryBranch(DistributionBranchBase):
             phases = self.phases + [Phase.N for _ in self.phases]
             equipment.kron_reduce(phases)
 
-        return MatrixImpedanceBranch(
+        return MatrixImpedanceSwitch(
             buses=self.buses,
             length=self.length,
             phases=self.phases,
@@ -87,10 +86,11 @@ class GeometryBranch(DistributionBranchBase):
             feeder=self.feeder,
             name=self.name,
             equipment=equipment,
+            is_closed=self.is_closed,
         )
 
     @classmethod
-    def example(cls) -> "GeometryBranch":
+    def example(cls) -> "GeometrySwitch":
         """Example for geometry branch."""
         bus1 = DistributionBus(
             voltage_type="line-to-ground",
@@ -108,12 +108,13 @@ class GeometryBranch(DistributionBranchBase):
             feeder=DistributionFeeder.example(),
             name="Branch-DistBus2",
         )
-        return GeometryBranch(
+        return GeometrySwitch(
             buses=[bus1, bus2],
             length=Distance(130.2, "meter"),
             phases=[Phase.A, Phase.B, Phase.C],
             substation=DistributionSubstation.example(),
             feeder=DistributionFeeder.example(),
             name="DistBranch1",
+            is_closed=[True, True, True],
             equipment=GeometryBranchEquipment.example(),
         )
