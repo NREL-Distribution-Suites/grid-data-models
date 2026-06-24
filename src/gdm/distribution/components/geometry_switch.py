@@ -22,6 +22,9 @@ from gdm.distribution.components.matrix_impedance_switch import MatrixImpedanceS
 from gdm.distribution.equipment import (
     ConcentricCableEquipment,
 )
+from gdm.distribution.equipment.matrix_impedance_switch_equipment import (
+    MatrixImpedanceSwitchEquipment,
+)
 
 
 class GeometrySwitch(DistributionSwitchBase):
@@ -78,6 +81,10 @@ class GeometrySwitch(DistributionSwitchBase):
             phases = self.phases + [Phase.N for _ in self.phases]
             equipment.kron_reduce(phases)
 
+        switch_equipment = MatrixImpedanceSwitchEquipment(
+            **equipment.model_dump(exclude_none=True)
+        )
+
         return MatrixImpedanceSwitch(
             buses=self.buses,
             length=self.length,
@@ -85,7 +92,7 @@ class GeometrySwitch(DistributionSwitchBase):
             substation=self.substation,
             feeder=self.feeder,
             name=self.name,
-            equipment=equipment,
+            equipment=switch_equipment,
             is_closed=self.is_closed,
         )
 
