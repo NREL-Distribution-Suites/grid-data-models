@@ -4,8 +4,8 @@ from typing import Annotated
 
 from pydantic import Field
 
-from gdm.distribution.components.base.distribution_branch_base import (
-    DistributionBranchBase,
+from gdm.distribution.components.base.distribution_switch_base import (
+    DistributionSwitchBase,
 )
 from gdm.distribution.equipment.geometry_branch_equipment import (
     GeometryBranchEquipment,
@@ -25,7 +25,7 @@ from gdm.distribution.equipment import (
 )
 
 
-class GeometryBranch(DistributionBranchBase):
+class GeometryBranch(DistributionSwitchBase):
     """Data model for distribution branches based on line geometry."""
 
     equipment: Annotated[
@@ -115,5 +115,6 @@ class GeometryBranch(DistributionBranchBase):
             substation=DistributionSubstation.example(),
             feeder=DistributionFeeder.example(),
             name="DistBranch1",
+            is_closed=[True, True, True],
             equipment=GeometryBranchEquipment.example(),
         )
