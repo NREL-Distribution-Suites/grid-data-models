@@ -3,7 +3,7 @@
 from collections import defaultdict
 from typing import Annotated
 
-from pydantic import Field, model_validator
+from pydantic import Field, computed_field, model_validator
 
 from gdm.distribution.components.distribution_bus import DistributionBus
 from gdm.distribution.equipment.capacitor_equipment import CapacitorEquipment
@@ -49,6 +49,19 @@ class DistributionCapacitor(InServiceDistributionComponentBase):
     ]
 
     equipment: Annotated[CapacitorEquipment, Field(..., description="Capacitor model.")]
+    state: Annotated[
+        list[bool],
+        Field(
+            ...,
+            description="List of boolean states indicating whether each bank is on (True) or off (False).",
+        ),
+    ]
+
+    @computed_field  # type: ignore[prop-decorator]
+    @property
+    def num_banks(self) -> int:
+        """Number of banks in the capacitor."""
+        return len(self.state)
 
     @classmethod
     def aggregate(
@@ -86,6 +99,7 @@ class DistributionCapacitor(InServiceDistributionComponentBase):
                 rated_voltage=bus.rated_voltage,
                 voltage_type=bus.voltage_type,
             ),
+            state=[True] * len(phase_caps),
         )
 
     @model_validator(mode="after")
@@ -126,6 +140,7 @@ class DistributionCapacitor(InServiceDistributionComponentBase):
             feeder=DistributionFeeder.example(),
             phases=[Phase.A, Phase.B, Phase.C],
             equipment=CapacitorEquipment.example(),
+            state=[True, True, True],
             controllers=[
                 VoltageCapacitorController.example(),
                 VoltageCapacitorController.example(),

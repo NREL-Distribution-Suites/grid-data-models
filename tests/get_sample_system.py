@@ -57,6 +57,7 @@ def get_three_bus_system():
         name="Transformer-1",
         buses=[bus_1, bus_2, bus_2],
         winding_phases=[[Phase.A, Phase.B], [Phase.S1, Phase.N], [Phase.N, Phase.S2]],
+        tap_positions=[[1.0, 1.0], [1.0, 1.0], [1.0, 1.0]],
         equipment=DistributionTransformerEquipment(
             name="SplitPhase-Transformer-1",
             pct_full_load_loss=0.2,
