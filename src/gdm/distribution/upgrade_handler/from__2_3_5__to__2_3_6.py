@@ -7,7 +7,10 @@ CAPACITOR_TYPE = "DistributionCapacitor"
 
 
 def _get_component_type(component: dict) -> str | None:
-    return component.get("__metadata__", {}).get("fields", {}).get("type")
+    metadata = component.get("__metadata__", {})
+    if "fields" in metadata:
+        return metadata["fields"].get("type")
+    return metadata.get("type")
 
 
 def _add_tap_positions(obj: dict) -> None:
@@ -34,9 +37,9 @@ def _add_capacitor_state(obj: dict) -> None:
     component_type = _get_component_type(obj)
     if component_type == CAPACITOR_TYPE:
         if "state" not in obj:
-            # Default: all banks on, one per phase_capacitor
-            phase_capacitors = obj.get("equipment", {}).get("phase_capacitors", [])
-            obj["state"] = [True] * len(phase_capacitors)
+            # Default: all banks on, one per phase
+            phases = obj.get("phases", [])
+            obj["state"] = [True] * len(phases)
             logger.debug("Migrated DistributionCapacitor: added default state (all True)")
 
     # Recurse into nested dicts/lists

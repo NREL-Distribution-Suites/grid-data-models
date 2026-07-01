@@ -166,9 +166,16 @@ def aggregate_single_phase_transformers(
 
             merged = _merge_group(group)
 
-            # Remove originals and add merged
+            # Remove originals and add merged.
+            # cascade_down=False because grouped components share children (buses, equipment)
+            # that the merged component still references.
             for comp in group:
-                system.remove_component(comp)
+                system.remove_component(comp, cascade_down=False)
+
+            # Add composed children (windings, equipment) before the merged component
+            for winding in merged.equipment.windings:
+                system.add_component(winding)
+            system.add_component(merged.equipment)
             system.add_component(merged)
 
     return system

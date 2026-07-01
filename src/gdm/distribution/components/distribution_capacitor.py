@@ -143,7 +143,5 @@ class DistributionCapacitor(InServiceDistributionComponentBase):
             state=[True, True, True],
             controllers=[
                 VoltageCapacitorController.example(),
-                VoltageCapacitorController.example(),
-                VoltageCapacitorController.example(),
             ],
         )
