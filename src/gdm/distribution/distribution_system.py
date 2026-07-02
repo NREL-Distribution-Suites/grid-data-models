@@ -7,6 +7,7 @@ from pathlib import Path
 import tempfile
 import random
 
+from gdm.distribution.components.geometry_switch import GeometrySwitch
 from infrasys.time_series_models import TimeSeriesData, SingleTimeSeries
 from shapely import Point, LineString, union_all
 from infrasys import Component, System
@@ -951,7 +952,7 @@ class DistributionSystem(System):
         logger.info("Converting models from GeometryBranch to MatrixImpedanceBranch...")
         auto_add = self.auto_add_composed_components
         self.auto_add_composed_components = True
-        branches = list(self.get_components(GeometryBranch))
+        branches = list(self.get_components(GeometryBranch)) + list(self.get_components(GeometrySwitch))
         for branch in branches:
             impedence_branch = branch.to_matrix_representation(
                 frequency_hz, soil_resistivity_ohm_m
