@@ -44,6 +44,14 @@ class DistributionTransformerBase(InServiceDistributionComponentBase, ABC):
             order defined in the DistributionTransformerModel""",
         ),
     ]
+    tap_positions: Annotated[
+        list[list[float]] | None,
+        Field(
+            default=None,
+            description="Current tap position (per-unit) for each phase in each winding, "
+            "matching the order of winding_phases. Defaults to 1.0 for all phases.",
+        ),
+    ]
 
     equipment: Annotated[
         DistributionTransformerEquipment,
@@ -67,6 +75,26 @@ class DistributionTransformerBase(InServiceDistributionComponentBase, ABC):
                     "Center tapped transformer must have same bus on the secondary side (bus 2 and 3)."
                 )
 
+    def _validate_tap_positions(self) -> None:
+        """Validate and default tap_positions field."""
+        if self.tap_positions is None:
+            self.tap_positions = [[1.0] * len(phases) for phases in self.winding_phases]
+
+        if len(self.tap_positions) != len(self.winding_phases):
+            msg = (
+                f"Number of tap_positions entries {len(self.tap_positions)} must equal "
+                f"number of windings {len(self.winding_phases)}"
+            )
+            raise ValueError(msg)
+
+        for i, (taps, phases) in enumerate(zip(self.tap_positions, self.winding_phases)):
+            if len(taps) != len(phases):
+                msg = (
+                    f"tap_positions[{i}] has {len(taps)} entries but "
+                    f"winding_phases[{i}] has {len(phases)} phases"
+                )
+                raise ValueError(msg)
+
     @model_validator(mode="after")
     def validate_fields_base(self) -> "DistributionTransformerBase":
         """Custom validator for distribution transformer."""
@@ -76,6 +104,8 @@ class DistributionTransformerBase(InServiceDistributionComponentBase, ABC):
                 f"number of winding phases {len(self.winding_phases)}"
             )
             raise ValueError(msg)
+
+        self._validate_tap_positions()
 
         for wdg, pw_phases in zip(self.equipment.windings, self.winding_phases):
             pw_phases_length = len(pw_phases) - 1 if Phase.N in pw_phases else len(pw_phases)

@@ -29,6 +29,7 @@ def test_unequal_phase_length():
             name=tr.name,
             buses=tr.buses,
             winding_phases=[[Phase.A]],
+            tap_positions=[[1.0]],
             equipment=tr.equipment,
         )
 
@@ -105,6 +106,7 @@ def test_wrong_phase_length(buses, split_phase_tr_equipment):
                 [Phase.S1, Phase.N],
                 [Phase.N, Phase.S2],
             ],  # This is wrong
+            tap_positions=[[1.0, 1.0, 1.0], [1.0, 1.0], [1.0, 1.0]],
             equipment=split_phase_tr_equipment,
         )
 
@@ -125,6 +127,7 @@ def test_wrong_split_phase_length(buses, lt_wdg):
             name="Tr-1",
             buses=buses,
             winding_phases=[[Phase.A, Phase.B], [Phase.S1, Phase.N], [Phase.N, Phase.S2]],
+            tap_positions=[[1.0, 1.0], [1.0, 1.0], [1.0, 1.0]],
             equipment=DistributionTransformerEquipment(
                 name="SplitPhase-Transformer-1",
                 pct_full_load_loss=0.2,
@@ -147,6 +150,7 @@ def test_wrong_phase_connection(buses, split_phase_tr_equipment):
             name="Tr-1",
             buses=buses,
             winding_phases=[[Phase.A, Phase.B], [Phase.B], [Phase.B]],  # This is wrong
+            tap_positions=[[1.0, 1.0], [1.0], [1.0]],
             equipment=split_phase_tr_equipment,
         )
 
@@ -170,5 +174,6 @@ def test_wrong_voltage_connection(split_phase_tr_equipment):
             name="Tr-1",
             buses=[bus1, bus2],
             winding_phases=[[Phase.A, Phase.B], [Phase.S1, Phase.N], [Phase.N, Phase.S2]],
+            tap_positions=[[1.0, 1.0], [1.0, 1.0], [1.0, 1.0]],
             equipment=split_phase_tr_equipment,
         )
