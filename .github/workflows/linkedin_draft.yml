@@ -1,0 +1,197 @@
+name: Generate LinkedIn Post Draft
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  generate-linkedin-draft:
+    name: Generate LinkedIn post draft
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Get previous tag
+        id: prev_tag
+        run: |
+          CURRENT_TAG="${{ github.event.release.tag_name }}"
+          PREV_TAG=$(git tag --sort=-v:refname | grep -v "^${CURRENT_TAG}$" | head -1)
+          echo "tag=${PREV_TAG}" >> "$GITHUB_OUTPUT"
+          echo "Current: ${CURRENT_TAG}, Previous: ${PREV_TAG}"
+
+      - name: Extract release context
+        id: context
+        env:
+          RELEASE_BODY: ${{ github.event.release.body }}
+          RELEASE_URL: ${{ github.event.release.html_url }}
+          CURRENT_TAG: ${{ github.event.release.tag_name }}
+          PREV_TAG: ${{ steps.prev_tag.outputs.tag }}
+        run: |
+          VERSION=$(grep -oP 'VERSION\s*=\s*"\K[^"]+' src/gdm/version.py)
+
+          if [ -n "${PREV_TAG}" ]; then
+            COMMITS=$(git log --oneline "${PREV_TAG}..${CURRENT_TAG}" --no-merges | head -30)
+          else
+            COMMITS=$(git log --oneline -20 --no-merges)
+          fi
+
+          cat > /tmp/release_context.txt <<CONTEXT_EOF
+          ## Release: grid-data-models v${VERSION}
+
+          ### Release Notes
+          ${RELEASE_BODY}
+
+          ### Commits since ${PREV_TAG:-inception}
+          ${COMMITS}
+
+          ### Release URL
+          ${RELEASE_URL}
+          CONTEXT_EOF
+
+          cat /tmp/release_context.txt
+
+      - name: Generate LinkedIn draft via LLM
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          if [ -z "${OPENAI_API_KEY}" ]; then
+            echo "::error::OPENAI_API_KEY secret is not set. Add it in repo Settings → Secrets."
+            exit 1
+          fi
+
+          SYSTEM_PROMPT="You are a technical marketing writer for an open-source Python library called \
+          grid-data-models (GDM). GDM provides data models for electric power distribution systems — \
+          it is used by power systems engineers, utility planners, and researchers working on grid \
+          modernization, DER integration, and distribution planning."
+
+          USER_PROMPT="Given the release context below, write a LinkedIn post (200-300 words) announcing this release.
+
+          Guidelines:
+          - Lead with the business value for distribution engineers, not implementation details
+          - Highlight 2-3 key new features or improvements (skip minor bug fixes)
+          - Use a professional and formal tone — no emojis
+          - End with 3-5 relevant hashtags like #OpenSource #PowerSystems #GridModernization #Python #EnergyTransition
+          - Include a link to the release
+          - Do NOT fabricate features — only mention what is in the release notes and commits
+
+          Release context:
+          $(cat /tmp/release_context.txt)"
+
+          RESPONSE=$(jq -n \
+            --arg system "$SYSTEM_PROMPT" \
+            --arg user "$USER_PROMPT" \
+            '{
+              model: "gpt-4o-mini",
+              messages: [
+                { role: "system", content: $system },
+                { role: "user", content: $user }
+              ],
+              temperature: 0.7,
+              max_tokens: 1000
+            }' | curl -s https://api.openai.com/v1/chat/completions \
+              -H "Content-Type: application/json" \
+              -H "Authorization: Bearer ${OPENAI_API_KEY}" \
+              -d @-)
+
+          DRAFT=$(echo "${RESPONSE}" | jq -r '.choices[0].message.content // empty')
+
+          if [ -z "${DRAFT}" ]; then
+            echo "::error::LLM returned no content."
+            echo "${RESPONSE}" | jq .
+            exit 1
+          fi
+
+          echo "${DRAFT}" > /tmp/linkedin_draft.txt
+          echo "--- Generated LinkedIn Draft ---"
+          cat /tmp/linkedin_draft.txt
+
+      - name: Append draft to release notes
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+        run: |
+          DRAFT=$(cat /tmp/linkedin_draft.txt)
+
+          # Build updated release body with the draft appended
+          EXISTING=$(gh release view "${RELEASE_TAG}" --json body -q .body)
+
+          {
+            echo "${EXISTING}"
+            echo ""
+            echo "---"
+            echo ""
+            echo "## 📋 LinkedIn Post Draft"
+            echo ""
+            echo "> Generated automatically. Review, edit as needed, then post to LinkedIn."
+            echo ""
+            echo "${DRAFT}"
+          } > /tmp/updated_release.md
+
+          gh release edit "${RELEASE_TAG}" --notes-file /tmp/updated_release.md
+
+  post-to-linkedin:
+    name: Post to LinkedIn
+    needs: generate-linkedin-draft
+    runs-on: ubuntu-latest
+    environment: linkedin-publish
+    steps:
+      - name: Get draft from release notes
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+        run: |
+          BODY=$(gh release view "${RELEASE_TAG}" --repo "${{ github.repository }}" --json body -q .body)
+          # Extract the LinkedIn draft section
+          DRAFT=$(echo "${BODY}" | sed -n '/## 📋 LinkedIn Post Draft/,$ p' | tail -n +2 | sed '/^>/d' | sed '/^$/d' | head -50)
+          if [ -z "${DRAFT}" ]; then
+            echo "::error::No LinkedIn draft found in release notes"
+            exit 1
+          fi
+          echo "${DRAFT}" > /tmp/linkedin_post.txt
+          echo "--- Post Content ---"
+          cat /tmp/linkedin_post.txt
+
+      - name: Publish to LinkedIn
+        env:
+          LINKEDIN_ACCESS_TOKEN: ${{ secrets.LINKEDIN_ACCESS_TOKEN }}
+          LINKEDIN_PERSON_ID: ${{ secrets.LINKEDIN_PERSON_ID }}
+        run: |
+          POST_TEXT=$(cat /tmp/linkedin_post.txt)
+
+          RESPONSE=$(jq -n \
+            --arg author "urn:li:person:${LINKEDIN_PERSON_ID}" \
+            --arg text "${POST_TEXT}" \
+            '{
+              author: $author,
+              lifecycleState: "PUBLISHED",
+              specificContent: {
+                "com.linkedin.ugc.ShareContent": {
+                  shareCommentary: { text: $text },
+                  shareMediaCategory: "NONE"
+                }
+              },
+              visibility: {
+                "com.linkedin.ugc.MemberNetworkVisibility": "PUBLIC"
+              }
+            }' | curl -s -w "\n%{http_code}" \
+              "https://api.linkedin.com/v2/ugcPosts" \
+              -H "Content-Type: application/json" \
+              -H "Authorization: Bearer ${LINKEDIN_ACCESS_TOKEN}" \
+              -H "X-Restli-Protocol-Version: 2.0.0" \
+              -d @-)
+
+          HTTP_CODE=$(echo "${RESPONSE}" | tail -1)
+          BODY=$(echo "${RESPONSE}" | sed '$d')
+
+          if [ "${HTTP_CODE}" -ge 200 ] && [ "${HTTP_CODE}" -lt 300 ]; then
+            echo "✅ Posted to LinkedIn successfully!"
+            echo "${BODY}" | jq .
+          else
+            echo "::error::LinkedIn API returned ${HTTP_CODE}"
+            echo "${BODY}" | jq .
+            exit 1
+          fi
