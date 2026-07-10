@@ -139,8 +139,9 @@ def aggregate_single_phase_transformers(
     - Single-phase (all windings have num_phases == 1)
     - Connected to the same set of buses
 
-    Groups of 3 such components are merged into one three-phase component.
-    The original single-phase components are removed and the merged component is added.
+    Groups of 2 (open-wye / open-delta) or 3 such components are merged into one
+    multi-phase equivalent.  The original single-phase components are removed and
+    the merged component is added.
 
     Parameters
     ----------
@@ -159,9 +160,9 @@ def aggregate_single_phase_transformers(
             if _is_single_phase(comp):
                 groups[_bus_key(comp)].append(comp)
 
-        # Merge groups of exactly 3 parallel single-phase components
+        # Merge groups of 2 (open-wye/open-delta) or 3 parallel single-phase components
         for key, group in groups.items():
-            if len(group) != 3:
+            if len(group) < 2 or len(group) > 3:
                 continue
 
             merged = _merge_group(group)
