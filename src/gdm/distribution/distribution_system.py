@@ -430,6 +430,7 @@ class DistributionSystem(System):
         dfs_tree = self._dfs_multidigraph(ugraph, source=self.get_source_bus().name)
 
         if return_radial_network:
+            nodes_before = set(dfs_tree.nodes())
             cycles = self.get_cycles(dfs_tree)
             while cycles:
                 cycle = cycles[0]
@@ -441,6 +442,16 @@ class DistributionSystem(System):
             assert (
                 self.get_cycles(dfs_tree) == []
             ), "Cycles should not be present in the directed graph after pruning."
+
+            # Check for nodes that became isolated after cycle breaking
+            source_name = self.get_source_bus().name
+            reachable = set(nx.descendants(dfs_tree, source_name)) | {source_name}
+            isolated = nodes_before - reachable
+            if isolated:
+                logger.warning(
+                    f"Cycle breaking disconnected {len(isolated)} node(s) from "
+                    f"the source bus: {sorted(isolated)}"
+                )
 
         dfs_edge_names = [
             ugraph.get_edge_data(u, v, k)["name"] for u, v, k in dfs_tree.edges(keys=True)
