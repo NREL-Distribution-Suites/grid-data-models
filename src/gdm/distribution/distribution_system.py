@@ -369,32 +369,6 @@ class DistributionSystem(System):
             T.add_edge(u, v, key=k, **G[u][v][k])
         return T
 
-    @staticmethod
-    def _break_cycle(dfs_tree, cycle, switch_buses):
-        """Remove one edge from *dfs_tree* to break *cycle*."""
-        if switch_buses:
-            switch_set = set(switch_buses)
-            for i in range(len(cycle)):
-                u = cycle[i]
-                v = cycle[(i + 1) % len(cycle)]
-                if u in switch_set and v in switch_set:
-                    try:
-                        dfs_tree.remove_edge(u, v)
-                    except Exception:
-                        dfs_tree.remove_edge(v, u)
-                    return
-            dfs_tree.remove_edge(switch_buses[0], switch_buses[1])
-        else:
-            bus_1 = random.choice(cycle)
-            if cycle.index(bus_1) == len(cycle) - 1:
-                bus_2 = cycle[0]
-            else:
-                bus_2 = cycle[cycle.index(bus_1) + 1]
-            dfs_tree.remove_edge(bus_1, bus_2)
-            logger.warning(
-                f"  No switch found in cycle. Removing edge ({bus_1}, {bus_2}) to break the cycle."
-            )
-
     def get_directed_graph(self, return_radial_network: bool = True) -> nx.DiGraph:
         """Constructs a directed graph representation of the distribution system.
 
@@ -430,28 +404,31 @@ class DistributionSystem(System):
         dfs_tree = self._dfs_multidigraph(ugraph, source=self.get_source_bus().name)
 
         if return_radial_network:
-            nodes_before = set(dfs_tree.nodes())
             cycles = self.get_cycles(dfs_tree)
             while cycles:
                 cycle = cycles[0]
                 switch_buses = self.find_switch_buses_in_cycle(cycle)
                 logger.debug(f"  Cycle found: {cycle}, switch buses in cycle: {switch_buses}")
-                self._break_cycle(dfs_tree, cycle, switch_buses)
+                if switch_buses:
+                    try:
+                        dfs_tree.remove_edge(*switch_buses)
+                    except Exception:
+                        dfs_tree.remove_edge(*switch_buses[::-1])
+                else:
+                    bus_1 = random.choice(cycle)
+                    if cycle.index(bus_1) == len(cycle) - 1:
+                        bus_2 = cycle[0]
+                    else:
+                        bus_2 = cycle[cycle.index(bus_1) + 1]
+                    dfs_tree.remove_edge(bus_1, bus_2)
+                    logger.warning(
+                        f"  No switch found in cycle. Removing edge ({bus_1}, {bus_2}) to break the cycle."
+                    )
                 cycles = self.get_cycles(dfs_tree)
 
             assert (
                 self.get_cycles(dfs_tree) == []
             ), "Cycles should not be present in the directed graph after pruning."
-
-            # Check for nodes that became isolated after cycle breaking
-            source_name = self.get_source_bus().name
-            reachable = set(nx.descendants(dfs_tree, source_name)) | {source_name}
-            isolated = nodes_before - reachable
-            if isolated:
-                logger.warning(
-                    f"Cycle breaking disconnected {len(isolated)} node(s) from "
-                    f"the source bus: {sorted(isolated)}"
-                )
 
         dfs_edge_names = [
             ugraph.get_edge_data(u, v, k)["name"] for u, v, k in dfs_tree.edges(keys=True)
