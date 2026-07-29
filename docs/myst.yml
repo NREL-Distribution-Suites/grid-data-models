@@ -12,13 +12,13 @@ project:
       output: exports/book.pdf
   toc:
     - file: intro.md
+    - file: new_features.ipynb
     - title: Installation
       children:
         - file: installation.ipynb
         - file: gdmloader/gdmloader.ipynb
     - title: Tutorial
-      children:
-        - file: new_features.ipynb
+      children:   
         - file: gdm_intro/data_models.ipynb
         - file: gdm_intro/units.ipynb
         - file: gdm_intro/time_series.ipynb

@@ -19,6 +19,7 @@ from gdm.distribution.components import (
     DistributionLoad,
     DistributionBus,
     GeometryBranch,
+    GeometrySwitch,
 )
 
 from gdm.distribution.equipment import (
@@ -107,6 +108,7 @@ DIST_INTERFACES = [
     DistributionLoad,
     DistributionBus,
     GeometryBranch,
+    GeometrySwitch,
     DistributionTransformerEquipment,
     MatrixImpedanceRecloserEquipment,
     SequenceImpedanceBranchEquipment,

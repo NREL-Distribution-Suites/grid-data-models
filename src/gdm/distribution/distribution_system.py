@@ -7,6 +7,7 @@ from pathlib import Path
 import tempfile
 import random
 
+from gdm.distribution.components.geometry_switch import GeometrySwitch
 from infrasys.time_series_models import TimeSeriesData, SingleTimeSeries
 from shapely import Point, LineString, union_all
 from infrasys import Component, System
@@ -212,6 +213,9 @@ class DistributionSystem(System):
                 "type": edge.__class__,
                 "is_closed": True,
                 "in_service": edge.in_service,
+                "phases": [phase.value for phase in edge.winding_phases[0]]
+                if isinstance(edge, DistributionTransformerBase)
+                else [phase.value for phase in edge.phases],
             }
             if isinstance(edge, DistributionSwitchBase):
                 data["is_closed"] = True if len(edge.is_closed) == sum(edge.is_closed) else False
@@ -956,7 +960,9 @@ class DistributionSystem(System):
         logger.info("Converting models from GeometryBranch to MatrixImpedanceBranch...")
         auto_add = self.auto_add_composed_components
         self.auto_add_composed_components = True
-        branches = list(self.get_components(GeometryBranch))
+        branches = list(self.get_components(GeometryBranch)) + list(
+            self.get_components(GeometrySwitch)
+        )
         for branch in branches:
             impedence_branch = branch.to_matrix_representation(
                 frequency_hz, soil_resistivity_ohm_m

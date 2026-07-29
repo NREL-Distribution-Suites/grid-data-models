@@ -217,6 +217,7 @@ def build_split_phase_distribution_xfmr(bus1: DistributionBus, bus2: Distributio
         name="split_phase_xfmr",
         buses=[bus1, bus2, bus2],
         winding_phases=[[Phase.A, Phase.B], [Phase.S1, Phase.N], [Phase.S2, Phase.N]],
+        tap_positions=[[1.0, 1.0], [1.0, 1.0], [1.0, 1.0]],
         equipment=DistributionTransformerEquipment(
             name="split_phase_xfmr_equipment",
             pct_no_load_loss=0.1,

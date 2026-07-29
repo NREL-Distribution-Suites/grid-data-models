@@ -42,5 +42,6 @@ class DistributionTransformer(DistributionTransformerBase):
             substation=DistributionSubstation.example(),
             feeder=DistributionFeeder.example(),
             winding_phases=[[Phase.A, Phase.B, Phase.C], [Phase.A, Phase.B, Phase.C]],
+            tap_positions=[[1.0, 1.0, 1.0], [1.0, 1.0, 1.0]],
             equipment=DistributionTransformerEquipment.example(),
         )

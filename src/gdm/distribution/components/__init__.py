@@ -7,6 +7,7 @@ from gdm.distribution.components.distribution_solar import DistributionSolar
 from gdm.distribution.components.distribution_transformer import DistributionTransformer
 from gdm.distribution.components.distribution_vsource import DistributionVoltageSource
 from gdm.distribution.components.geometry_branch import GeometryBranch
+from gdm.distribution.components.geometry_switch import GeometrySwitch
 from gdm.distribution.components.matrix_impedance_branch import MatrixImpedanceBranch
 from gdm.distribution.components.matrix_impedance_fuse import MatrixImpedanceFuse
 from gdm.distribution.components.matrix_impedance_recloser import MatrixImpedanceRecloser
