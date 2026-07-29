@@ -421,6 +421,34 @@ def _extract_features_cols(metadata: TimeSeriesMetadata) -> dict:
     return {k: v for k, v in (metadata.features or {}).items() if k != "use_actual"}
 
 
+def _assemble_dataframe(rows: list[dict]) -> pd.DataFrame:
+    """Assemble a DataFrame from a list of row dicts produced by _build_power_row_df.
+
+    Concatenates ndarray columns (value, timestamp) and repeats scalar columns
+    (name, component_uuid, units, phase, features) to match lengths.
+    """
+    if not rows:
+        return pd.DataFrame()
+
+    lengths = np.fromiter((r["__length__"] for r in rows), dtype=np.int64, count=len(rows))
+    ndarray_keys = {"value", "timestamp"}
+    scalar_keys = [k for k in rows[0].keys() if k not in ndarray_keys and k != "__length__"]
+
+    merged: dict = {}
+    for k in ndarray_keys:
+        merged[k] = np.concatenate([r[k] for r in rows])
+    for k in scalar_keys:
+        merged[k] = np.repeat(np.array([r[k] for r in rows], dtype=object), lengths)
+
+    # Preserve original column order: timestamp, name, component_uuid, [phase], value, units, *features
+    column_order = ["timestamp", "name", "component_uuid"]
+    if "phase" in merged:
+        column_order.append("phase")
+    column_order += ["value", "units"]
+    column_order += [k for k in scalar_keys if k not in column_order]
+    return pd.DataFrame({k: merged[k] for k in column_order})
+
+
 def _build_power_row_df(
     timestamps,
     var: str,
@@ -575,31 +603,7 @@ def _get_combined_time_series_df(
                             features_cols,
                         )
                     )
-    if not rows:
-        return pd.DataFrame()
-
-    # Assemble columns once:
-    #   * ndarray columns (value, timestamp) -> np.concatenate
-    #   * scalar columns (name, component_uuid, units, phase, features) -> np.repeat
-    # This way pd.DataFrame just wraps prebuilt arrays — no per-column dtype
-    # sniffing or list-to-ndarray copy.
-    lengths = np.fromiter((r["__length__"] for r in rows), dtype=np.int64, count=len(rows))
-    ndarray_keys = {"value", "timestamp"}
-    scalar_keys = [k for k in rows[0].keys() if k not in ndarray_keys and k != "__length__"]
-
-    merged: dict = {}
-    for k in ndarray_keys:
-        merged[k] = np.concatenate([r[k] for r in rows])
-    for k in scalar_keys:
-        merged[k] = np.repeat(np.array([r[k] for r in rows], dtype=object), lengths)
-
-    # Preserve original column order: timestamp, name, component_uuid, [phase], value, units, *features
-    column_order = ["timestamp", "name", "component_uuid"]
-    if "phase" in merged:
-        column_order.append("phase")
-    column_order += ["value", "units"]
-    column_order += [k for k in scalar_keys if k not in column_order]
-    return pd.DataFrame({k: merged[k] for k in column_order})
+    return _assemble_dataframe(rows)
 
 
 def get_combined_load_time_series_df(
