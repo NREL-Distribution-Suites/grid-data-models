@@ -27,13 +27,13 @@ dependencies = [
   "infrasys~=1.2", 
   "importlib_metadata",
   "typer",
-  "pandas~=3.0.3",
+  "pandas~=3.0.5",
   "geopandas",
   "plotly",
 ]
 
 [project.optional-dependencies]
-mcp = ["mcp>=1.28.1"]
+mcp = ["mcp>=2.0"]
 dev = ["pre-commit", "pytest", "pytest-cov", "pytest-doctestplus", "pytest-asyncio", "ruff", "docutils"]
 doc = [
   "jupyter-book>=2.1.6,<3",

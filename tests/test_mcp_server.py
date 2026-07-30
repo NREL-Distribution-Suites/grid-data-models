@@ -4,11 +4,28 @@ import asyncio
 import json
 import os
 import sqlite3
+from unittest.mock import MagicMock
 
 import gdm.mcp.server as mcp_server
 import pytest
 from gdm.mcp.server import _load_system_with_fallback_name
 from gdm.distribution.components import DistributionBus, DistributionVoltageSource
+
+
+def _make_call_tool_params(name: str, arguments: dict | None = None):
+    """Create a mock CallToolRequestParams for testing."""
+    params = MagicMock()
+    params.name = name
+    params.arguments = arguments or {}
+    return params
+
+
+def _call_tool(name: str, arguments: dict | None = None):
+    """Helper to call tool_handler with mock context."""
+    ctx = MagicMock()
+    params = _make_call_tool_params(name, arguments)
+    result = asyncio.run(mcp_server.call_tool(ctx, params))
+    return result
 
 
 def test_load_system_with_fallback_name_for_null_name(simple_system, tmp_path):
@@ -95,8 +112,8 @@ def test_get_tool_calls_enabled_reports_current_state():
     """Control status tool should report current runtime toggle state."""
     mcp_server._TOOL_CALLS_ENABLED = True
 
-    response = asyncio.run(mcp_server.call_tool("get_tool_calls_enabled", {}))
-    payload = json.loads(response[0].text)
+    response = _call_tool("get_tool_calls_enabled", {})
+    payload = json.loads(response.content[0].text)
 
     assert payload["tool_calls_enabled"] is True
 
@@ -105,19 +122,17 @@ def test_set_tool_calls_enabled_disables_non_control_calls():
     """Disabling should block normal tools while allowing control tools."""
     mcp_server._TOOL_CALLS_ENABLED = True
 
-    disable_response = asyncio.run(
-        mcp_server.call_tool("set_tool_calls_enabled", {"enabled": False})
-    )
-    disable_payload = json.loads(disable_response[0].text)
+    disable_response = _call_tool("set_tool_calls_enabled", {"enabled": False})
+    disable_payload = json.loads(disable_response.content[0].text)
     assert disable_payload["tool_calls_enabled"] is False
 
-    blocked_response = asyncio.run(mcp_server.call_tool("unknown_normal_tool", {}))
-    blocked_payload = json.loads(blocked_response[0].text)
+    blocked_response = _call_tool("unknown_normal_tool", {})
+    blocked_payload = json.loads(blocked_response.content[0].text)
     assert "disabled" in blocked_payload["error"].lower()
 
     # Control tools remain callable so clients can re-enable.
-    status_response = asyncio.run(mcp_server.call_tool("get_tool_calls_enabled", {}))
-    status_payload = json.loads(status_response[0].text)
+    status_response = _call_tool("get_tool_calls_enabled", {})
+    status_payload = json.loads(status_response.content[0].text)
     assert status_payload["tool_calls_enabled"] is False
 
 
@@ -125,22 +140,21 @@ def test_set_tool_calls_enabled_can_reenable():
     """Re-enabling should restore normal call flow."""
     mcp_server._TOOL_CALLS_ENABLED = False
 
-    enable_response = asyncio.run(
-        mcp_server.call_tool("set_tool_calls_enabled", {"enabled": True})
-    )
-    enable_payload = json.loads(enable_response[0].text)
+    enable_response = _call_tool("set_tool_calls_enabled", {"enabled": True})
+    enable_payload = json.loads(enable_response.content[0].text)
 
     assert enable_payload["tool_calls_enabled"] is True
 
-    unknown_response = asyncio.run(mcp_server.call_tool("unknown_normal_tool", {}))
-    unknown_payload = json.loads(unknown_response[0].text)
+    unknown_response = _call_tool("unknown_normal_tool", {})
+    unknown_payload = json.loads(unknown_response.content[0].text)
     assert "unknown tool" in unknown_payload["error"].lower()
 
 
 def test_list_tools_includes_reduce_system():
     """Tool list should expose model-reduction capability."""
-    tools = asyncio.run(mcp_server.list_tools())
-    tool_names = {tool.name for tool in tools}
+    ctx = MagicMock()
+    result = asyncio.run(mcp_server.list_tools(ctx, None))
+    tool_names = {tool.name for tool in result.tools}
 
     assert "reduce_system" in tool_names
     assert "save_system" in tool_names
