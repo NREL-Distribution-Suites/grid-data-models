@@ -13,9 +13,9 @@ from typing import Annotated, Any
 
 import typer
 from gdm.distribution import DistributionSystem
-from mcp.server import Server
+from mcp.server import Server, ServerRequestContext
 from mcp.server.stdio import stdio_server
-from mcp.types import TextContent, Tool
+from mcp.types import CallToolResult, ListToolsResult, TextContent, Tool
 
 from gdm.mcp import __version__
 from gdm.mcp.exceptions import GDMMCPException
@@ -50,9 +50,6 @@ from gdm.distribution.model_reduction.reducer import (
 # Set up logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("gdm_mcp")
-
-# Create MCP server instance
-app = Server("grid-data-models-mcp")
 
 # Runtime toggle for serving tool calls. Control tools remain available.
 _TOOL_CALLS_ENABLED = True
@@ -185,10 +182,9 @@ def _split_tool_input_schema() -> dict[str, Any]:
     }
 
 
-@app.list_tools()
-async def list_tools() -> list[Tool]:
+async def list_tools(ctx: ServerRequestContext, params=None) -> ListToolsResult:
     """List all available MCP tools."""
-    return [
+    tools = [
         # Validation tools
         Tool(
             name="diagnose_system",
@@ -686,6 +682,7 @@ async def list_tools() -> list[Tool]:
             },
         ),
     ]
+    return ListToolsResult(tools=tools)
 
 
 # Tool dispatch map
@@ -717,27 +714,30 @@ _TOOL_HANDLERS: dict[str, Any] = {
 }
 
 
-@app.call_tool()
-async def call_tool(name: str, arguments: Any) -> list[TextContent]:
+async def call_tool(ctx: ServerRequestContext, params: Any) -> CallToolResult:
     """Handle tool calls from MCP clients."""
+    name = params.name
+    arguments = params.arguments or {}
     try:
         logger.info(f"Tool called: {name} with arguments: {arguments}")
 
         if not _TOOL_CALLS_ENABLED and name not in _CONTROL_TOOLS:
-            return [
-                TextContent(
-                    type="text",
-                    text=json.dumps(
-                        {
-                            "error": (
-                                "Tool calls are currently disabled. "
-                                "Use set_tool_calls_enabled to re-enable."
-                            )
-                        },
-                        indent=2,
-                    ),
-                )
-            ]
+            return CallToolResult(
+                content=[
+                    TextContent(
+                        type="text",
+                        text=json.dumps(
+                            {
+                                "error": (
+                                    "Tool calls are currently disabled. "
+                                    "Use set_tool_calls_enabled to re-enable."
+                                )
+                            },
+                            indent=2,
+                        ),
+                    )
+                ]
+            )
 
         handler = _TOOL_HANDLERS.get(name)
         if handler is not None:
@@ -745,18 +745,27 @@ async def call_tool(name: str, arguments: Any) -> list[TextContent]:
         else:
             result = {"error": f"Unknown tool: {name}"}
 
-        return [TextContent(type="text", text=json.dumps(result, indent=2, default=str))]
+        return CallToolResult(
+            content=[TextContent(type="text", text=json.dumps(result, indent=2, default=str))]
+        )
 
     except GDMMCPException as e:
         logger.error(f"GDM MCP error in {name}: {str(e)}")
-        return [TextContent(type="text", text=json.dumps({"error": str(e)}, indent=2))]
+        return CallToolResult(
+            content=[TextContent(type="text", text=json.dumps({"error": str(e)}, indent=2))],
+            is_error=True,
+        )
     except Exception as e:
         logger.error(f"Unexpected error in {name}: {str(e)}", exc_info=True)
-        return [
-            TextContent(
-                type="text", text=json.dumps({"error": f"Unexpected error: {str(e)}"}, indent=2)
-            )
-        ]
+        return CallToolResult(
+            content=[
+                TextContent(
+                    type="text",
+                    text=json.dumps({"error": f"Unexpected error: {str(e)}"}, indent=2),
+                )
+            ],
+            is_error=True,
+        )
 
 
 # Tool implementations
@@ -1078,6 +1087,13 @@ def _run_server(
 
     # Run the server
     import asyncio
+
+    app = Server(
+        "grid-data-models-mcp",
+        version=__version__,
+        on_list_tools=list_tools,
+        on_call_tool=call_tool,
+    )
 
     async def run():
         async with stdio_server() as (read_stream, write_stream):
