@@ -391,7 +391,7 @@ def get_aggregated_load_time_series(
         )
 
 
-def _get_timestamps(ts_data: TimeSeriesData) -> list:
+def _get_timestamps(ts_data: TimeSeriesData) -> pd.DatetimeIndex:
     """Extract timestamps from SingleTimeSeries or NonSequentialTimeSeries."""
     if isinstance(ts_data, SingleTimeSeries):
         return pd.date_range(
@@ -399,7 +399,7 @@ def _get_timestamps(ts_data: TimeSeriesData) -> list:
             periods=ts_data.length,
             freq=ts_data.resolution,
         )
-    return ts_data.timestamps
+    return pd.DatetimeIndex(ts_data.timestamps)
 
 
 def _convert_power_value(power_data, var: str, unit_conversion: dict[str, str]):
@@ -468,9 +468,7 @@ def _build_power_row_df(
     """
     value, units = _convert_power_value(power_data, var, unit_conversion)
     value_arr = np.asarray(value.magnitude if isinstance(value, Quantity) else value)
-    timestamp_arr = (
-        timestamps.values if isinstance(timestamps, pd.DatetimeIndex) else np.asarray(timestamps)
-    )
+    timestamp_arr = timestamps.values
     row: dict = {
         "__length__": length,
         "timestamp": timestamp_arr,

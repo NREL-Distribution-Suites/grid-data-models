@@ -423,6 +423,8 @@ class DistributionSystem(System):
                         logger.warning(
                             f"  Switch edge ({bus_1}, {bus_2}) not present in DFS tree; skipping."
                         )
+                        cycles.pop(0)
+                        continue
                 else:
                     bus_1 = random.choice(cycle)
                     if cycle.index(bus_1) == len(cycle) - 1:
