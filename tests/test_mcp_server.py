@@ -8,6 +8,7 @@ from unittest.mock import MagicMock
 
 import gdm.mcp.server as mcp_server
 import pytest
+from dist_stack.registry import register
 from gdm.mcp.server import _load_system_with_fallback_name
 from gdm.distribution.components import DistributionBus, DistributionVoltageSource
 
@@ -105,6 +106,33 @@ def test_get_system_summary_accepts_model_ref_via_registry_db(simple_system, tmp
     finally:
         os.environ.pop("DIST_STACK_MODEL_REGISTRY_DB", None)
 
+    assert result["name"] == "test_system"
+
+
+def test_get_system_summary_accepts_model_ref_registered_via_library(simple_system, tmp_path):
+    """model_ref registered through the dist_stack library should resolve."""
+    system_path = tmp_path / "lib_registry_system.json"
+    simple_system.to_json(str(system_path), overwrite=True)
+
+    db_path = tmp_path / "lib_registry.sqlite"
+    os.environ["DIST_STACK_MODEL_REGISTRY_DB"] = str(db_path)
+    try:
+        record = register(
+            model_id="lib_model_1",
+            version=2,
+            stored_path=str(system_path),
+            metadata={"tool": "test"},
+        )
+        result = asyncio.run(
+            mcp_server._get_system_summary(
+                {"model_ref": {"model_id": "lib_model_1", "version": 2}}
+            )
+        )
+    finally:
+        os.environ.pop("DIST_STACK_MODEL_REGISTRY_DB", None)
+
+    assert record.model_id == "lib_model_1"
+    assert record.version == 2
     assert result["name"] == "test_system"
 
 

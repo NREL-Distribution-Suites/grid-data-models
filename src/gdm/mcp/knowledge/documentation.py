@@ -1,27 +1,13 @@
 """Documentation search and retrieval for grid-data-models."""
 
 import contextlib
+import inspect
 import os
 from pathlib import Path
-from typing import List, Optional, Dict, Any
-import inspect
+from typing import Any, Dict, List, Optional
 
-from gdm.distribution.components import (
-    DistributionBus,
-    DistributionSubstation,
-    DistributionFeeder,
-    DistributionLoad,
-    DistributionTransformer,
-    DistributionCapacitor,
-    DistributionSolar,
-    DistributionBattery,
-    DistributionRegulator,
-    DistributionVoltageSource,
-    MatrixImpedanceBranch,
-    MatrixImpedanceSwitch,
-    MatrixImpedanceFuse,
-    MatrixImpedanceRecloser,
-)
+from infrasys import Component
+import gdm.distribution.components as components_module
 
 from ..schemas import (
     DocumentationSearchResult,
@@ -31,23 +17,27 @@ from ..schemas import (
 )
 
 
-# Map of component names to classes
-COMPONENT_MAP = {
-    "DistributionBus": DistributionBus,
-    "MatrixImpedanceBranch": MatrixImpedanceBranch,
-    "DistributionLoad": DistributionLoad,
-    "DistributionTransformer": DistributionTransformer,
-    "DistributionCapacitor": DistributionCapacitor,
-    "DistributionSolar": DistributionSolar,
-    "DistributionBattery": DistributionBattery,
-    "DistributionSubstation": DistributionSubstation,
-    "DistributionFeeder": DistributionFeeder,
-    "MatrixImpedanceSwitch": MatrixImpedanceSwitch,
-    "MatrixImpedanceFuse": MatrixImpedanceFuse,
-    "MatrixImpedanceRecloser": MatrixImpedanceRecloser,
-    "DistributionRegulator": DistributionRegulator,
-    "DistributionVoltageSource": DistributionVoltageSource,
-}
+def _build_component_map() -> dict[str, type]:
+    """Build a {component_name: class} map from the library component registry.
+
+    Introspects the ``gdm.distribution.components`` module (the authoritative
+    registry of distribution component classes) at module load time instead of
+    hardcoding the component list, so newly added component classes are picked
+    up automatically. Abstract base classes (which follow the ``*Base`` naming
+    convention) are excluded.
+    """
+    component_map: dict[str, type] = {}
+    for name, obj in vars(components_module).items():
+        if name.startswith("_") or name.endswith("Base"):
+            continue
+        if inspect.isclass(obj) and issubclass(obj, Component):
+            component_map[name] = obj
+    return dict(sorted(component_map.items()))
+
+
+# Map of component names to classes, derived from the registered component
+# registry at module load so it stays in sync with the library.
+COMPONENT_MAP = _build_component_map()
 
 
 def find_gdm_repo() -> Optional[Path]:

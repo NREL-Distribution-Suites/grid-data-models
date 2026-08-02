@@ -8,10 +8,10 @@ import json
 import logging
 import os
 from pathlib import Path
-import sqlite3
 from typing import Annotated, Any
 
 import typer
+from dist_stack.registry import register, make_model_id, resolve_model_ref
 from gdm.distribution import DistributionSystem
 from mcp.server import Server, ServerRequestContext
 from mcp.server.stdio import stdio_server
@@ -75,53 +75,10 @@ def _load_system_with_fallback_name(system_path: str) -> DistributionSystem:
 def _resolve_model_ref_to_path(model_ref: dict[str, Any]) -> str:
     """Resolve a model_ref payload to a concrete system JSON path.
 
-    Supports direct path-carrying refs and dist_stack model registry lookup via
-    ``DIST_STACK_MODEL_REGISTRY_DB``.
+    Path-carrying refs pass through; model_id/version resolve via the
+    dist_stack model registry (DIST_STACK_MODEL_REGISTRY_DB).
     """
-    for key in ("stored_path", "path", "source_path"):
-        value = model_ref.get(key)
-        if isinstance(value, str) and value.strip():
-            return value
-
-    model_id = model_ref.get("model_id")
-    if not isinstance(model_id, str) or not model_id.strip():
-        raise ValueError("model_ref must include a path or model_id")
-
-    version = model_ref.get("version")
-    db_path = model_ref.get("registry_db") or os.getenv("DIST_STACK_MODEL_REGISTRY_DB")
-    if not db_path:
-        raise ValueError(
-            "model_ref requires DIST_STACK_MODEL_REGISTRY_DB (or model_ref.registry_db) "
-            "when path fields are not provided"
-        )
-
-    with sqlite3.connect(str(db_path)) as conn:
-        conn.row_factory = sqlite3.Row
-        if version is None:
-            row = conn.execute(
-                """
-                SELECT stored_path FROM models
-                WHERE model_id = ?
-                ORDER BY version DESC
-                LIMIT 1
-                """,
-                (model_id,),
-            ).fetchone()
-        else:
-            row = conn.execute(
-                """
-                SELECT stored_path FROM models
-                WHERE model_id = ? AND version = ?
-                LIMIT 1
-                """,
-                (model_id, int(version)),
-            ).fetchone()
-
-    if row is None:
-        suffix = "latest" if version is None else f"version={version}"
-        raise ValueError(f"model_ref not found for model_id={model_id}, {suffix}")
-
-    return str(row["stored_path"])
+    return resolve_model_ref(model_ref)
 
 
 def _get_system_path_arg(args: dict[str, Any]) -> str:
@@ -1032,10 +989,24 @@ async def _save_system(args: dict) -> dict:
         system.name = args["name"]
 
     system.to_json(output_path, overwrite=overwrite)
-    return {
+    result = {
         "output_path": output_path,
         "name": system.name,
     }
+    if os.getenv("DIST_STACK_MODEL_REGISTRY_DB"):
+        record = register(
+            model_id=args.get("model_id") or make_model_id(output_path),
+            version=args.get("version"),
+            stored_path=output_path,
+            metadata={
+                "tool": "save_system",
+                "tool_version": __version__,
+                "package": "grid-data-models",
+            },
+        )
+        result["model_id"] = record.model_id
+        result["version"] = record.version
+    return result
 
 
 async def _set_tool_calls_enabled(args: dict) -> dict:
@@ -1059,12 +1030,7 @@ async def _get_tool_calls_enabled(args: dict) -> dict:
 
 
 def _run_server(
-    host: Annotated[str, typer.Option(help="Server host")] = "localhost",
-    port: Annotated[int, typer.Option(help="Server port")] = 8000,
     log_level: Annotated[str, typer.Option(help="Logging level")] = "INFO",
-    allow_auto_fix: Annotated[
-        bool, typer.Option("--allow-auto-fix", help="Allow auto-fix operations")
-    ] = False,
     tool_calls_enabled: Annotated[
         bool,
         typer.Option(
@@ -1078,8 +1044,6 @@ def _run_server(
     logging.getLogger("gdm_mcp").setLevel(log_level.upper())
 
     logger.info(f"Starting GDM MCP Server v{__version__}")
-    logger.info(f"Host: {host}, Port: {port}")
-    logger.info(f"Auto-fix allowed: {allow_auto_fix}")
     logger.info(f"Tool calls enabled: {tool_calls_enabled}")
 
     global _TOOL_CALLS_ENABLED

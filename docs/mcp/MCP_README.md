@@ -82,7 +82,7 @@ Alternatively, you should see **Start** code lenses directly in the `mcp.json` f
 
 1. Open Copilot Chat (`Cmd+Shift+I` / `Ctrl+Shift+I`)
 2. Switch to **Agent** mode using the dropdown at the top of the chat panel
-3. Click the **Tools** icon (wrench) in the chat input area to verify the server's 22 tools are listed and enabled
+3. Click the **Tools** icon (wrench) in the chat input area to verify the server's 24 tools are listed and enabled
 4. Ask questions naturally — the agent automatically selects the right tools:
    - *"Get a summary of the system in /path/to/model.json"*
    - *"Diagnose validation errors in system.json and suggest fixes"*
@@ -107,7 +107,7 @@ MCP servers are also supported in Claude Desktop. Add to your Claude Desktop con
 }
 ```
 
-Restart Claude Desktop and the assistant will have access to all 22 GDM tools.
+Restart Claude Desktop and the assistant will have access to all 24 GDM tools.
 
 ### Starting the MCP Server Standalone
 
@@ -117,15 +117,9 @@ Run the server directly:
 gdm-mcp-server
 ```
 
-Or with custom host/port:
-
-```bash
-gdm-mcp-server --host localhost --port 8000
-```
-
 ### Using with Other MCP Clients
 
-Any MCP-compatible client can connect to the server. The server exposes 22 tools for working with distribution power system models.
+Any MCP-compatible client can connect to the server. The server exposes 24 tools for working with distribution power system models.
 
 ## Runtime Tool Toggle
 
@@ -186,7 +180,7 @@ Resolution order:
 3. `source_path`
 4. Registry lookup by `model_id` / `version`
 
-Registry lookup uses:
+Registry lookup (via the dist-stack model registry library) uses:
 
 - `model_ref.registry_db` if provided
 - otherwise environment variable `DIST_STACK_MODEL_REGISTRY_DB`
@@ -223,10 +217,11 @@ Registry-backed:
 - `suggest_fixes` — Get fix suggestions for validation errors
 - `apply_fixes` — Automatically apply fixes to resolve validation errors
 
-### System Operations (3 tools)
+### System Operations (4 tools)
 - `merge_systems` — Merge multiple distribution systems into one
 - `split_by_substation` — Disaggregate system into subsystems by substation
 - `split_by_feeder` — Disaggregate system into subsystems by feeder
+- `reduce_system` — Reduce a distribution system model (three-phase or primary)
 
 ### Inspection (7 tools)
 - `get_system_summary` — Get component counts and overview
@@ -237,9 +232,10 @@ Registry-backed:
 - `find_orphaned_components` — Find components without substation/feeder assignment
 - `get_component_relationships` — Get parent/child relationships for a component
 
-### Utilities (2 tools)
+### Utilities (3 tools)
 - `export_subsystem_by_buses` — Extract subsystem by bus list
 - `get_time_series_summary` — Get overview of time series data
+- `save_system` — Save a distribution system JSON to a target path
 
 ### Documentation / Knowledge (5 tools)
 - `search_gdm_documentation` — Search grid-data-models documentation for relevant content
@@ -300,6 +296,11 @@ pytest tests/
 Run linting:
 ```bash
 ruff check src/
+```
+
+Regenerate the MCP tool list and README tool table from the live server registration:
+```bash
+python scripts/generate_tool_docs.py --write-readme
 ```
 
 ## License
