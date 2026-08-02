@@ -5,33 +5,31 @@ import json
 import os
 import sqlite3
 from pathlib import Path
-from unittest.mock import MagicMock
 
-import gdm.mcp.server as mcp_server
+import gdm.mcp.tools.control as control
 import pytest
 from dist_stack.registry import register
-from gdm.mcp.server import _load_system_with_fallback_name
 from gdm.distribution import DistributionSystem
 from gdm.distribution.components import DistributionBus, DistributionVoltageSource
 from gdm.distribution.equipment import PhaseCapacitorEquipment
+from gdm.mcp.common import _load_system_with_fallback_name
+from gdm.mcp.server import create_server
+from gdm.mcp.tools.tracked_changes import _save_tracked_changes
 from gdm.quantities import ReactivePower
 from gdm.tracked_changes import TrackedChange, PropertyEdit
 
 
-def _make_call_tool_params(name: str, arguments: dict | None = None):
-    """Create a mock CallToolRequestParams for testing."""
-    params = MagicMock()
-    params.name = name
-    params.arguments = arguments or {}
-    return params
+_server = create_server()
 
 
-def _call_tool(name: str, arguments: dict | None = None):
-    """Helper to call tool_handler with mock context."""
-    ctx = MagicMock()
-    params = _make_call_tool_params(name, arguments)
-    result = asyncio.run(mcp_server.call_tool(ctx, params))
-    return result
+def _tool(tool_name: str):
+    """Get the registered (guard-wrapped) tool function by name."""
+    return _server._tool_manager._tools[tool_name].fn
+
+
+def _call_tool(tool_name: str, **kwargs):
+    """Call a registered tool function directly with keyword arguments."""
+    return asyncio.run(_tool(tool_name)(**kwargs))
 
 
 def test_load_system_with_fallback_name_for_null_name(simple_system, tmp_path):
@@ -77,7 +75,7 @@ def test_get_system_summary_accepts_model_ref_with_direct_path(simple_system, tm
     system_path = tmp_path / "direct_ref_system.json"
     simple_system.to_json(str(system_path), overwrite=True)
 
-    result = asyncio.run(mcp_server._get_system_summary({"model_ref": {"path": str(system_path)}}))
+    result = _call_tool("get_system_summary", model_ref={"path": str(system_path)})
 
     assert result["name"] == "test_system"
 
@@ -105,8 +103,8 @@ def test_get_system_summary_accepts_model_ref_via_registry_db(simple_system, tmp
 
     os.environ["DIST_STACK_MODEL_REGISTRY_DB"] = str(db_path)
     try:
-        result = asyncio.run(
-            mcp_server._get_system_summary({"model_ref": {"model_id": "abc123", "version": 1}})
+        result = _call_tool(
+            "get_system_summary", model_ref={"model_id": "abc123", "version": 1}
         )
     finally:
         os.environ.pop("DIST_STACK_MODEL_REGISTRY_DB", None)
@@ -128,10 +126,8 @@ def test_get_system_summary_accepts_model_ref_registered_via_library(simple_syst
             stored_path=str(system_path),
             metadata={"tool": "test"},
         )
-        result = asyncio.run(
-            mcp_server._get_system_summary(
-                {"model_ref": {"model_id": "lib_model_1", "version": 2}}
-            )
+        result = _call_tool(
+            "get_system_summary", model_ref={"model_id": "lib_model_1", "version": 2}
         )
     finally:
         os.environ.pop("DIST_STACK_MODEL_REGISTRY_DB", None)
@@ -143,51 +139,65 @@ def test_get_system_summary_accepts_model_ref_registered_via_library(simple_syst
 
 def test_get_tool_calls_enabled_reports_current_state():
     """Control status tool should report current runtime toggle state."""
-    mcp_server._TOOL_CALLS_ENABLED = True
+    control._TOOL_CALLS_ENABLED = True
 
-    response = _call_tool("get_tool_calls_enabled", {})
-    payload = json.loads(response.content[0].text)
+    payload = _call_tool("get_tool_calls_enabled")
 
     assert payload["tool_calls_enabled"] is True
 
 
 def test_set_tool_calls_enabled_disables_non_control_calls():
     """Disabling should block normal tools while allowing control tools."""
-    mcp_server._TOOL_CALLS_ENABLED = True
+    control._TOOL_CALLS_ENABLED = True
 
-    disable_response = _call_tool("set_tool_calls_enabled", {"enabled": False})
-    disable_payload = json.loads(disable_response.content[0].text)
+    disable_payload = _call_tool("set_tool_calls_enabled", enabled=False)
     assert disable_payload["tool_calls_enabled"] is False
 
-    blocked_response = _call_tool("unknown_normal_tool", {})
-    blocked_payload = json.loads(blocked_response.content[0].text)
+    blocked_payload = _call_tool("list_available_components")
     assert "disabled" in blocked_payload["error"].lower()
 
     # Control tools remain callable so clients can re-enable.
-    status_response = _call_tool("get_tool_calls_enabled", {})
-    status_payload = json.loads(status_response.content[0].text)
+    status_payload = _call_tool("get_tool_calls_enabled")
     assert status_payload["tool_calls_enabled"] is False
 
 
 def test_set_tool_calls_enabled_can_reenable():
     """Re-enabling should restore normal call flow."""
-    mcp_server._TOOL_CALLS_ENABLED = False
+    control._TOOL_CALLS_ENABLED = False
 
-    enable_response = _call_tool("set_tool_calls_enabled", {"enabled": True})
-    enable_payload = json.loads(enable_response.content[0].text)
-
+    enable_payload = _call_tool("set_tool_calls_enabled", enabled=True)
     assert enable_payload["tool_calls_enabled"] is True
 
-    unknown_response = _call_tool("unknown_normal_tool", {})
-    unknown_payload = json.loads(unknown_response.content[0].text)
-    assert "unknown tool" in unknown_payload["error"].lower()
+    # A non-control tool works again after re-enabling.
+    payload = _call_tool("list_available_components")
+    assert "components" in payload
+
+
+@pytest.mark.parametrize(
+    "tool_name,kwargs",
+    [
+        ("diagnose_system", {"system_path": "x.json"}),
+        ("merge_systems", {"system_paths": ["a.json", "b.json"]}),
+        ("get_system_summary", {"system_path": "x.json"}),
+        ("to_geojson", {"system_path": "x.json", "export_file": "out.geojson"}),
+        ("apply_tracked_changes", {"system_path": "x.json", "tracked_changes_path": "c.json"}),
+        ("search_gdm_documentation", {"query": "bus"}),
+    ],
+)
+def test_guard_returns_disabled_payload_for_every_module(tool_name, kwargs):
+    """Every non-control module's tools return the disabled payload while toggled off."""
+    control._TOOL_CALLS_ENABLED = False
+    try:
+        payload = _call_tool(tool_name, **kwargs)
+        assert "disabled" in payload["error"].lower()
+    finally:
+        control._TOOL_CALLS_ENABLED = True
 
 
 def test_list_tools_includes_reduce_system():
     """Tool list should expose model-reduction capability."""
-    ctx = MagicMock()
-    result = asyncio.run(mcp_server.list_tools(ctx, None))
-    tool_names = {tool.name for tool in result.tools}
+    server = create_server()
+    tool_names = {tool.name for tool in asyncio.run(server.list_tools())}
 
     assert "reduce_system" in tool_names
     assert "save_system" in tool_names
@@ -200,14 +210,11 @@ def test_reduce_system_creates_output_and_summary(simple_system, tmp_path):
     reducible_system.to_json(str(source_path), overwrite=True)
     output_path = tmp_path / "reduced.json"
 
-    result = asyncio.run(
-        mcp_server._reduce_system(
-            {
-                "system_path": str(source_path),
-                "output_path": str(output_path),
-                "reducer": "three_phase",
-            }
-        )
+    result = _call_tool(
+        "reduce_system",
+        system_path=str(source_path),
+        output_path=str(output_path),
+        reducer="three_phase",
     )
 
     assert output_path.exists()
@@ -223,14 +230,11 @@ def test_reduce_system_supports_primary_reducer(simple_system, tmp_path):
     reducible_system.to_json(str(source_path), overwrite=True)
     output_path = tmp_path / "reduced_primary.json"
 
-    result = asyncio.run(
-        mcp_server._reduce_system(
-            {
-                "system_path": str(source_path),
-                "output_path": str(output_path),
-                "reducer": "primary",
-            }
-        )
+    result = _call_tool(
+        "reduce_system",
+        system_path=str(source_path),
+        output_path=str(output_path),
+        reducer="primary",
     )
 
     assert output_path.exists()
@@ -246,14 +250,7 @@ def test_reduce_system_requires_overwrite_for_existing_target(simple_system, tmp
     output_path.write_text("{}")
 
     with pytest.raises(ValueError, match="Output file already exists"):
-        asyncio.run(
-            mcp_server._reduce_system(
-                {
-                    "system_path": str(source_path),
-                    "output_path": str(output_path),
-                }
-            )
-        )
+        _call_tool("reduce_system", system_path=str(source_path), output_path=str(output_path))
 
 
 def test_save_system_writes_output_with_name_override(simple_system, tmp_path):
@@ -262,14 +259,11 @@ def test_save_system_writes_output_with_name_override(simple_system, tmp_path):
     simple_system.to_json(str(source_path), overwrite=True)
     output_path = tmp_path / "saved.json"
 
-    result = asyncio.run(
-        mcp_server._save_system(
-            {
-                "system_path": str(source_path),
-                "output_path": str(output_path),
-                "name": "saved_system",
-            }
-        )
+    result = _call_tool(
+        "save_system",
+        system_path=str(source_path),
+        output_path=str(output_path),
+        name="saved_system",
     )
 
     assert output_path.exists()
@@ -283,14 +277,7 @@ def test_save_system_writes_provenance_manifest_sidecar(simple_system, tmp_path)
     simple_system.to_json(str(source_path), overwrite=True)
     output_path = tmp_path / "saved_manifest.json"
 
-    result = asyncio.run(
-        mcp_server._save_system(
-            {
-                "system_path": str(source_path),
-                "output_path": str(output_path),
-            }
-        )
-    )
+    result = _call_tool("save_system", system_path=str(source_path), output_path=str(output_path))
 
     manifest_path = Path(f"{output_path}.manifest.json")
     assert manifest_path.exists()
@@ -310,14 +297,7 @@ def test_save_system_requires_overwrite_for_existing_target(simple_system, tmp_p
     output_path.write_text("{}")
 
     with pytest.raises(ValueError, match="Output file already exists"):
-        asyncio.run(
-            mcp_server._save_system(
-                {
-                    "system_path": str(source_path),
-                    "output_path": str(output_path),
-                }
-            )
-        )
+        _call_tool("save_system", system_path=str(source_path), output_path=str(output_path))
 
 
 def _make_reducible_system(simple_system):
@@ -343,14 +323,11 @@ def test_get_time_series_values(distribution_system_with_single_time_series, tmp
     system_path = tmp_path / "ts_system.json"
     distribution_system_with_single_time_series.to_json(str(system_path), overwrite=True)
 
-    result = asyncio.run(
-        mcp_server._handle_get_time_series_values(
-            {
-                "system_path": str(system_path),
-                "component_type": "load",
-                "var_of_interest": "active_power",
-            }
-        )
+    result = _call_tool(
+        "get_time_series_values",
+        system_path=str(system_path),
+        component_type="load",
+        var_of_interest="active_power",
     )
 
     assert result["component_type"] == "load"
@@ -367,14 +344,11 @@ def test_get_time_series_values_supports_solar(
     system_path = tmp_path / "ts_system_solar.json"
     distribution_system_with_single_time_series.to_json(str(system_path), overwrite=True)
 
-    result = asyncio.run(
-        mcp_server._handle_get_time_series_values(
-            {
-                "system_path": str(system_path),
-                "component_type": "solar",
-                "var_of_interest": "active_power",
-            }
-        )
+    result = _call_tool(
+        "get_time_series_values",
+        system_path=str(system_path),
+        component_type="solar",
+        var_of_interest="active_power",
     )
 
     assert result["component_type"] == "solar"
@@ -415,18 +389,15 @@ def test_apply_tracked_changes(distribution_system_with_single_time_series, tmp_
         ),
     ]
     changes_path = tmp_path / "changes.json"
-    mcp_server._save_tracked_changes(changes, str(changes_path))
+    _save_tracked_changes(changes, str(changes_path))
 
     output_path = tmp_path / "updated_system.json"
-    result = asyncio.run(
-        mcp_server._handle_apply_tracked_changes(
-            {
-                "system_path": str(system_path),
-                "tracked_changes_path": str(changes_path),
-                "scenario_name": "scenario_1",
-                "output_path": str(output_path),
-            }
-        )
+    result = _call_tool(
+        "apply_tracked_changes",
+        system_path=str(system_path),
+        tracked_changes_path=str(changes_path),
+        scenario_name="scenario_1",
+        output_path=str(output_path),
     )
 
     assert output_path.exists()
@@ -445,10 +416,8 @@ def test_plot_system(distribution_system_with_single_time_series, tmp_path):
     distribution_system_with_single_time_series.to_json(str(system_path), overwrite=True)
     export_dir = tmp_path / "plots"
 
-    result = asyncio.run(
-        mcp_server._handle_plot_system(
-            {"system_path": str(system_path), "export_path": str(export_dir)}
-        )
+    result = _call_tool(
+        "plot_system", system_path=str(system_path), export_path=str(export_dir)
     )
 
     assert result["output_path"].endswith(".html")
@@ -461,11 +430,7 @@ def test_to_geojson(distribution_system_with_single_time_series, tmp_path):
     distribution_system_with_single_time_series.to_json(str(system_path), overwrite=True)
     export_file = tmp_path / "system.geojson"
 
-    result = asyncio.run(
-        mcp_server._handle_to_geojson(
-            {"system_path": str(system_path), "export_file": str(export_file)}
-        )
-    )
+    result = _call_tool("to_geojson", system_path=str(system_path), export_file=str(export_file))
 
     assert export_file.exists()
     assert result["output_path"] == str(export_file)
@@ -473,46 +438,49 @@ def test_to_geojson(distribution_system_with_single_time_series, tmp_path):
 
 def test_list_resources():
     """list_resources should return the three canonical resources."""
-    ctx = MagicMock()
-    result = asyncio.run(mcp_server.list_resources(ctx, None))
-    uris = {resource.uri for resource in result.resources}
+    server = create_server()
+    resources = asyncio.run(server.list_resources())
+    uris = {resource.uri for resource in resources}
 
-    assert len(result.resources) == 3
+    assert len(resources) == 3
     assert uris == {"gdm://components", "gdm://tools", "gdm://workflows"}
 
 
 def test_read_resources():
     """read_resource should return valid JSON for each resource URI."""
-    ctx = MagicMock()
+    server = create_server()
     for uri in ("gdm://components", "gdm://tools", "gdm://workflows"):
-        params = MagicMock()
-        params.uri = uri
-        result = asyncio.run(mcp_server.read_resource(ctx, params))
+        contents = list(asyncio.run(server.read_resource(uri)))
 
-        assert result.contents[0].uri == uri
-        assert result.contents[0].mime_type == "application/json"
-        payload = json.loads(result.contents[0].text)
+        assert contents[0].mime_type == "application/json"
+        payload = json.loads(contents[0].content)
         assert isinstance(payload, list)
         assert len(payload) > 0
 
 
 def test_list_prompts():
     """list_prompts should return the three canonical prompts."""
-    ctx = MagicMock()
-    result = asyncio.run(mcp_server.list_prompts(ctx, None))
-    names = {prompt.name for prompt in result.prompts}
+    server = create_server()
+    prompts = asyncio.run(server.list_prompts())
+    names = {prompt.name for prompt in prompts}
 
-    assert len(result.prompts) == 3
+    assert len(prompts) == 3
     assert names == {"validate_and_fix", "reduce_and_export", "analyze_system"}
 
 
 def test_get_prompts():
     """get_prompt should return the step-by-step instruction message for each prompt."""
-    ctx = MagicMock()
-    for name in ("validate_and_fix", "reduce_and_export", "analyze_system"):
-        params = MagicMock()
-        params.name = name
-        result = asyncio.run(mcp_server.get_prompt(ctx, params))
+    server = create_server()
+    prompt_args = {
+        "validate_and_fix": {"system_path": "/tmp/system.json"},
+        "reduce_and_export": {
+            "system_path": "/tmp/system.json",
+            "export_path": "/tmp/system.geojson",
+        },
+        "analyze_system": {"system_path": "/tmp/system.json"},
+    }
+    for name, arguments in prompt_args.items():
+        result = asyncio.run(server.get_prompt(name, arguments))
 
         assert len(result.messages) == 1
         message = result.messages[0]

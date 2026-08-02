@@ -8,9 +8,8 @@ Usage:
 import argparse
 import asyncio
 from pathlib import Path
-from unittest.mock import MagicMock
 
-from gdm.mcp.server import list_tools
+from gdm.mcp.server import create_server
 
 README_PATH = Path(__file__).resolve().parent.parent / "README.md"
 MARKER_START = "<!-- MCP-TOOLS:START -->"
@@ -19,8 +18,9 @@ MARKER_END = "<!-- MCP-TOOLS:END -->"
 
 def get_registered_tools() -> list[tuple[str, str]]:
     """Return sorted (name, description) pairs from the live server registration."""
-    result = asyncio.run(list_tools(MagicMock(), None))
-    return sorted((tool.name, tool.description) for tool in result.tools)
+    server = create_server()
+    tools = asyncio.run(server.list_tools())
+    return sorted((tool.name, tool.description) for tool in tools)
 
 
 def render_tool_table(tools: list[tuple[str, str]]) -> str:
