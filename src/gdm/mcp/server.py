@@ -21,7 +21,21 @@ from dist_stack.registry import register, make_model_id, resolve_model_ref
 from gdm.distribution import DistributionSystem
 from mcp.server import Server, ServerRequestContext
 from mcp.server.stdio import stdio_server
-from mcp.types import CallToolResult, ListToolsResult, TextContent, Tool
+from mcp.types import (
+    CallToolResult,
+    GetPromptResult,
+    ListPromptsResult,
+    ListResourcesResult,
+    ListToolsResult,
+    Prompt,
+    PromptArgument,
+    PromptMessage,
+    ReadResourceResult,
+    Resource,
+    TextContent,
+    TextResourceContents,
+    Tool,
+)
 from pint import Quantity
 
 from gdm.mcp import __version__
@@ -775,6 +789,127 @@ async def list_tools(ctx: ServerRequestContext, params=None) -> ListToolsResult:
     return ListToolsResult(tools=tools)
 
 
+# Resource definitions
+_RESOURCES = [
+    Resource(
+        uri="gdm://components",
+        name="Available Components",
+        description="All registered distribution component types",
+        mimeType="application/json",
+    ),
+    Resource(
+        uri="gdm://tools",
+        name="Available Tools",
+        description="All registered MCP tools with descriptions",
+        mimeType="application/json",
+    ),
+    Resource(
+        uri="gdm://workflows",
+        name="Canonical Workflows",
+        description="Pre-defined workflow prompts for common tasks",
+        mimeType="application/json",
+    ),
+]
+
+
+async def list_resources(ctx: ServerRequestContext, params=None) -> ListResourcesResult:
+    """List all available MCP resources."""
+    return ListResourcesResult(resources=_RESOURCES)
+
+
+async def read_resource(ctx: ServerRequestContext, params) -> ReadResourceResult:
+    """Read the content of an MCP resource by URI."""
+    if params.uri == "gdm://components":
+        components = list_components_doc()
+        data = [component.model_dump() for component in components]
+    elif params.uri == "gdm://tools":
+        tools_result = await list_tools(ctx, None)
+        data = [{"name": tool.name, "description": tool.description} for tool in tools_result.tools]
+    elif params.uri == "gdm://workflows":
+        data = [{"name": prompt.name, "description": prompt.description} for prompt in _PROMPTS]
+    else:
+        raise ValueError(f"Unknown resource: {params.uri}")
+
+    return ReadResourceResult(
+        contents=[
+            TextResourceContents(
+                uri=params.uri,
+                text=json.dumps(data, indent=2),
+                mimeType="application/json",
+            )
+        ]
+    )
+
+
+# Prompt definitions
+_PROMPTS = [
+    Prompt(
+        name="validate_and_fix",
+        description="Load a system, diagnose issues, suggest fixes, and apply them",
+        arguments=[PromptArgument(name="system_path", required=True)],
+    ),
+    Prompt(
+        name="reduce_and_export",
+        description="Reduce a distribution system and export to GeoJSON",
+        arguments=[
+            PromptArgument(name="system_path", required=True),
+            PromptArgument(name="export_path", required=True),
+        ],
+    ),
+    Prompt(
+        name="analyze_system",
+        description="Load a system, get summary, analyze topology, and check time series",
+        arguments=[PromptArgument(name="system_path", required=True)],
+    ),
+]
+
+
+async def list_prompts(ctx: ServerRequestContext, params=None) -> ListPromptsResult:
+    """List all available MCP prompts."""
+    return ListPromptsResult(prompts=_PROMPTS)
+
+
+async def get_prompt(ctx: ServerRequestContext, params) -> GetPromptResult:
+    """Get a specific prompt by name."""
+    messages = {
+        "validate_and_fix": (
+            "I'll help you validate and fix a distribution system.\n\n"
+            "1. First, call `diagnose_system` with the system path to identify issues.\n"
+            "2. Review the diagnostics results.\n"
+            "3. Call `suggest_fixes` to get recommended fixes.\n"
+            "4. Call `apply_fixes` to apply the fixes.\n"
+            "5. Call `get_system_summary` to verify the results."
+        ),
+        "reduce_and_export": (
+            "I'll help you reduce a system and export it.\n\n"
+            "1. Call `get_system_summary` to inspect the system.\n"
+            "2. Call `reduce_system` to reduce it.\n"
+            "3. Call `to_geojson` to export the reduced system.\n"
+            "4. Call `save_system` to save the result."
+        ),
+        "analyze_system": (
+            "I'll help you analyze a distribution system.\n\n"
+            "1. Call `get_system_summary` for an overview.\n"
+            "2. Call `analyze_topology` to check the network structure.\n"
+            "3. Call `get_time_series_summary` to check time series data.\n"
+            "4. Call `get_component_relationships` to understand component connections."
+        ),
+    }
+
+    message = messages.get(params.name)
+    if message is None:
+        raise ValueError(f"Unknown prompt: {params.name}")
+
+    return GetPromptResult(
+        messages=[
+            PromptMessage(
+                role="user",
+                content=TextContent(type="text", text=message),
+            )
+        ]
+    )
+
+
 # Tool dispatch map
 _TOOL_HANDLERS: dict[str, Any] = {
     "diagnose_system": lambda args: _diagnose_system(args),
@@ -1408,6 +1543,10 @@ def _run_server(
         version=__version__,
         on_list_tools=list_tools,
         on_call_tool=call_tool,
+        on_list_resources=list_resources,
+        on_read_resource=read_resource,
+        on_list_prompts=list_prompts,
+        on_get_prompt=get_prompt,
     )
 
     async def run():

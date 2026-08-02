@@ -469,3 +469,53 @@ def test_to_geojson(distribution_system_with_single_time_series, tmp_path):
 
     assert export_file.exists()
     assert result["output_path"] == str(export_file)
+
+
+def test_list_resources():
+    """list_resources should return the three canonical resources."""
+    ctx = MagicMock()
+    result = asyncio.run(mcp_server.list_resources(ctx, None))
+    uris = {resource.uri for resource in result.resources}
+
+    assert len(result.resources) == 3
+    assert uris == {"gdm://components", "gdm://tools", "gdm://workflows"}
+
+
+def test_read_resources():
+    """read_resource should return valid JSON for each resource URI."""
+    ctx = MagicMock()
+    for uri in ("gdm://components", "gdm://tools", "gdm://workflows"):
+        params = MagicMock()
+        params.uri = uri
+        result = asyncio.run(mcp_server.read_resource(ctx, params))
+
+        assert result.contents[0].uri == uri
+        assert result.contents[0].mime_type == "application/json"
+        payload = json.loads(result.contents[0].text)
+        assert isinstance(payload, list)
+        assert len(payload) > 0
+
+
+def test_list_prompts():
+    """list_prompts should return the three canonical prompts."""
+    ctx = MagicMock()
+    result = asyncio.run(mcp_server.list_prompts(ctx, None))
+    names = {prompt.name for prompt in result.prompts}
+
+    assert len(result.prompts) == 3
+    assert names == {"validate_and_fix", "reduce_and_export", "analyze_system"}
+
+
+def test_get_prompts():
+    """get_prompt should return the step-by-step instruction message for each prompt."""
+    ctx = MagicMock()
+    for name in ("validate_and_fix", "reduce_and_export", "analyze_system"):
+        params = MagicMock()
+        params.name = name
+        result = asyncio.run(mcp_server.get_prompt(ctx, params))
+
+        assert len(result.messages) == 1
+        message = result.messages[0]
+        assert message.role == "user"
+        assert message.content.type == "text"
+        assert "1." in message.content.text
