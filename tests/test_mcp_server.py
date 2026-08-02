@@ -4,6 +4,7 @@ import asyncio
 import json
 import os
 import sqlite3
+from pathlib import Path
 from unittest.mock import MagicMock
 
 import gdm.mcp.server as mcp_server
@@ -270,6 +271,31 @@ def test_save_system_writes_output_with_name_override(simple_system, tmp_path):
     assert output_path.exists()
     assert result["output_path"] == str(output_path)
     assert result["name"] == "saved_system"
+
+
+def test_save_system_writes_provenance_manifest_sidecar(simple_system, tmp_path):
+    """save_system should write a .manifest.json sidecar next to the output."""
+    source_path = tmp_path / "source.json"
+    simple_system.to_json(str(source_path), overwrite=True)
+    output_path = tmp_path / "saved_manifest.json"
+
+    result = asyncio.run(
+        mcp_server._save_system(
+            {
+                "system_path": str(source_path),
+                "output_path": str(output_path),
+            }
+        )
+    )
+
+    manifest_path = Path(f"{output_path}.manifest.json")
+    assert manifest_path.exists()
+    assert result["output_path"] == str(output_path)
+
+    manifest = json.loads(manifest_path.read_text())
+    assert manifest["artifact_type"] == "gdm_system"
+    assert manifest["tool"] == "save_system"
+    assert manifest["artifact_path"] == str(output_path)
 
 
 def test_save_system_requires_overwrite_for_existing_target(simple_system, tmp_path):

@@ -11,6 +11,7 @@ from pathlib import Path
 from typing import Annotated, Any
 
 import typer
+from dist_stack.manifest import write_manifest
 from dist_stack.registry import register, make_model_id, resolve_model_ref
 from gdm.distribution import DistributionSystem
 from mcp.server import Server, ServerRequestContext
@@ -993,6 +994,7 @@ async def _save_system(args: dict) -> dict:
         "output_path": output_path,
         "name": system.name,
     }
+    record = None
     if os.getenv("DIST_STACK_MODEL_REGISTRY_DB"):
         record = register(
             model_id=args.get("model_id") or make_model_id(output_path),
@@ -1006,6 +1008,21 @@ async def _save_system(args: dict) -> dict:
         )
         result["model_id"] = record.model_id
         result["version"] = record.version
+    write_manifest(
+        output_path,
+        artifact_type="gdm_system",
+        tool="save_system",
+        tool_version=__version__,
+        package="grid-data-models",
+        package_version=__version__,
+        model_id=record.model_id if record is not None else None,
+        model_version=record.version if record is not None else None,
+        config={
+            "data_format_version": (
+                system.data_format_version if hasattr(system, "data_format_version") else None
+            )
+        },
+    )
     return result
 
 
