@@ -11,7 +11,11 @@ import gdm.mcp.server as mcp_server
 import pytest
 from dist_stack.registry import register
 from gdm.mcp.server import _load_system_with_fallback_name
+from gdm.distribution import DistributionSystem
 from gdm.distribution.components import DistributionBus, DistributionVoltageSource
+from gdm.distribution.equipment import PhaseCapacitorEquipment
+from gdm.quantities import ReactivePower
+from gdm.tracked_changes import TrackedChange, PropertyEdit
 
 
 def _make_call_tool_params(name: str, arguments: dict | None = None):
@@ -332,3 +336,136 @@ def _make_reducible_system(simple_system):
     )
     simple_system.add_component(vsource)
     return simple_system
+
+
+def test_get_time_series_values(distribution_system_with_single_time_series, tmp_path):
+    """get_time_series_values should return combined time series rows for load components."""
+    system_path = tmp_path / "ts_system.json"
+    distribution_system_with_single_time_series.to_json(str(system_path), overwrite=True)
+
+    result = asyncio.run(
+        mcp_server._handle_get_time_series_values(
+            {
+                "system_path": str(system_path),
+                "component_type": "load",
+                "var_of_interest": "active_power",
+            }
+        )
+    )
+
+    assert result["component_type"] == "load"
+    assert result["count"] > 0
+    assert "timestamp" in result["columns"]
+    assert "value" in result["columns"]
+    assert all(row["name"] == "active_power" for row in result["rows"])
+
+
+def test_get_time_series_values_supports_solar(
+    distribution_system_with_single_time_series, tmp_path
+):
+    """get_time_series_values should return combined solar time series rows (irradiance -> active_power)."""
+    system_path = tmp_path / "ts_system_solar.json"
+    distribution_system_with_single_time_series.to_json(str(system_path), overwrite=True)
+
+    result = asyncio.run(
+        mcp_server._handle_get_time_series_values(
+            {
+                "system_path": str(system_path),
+                "component_type": "solar",
+                "var_of_interest": "active_power",
+            }
+        )
+    )
+
+    assert result["component_type"] == "solar"
+    assert result["count"] > 0
+    assert all(row["name"] == "active_power" for row in result["rows"])
+
+
+def test_apply_tracked_changes(distribution_system_with_single_time_series, tmp_path):
+    """apply_tracked_changes should apply tracked edits and save the updated system."""
+    system_path = tmp_path / "base_system.json"
+    distribution_system_with_single_time_series.to_json(str(system_path), overwrite=True)
+
+    capacitor = next(
+        distribution_system_with_single_time_series.get_components(PhaseCapacitorEquipment)
+    )
+    changes = [
+        TrackedChange(
+            scenario_name="scenario_1",
+            timestamp="2022-01-01 00:00:00",
+            edits=[
+                PropertyEdit(
+                    component_uuid=capacitor.uuid,
+                    name="rated_reactive_power",
+                    value=ReactivePower(200, "kvar"),
+                )
+            ],
+        ),
+        TrackedChange(
+            scenario_name="scenario_1",
+            timestamp="2023-01-01 00:00:00",
+            edits=[
+                PropertyEdit(
+                    component_uuid=capacitor.uuid,
+                    name="rated_reactive_power",
+                    value=ReactivePower(300, "kvar"),
+                )
+            ],
+        ),
+    ]
+    changes_path = tmp_path / "changes.json"
+    mcp_server._save_tracked_changes(changes, str(changes_path))
+
+    output_path = tmp_path / "updated_system.json"
+    result = asyncio.run(
+        mcp_server._handle_apply_tracked_changes(
+            {
+                "system_path": str(system_path),
+                "tracked_changes_path": str(changes_path),
+                "scenario_name": "scenario_1",
+                "output_path": str(output_path),
+            }
+        )
+    )
+
+    assert output_path.exists()
+    assert result["output_path"] == str(output_path)
+    assert result["scenario_name"] == "scenario_1"
+    assert result["changes_applied"] == 2
+
+    updated_system = DistributionSystem.from_json(str(output_path))
+    updated_capacitor = updated_system.get_component_by_uuid(capacitor.uuid)
+    assert updated_capacitor.rated_reactive_power.to("kilovar").magnitude == 300.0
+
+
+def test_plot_system(distribution_system_with_single_time_series, tmp_path):
+    """plot_system should generate an interactive HTML plot file."""
+    system_path = tmp_path / "plot_system.json"
+    distribution_system_with_single_time_series.to_json(str(system_path), overwrite=True)
+    export_dir = tmp_path / "plots"
+
+    result = asyncio.run(
+        mcp_server._handle_plot_system(
+            {"system_path": str(system_path), "export_path": str(export_dir)}
+        )
+    )
+
+    assert result["output_path"].endswith(".html")
+    assert Path(result["output_path"]).exists()
+
+
+def test_to_geojson(distribution_system_with_single_time_series, tmp_path):
+    """to_geojson should export the system to a GeoJSON file."""
+    system_path = tmp_path / "geo_system.json"
+    distribution_system_with_single_time_series.to_json(str(system_path), overwrite=True)
+    export_file = tmp_path / "system.geojson"
+
+    result = asyncio.run(
+        mcp_server._handle_to_geojson(
+            {"system_path": str(system_path), "export_file": str(export_file)}
+        )
+    )
+
+    assert export_file.exists()
+    assert result["output_path"] == str(export_file)

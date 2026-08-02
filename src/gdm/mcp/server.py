@@ -7,9 +7,14 @@ grid-data-models functionality as tools for AI agents.
 import json
 import logging
 import os
+import tempfile
+from datetime import timedelta
 from pathlib import Path
 from typing import Annotated, Any
+from uuid import UUID
 
+import numpy as np
+import pandas as pd
 import typer
 from dist_stack.manifest import write_manifest
 from dist_stack.registry import register, make_model_id, resolve_model_ref
@@ -17,6 +22,7 @@ from gdm.distribution import DistributionSystem
 from mcp.server import Server, ServerRequestContext
 from mcp.server.stdio import stdio_server
 from mcp.types import CallToolResult, ListToolsResult, TextContent, Tool
+from pint import Quantity
 
 from gdm.mcp import __version__
 from gdm.mcp.exceptions import GDMMCPException
@@ -46,6 +52,17 @@ from gdm.mcp.knowledge.documentation import (
 from gdm.distribution.model_reduction.reducer import (
     reduce_to_primary_system,
     reduce_to_three_phase_system,
+)
+from gdm.distribution.enums import ColorLineBy, ColorNodeBy, MapType
+from gdm.distribution.sys_functools import (
+    get_aggregated_battery_time_series,
+    get_combined_load_time_series_df,
+    get_combined_solar_time_series_df,
+)
+from gdm.tracked_changes import (
+    TrackedChange,
+    apply_updates_to_system,
+    filter_tracked_changes_by_name_and_date,
 )
 
 # Set up logging
@@ -547,6 +564,121 @@ async def list_tools(ctx: ServerRequestContext, params=None) -> ListToolsResult:
                 "anyOf": [{"required": ["system_path"]}, {"required": ["model_ref"]}],
             },
         ),
+        # Data / export tools
+        Tool(
+            name="get_time_series_values",
+            description="Get combined time series data for load, solar, or battery components as rows of timestamp/value pairs.",
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "system_path": {
+                        "type": "string",
+                        "description": "Path to the distribution system JSON file",
+                    },
+                    "component_type": {
+                        "type": "string",
+                        "enum": ["load", "solar", "battery", "all"],
+                        "description": "Component type to aggregate (default: all)",
+                        "default": "all",
+                    },
+                    "var_of_interest": {
+                        "type": "string",
+                        "description": (
+                            "Time series variable to return (e.g., 'active_power'). "
+                            "Solar time series are stored as 'irradiance' and mapped to 'active_power' "
+                            "in the returned rows (default: active_power)"
+                        ),
+                        "default": "active_power",
+                    },
+                },
+                "required": ["system_path"],
+            },
+        ),
+        Tool(
+            name="apply_tracked_changes",
+            description="Apply tracked changes (additions, edits, deletions) to a distribution system and save the updated system.",
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "system_path": {
+                        "type": "string",
+                        "description": "Path to the distribution system JSON file",
+                    },
+                    "tracked_changes_path": {
+                        "type": "string",
+                        "description": "Path to a JSON file containing a list of TrackedChange objects",
+                    },
+                    "scenario_name": {
+                        "type": "string",
+                        "description": "Only apply changes belonging to this scenario (optional)",
+                    },
+                    "output_path": {
+                        "type": "string",
+                        "description": "Path to save the updated system (default: temporary file)",
+                    },
+                },
+                "required": ["system_path", "tracked_changes_path"],
+            },
+        ),
+        Tool(
+            name="plot_system",
+            description="Generate an interactive HTML plot of the distribution system and optionally export it to a directory.",
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "system_path": {
+                        "type": "string",
+                        "description": "Path to the distribution system JSON file",
+                    },
+                    "export_path": {
+                        "type": "string",
+                        "description": "Directory to save the plot HTML file (created if missing)",
+                    },
+                    "show": {
+                        "type": "boolean",
+                        "description": "Open the plot in a browser (default: false)",
+                        "default": False,
+                    },
+                    "color_node_by": {
+                        "type": "string",
+                        "enum": ["phase", "voltage", "equipment_type"],
+                        "description": "Attribute used to color nodes (default: phase)",
+                        "default": "phase",
+                    },
+                    "color_line_by": {
+                        "type": "string",
+                        "enum": ["phase", "equipment_type"],
+                        "description": "Attribute used to color lines (default: equipment_type)",
+                        "default": "equipment_type",
+                    },
+                    "map_type": {
+                        "type": "string",
+                        "enum": ["scatter_geo", "scatter_mapbox"],
+                        "description": "Map type for the plot (default: scatter_geo)",
+                        "default": "scatter_geo",
+                    },
+                },
+                "required": ["system_path"],
+            },
+        ),
+        Tool(
+            name="to_geojson",
+            description="Export the distribution system to a GeoJSON file.",
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "system_path": {
+                        "type": "string",
+                        "description": "Path to the distribution system JSON file",
+                    },
+                    "export_file": {
+                        "type": "string",
+                        "description": "Path to the output GeoJSON file",
+                    },
+                },
+                "required": ["system_path", "export_file"],
+            },
+        ),
         # Documentation/Knowledge tools
         Tool(
             name="search_gdm_documentation",
@@ -662,6 +794,10 @@ _TOOL_HANDLERS: dict[str, Any] = {
     "export_subsystem_by_buses": lambda args: _export_subsystem_by_buses(args),
     "get_time_series_summary": lambda args: _get_time_series_summary(args),
     "save_system": lambda args: _save_system(args),
+    "get_time_series_values": lambda args: _handle_get_time_series_values(args),
+    "apply_tracked_changes": lambda args: _handle_apply_tracked_changes(args),
+    "plot_system": lambda args: _handle_plot_system(args),
+    "to_geojson": lambda args: _handle_to_geojson(args),
     "search_gdm_documentation": lambda args: _search_gdm_documentation(args),
     "get_api_reference": lambda args: _get_api_reference(args),
     "get_code_examples": lambda args: _get_code_examples(args),
@@ -1024,6 +1160,204 @@ async def _save_system(args: dict) -> dict:
         },
     )
     return result
+
+
+# Data / export handlers
+def _json_safe(value: Any) -> Any:
+    """Coerce pandas/numpy/UUID/quantity values into JSON-serializable primitives."""
+    if isinstance(value, np.generic):
+        return value.item()
+    if isinstance(value, np.ndarray):
+        return value.tolist()
+    if isinstance(value, Quantity):
+        magnitude = value.magnitude
+        return magnitude.tolist() if isinstance(magnitude, np.ndarray) else float(magnitude)
+    if isinstance(value, (pd.Timestamp, pd.Timedelta)):
+        return value.isoformat()
+    if isinstance(value, timedelta):
+        return str(value)
+    if isinstance(value, UUID):
+        return str(value)
+    return value
+
+
+def _battery_time_series_df(sys: DistributionSystem, var: str) -> pd.DataFrame:
+    """Build a combined time series DataFrame for battery components."""
+    from gdm.distribution.components import DistributionBattery
+
+    batteries = list(sys.get_components(DistributionBattery))
+    if not batteries:
+        from gdm.exceptions import NoComponentsFoundError
+
+        raise NoComponentsFoundError(f"No battery components found in {sys.name}.")
+    ts = get_aggregated_battery_time_series(sys, batteries, var)
+    timestamps = [ts.initial_timestamp + idx * ts.resolution for idx in range(ts.length)]
+    data = ts.data.magnitude.tolist() if hasattr(ts.data, "magnitude") else list(ts.data)
+    return pd.DataFrame(
+        {
+            "timestamp": timestamps,
+            "name": [var] * ts.length,
+            "component_uuid": ["aggregated_battery"] * ts.length,
+            "value": data,
+            "units": [str(ts.data.units)] * ts.length,
+        }
+    )
+
+
+async def _handle_get_time_series_values(args: dict) -> dict:
+    """Get combined time series values for load, solar, battery, or all components."""
+    system_path = _get_system_path_arg(args)
+    component_type = args.get("component_type", "all")
+    var_of_interest = args.get("var_of_interest", "active_power")
+
+    system = _load_system_with_fallback_name(system_path)
+
+    if component_type == "load":
+        df = get_combined_load_time_series_df(
+            system, unit_conversion={}, var_of_interest={var_of_interest}
+        )
+    elif component_type == "solar":
+        # Solar time series are stored under 'irradiance' and renamed to 'active_power' by the library.
+        solar_var = var_of_interest if var_of_interest == "irradiance" else "irradiance"
+        df = get_combined_solar_time_series_df(
+            system, unit_conversion={}, var_of_interest={solar_var}
+        )
+    elif component_type == "battery":
+        df = _battery_time_series_df(system, var_of_interest)
+    elif component_type == "all":
+        load_var = var_of_interest
+        solar_var = var_of_interest if var_of_interest == "irradiance" else "irradiance"
+        load_df = get_combined_load_time_series_df(
+            system, unit_conversion={}, var_of_interest={load_var}
+        )
+        solar_df = get_combined_solar_time_series_df(
+            system, unit_conversion={}, var_of_interest={solar_var}
+        )
+        df = pd.concat([load_df, solar_df], ignore_index=True)
+    else:
+        msg = (
+            f"Unsupported component_type: {component_type}. "
+            f"Expected one of: load, solar, battery, all"
+        )
+        raise ValueError(msg)
+
+    rows = [
+        {key: _json_safe(value) for key, value in record.items()}
+        for record in df.to_dict(orient="records")
+    ]
+    return {
+        "component_type": component_type,
+        "var_of_interest": var_of_interest,
+        "columns": list(df.columns),
+        "rows": rows,
+        "count": len(rows),
+    }
+
+
+def _load_tracked_changes(tracked_changes_path: str) -> list[TrackedChange]:
+    """Load TrackedChange objects from a JSON file containing a system of tracked changes."""
+    container = DistributionSystem.from_json(tracked_changes_path)
+    return list(container.get_components(TrackedChange))
+
+
+def _save_tracked_changes(tracked_changes: list[TrackedChange], output_path: str) -> str:
+    """Serialize TrackedChange objects to a JSON file containing a system of tracked changes."""
+    container = DistributionSystem(name="tracked_changes", auto_add_composed_components=True)
+    for change in tracked_changes:
+        container.add_component(change)
+    container.to_json(output_path, overwrite=True)
+    return output_path
+
+
+async def _handle_apply_tracked_changes(args: dict) -> dict:
+    """Apply tracked changes to a distribution system and save the updated system."""
+    system_path = _get_system_path_arg(args)
+    tracked_changes_path = args["tracked_changes_path"]
+    scenario_name = args.get("scenario_name")
+    output_path = args.get("output_path")
+
+    system = _load_system_with_fallback_name(system_path)
+    tracked_changes = _load_tracked_changes(tracked_changes_path)
+
+    if scenario_name:
+        tracked_changes = filter_tracked_changes_by_name_and_date(
+            tracked_changes, scenario_name=scenario_name
+        )
+
+    if not tracked_changes:
+        raise ValueError("No tracked changes to apply after filtering.")
+
+    updated_system = apply_updates_to_system(tracked_changes, system, catalog=None)
+
+    if not output_path:
+        fd, tmp_file = tempfile.mkstemp(prefix="gdm_tracked_changes_", suffix=".json")
+        os.close(fd)
+        output_path = tmp_file
+
+    updated_system.to_json(output_path, overwrite=True)
+
+    return {
+        "output_path": output_path,
+        "scenario_name": scenario_name,
+        "changes_applied": len(tracked_changes),
+    }
+
+
+async def _handle_plot_system(args: dict) -> dict:
+    """Generate an interactive HTML plot of the distribution system."""
+    system_path = _get_system_path_arg(args)
+    export_path = args.get("export_path")
+    show = bool(args.get("show", False))
+    color_node_by = args.get("color_node_by", "phase")
+    color_line_by = args.get("color_line_by", "equipment_type")
+    map_type = args.get("map_type", "scatter_geo")
+
+    system = _load_system_with_fallback_name(system_path)
+
+    color_node_map = {
+        "phase": ColorNodeBy.PHASE,
+        "voltage": ColorNodeBy.VOLTAGE_LEVEL,
+        "equipment_type": ColorNodeBy.EQUIPMENT_TYPE,
+    }
+    color_line_map = {
+        "phase": ColorLineBy.PHASE,
+        "equipment_type": ColorLineBy.EQUIPMENT_TYPE,
+    }
+    map_type_map = {
+        "scatter_geo": MapType.SCATTER_GEO,
+        "scatter_mapbox": MapType.SCATTER_MAP,
+    }
+
+    plot_dir = Path(export_path) if export_path else None
+    plot_file = None
+    if plot_dir is not None:
+        plot_dir.mkdir(parents=True, exist_ok=True)
+        plot_file = plot_dir / f"{system.name}_plot.html"
+
+    system.plot(
+        export_path=plot_dir,
+        show=show,
+        color_node_by=color_node_map[color_node_by],
+        color_line_by=color_line_map[color_line_by],
+        map_type=map_type_map[map_type],
+    )
+
+    if plot_file is not None:
+        message = f"Plot exported to {plot_file}"
+    else:
+        message = "Plot generated; no export_path provided, so it was not saved to disk."
+    return {"output_path": str(plot_file) if plot_file else None, "message": message}
+
+
+async def _handle_to_geojson(args: dict) -> dict:
+    """Export the distribution system to a GeoJSON file."""
+    system_path = _get_system_path_arg(args)
+    export_file = args["export_file"]
+
+    system = _load_system_with_fallback_name(system_path)
+    system.to_geojson(export_file)
+
+    return {"output_path": str(export_file), "message": f"GeoJSON exported to {export_file}"}
 
 
 async def _set_tool_calls_enabled(args: dict) -> dict:
