@@ -411,13 +411,20 @@ class DistributionSystem(System):
             cycles = self.get_cycles(dfs_tree)
             while cycles:
                 cycle = cycles[0]
-                switch_buses = self.find_switch_buses_in_cycle(cycle)
-                logger.debug(f"  Cycle found: {cycle}, switch buses in cycle: {switch_buses}")
-                if switch_buses:
-                    try:
-                        dfs_tree.remove_edge(*switch_buses)
-                    except Exception:
-                        dfs_tree.remove_edge(*switch_buses[::-1])
+                switch_edges = self.find_switch_buses_in_cycle(cycle)
+                logger.debug(f"  Cycle found: {cycle}, switch edges in cycle: {switch_edges}")
+                if switch_edges:
+                    bus_1, bus_2 = switch_edges[0]
+                    if dfs_tree.has_edge(bus_1, bus_2):
+                        dfs_tree.remove_edge(bus_1, bus_2)
+                    elif dfs_tree.has_edge(bus_2, bus_1):
+                        dfs_tree.remove_edge(bus_2, bus_1)
+                    else:
+                        logger.warning(
+                            f"  Switch edge ({bus_1}, {bus_2}) not present in DFS tree; skipping."
+                        )
+                        cycles.pop(0)
+                        continue
                 else:
                     bus_1 = random.choice(cycle)
                     if cycle.index(bus_1) == len(cycle) - 1:
@@ -457,12 +464,12 @@ class DistributionSystem(System):
         dfs_tree.add_edges_from(pruned_edges_tuples)
         return dfs_tree
 
-    def find_switch_buses_in_cycle(self, cycle: list[str]) -> list[str]:
-        """Finds the switch buses in a given cycle.
+    def find_switch_buses_in_cycle(self, cycle: list[str]) -> list[tuple[str, str]]:
+        """Finds the switch edges in a given cycle.
 
-        This method identifies the switch buses that are part of a cycle in the directed graph.
-        It checks for edges in the cycle that correspond to open switches and returns the names
-        of the buses associated with those switches.
+        This method identifies the switch edges that are part of a cycle in the directed graph.
+        It checks for edges in the cycle that correspond to switches and returns the
+        (bus_1, bus_2) pairs for each switch edge found.
 
         Parameters
         ----------
@@ -471,27 +478,27 @@ class DistributionSystem(System):
 
         Returns
         -------
-        list[str]
-            A list of bus names that are associated with open switches in the cycle.
+        list[tuple[str, str]]
+            A list of (bus_1, bus_2) tuples for each switch edge found in the cycle.
 
         Notes
         -----
-        - The method iterates through the edges in the cycle and checks for any open switches.
-        - It returns the names of the buses that are connected by these open switches.
+        - The method iterates through the edges in the cycle and checks for any switches.
+        - It returns the bus pairs that are connected by these switches.
         """
-        switch_buses = []
+        switch_edges: list[tuple[str, str]] = []
+        ugraph = self.get_undirected_graph()
         for i in range(len(cycle)):
             bus_1 = cycle[i]
             bus_2 = cycle[(i + 1) % len(cycle)]
-            edge_data = self.get_undirected_graph().get_edge_data(bus_1, bus_2)
+            edge_data = ugraph.get_edge_data(bus_1, bus_2)
             if edge_data:
-                for key, data in edge_data.items():
+                for _, data in edge_data.items():
                     if issubclass(data.get("type"), MatrixImpedanceSwitch):
-                        switch_buses.append(bus_1)
-                        switch_buses.append(bus_2)
+                        switch_edges.append((bus_1, bus_2))
                         logger.info(f"Switch found between {bus_1} and {bus_2}")
                         break
-        return list(set(switch_buses))
+        return switch_edges
 
     def get_split_phase_mapping(
         self,

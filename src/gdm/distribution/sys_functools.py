@@ -391,13 +391,15 @@ def get_aggregated_load_time_series(
         )
 
 
-def _get_timestamps(ts_data: TimeSeriesData) -> list:
+def _get_timestamps(ts_data: TimeSeriesData) -> pd.DatetimeIndex:
     """Extract timestamps from SingleTimeSeries or NonSequentialTimeSeries."""
     if isinstance(ts_data, SingleTimeSeries):
-        return [
-            ts_data.initial_timestamp + idx * ts_data.resolution for idx in range(ts_data.length)
-        ]
-    return ts_data.timestamps
+        return pd.date_range(
+            start=ts_data.initial_timestamp,
+            periods=ts_data.length,
+            freq=ts_data.resolution,
+        )
+    return pd.DatetimeIndex(ts_data.timestamps)
 
 
 def _convert_power_value(power_data, var: str, unit_conversion: dict[str, str]):
@@ -410,13 +412,45 @@ def _convert_power_value(power_data, var: str, unit_conversion: dict[str, str]):
     return power_data, power_data.units
 
 
-def _extract_features_cols(metadata: TimeSeriesMetadata, length: int) -> dict:
-    """Extract feature columns from metadata, excluding use_actual."""
-    return {k: [v] * length for k, v in (metadata.features or {}).items() if k != "use_actual"}
+def _extract_features_cols(metadata: TimeSeriesMetadata) -> dict:
+    """Extract scalar feature values from metadata, excluding use_actual.
+
+    Returns scalars (one value per feature). Final DataFrame assembly expands
+    each scalar to a column via ``np.repeat`` using each slice's row count.
+    """
+    return {k: v for k, v in (metadata.features or {}).items() if k != "use_actual"}
+
+
+def _assemble_dataframe(rows: list[dict]) -> pd.DataFrame:
+    """Assemble a DataFrame from a list of row dicts produced by _build_power_row_df.
+
+    Concatenates ndarray columns (value, timestamp) and repeats scalar columns
+    (name, component_uuid, units, phase, features) to match lengths.
+    """
+    if not rows:
+        return pd.DataFrame()
+
+    lengths = np.fromiter((r["__length__"] for r in rows), dtype=np.int64, count=len(rows))
+    ndarray_keys = {"value", "timestamp"}
+    scalar_keys = [k for k in rows[0].keys() if k not in ndarray_keys and k != "__length__"]
+
+    merged: dict = {}
+    for k in ndarray_keys:
+        merged[k] = np.concatenate([r[k] for r in rows])
+    for k in scalar_keys:
+        merged[k] = np.repeat(np.array([r[k] for r in rows], dtype=object), lengths)
+
+    # Preserve original column order: timestamp, name, component_uuid, [phase], value, units, *features
+    column_order = ["timestamp", "name", "component_uuid"]
+    if "phase" in merged:
+        column_order.append("phase")
+    column_order += ["value", "units"]
+    column_order += [k for k in scalar_keys if k not in column_order]
+    return pd.DataFrame({k: merged[k] for k in column_order})
 
 
 def _build_power_row_df(
-    timestamps: list,
+    timestamps,
     var: str,
     component_uuid,
     length: int,
@@ -424,20 +458,95 @@ def _build_power_row_df(
     unit_conversion: dict[str, str],
     features_cols: dict,
     phase: Phase | None = None,
-) -> pd.DataFrame:
-    """Build a DataFrame for one (component, variable, [phase]) time series slice."""
+) -> dict:
+    """Build a column dict for one (component, variable, [phase]) time series slice.
+
+    Stores ndarrays for the long columns (``value``, ``timestamp``) and *scalars*
+    for everything else along with a ``__length__`` marker. The merge step uses
+    ``np.concatenate`` for the ndarray columns and ``np.repeat`` for the scalar
+    columns — so the final ``pd.DataFrame`` just wraps ready-made arrays.
+    """
     value, units = _convert_power_value(power_data, var, unit_conversion)
+    value_arr = np.asarray(value.magnitude if isinstance(value, Quantity) else value)
+    timestamp_arr = timestamps.values
     row: dict = {
-        "timestamp": timestamps,
-        "name": [var] * length,
-        "component_uuid": [component_uuid] * length,
+        "__length__": length,
+        "timestamp": timestamp_arr,
+        "name": var,
+        "component_uuid": component_uuid,
     }
     if phase is not None:
-        row["phase"] = [phase] * length
-    row["value"] = value
-    row["units"] = [units] * length
+        row["phase"] = phase
+    row["value"] = value_arr
+    row["units"] = units
     row.update(features_cols)
-    return pd.DataFrame(row)
+    return row
+
+
+def _collect_component_rows(
+    sys: DistributionSystem,
+    component: Component,
+    var_of_interest: set[str],
+    power_function: Callable,
+    unit_conversion: dict[str, str],
+    time_series_type: Type[TimeSeriesData],
+    aggregate_phases: bool,
+    per_phase_function: Callable | None,
+    include_features: bool,
+) -> list[dict]:
+    """Collect row dicts for a single component across all variables of interest."""
+    ts_metadata = sys.list_time_series_metadata(component, time_series_type=time_series_type)
+
+    if not ts_metadata:
+        msg = f"No time series data found for {component=}."
+        raise NoTimeSeriesDataFound(msg)
+
+    avail_vars = {md.name for md in ts_metadata}
+
+    if not var_of_interest.issubset(avail_vars):
+        msg = f"{avail_vars=}. Only {var_of_interest=} is supported for dataframe computation."
+        raise TimeSeriesVariableDoesNotExist(msg)
+
+    rows = []
+    for metadata in ts_metadata:
+        if metadata.name not in var_of_interest:
+            continue
+
+        features = metadata.features or {}
+        ts_data = sys.get_time_series(
+            owner=component, name=metadata.name, time_series_type=time_series_type, **features
+        )
+        timestamps = _get_timestamps(ts_data)
+        features_cols = _extract_features_cols(metadata) if include_features else {}
+
+        if not aggregate_phases:
+            for phase, power_data in per_phase_function(component, ts_data, metadata):
+                rows.append(
+                    _build_power_row_df(
+                        timestamps,
+                        metadata.name,
+                        component.uuid,
+                        ts_data.length,
+                        power_data,
+                        unit_conversion,
+                        features_cols,
+                        phase=phase,
+                    )
+                )
+        else:
+            power_data = power_function(component, ts_data, metadata)
+            rows.append(
+                _build_power_row_df(
+                    timestamps,
+                    metadata.name,
+                    component.uuid,
+                    ts_data.length,
+                    power_data,
+                    unit_conversion,
+                    features_cols,
+                )
+            )
+    return rows
 
 
 def _get_combined_time_series_df(
@@ -494,68 +603,32 @@ def _get_combined_time_series_df(
     TimeSeriesVariableDoesNotExist
         If specified variables do not exist for the given component.
     """
-    dfs = []
     components: list[Component] = list(sys.get_components(component_type))
     if not components:
         raise NoComponentsFoundError(
             f"No components of type {component_type.__name__} found in {sys.name}"
         )
 
+    if not aggregate_phases and per_phase_function is None:
+        msg = "per_phase_function is required when aggregate_phases is False."
+        raise ValueError(msg)
+
+    rows = []
     for component in components:
-        ts_metadata = sys.list_time_series_metadata(component, time_series_type=time_series_type)
-
-        if not ts_metadata:
-            msg = f"No time series data found for {component=}."
-            raise NoTimeSeriesDataFound(msg)
-
-        avail_vars = {md.name for md in ts_metadata}
-
-        if not var_of_interest.issubset(avail_vars):
-            msg = f"{avail_vars=}. Only {var_of_interest=} is supported for dataframe computation."
-            raise TimeSeriesVariableDoesNotExist(msg)
-
-        for var in var_of_interest & avail_vars:
-            ts_data = sys.get_time_series(
-                owner=component, name=var, time_series_type=time_series_type
+        rows.extend(
+            _collect_component_rows(
+                sys=sys,
+                component=component,
+                var_of_interest=var_of_interest,
+                power_function=power_function,
+                unit_conversion=unit_conversion,
+                time_series_type=time_series_type,
+                aggregate_phases=aggregate_phases,
+                per_phase_function=per_phase_function,
+                include_features=include_features,
             )
-            metadata = [meta for meta in ts_metadata if meta.name == var][0]
-            timestamps = _get_timestamps(ts_data)
-            features_cols = (
-                _extract_features_cols(metadata, ts_data.length) if include_features else {}
-            )
-
-            if not aggregate_phases and per_phase_function is not None:
-                for phase, power_data in per_phase_function(component, ts_data, metadata):
-                    dfs.append(
-                        _build_power_row_df(
-                            timestamps,
-                            var,
-                            component.uuid,
-                            ts_data.length,
-                            power_data,
-                            unit_conversion,
-                            features_cols,
-                            phase=phase,
-                        )
-                    )
-            elif not aggregate_phases and per_phase_function is None:
-                msg = "per_phase_function is required when aggregate_phases is False."
-                raise ValueError(msg)
-            else:
-                power_data = power_function(component, ts_data, metadata)
-                dfs.append(
-                    _build_power_row_df(
-                        timestamps,
-                        var,
-                        component.uuid,
-                        ts_data.length,
-                        power_data,
-                        unit_conversion,
-                        features_cols,
-                    )
-                )
-
-    return pd.concat(dfs, ignore_index=True) if dfs else pd.DataFrame()
+        )
+    return _assemble_dataframe(rows)
 
 
 def get_combined_load_time_series_df(
