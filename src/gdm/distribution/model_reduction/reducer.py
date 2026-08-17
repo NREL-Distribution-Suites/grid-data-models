@@ -267,6 +267,9 @@ def reduce_trivial_nodes(
     DistributionSystem
         A new reduced system with trivial nodes removed.
     """
+
+    dist_system = dist_system.deepcopy()
+
     if name is None:
         name = dist_system.name
 
@@ -360,20 +363,14 @@ def reduce_trivial_nodes(
 
         merged_branches.append(merged)
 
-    # Build new system: copy everything except consumed branches/buses
-    reduced_system = DistributionSystem(auto_add_composed_components=True, name=name)
-    for comp_type in dist_system.get_component_types():
+    
+    for comp_type in [MatrixImpedanceBranch, DistributionBus]:
         for comp in dist_system.get_components(comp_type):
-            if isinstance(comp, MatrixImpedanceBranch) and comp.name in consumed_branches:
-                continue
-            if isinstance(comp, DistributionBus) and comp.name in consumed_buses:
-                continue
-            try:
-                reduced_system.add_component(comp)
-            except Exception:
-                pass
-
+            if comp.name in consumed_buses or comp.name in consumed_branches:
+                dist_system.remove_component(comp)
+                
+    dist_system.auto_add_composed_components=True
     for merged in merged_branches:
-        reduced_system.add_component(merged)
+        dist_system.add_component(merged)
 
-    return reduced_system
+    return dist_system
