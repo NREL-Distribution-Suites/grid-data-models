@@ -3,11 +3,13 @@ from typing import Type, Union, Callable
 
 from infrasys.time_series_models import SingleTimeSeries, TimeSeriesData
 import networkx as nx
+import numpy as np
 
 from gdm.distribution.components.distribution_bus import DistributionBus
 from gdm.distribution.components.distribution_load import DistributionLoad
 from gdm.distribution.components.distribution_solar import DistributionSolar
 from gdm.distribution.components.distribution_battery import DistributionBattery
+from gdm.distribution.components.matrix_impedance_branch import MatrixImpedanceBranch
 from gdm.distribution.distribution_system import (
     DistributionSystem,
     UserAttributes,
@@ -18,6 +20,7 @@ from gdm.distribution.sys_functools import (
     get_aggregated_solar_time_series,
     get_aggregated_battery_time_series,
 )
+from gdm.quantities import Distance
 
 
 def _get_three_phase_buses(
@@ -174,3 +177,203 @@ def reduce_to_primary_system(
         agg_timeseries,
         time_series_type,
     )
+
+
+def _branches_are_compatible(
+    branch_a: MatrixImpedanceBranch,
+    branch_b: MatrixImpedanceBranch,
+) -> bool:
+    """Check if two MatrixImpedanceBranch components can be merged.
+
+    Branches are compatible if they have identical phases, construction type,
+    ampacity, and per-unit-length impedance/capacitance matrices.
+    """
+    if sorted(branch_a.phases, key=lambda p: p.value) != sorted(
+        branch_b.phases, key=lambda p: p.value
+    ):
+        return False
+
+    eq_a = branch_a.equipment
+    eq_b = branch_b.equipment
+
+    if eq_a.construction != eq_b.construction:
+        return False
+
+    if not np.isclose(
+        eq_a.ampacity.to("ampere").magnitude,
+        eq_b.ampacity.to("ampere").magnitude,
+        rtol=1e-6,
+    ):
+        return False
+
+    for mat_attr in ("r_matrix", "x_matrix", "c_matrix"):
+        mat_a = getattr(eq_a, mat_attr)
+        mat_b = getattr(eq_b, mat_attr).to(mat_a.units)
+        if not np.allclose(mat_a.magnitude, mat_b.magnitude, rtol=1e-6, atol=0):
+            return False
+
+    return True
+
+
+def _merge_branches(
+    dist_system: DistributionSystem,
+    branch_a: MatrixImpedanceBranch,
+    branch_b: MatrixImpedanceBranch,
+    middle_bus: DistributionBus,
+) -> MatrixImpedanceBranch:
+    """Create a merged branch replacing two series branches through a trivial bus."""
+    outer_bus_a = (
+        branch_a.buses[0] if branch_a.buses[1].name == middle_bus.name else branch_a.buses[1]
+    )
+    outer_bus_b = (
+        branch_b.buses[0] if branch_b.buses[1].name == middle_bus.name else branch_b.buses[1]
+    )
+
+    new_length = branch_a.length.to("meter").magnitude + branch_b.length.to("meter").magnitude
+
+    return MatrixImpedanceBranch(
+        buses=[outer_bus_a, outer_bus_b],
+        length=Distance(new_length, "meter"),
+        phases=list(branch_a.phases),
+        equipment=branch_a.equipment,
+        name=f"{branch_a.name}__{branch_b.name}",
+        in_service=branch_a.in_service and branch_b.in_service,
+        substation=branch_a.substation,
+        feeder=branch_a.feeder,
+    )
+
+
+def reduce_trivial_nodes(
+    dist_system: DistributionSystem,
+    name: str | None = None,
+) -> DistributionSystem:
+    """Remove trivial pass-through nodes from the distribution system.
+
+    A bus is trivial if it connects exactly two MatrixImpedanceBranch components
+    with identical per-unit-length electrical characteristics (impedance matrices,
+    construction type, ampacity) and has no other components attached. The two
+    branches are merged into a single branch whose length is the sum of the
+    originals.
+
+    Parameters
+    ----------
+    dist_system : DistributionSystem
+        The system to reduce.
+    name : str | None
+        Name for the reduced system. Defaults to the original name.
+
+    Returns
+    -------
+    DistributionSystem
+        A new reduced system with trivial nodes removed.
+    """
+    if name is None:
+        name = dist_system.name
+
+    graph = dist_system.get_undirected_graph()
+
+    # Find buses that have components other than branches attached
+    buses_with_components: set[str] = set()
+    model_types = dist_system.get_model_types_with_field_type(DistributionBus)
+    from gdm.distribution.components.base.distribution_branch_base import DistributionBranchBase
+    from gdm.distribution.components.base.distribution_transformer_base import (
+        DistributionTransformerBase,
+    )
+
+    branch_types = (DistributionBranchBase, DistributionTransformerBase)
+    for model_type in model_types:
+        if issubclass(model_type, branch_types):
+            continue
+        for comp in dist_system.get_components(model_type):
+            bus_field = getattr(comp, "bus", None)
+            if bus_field is not None:
+                buses_with_components.add(bus_field.name)
+
+    # Build lookup: bus_name -> list of MatrixImpedanceBranch connected to it
+    bus_to_branches: dict[str, list[MatrixImpedanceBranch]] = {}
+    for branch in dist_system.get_components(MatrixImpedanceBranch):
+        for bus in branch.buses:
+            bus_to_branches.setdefault(bus.name, []).append(branch)
+
+    # Identify trivial buses
+    trivial_buses: set[str] = set()
+    source_bus = dist_system.get_source_bus()
+    for bus in dist_system.get_components(DistributionBus):
+        if bus.name == source_bus.name:
+            continue
+        if bus.name in buses_with_components:
+            continue
+        if graph.degree(bus.name) != 2:
+            continue
+        branches = bus_to_branches.get(bus.name, [])
+        if len(branches) != 2:
+            continue
+        if _branches_are_compatible(branches[0], branches[1]):
+            trivial_buses.add(bus.name)
+
+    if not trivial_buses:
+        return dist_system
+
+    # Iteratively merge chains of trivial buses
+    merged_branches: list[MatrixImpedanceBranch] = []
+    consumed_branches: set[str] = set()
+    consumed_buses: set[str] = set()
+
+    for bus_name in list(trivial_buses):
+        if bus_name in consumed_buses:
+            continue
+        branches = bus_to_branches[bus_name]
+        branch_a, branch_b = branches[0], branches[1]
+        if branch_a.name in consumed_branches or branch_b.name in consumed_branches:
+            continue
+
+        bus = dist_system.get_component(DistributionBus, bus_name)
+        merged = _merge_branches(dist_system, branch_a, branch_b, bus)
+        consumed_branches.add(branch_a.name)
+        consumed_branches.add(branch_b.name)
+        consumed_buses.add(bus_name)
+
+        # Continue merging along the chain
+        while True:
+            outer_buses = [merged.buses[0].name, merged.buses[1].name]
+            extended = False
+            for ob in outer_buses:
+                if ob not in trivial_buses or ob in consumed_buses:
+                    continue
+                neighbor_branches = bus_to_branches[ob]
+                next_branch = None
+                for nb in neighbor_branches:
+                    if nb.name not in consumed_branches:
+                        next_branch = nb
+                        break
+                if next_branch is None:
+                    continue
+                if not _branches_are_compatible(merged, next_branch):
+                    continue
+                ob_bus = dist_system.get_component(DistributionBus, ob)
+                merged = _merge_branches(dist_system, merged, next_branch, ob_bus)
+                consumed_branches.add(next_branch.name)
+                consumed_buses.add(ob)
+                extended = True
+            if not extended:
+                break
+
+        merged_branches.append(merged)
+
+    # Build new system: copy everything except consumed branches/buses
+    reduced_system = DistributionSystem(auto_add_composed_components=True, name=name)
+    for comp_type in dist_system.get_component_types():
+        for comp in dist_system.get_components(comp_type):
+            if isinstance(comp, MatrixImpedanceBranch) and comp.name in consumed_branches:
+                continue
+            if isinstance(comp, DistributionBus) and comp.name in consumed_buses:
+                continue
+            try:
+                reduced_system.add_component(comp)
+            except Exception:
+                pass
+
+    for merged in merged_branches:
+        reduced_system.add_component(merged)
+
+    return reduced_system
