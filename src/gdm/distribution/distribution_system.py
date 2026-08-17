@@ -201,7 +201,10 @@ class DistributionSystem(System):
         graph = nx.MultiGraph()
         node: DistributionBus
         for node in self.get_components(DistributionBus):
-            graph.add_node(node.name)
+            data = {
+                "phases": [phase.value for phase in node.phases]
+            }
+            graph.add_node(node.name, **data)
 
         edges: list[DistributionBranchBase | DistributionTransformerBase] = list(
             self.get_components(DistributionBranchBase)
