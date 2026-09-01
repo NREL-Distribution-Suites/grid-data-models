@@ -68,14 +68,47 @@ def _get_aggregated_bus_component(
     bus: DistributionBus,
     model_type: DistributionLoad | DistributionSolar,
     split_phase_mapping: dict[str, set[Phase]],
+    model_components: list[DistributionLoad | DistributionSolar] | None = None,
 ) -> DistributionLoad | DistributionSolar:
-    model_components = subtree_system.get_components(model_type)
+    if model_components is None:
+        model_components = subtree_system.get_components(model_type)
     return model_type.aggregate(
         instances=list(model_components),
         bus=bus,
         name=str(uuid.uuid4()),
         split_phase_mapping=split_phase_mapping,
     )
+
+
+def _add_fallback_aggregates(
+    dist_system: DistributionSystem,
+    reduced_system: DistributionSystem,
+    retained_bus_names: set[str],
+    aggregated_component_uuids: set[uuid.UUID],
+    split_phase_mapping: dict[str, set[Phase]],
+    model_types: list[Type[DistributionLoad | DistributionSolar]],
+) -> None:
+    fallback_bus = next(reduced_system.get_components(DistributionBus), None)
+    if fallback_bus is None:
+        return
+    for model_type in model_types:
+        model_components = [
+            component
+            for component in dist_system.get_components(model_type)
+            if component.uuid not in aggregated_component_uuids
+            and component.bus.name not in retained_bus_names
+        ]
+        if not model_components:
+            continue
+        reduced_system.add_component(
+            _get_aggregated_bus_component(
+                dist_system,
+                fallback_bus,
+                model_type=model_type,
+                split_phase_mapping=split_phase_mapping,
+                model_components=model_components,
+            )
+        )
 
 
 def _reduce_system(
@@ -100,6 +133,9 @@ def _reduce_system(
 
     split_phase_mapping = dist_system.get_split_phase_mapping(directed_graph=original_tree)
     reduced_network_tree = original_tree.subgraph(bus_subset)
+    retained_bus_names = set(bus_subset)
+    aggregated_bus_names: set[str] = set()
+    aggregated_component_uuids: set[uuid.UUID] = set()
     ts_agg_func_mapper: dict[Union[Type[DistributionLoad], Type[DistributionSolar]], Callable] = {
         DistributionLoad: get_aggregated_load_time_series,
         DistributionSolar: get_aggregated_solar_time_series,
@@ -115,6 +151,12 @@ def _reduce_system(
                 for successor in sucessors_diff
                 for snode in nx.descendants(original_tree, successor)
             ] + list(sucessors_diff)
+            successors_descendants = list(
+                set(successors_descendants) - retained_bus_names - aggregated_bus_names
+            )
+            aggregated_bus_names.update(successors_descendants)
+            if not successors_descendants:
+                continue
             subtree = original_tree.subgraph(successors_descendants)
             subtree_system = dist_system.get_subsystem(
                 list(subtree.nodes),
@@ -123,16 +165,26 @@ def _reduce_system(
             )
             model_types = subtree_system.get_model_types_with_field_type(DistributionBus)
             for model_type in model_types:
+                model_components = [
+                    component
+                    for component in subtree_system.get_components(model_type)
+                    if component.uuid not in aggregated_component_uuids
+                    and getattr(component, "bus", None).name in successors_descendants
+                ]
+                aggregated_component_uuids.update(component.uuid for component in model_components)
+                if not model_components:
+                    continue
                 agg_component = _get_aggregated_bus_component(
                     subtree_system,
                     reduced_system.get_component(DistributionBus, node),
                     model_type=model_type,
                     split_phase_mapping=split_phase_mapping,
+                    model_components=model_components,
                 )
                 reduced_system.add_component(agg_component)
                 agg_comp = reduced_system.get_component(model_type, agg_component.name)
                 if agg_time_series:
-                    comps = list(subtree_system.get_components(model_type))
+                    comps = model_components
                     ts_metadata = dist_system.list_time_series_metadata(
                         comps[0], time_series_type=time_series_type
                     )
@@ -145,6 +197,15 @@ def _reduce_system(
                         reduced_system.add_time_series(
                             ts_aggregate, agg_comp, **user_attr.model_dump()
                         )
+
+    _add_fallback_aggregates(
+        dist_system,
+        reduced_system,
+        retained_bus_names,
+        aggregated_component_uuids,
+        split_phase_mapping,
+        list(ts_agg_func_mapper),
+    )
     return reduced_system
 
 
