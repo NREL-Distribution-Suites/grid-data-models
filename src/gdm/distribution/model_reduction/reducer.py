@@ -2,6 +2,7 @@ import uuid
 from typing import Type, Union, Callable
 
 from infrasys.time_series_models import SingleTimeSeries, TimeSeriesData
+from infrasys import Component
 import networkx as nx
 
 from gdm.distribution.components.base.distribution_branch_base import DistributionBranchBase
@@ -68,14 +69,62 @@ def _get_aggregated_bus_component(
     bus: DistributionBus,
     model_type: DistributionLoad | DistributionSolar,
     split_phase_mapping: dict[str, set[Phase]],
+    model_components: list[DistributionLoad | DistributionSolar] | None = None,
 ) -> DistributionLoad | DistributionSolar:
-    model_components = subtree_system.get_components(model_type)
+    if model_components is None:
+        model_components = subtree_system.get_components(model_type)
     return model_type.aggregate(
         instances=list(model_components),
         bus=bus,
         name=str(uuid.uuid4()),
         split_phase_mapping=split_phase_mapping,
     )
+
+
+def _aggregate_subtree_components(
+    subtree_system: DistributionSystem,
+    dist_system: DistributionSystem,
+    reduced_system: DistributionSystem,
+    model_types: list[Type[Component]],
+    source_bus_names: list[str],
+    aggregated_component_uuids: set[uuid.UUID],
+    target_bus: DistributionBus,
+    split_phase_mapping: dict[str, set[Phase]],
+    agg_time_series: bool,
+    time_series_type: Type[TimeSeriesData],
+    ts_agg_func_mapper: dict[Type[Component], Callable],
+) -> None:
+    for model_type in model_types:
+        model_components = [
+            component
+            for component in subtree_system.get_components(model_type)
+            if component.uuid not in aggregated_component_uuids
+            and getattr(component, "bus", None).name in source_bus_names
+        ]
+        aggregated_component_uuids.update(component.uuid for component in model_components)
+        if not model_components:
+            continue
+        agg_component = _get_aggregated_bus_component(
+            subtree_system,
+            target_bus,
+            model_type=model_type,
+            split_phase_mapping=split_phase_mapping,
+            model_components=model_components,
+        )
+        reduced_system.add_component(agg_component)
+        if not agg_time_series:
+            continue
+        agg_comp = reduced_system.get_component(model_type, agg_component.name)
+        ts_metadata = dist_system.list_time_series_metadata(
+            model_components[0], time_series_type=time_series_type
+        )
+        for metadata in ts_metadata:
+            ts_aggregate = ts_agg_func_mapper[model_type](
+                dist_system, model_components, metadata.name, time_series_type
+            )
+            user_attr = UserAttributes.model_validate(metadata.features)
+            user_attr.use_actual = True
+            reduced_system.add_time_series(ts_aggregate, agg_comp, **user_attr.model_dump())
 
 
 def _reduce_system(
@@ -89,6 +138,10 @@ def _reduce_system(
     if agg_timeseries is not None:
         agg_time_series = agg_timeseries
 
+    closed_graph = _closed_edge_graph(dist_system)
+    if nx.cycle_basis(nx.Graph(closed_graph)):
+        raise ValueError("The system contains closed loops; run reduce_to_radial_network first.")
+
     original_tree = dist_system.get_directed_graph()
     reduced_system = dist_system.get_subsystem(
         bus_subset,
@@ -100,6 +153,9 @@ def _reduce_system(
 
     split_phase_mapping = dist_system.get_split_phase_mapping(directed_graph=original_tree)
     reduced_network_tree = original_tree.subgraph(bus_subset)
+    retained_bus_names = set(bus_subset)
+    aggregated_bus_names: set[str] = set()
+    aggregated_component_uuids: set[uuid.UUID] = set()
     ts_agg_func_mapper: dict[Union[Type[DistributionLoad], Type[DistributionSolar]], Callable] = {
         DistributionLoad: get_aggregated_load_time_series,
         DistributionSolar: get_aggregated_solar_time_series,
@@ -115,6 +171,12 @@ def _reduce_system(
                 for successor in sucessors_diff
                 for snode in nx.descendants(original_tree, successor)
             ] + list(sucessors_diff)
+            successors_descendants = list(
+                set(successors_descendants) - retained_bus_names - aggregated_bus_names
+            )
+            aggregated_bus_names.update(successors_descendants)
+            if not successors_descendants:
+                continue
             subtree = original_tree.subgraph(successors_descendants)
             subtree_system = dist_system.get_subsystem(
                 list(subtree.nodes),
@@ -122,29 +184,20 @@ def _reduce_system(
                 directed_graph=original_tree,
             )
             model_types = subtree_system.get_model_types_with_field_type(DistributionBus)
-            for model_type in model_types:
-                agg_component = _get_aggregated_bus_component(
-                    subtree_system,
-                    reduced_system.get_component(DistributionBus, node),
-                    model_type=model_type,
-                    split_phase_mapping=split_phase_mapping,
-                )
-                reduced_system.add_component(agg_component)
-                agg_comp = reduced_system.get_component(model_type, agg_component.name)
-                if agg_time_series:
-                    comps = list(subtree_system.get_components(model_type))
-                    ts_metadata = dist_system.list_time_series_metadata(
-                        comps[0], time_series_type=time_series_type
-                    )
-                    for metadata in ts_metadata:
-                        ts_aggregate = ts_agg_func_mapper[model_type](
-                            dist_system, comps, metadata.name, time_series_type
-                        )
-                        user_attr = UserAttributes.model_validate(metadata.features)
-                        user_attr.use_actual = True
-                        reduced_system.add_time_series(
-                            ts_aggregate, agg_comp, **user_attr.model_dump()
-                        )
+            _aggregate_subtree_components(
+                subtree_system,
+                dist_system,
+                reduced_system,
+                model_types,
+                successors_descendants,
+                aggregated_component_uuids,
+                reduced_system.get_component(DistributionBus, node),
+                split_phase_mapping,
+                agg_time_series,
+                time_series_type,
+                ts_agg_func_mapper,
+            )
+
     return reduced_system
 
 
