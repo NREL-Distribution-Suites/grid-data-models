@@ -97,6 +97,43 @@ def test_three_phase_network_reducer(distribution_system_with_single_time_series
         Original: {get_total_kvar(gdm_total_load)} Mvar"""
 
 
+def test_three_phase_reducer_rejects_closed_loop(simple_distribution_system):
+    system = simple_distribution_system.deepcopy()
+    system.auto_add_composed_components = True
+    _add_loop_switch(system, "bus_0", "bus_4", "test_switch_0_4")
+
+    with pytest.raises(ValueError, match="run reduce_to_radial_network first"):
+        reduce_to_three_phase_system(system, name="reduced_system")
+
+
+def test_radial_then_three_phase_reduction_preserves_open_switch_and_load(
+    simple_distribution_system,
+):
+    system = simple_distribution_system.deepcopy()
+    system.auto_add_composed_components = True
+    _add_loop_switch(system, "bus_0", "bus_4", "test_switch_0_4")
+
+    radial = reduce_to_radial_network(system, name="radial_system")
+    reduced = reduce_to_three_phase_system(radial, name="reduced_system")
+
+    switch = reduced.get_component(MatrixImpedanceSwitch, "test_switch_0_4")
+    assert switch.is_closed == [False, False, False]
+    assert {bus.name for bus in switch.buses} == {"bus_0", "bus_4"}
+    original_total = sum(
+        power.to("megawatt").magnitude
+        for load in system.get_components(DistributionLoad)
+        for phase_load in load.equipment.phase_loads
+        for power in [phase_load.real_power]
+    )
+    reduced_total = sum(
+        power.to("megawatt").magnitude
+        for load in reduced.get_components(DistributionLoad)
+        for phase_load in load.equipment.phase_loads
+        for power in [phase_load.real_power]
+    )
+    assert reduced_total == original_total
+
+
 def test_incompatible_timeseries_and_unsupported_variable_error(
     distribution_system_with_nonsequential_time_series,
 ):

@@ -122,6 +122,10 @@ def _reduce_system(
     if agg_timeseries is not None:
         agg_time_series = agg_timeseries
 
+    closed_graph = _closed_edge_graph(dist_system)
+    if nx.cycle_basis(nx.Graph(closed_graph)):
+        raise ValueError("The system contains closed loops; run reduce_to_radial_network first.")
+
     original_tree = dist_system.get_directed_graph()
     reduced_system = dist_system.get_subsystem(
         bus_subset,
