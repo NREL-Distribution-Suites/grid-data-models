@@ -2,6 +2,7 @@ import uuid
 from typing import Type, Union, Callable
 
 from infrasys.time_series_models import SingleTimeSeries, TimeSeriesData
+from infrasys import Component
 import networkx as nx
 
 from gdm.distribution.components.base.distribution_branch_base import DistributionBranchBase
@@ -80,6 +81,52 @@ def _get_aggregated_bus_component(
     )
 
 
+def _aggregate_subtree_components(
+    subtree_system: DistributionSystem,
+    dist_system: DistributionSystem,
+    reduced_system: DistributionSystem,
+    model_types: list[Type[Component]],
+    source_bus_names: list[str],
+    aggregated_component_uuids: set[uuid.UUID],
+    target_bus: DistributionBus,
+    split_phase_mapping: dict[str, set[Phase]],
+    agg_time_series: bool,
+    time_series_type: Type[TimeSeriesData],
+    ts_agg_func_mapper: dict[Type[Component], Callable],
+) -> None:
+    for model_type in model_types:
+        model_components = [
+            component
+            for component in subtree_system.get_components(model_type)
+            if component.uuid not in aggregated_component_uuids
+            and getattr(component, "bus", None).name in source_bus_names
+        ]
+        aggregated_component_uuids.update(component.uuid for component in model_components)
+        if not model_components:
+            continue
+        agg_component = _get_aggregated_bus_component(
+            subtree_system,
+            target_bus,
+            model_type=model_type,
+            split_phase_mapping=split_phase_mapping,
+            model_components=model_components,
+        )
+        reduced_system.add_component(agg_component)
+        if not agg_time_series:
+            continue
+        agg_comp = reduced_system.get_component(model_type, agg_component.name)
+        ts_metadata = dist_system.list_time_series_metadata(
+            model_components[0], time_series_type=time_series_type
+        )
+        for metadata in ts_metadata:
+            ts_aggregate = ts_agg_func_mapper[model_type](
+                dist_system, model_components, metadata.name, time_series_type
+            )
+            user_attr = UserAttributes.model_validate(metadata.features)
+            user_attr.use_actual = True
+            reduced_system.add_time_series(ts_aggregate, agg_comp, **user_attr.model_dump())
+
+
 def _reduce_system(
     dist_system: DistributionSystem,
     bus_subset: list[DistributionBus],
@@ -137,39 +184,19 @@ def _reduce_system(
                 directed_graph=original_tree,
             )
             model_types = subtree_system.get_model_types_with_field_type(DistributionBus)
-            for model_type in model_types:
-                model_components = [
-                    component
-                    for component in subtree_system.get_components(model_type)
-                    if component.uuid not in aggregated_component_uuids
-                    and getattr(component, "bus", None).name in successors_descendants
-                ]
-                aggregated_component_uuids.update(component.uuid for component in model_components)
-                if not model_components:
-                    continue
-                agg_component = _get_aggregated_bus_component(
-                    subtree_system,
-                    reduced_system.get_component(DistributionBus, node),
-                    model_type=model_type,
-                    split_phase_mapping=split_phase_mapping,
-                    model_components=model_components,
-                )
-                reduced_system.add_component(agg_component)
-                agg_comp = reduced_system.get_component(model_type, agg_component.name)
-                if agg_time_series:
-                    comps = model_components
-                    ts_metadata = dist_system.list_time_series_metadata(
-                        comps[0], time_series_type=time_series_type
-                    )
-                    for metadata in ts_metadata:
-                        ts_aggregate = ts_agg_func_mapper[model_type](
-                            dist_system, comps, metadata.name, time_series_type
-                        )
-                        user_attr = UserAttributes.model_validate(metadata.features)
-                        user_attr.use_actual = True
-                        reduced_system.add_time_series(
-                            ts_aggregate, agg_comp, **user_attr.model_dump()
-                        )
+            _aggregate_subtree_components(
+                subtree_system,
+                dist_system,
+                reduced_system,
+                model_types,
+                successors_descendants,
+                aggregated_component_uuids,
+                reduced_system.get_component(DistributionBus, node),
+                split_phase_mapping,
+                agg_time_series,
+                time_series_type,
+                ts_agg_func_mapper,
+            )
 
     return reduced_system
 
