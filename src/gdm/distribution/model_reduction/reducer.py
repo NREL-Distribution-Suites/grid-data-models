@@ -80,37 +80,6 @@ def _get_aggregated_bus_component(
     )
 
 
-def _add_fallback_aggregates(
-    dist_system: DistributionSystem,
-    reduced_system: DistributionSystem,
-    retained_bus_names: set[str],
-    aggregated_component_uuids: set[uuid.UUID],
-    split_phase_mapping: dict[str, set[Phase]],
-    model_types: list[Type[DistributionLoad | DistributionSolar]],
-) -> None:
-    fallback_bus = next(reduced_system.get_components(DistributionBus), None)
-    if fallback_bus is None:
-        return
-    for model_type in model_types:
-        model_components = [
-            component
-            for component in dist_system.get_components(model_type)
-            if component.uuid not in aggregated_component_uuids
-            and component.bus.name not in retained_bus_names
-        ]
-        if not model_components:
-            continue
-        reduced_system.add_component(
-            _get_aggregated_bus_component(
-                dist_system,
-                fallback_bus,
-                model_type=model_type,
-                split_phase_mapping=split_phase_mapping,
-                model_components=model_components,
-            )
-        )
-
-
 def _reduce_system(
     dist_system: DistributionSystem,
     bus_subset: list[DistributionBus],
@@ -202,14 +171,6 @@ def _reduce_system(
                             ts_aggregate, agg_comp, **user_attr.model_dump()
                         )
 
-    _add_fallback_aggregates(
-        dist_system,
-        reduced_system,
-        retained_bus_names,
-        aggregated_component_uuids,
-        split_phase_mapping,
-        list(ts_agg_func_mapper),
-    )
     return reduced_system
 
 
