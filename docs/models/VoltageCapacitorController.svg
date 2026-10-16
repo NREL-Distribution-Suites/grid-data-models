@@ -9,7 +9,7 @@
 <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 225)">
 <title>Entity Relationship Diagram created by erdantic</title>
 <polygon fill="white" stroke="none" points="-4,4 -4,-225 270.5,-225 270.5,4 -4,4"/>
-<text text-anchor="middle" x="133.25" y="-5.95" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="9.00" fill="#a8a8a8">Created by erdantic v1.0.5 &lt;https://github.com/drivendataorg/erdantic&gt;</text>
+<text text-anchor="middle" x="133.25" y="-5.95" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="9.00" fill="#a8a8a8">Created by erdantic v1.2.1 &lt;https://github.com/drivendataorg/erdantic&gt;</text>
 <!-- gdm.systems.distribution.controllers.distribution_capacitor_controller.VoltageCapacitorController -->
 <g id="node1" class="node">
 <title>gdm.systems.distribution.controllers.distribution_capacitor_controller.VoltageCapacitorController</title>
@@ -17,9 +17,9 @@
 <polygon fill="none" stroke="black" points="49.25,-198.5 49.25,-221 217.25,-221 217.25,-198.5 49.25,-198.5"/>
 <text text-anchor="start" x="52.25" y="-205.7" font-family="Times New Roman,Times,Liberation Serif,serif" font-weight="bold" font-size="14.00">VoltageCapacitorController</text>
 <polygon fill="none" stroke="black" points="49.25,-176 49.25,-198.5 121.62,-198.5 121.62,-176 49.25,-176"/>
-<text text-anchor="start" x="73.44" y="-182.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">uuid</text>
+<text text-anchor="start" x="80.19" y="-182.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">id</text>
 <polygon fill="none" stroke="black" points="121.62,-176 121.62,-198.5 217.25,-198.5 217.25,-176 121.62,-176"/>
-<text text-anchor="start" x="152.56" y="-182.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">UUID</text>
+<text text-anchor="start" x="142.44" y="-182.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">int | None</text>
 <polygon fill="none" stroke="black" points="49.25,-153.5 49.25,-176 121.62,-176 121.62,-153.5 49.25,-153.5"/>
 <text text-anchor="start" x="70.44" y="-159.7" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">name</text>
 <polygon fill="none" stroke="black" points="121.62,-153.5 121.62,-176 217.25,-176 217.25,-153.5 121.62,-153.5"/>
@@ -39,11 +39,11 @@
 <polygon fill="none" stroke="black" points="49.25,-63.5 49.25,-86 121.62,-86 121.62,-63.5 49.25,-63.5"/>
 <text text-anchor="start" x="55.44" y="-69.7" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">on_voltage</text>
 <polygon fill="none" stroke="black" points="121.62,-63.5 121.62,-86 217.25,-86 217.25,-63.5 121.62,-63.5"/>
-<text text-anchor="start" x="127.06" y="-69.7" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">PositiveVoltage</text>
+<text text-anchor="start" x="148.81" y="-69.7" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">Voltage</text>
 <polygon fill="none" stroke="black" points="49.25,-41 49.25,-63.5 121.62,-63.5 121.62,-41 49.25,-41"/>
 <text text-anchor="start" x="54.31" y="-47.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">off_voltage</text>
 <polygon fill="none" stroke="black" points="121.62,-41 121.62,-63.5 217.25,-63.5 217.25,-41 121.62,-41"/>
-<text text-anchor="start" x="127.06" y="-47.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">PositiveVoltage</text>
+<text text-anchor="start" x="148.81" y="-47.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">Voltage</text>
 <polygon fill="none" stroke="black" points="49.25,-18.5 49.25,-41 121.62,-41 121.62,-18.5 49.25,-18.5"/>
 <text text-anchor="start" x="64.44" y="-24.7" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">pt_ratio</text>
 <polygon fill="none" stroke="black" points="121.62,-18.5 121.62,-41 217.25,-41 217.25,-18.5 121.62,-18.5"/>

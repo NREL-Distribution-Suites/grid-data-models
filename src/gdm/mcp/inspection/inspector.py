@@ -2,7 +2,6 @@
 
 import contextlib
 from collections import defaultdict
-from uuid import UUID
 
 from gdm.systems.distribution import DistributionSystem
 
@@ -181,7 +180,7 @@ def _build_component_info(component) -> ComponentInfo:
     in_service = getattr(component, "in_service", None)
 
     return ComponentInfo(
-        uuid=component.uuid if isinstance(component.uuid, UUID) else UUID(component.uuid),
+        component_id=component.id,
         component_type=component.__class__.__name__,
         name=component.name,
         substation=substation.name if substation and hasattr(substation, "name") else None,
@@ -214,14 +213,14 @@ def query_components(
 
 def get_component_details(
     system: DistributionSystem,
-    identifier: str,
+    identifier: int | str,
 ) -> dict:
     """
     Get detailed information about a component.
 
     Args:
         system: DistributionSystem to search
-        identifier: UUID or name of component
+        identifier: System-scoped component ID or component name
 
     Returns:
         Dictionary with full component data
@@ -231,13 +230,10 @@ def get_component_details(
     """
     component = None
 
-    # Try as UUID first
-    with contextlib.suppress(Exception):
-        component = system.get_component_by_uuid(identifier)
-
-    # Try as name if UUID lookup failed
-    if component is None:
-        # Search through all components
+    if isinstance(identifier, int):
+        with contextlib.suppress(Exception):
+            component = system.get_component_by_id(identifier)
+    else:
         for comp in system.iter_all_components():
             if comp.name == identifier:
                 component = comp
@@ -254,7 +250,7 @@ def get_component_details(
     else:
         # Fallback to basic dict conversion
         return {
-            "uuid": component.uuid,
+            "id": component.id,
             "name": component.name,
             "type": component.__class__.__name__,
         }

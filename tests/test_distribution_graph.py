@@ -3,7 +3,6 @@ from io import StringIO
 from loguru import logger
 import networkx as nx
 import pytest
-from uuid import uuid4
 
 from gdm.distribution.components import (
     DistributionLoad,
@@ -46,7 +45,7 @@ def test_distribution_graph_multiple_edges_different_types(
     switch.buses = xfmr.buses
     switch.is_closed = [False, False, False]
 
-    switch_copy = switch.model_copy(update={"uuid": uuid4()})
+    switch_copy = switch.model_copy(update={"name": "parallel_switch"})
     system.add_component(switch_copy)
 
     graph_instance = system.get_undirected_graph()
@@ -65,8 +64,8 @@ def test_distribution_graph_multiple_edges(simple_distribution_system: Distribut
     switch.buses = [buses[0], buses[4]]
     switch.is_closed = [False, False, False]
 
-    for _ in range(2):
-        switch_copy = switch.model_copy(update={"uuid": uuid4()})
+    for index in range(2):
+        switch_copy = switch.model_copy(update={"name": f"parallel_switch_{index}"})
         system.add_component(switch_copy)
 
     graph_instance = system.get_undirected_graph()
@@ -120,7 +119,7 @@ def test_distribution_graph_directed_closed_switch(
     switch = MatrixImpedanceSwitch.example()
     switch.buses = [buses[0], buses[4]]
     switch.is_closed = [True, True, True]
-    switch_copy = switch.model_copy(update={"uuid": uuid4(), "name": "test_switch_123"})
+    switch_copy = switch.model_copy(update={"name": "test_switch_123"})
     system.add_component(switch_copy)
 
     assert system.has_component(switch_copy)
@@ -157,12 +156,12 @@ def test_directed_graph_multiple_loops_pruning(simple_distribution_system: Distr
     sw1 = MatrixImpedanceSwitch.example()
     sw1.buses = [buses[0], buses[4]]
     sw1.is_closed = [True, True, True]
-    system.add_component(sw1.model_copy(update={"uuid": sw1.uuid, "name": "test_switch_1"}))
+    system.add_component(sw1.model_copy(update={"name": "test_switch_1"}))
 
     sw2 = MatrixImpedanceSwitch.example()
     sw2.buses = [buses[1], buses[5]]
     sw2.is_closed = [True, True, True]
-    system.add_component(sw2.model_copy(update={"uuid": sw2.uuid, "name": "test_switch_2"}))
+    system.add_component(sw2.model_copy(update={"name": "test_switch_2"}))
 
     radial = system.get_directed_graph(return_radial_network=True)
 

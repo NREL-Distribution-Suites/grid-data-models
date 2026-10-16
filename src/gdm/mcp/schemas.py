@@ -2,7 +2,6 @@
 
 from enum import Enum
 from typing import Any, Optional
-from uuid import UUID
 
 from pydantic import BaseModel, Field
 
@@ -22,7 +21,7 @@ class ErrorType(str, Enum):
 class ValidationIssue(BaseModel):
     """A single validation issue in a component."""
 
-    component_uuid: UUID
+    component_id: int
     component_type: str
     component_name: str
     field_path: str
@@ -79,7 +78,7 @@ class FixSuggestion(BaseModel):
 class ChangeLogEntry(BaseModel):
     """A single change made during fix application."""
 
-    component_uuid: UUID
+    component_id: int
     component_type: str
     component_name: str
     field_path: str
@@ -154,7 +153,7 @@ class TopologyMetrics(BaseModel):
 class MergeConflict(BaseModel):
     """A conflict detected during merge."""
 
-    conflict_type: str  # "uuid", "name", "incompatible_settings"
+    conflict_type: str  # "name", "incompatible_settings"
     component_type: Optional[str] = None
     identifier: str
     system_indices: list[int]  # Which input systems have this conflict
@@ -203,7 +202,7 @@ class ComponentFilter(BaseModel):
 class ComponentInfo(BaseModel):
     """Basic information about a component."""
 
-    uuid: UUID
+    component_id: int
     component_type: str
     name: str
     substation: Optional[str] = None
@@ -215,7 +214,7 @@ class ComponentInfo(BaseModel):
 class TimeSeriesInfo(BaseModel):
     """Information about time series data."""
 
-    component_uuid: UUID
+    component_id: int
     component_name: str
     component_type: str
     timeseries_type: str

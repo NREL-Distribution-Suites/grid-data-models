@@ -1,7 +1,7 @@
 from infrasys import Component
 
 
-def _remove_keys_from_dict(model_dict: dict, key_names: list[str] = ["name", "uuid"]) -> dict:
+def _remove_keys_from_dict(model_dict: dict, key_names: list[str] = ["name", "id"]) -> dict:
     """Method recursively removes keys from the model
 
     Args:
@@ -27,12 +27,12 @@ def _remove_keys_from_dict(model_dict: dict, key_names: list[str] = ["name", "uu
     return model_dict
 
 
-def hash_model(model: Component, key_names: list[str] = ["name", "uuid"]) -> int:
+def hash_model(model: Component, key_names: list[str] = ["name", "id"]) -> int:
     """Return hash of the passed model
 
     Args:
         model (Component): Instance of a derived infrasys Component model
-        key_names (list[str], optional): List of keys to be removed from the model. Defaults to ["name", "uuid"].
+        key_names (list[str], optional): List of keys to be removed from the model. Defaults to ["name", "id"].
 
     Returns:
         int: model hash

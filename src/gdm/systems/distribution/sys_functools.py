@@ -4,11 +4,10 @@ from functools import singledispatch
 import pandas as pd
 
 from infrasys.time_series_models import (
-    SingleTimeSeriesMetadata,
     NonSequentialTimeSeries,
-    TimeSeriesMetadata,
     SingleTimeSeries,
     TimeSeriesData,
+    TimeSeriesKey,
 )
 from infrasys.normalization import NormalizationMax, NormalizationByValue
 from infrasys.component import Component
@@ -62,12 +61,14 @@ def _(normalization, data) -> Quantity:
 
 
 def _get_load_power(
-    load: DistributionLoad, ts_data: TimeSeriesData, metadata: TimeSeriesMetadata
+    load: DistributionLoad, ts_data: TimeSeriesData, metadata: TimeSeriesKey
 ) -> Quantity:
     """Internal function to return load power."""
 
     if metadata.features is None:
-        msg = f"The {metadata.name} data is not a GDM quantity: {metadata.get_time_series_data_type()}"
+        msg = (
+            f"The {metadata.name} data is not a GDM quantity: {metadata.time_series_type.__name__}"
+        )
         raise GDMQuantityError(msg)
 
     user_attr = UserAttributes.model_validate(metadata.features)
@@ -89,12 +90,14 @@ def _get_load_power(
 
 
 def _get_solar_power(
-    solar: DistributionSolar, ts_data: TimeSeriesData, metadata: TimeSeriesMetadata
+    solar: DistributionSolar, ts_data: TimeSeriesData, metadata: TimeSeriesKey
 ) -> Quantity:
     """Internal function to return time series data in kw"""
 
     if metadata.features is None:
-        msg = f"The {metadata.name} data is not a GDM quantity: {metadata.get_time_series_data_type()}"
+        msg = (
+            f"The {metadata.name} data is not a GDM quantity: {metadata.time_series_type.__name__}"
+        )
         raise GDMQuantityError(msg)
 
     denormalized_data = get_time_series_actual_data(ts_data)
@@ -125,11 +128,13 @@ def _get_solar_power(
 
 
 def _get_load_power_per_phase(
-    load: DistributionLoad, ts_data: TimeSeriesData, metadata: TimeSeriesMetadata
+    load: DistributionLoad, ts_data: TimeSeriesData, metadata: TimeSeriesKey
 ) -> list[tuple[Phase, Quantity]]:
     """Internal function to return per-phase load power as a list of (phase, power) tuples."""
     if metadata.features is None:
-        msg = f"The {metadata.name} data is not a GDM quantity: {metadata.get_time_series_data_type()}"
+        msg = (
+            f"The {metadata.name} data is not a GDM quantity: {metadata.time_series_type.__name__}"
+        )
         raise GDMQuantityError(msg)
 
     user_attr = UserAttributes.model_validate(metadata.features)
@@ -158,7 +163,7 @@ def _get_load_power_per_phase(
 
 
 def _get_solar_power_per_phase(
-    solar: DistributionSolar, ts_data: TimeSeriesData, metadata: TimeSeriesMetadata
+    solar: DistributionSolar, ts_data: TimeSeriesData, metadata: TimeSeriesKey
 ) -> list[tuple[Phase, Quantity]]:
     """Internal function to return per-phase solar power as a list of (phase, power) tuples.
 
@@ -169,7 +174,7 @@ def _get_solar_power_per_phase(
     return [(phase, total_power / n_phases) for phase in solar.phases]
 
 
-def _check_for_time_series_metadata_consistency(ts_metadata: list[TimeSeriesMetadata]):
+def _check_for_time_series_metadata_consistency(ts_metadata: list[TimeSeriesKey]):
     # Extract unique properties from ts_data
 
     user_attrs = [UserAttributes.model_validate(metadata.features) for metadata in ts_metadata]
@@ -268,7 +273,7 @@ def get_aggregated_solar_time_series(
     times_series_sample = ts_components[0]
     _check_for_time_series_consistency(times_series_sample, ts_components)
 
-    ts_metadata: list[TimeSeriesMetadata] = [
+    ts_metadata: list[TimeSeriesKey] = [
         sys.list_time_series_metadata(solar, var_name, time_series_type=time_series_type)[0]
         for solar in solars
     ]
@@ -316,7 +321,7 @@ def get_aggregated_battery_time_series(
         sys.get_time_series(battery, var_name) for battery in batteries
     ]
     _check_for_time_series_consistency(ts_components)
-    ts_metadata: list[SingleTimeSeriesMetadata] = [
+    ts_metadata: list[TimeSeriesKey] = [
         sys.list_time_series_metadata(battery, var_name)[0] for battery in batteries
     ]
     _check_for_time_series_metadata_consistency(ts_metadata)
@@ -369,7 +374,7 @@ def get_aggregated_load_time_series(
     times_series_sample = ts_components[0]
 
     _check_for_time_series_consistency(times_series_sample, ts_components)
-    ts_metadata: list[TimeSeriesMetadata] = [
+    ts_metadata: list[TimeSeriesKey] = [
         sys.list_time_series_metadata(load, var_name, time_series_type=time_series_type)[0]
         for load in loads
     ]
@@ -416,7 +421,7 @@ def _convert_power_value(power_data, var: str, unit_conversion: dict[str, str]):
     return power_data, power_data.units
 
 
-def _extract_features_cols(metadata: TimeSeriesMetadata) -> dict:
+def _extract_features_cols(metadata: TimeSeriesKey) -> dict:
     """Extract scalar feature values from metadata, excluding use_actual.
 
     Returns scalars (one value per feature). Final DataFrame assembly expands
@@ -429,7 +434,7 @@ def _assemble_dataframe(rows: list[dict]) -> pd.DataFrame:
     """Assemble a DataFrame from a list of row dicts produced by _build_power_row_df.
 
     Concatenates ndarray columns (value, timestamp) and repeats scalar columns
-    (name, component_uuid, units, phase, features) to match lengths.
+    (name, component_id, units, phase, features) to match lengths.
     """
     if not rows:
         return pd.DataFrame()
@@ -444,19 +449,22 @@ def _assemble_dataframe(rows: list[dict]) -> pd.DataFrame:
     for k in scalar_keys:
         merged[k] = np.repeat(np.array([r[k] for r in rows], dtype=object), lengths)
 
-    # Preserve original column order: timestamp, name, component_uuid, [phase], value, units, *features
-    column_order = ["timestamp", "name", "component_uuid"]
+    # Preserve column order: timestamp, name, component_id, [phase], value, units, *features
+    column_order = ["timestamp", "name", "component_id"]
     if "phase" in merged:
         column_order.append("phase")
     column_order += ["value", "units"]
     column_order += [k for k in scalar_keys if k not in column_order]
-    return pd.DataFrame({k: merged[k] for k in column_order})
+    dataframe = pd.DataFrame({k: merged[k] for k in column_order})
+    if "phase" in dataframe:
+        dataframe["phase"] = pd.Series(merged["phase"], dtype=object)
+    return dataframe
 
 
 def _build_power_row_df(
     timestamps,
     var: str,
-    component_uuid,
+    component_id,
     length: int,
     power_data,
     unit_conversion: dict[str, str],
@@ -477,7 +485,7 @@ def _build_power_row_df(
         "__length__": length,
         "timestamp": timestamp_arr,
         "name": var,
-        "component_uuid": component_uuid,
+        "component_id": component_id,
     }
     if phase is not None:
         row["phase"] = phase
@@ -529,7 +537,7 @@ def _collect_component_rows(
                     _build_power_row_df(
                         timestamps,
                         metadata.name,
-                        component.uuid,
+                        component.id,
                         ts_data.length,
                         power_data,
                         unit_conversion,
@@ -543,7 +551,7 @@ def _collect_component_rows(
                 _build_power_row_df(
                     timestamps,
                     metadata.name,
-                    component.uuid,
+                    component.id,
                     ts_data.length,
                     power_data,
                     unit_conversion,

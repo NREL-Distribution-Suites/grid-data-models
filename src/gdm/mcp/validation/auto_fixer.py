@@ -56,8 +56,7 @@ def apply_fixes(
             continue
 
         try:
-            # Get the component by UUID
-            component = fixed_system.get_component_by_uuid(str(suggestion.issue.component_uuid))
+            component = fixed_system.get_component_by_id(suggestion.issue.component_id)
             if component is None:
                 fixes_failed += 1
                 failed_issues.append(suggestion.issue)
@@ -113,7 +112,7 @@ def _apply_phase_fix(
         # Log the change
         change_log.append(
             ChangeLogEntry(
-                component_uuid=suggestion.issue.component_uuid,
+                component_id=suggestion.issue.component_id,
                 component_type=suggestion.issue.component_type,
                 component_name=suggestion.issue.component_name,
                 field_path=field_path,
@@ -178,7 +177,7 @@ def _apply_matrix_fix(
         # Log the change
         change_log.append(
             ChangeLogEntry(
-                component_uuid=suggestion.issue.component_uuid,
+                component_id=suggestion.issue.component_id,
                 component_type=suggestion.issue.component_type,
                 component_name=suggestion.issue.component_name,
                 field_path=field_path,
@@ -238,7 +237,7 @@ def _apply_array_fix(
         # Log the change
         change_log.append(
             ChangeLogEntry(
-                component_uuid=suggestion.issue.component_uuid,
+                component_id=suggestion.issue.component_id,
                 component_type=suggestion.issue.component_type,
                 component_name=suggestion.issue.component_name,
                 field_path=field_path,

@@ -3,6 +3,7 @@
 from collections import defaultdict
 from typing import Optional
 
+from gdm.systems.component_utils import clone_components
 from gdm.systems.distribution import DistributionSystem
 from gdm.systems.distribution.components import DistributionBus
 
@@ -88,17 +89,23 @@ def _create_subsystem(
     warnings: list[str],
 ) -> DistributionSystem:
     """Create a subsystem from a list of components."""
-    subsystem = DistributionSystem(name=subsystem_name)
+    subsystem = DistributionSystem(name=subsystem_name, auto_add_composed_components=True)
+    component_copies, copies_by_source_id = clone_components(components)
 
-    for component in components:
-        subsystem.add_component(component)
+    for component, component_copy in zip(components, component_copies):
+        if not subsystem.has_component(component_copy):
+            subsystem.add_component(component_copy)
 
         if keep_timeseries and system.has_time_series(component):
             try:
                 for ts_metadata in system.list_time_series_metadata(component):
-                    ts_type = type(ts_metadata)
-                    ts_data = system.get_time_series(component, ts_metadata.variable_name, ts_type)
-                    subsystem.add_time_series(ts_data, component, **ts_metadata.features)
+                    ts_type = ts_metadata.time_series_type
+                    ts_data = system.get_time_series(component, ts_metadata.name, ts_type)
+                    subsystem.add_time_series(
+                        ts_data,
+                        copies_by_source_id[component.id],
+                        **ts_metadata.features,
+                    )
             except Exception as e:
                 warnings.append(f"Failed to transfer time series for {component.name}: {str(e)}")
 
@@ -127,6 +134,7 @@ def _split_by_field(
     """
     warnings: list[str] = []
     component_groups, bus_groups = _group_components(system, field_name)
+    system_name = system.name or "unnamed"
 
     # Remove None group if not including unassigned
     unassigned_count = len(component_groups.get(None, []))
@@ -142,7 +150,7 @@ def _split_by_field(
 
     for field_value, components in component_groups.items():
         subsystem_name = (
-            f"{system.name}_unassigned" if field_value is None else f"{system.name}_{field_value}"
+            f"{system_name}_unassigned" if field_value is None else f"{system_name}_{field_value}"
         )
 
         try:
@@ -165,7 +173,7 @@ def _split_by_field(
     if not subsystems:
         return {}, SplitReport(
             success=False,
-            input_system_name=system.name,
+            input_system_name=system_name,
             output_count=0,
             split_by=split_by,
             error_message=f"No subsystems created. System may not have {field_name} assignments.",
@@ -173,7 +181,7 @@ def _split_by_field(
 
     return subsystems, SplitReport(
         success=True,
-        input_system_name=system.name,
+        input_system_name=system_name,
         output_count=len(subsystems),
         split_by=split_by,
         subsystems=subsystem_counts,

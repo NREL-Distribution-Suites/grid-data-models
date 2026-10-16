@@ -1,9 +1,9 @@
 """System merger for combining multiple distribution systems."""
 
 from collections import defaultdict
-from uuid import UUID
 
 from gdm.systems.distribution import DistributionSystem
+from gdm.systems.component_utils import clone_components
 
 from gdm.mcp.exceptions import MergeConflictError
 from gdm.mcp.schemas import MergeConflict, MergeReport
@@ -13,39 +13,24 @@ from gdm.mcp.validation.diagnostics import diagnose_system
 def _detect_conflicts(
     systems: list[DistributionSystem],
 ) -> list[MergeConflict]:
-    """Detect UUID and name conflicts across systems."""
+    """Detect component name conflicts across systems."""
     conflicts: list[MergeConflict] = []
-    uuid_map: dict[UUID, list[int]] = defaultdict(list)
-    name_map: dict[tuple[str, str], list[int]] = defaultdict(list)
+    name_map: dict[tuple[str, str], set[int]] = defaultdict(set)
 
     for idx, system in enumerate(systems):
         for component in system.iter_all_components():
-            component_uuid = (
-                component.uuid if isinstance(component.uuid, UUID) else UUID(component.uuid)
-            )
-            uuid_map[component_uuid].append(idx)
-            name_map[(component.__class__.__name__, component.name)].append(idx)
-
-    for uuid, system_indices in uuid_map.items():
-        if len(system_indices) > 1:
-            conflicts.append(
-                MergeConflict(
-                    conflict_type="uuid",
-                    identifier=str(uuid),
-                    system_indices=system_indices,
-                    details=f"UUID {uuid} found in systems {system_indices}",
-                )
-            )
+            name_map[(component.__class__.__name__, component.name)].add(idx)
 
     for (comp_type, comp_name), system_indices in name_map.items():
         if len(system_indices) > 1:
+            indices = sorted(system_indices)
             conflicts.append(
                 MergeConflict(
                     conflict_type="name",
                     component_type=comp_type,
                     identifier=comp_name,
-                    system_indices=system_indices,
-                    details=f"{comp_type} '{comp_name}' found in systems {system_indices}",
+                    system_indices=indices,
+                    details=f"{comp_type} '{comp_name}' found in systems {indices}",
                 )
             )
 
@@ -54,14 +39,10 @@ def _detect_conflicts(
 
 def _should_skip_component(component, system_idx: int, conflicts: list[MergeConflict]) -> bool:
     """Check if a component should be skipped due to conflicts."""
-    component_uuid = component.uuid if isinstance(component.uuid, UUID) else UUID(component.uuid)
     component_type = component.__class__.__name__
 
     for conflict in conflicts:
-        if conflict.conflict_type == "uuid" and str(component_uuid) == conflict.identifier:
-            if system_idx in conflict.system_indices[1:]:
-                return True
-        elif (
+        if (
             conflict.conflict_type == "name"
             and component_type == conflict.component_type
             and component.name == conflict.identifier
@@ -73,6 +54,7 @@ def _should_skip_component(component, system_idx: int, conflicts: list[MergeConf
 
 def _merge_component(
     component,
+    merged_component,
     source_system: DistributionSystem,
     merged_system: DistributionSystem,
     components_by_type: dict[str, int],
@@ -82,17 +64,15 @@ def _merge_component(
     """Merge a single component and its time series. Returns (components_added, ts_transferred)."""
     component_type = component.__class__.__name__
     try:
-        merged_system.add_component(component)
+        merged_system.add_component(merged_component)
         components_by_type[component_type] += 1
 
         ts_count = 0
         if source_system.has_time_series(component):
             for ts_metadata in source_system.list_time_series_metadata(component):
-                ts_type = type(ts_metadata)
-                ts_data = source_system.get_time_series(
-                    component, ts_metadata.variable_name, ts_type
-                )
-                merged_system.add_time_series(ts_data, component, **ts_metadata.features)
+                ts_type = ts_metadata.time_series_type
+                ts_data = source_system.get_time_series(component, ts_metadata.name, ts_type)
+                merged_system.add_time_series(ts_data, merged_component, **ts_metadata.features)
                 ts_count += 1
 
         return 1, ts_count
@@ -144,7 +124,10 @@ def merge_systems(
     timeseries_transferred = 0
 
     for system_idx, system in enumerate(systems):
-        for component in system.iter_all_components():
+        source_components = list(system.iter_all_components())
+        component_copies, copies_by_source_id = clone_components(source_components)
+
+        for component, component_copy in zip(source_components, component_copies):
             if _should_skip_component(component, system_idx, conflicts):
                 component_type = component.__class__.__name__
                 warnings.append(
@@ -153,7 +136,13 @@ def merge_systems(
                 continue
 
             added, ts = _merge_component(
-                component, system, merged_system, components_by_type, warnings, system_idx
+                component,
+                copies_by_source_id[component.id],
+                system,
+                merged_system,
+                components_by_type,
+                warnings,
+                system_idx,
             )
             total_components += added
             timeseries_transferred += ts

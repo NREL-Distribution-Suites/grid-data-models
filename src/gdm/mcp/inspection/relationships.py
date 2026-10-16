@@ -1,7 +1,6 @@
 """Component relationship analysis tools."""
 
 import contextlib
-from uuid import UUID
 
 from gdm.systems.distribution import DistributionSystem
 
@@ -31,9 +30,7 @@ def find_orphaned_components(system: DistributionSystem) -> list[ComponentInfo]:
 
             orphaned.append(
                 ComponentInfo(
-                    uuid=component.uuid
-                    if isinstance(component.uuid, UUID)
-                    else UUID(component.uuid),
+                    component_id=component.id,
                     component_type=component.__class__.__name__,
                     name=component.name,
                     substation=None,
@@ -54,7 +51,7 @@ def _to_component_info(comp) -> ComponentInfo:
     in_service = getattr(comp, "in_service", None)
 
     return ComponentInfo(
-        uuid=comp.uuid if isinstance(comp.uuid, UUID) else UUID(comp.uuid),
+        component_id=comp.id,
         component_type=comp.__class__.__name__,
         name=comp.name,
         substation=substation.name if substation and hasattr(substation, "name") else None,
@@ -64,47 +61,40 @@ def _to_component_info(comp) -> ComponentInfo:
     )
 
 
-def _is_child_of(component, target_uuid) -> bool:
+def _is_child_of(component, target_component_id: int) -> bool:
     """Check if component references the target component (i.e., is a child)."""
     for attr in ["bus", "buses", "equipment", "controller"]:
         ref = getattr(component, attr, None)
         if ref is None:
             continue
         # Handle single reference
-        if hasattr(ref, "uuid") and ref.uuid == target_uuid:
+        if getattr(ref, "id", None) == target_component_id:
             return True
         # Handle list of references
         if isinstance(ref, list):
             for item in ref:
-                if hasattr(item, "uuid") and item.uuid == target_uuid:
+                if getattr(item, "id", None) == target_component_id:
                     return True
     return False
 
 
 def get_component_relationships(
     system: DistributionSystem,
-    component_id: str,
+    component_id: int,
 ) -> dict[str, list[ComponentInfo]]:
     """
     Get parent and child relationships for a component.
 
     Args:
         system: DistributionSystem to search
-        component_id: UUID or name of component
+        component_id: ID of a component in the supplied System
 
     Returns:
         Dictionary with 'parents' and 'children' lists of ComponentInfo
     """
-    # Find the component
     component = None
-    try:
-        component = system.get_component_by_uuid(component_id)
-    except Exception:
-        # Try by name
-        for comp in system.iter_all_components():
-            if comp.name == component_id:
-                component = comp
-                break
+    with contextlib.suppress(Exception):
+        component = system.get_component_by_id(component_id)
 
     if component is None:
         return {"parents": [], "children": [], "error": f"Component not found: {component_id}"}
@@ -116,11 +106,11 @@ def get_component_relationships(
         parents = [_to_component_info(parent) for parent in parent_components]
 
     # Get child components (components that reference this one)
-    component_uuid = component.uuid
+    component_id = component.id
     children = [
         _to_component_info(other_comp)
         for other_comp in system.iter_all_components()
-        if other_comp.uuid != component_uuid and _is_child_of(other_comp, component_uuid)
+        if other_comp.id != component_id and _is_child_of(other_comp, component_id)
     ]
 
     return {

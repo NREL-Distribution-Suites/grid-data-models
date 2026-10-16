@@ -291,7 +291,7 @@ def test_load_per_phase(ts_system):
         load for load in loads if len(load.phases) == 3 and Phase.A in load.phases
     )
     phase_a_rows = df[
-        (df["component_uuid"] == three_phase_load.uuid) & (df["phase"] == Phase.A)
+        (df["component_id"] == three_phase_load.id) & (df["phase"] == Phase.A)
     ].sort_values("timestamp")
     phase_peak_kvar = (
         three_phase_load.equipment.phase_loads[0].reactive_power.to("kilovar").magnitude
@@ -324,13 +324,11 @@ def test_solar_per_phase(ts_system):
     )
     for pv in pvs:
         n_phases = len(pv.phases)
-        agg_vals = (
-            agg_df[agg_df["component_uuid"] == pv.uuid].sort_values("timestamp")["value"].values
-        )
+        agg_vals = agg_df[agg_df["component_id"] == pv.id].sort_values("timestamp")["value"].values
         for phase in pv.phases:
             phase_vals = (
                 per_phase_df[
-                    (per_phase_df["component_uuid"] == pv.uuid) & (per_phase_df["phase"] == phase)
+                    (per_phase_df["component_id"] == pv.id) & (per_phase_df["phase"] == phase)
                 ]
                 .sort_values("timestamp")["value"]
                 .values

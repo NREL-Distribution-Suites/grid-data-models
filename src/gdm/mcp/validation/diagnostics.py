@@ -3,7 +3,6 @@
 import contextlib
 import traceback
 from typing import Any
-from uuid import UUID
 
 from gdm.systems.distribution import DistributionSystem
 from pydantic import ValidationError as PydanticValidationError
@@ -17,7 +16,7 @@ from gdm.mcp.schemas import (
 
 def _collect_check_issues(
     raw_issues: list[dict],
-    component_uuid: UUID,
+    component_id: int,
     component_type: str,
     component_name: str,
     error_type: ErrorType,
@@ -25,7 +24,7 @@ def _collect_check_issues(
     """Convert raw check results into ValidationIssue objects."""
     return [
         ValidationIssue(
-            component_uuid=component_uuid,
+            component_id=component_id,
             component_type=component_type,
             component_name=component_name,
             field_path=issue["field"],
@@ -40,7 +39,7 @@ def _collect_check_issues(
 
 def _diagnose_component(
     component: Any,
-    component_uuid: UUID,
+    component_id: int,
     component_type: str,
     component_name: str,
 ) -> list[ValidationIssue]:
@@ -58,7 +57,7 @@ def _diagnose_component(
         if raw:
             issues.extend(
                 _collect_check_issues(
-                    raw, component_uuid, component_type, component_name, error_type
+                    raw, component_id, component_type, component_name, error_type
                 )
             )
 
@@ -81,15 +80,13 @@ def diagnose_system(system: DistributionSystem) -> ValidationReport:
 
     for component in system.iter_all_components():
         total_components += 1
-        component_uuid = (
-            component.uuid if isinstance(component.uuid, UUID) else UUID(component.uuid)
-        )
+        component_id = component.id
         component_type = component.__class__.__name__
         component_name = component.name
 
         try:
             comp_issues = _diagnose_component(
-                component, component_uuid, component_type, component_name
+                component, component_id, component_type, component_name
             )
             if comp_issues:
                 issues.extend(comp_issues)
@@ -100,7 +97,7 @@ def diagnose_system(system: DistributionSystem) -> ValidationReport:
             for error in e.errors():
                 issues.append(
                     ValidationIssue(
-                        component_uuid=component_uuid,
+                        component_id=component_id,
                         component_type=component_type,
                         component_name=component_name,
                         field_path=".".join(str(loc) for loc in error["loc"]),
@@ -112,7 +109,7 @@ def diagnose_system(system: DistributionSystem) -> ValidationReport:
         except Exception as e:
             issues.append(
                 ValidationIssue(
-                    component_uuid=component_uuid,
+                    component_id=component_id,
                     component_type=component_type,
                     component_name=component_name,
                     field_path="unknown",

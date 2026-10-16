@@ -164,7 +164,7 @@ def _aggregate_subtree_components(
     reduced_system: DistributionSystem,
     model_types: list[Type[Component]],
     source_bus_names: list[str],
-    aggregated_component_uuids: set[uuid.UUID],
+    aggregated_component_ids: set[int],
     target_bus: DistributionBus,
     split_phase_mapping: dict[str, set[Phase]],
     agg_time_series: bool,
@@ -174,11 +174,11 @@ def _aggregate_subtree_components(
     for model_type in model_types:
         model_components = [
             component
-            for component in subtree_system.get_components(model_type)
-            if component.uuid not in aggregated_component_uuids
+            for component in dist_system.get_components(model_type)
+            if component.id not in aggregated_component_ids
             and getattr(component, "bus", None).name in source_bus_names
         ]
-        aggregated_component_uuids.update(component.uuid for component in model_components)
+        aggregated_component_ids.update(component.id for component in model_components)
         if not model_components:
             continue
         agg_component = _get_aggregated_bus_component(
@@ -242,7 +242,7 @@ def _reduce_system(
     reduced_network_tree = original_tree.subgraph(bus_subset)
     retained_bus_names = set(bus_subset)
     aggregated_bus_names: set[str] = set()
-    aggregated_component_uuids: set[uuid.UUID] = set()
+    aggregated_component_ids: set[int] = set()
     ts_agg_func_mapper: dict[Union[Type[DistributionLoad], Type[DistributionSolar]], Callable] = {
         DistributionLoad: get_aggregated_load_time_series,
         DistributionSolar: get_aggregated_solar_time_series,
@@ -277,7 +277,7 @@ def _reduce_system(
                 reduced_system,
                 model_types,
                 successors_descendants,
-                aggregated_component_uuids,
+                aggregated_component_ids,
                 reduced_system.get_component(DistributionBus, node),
                 split_phase_mapping,
                 agg_time_series,
@@ -362,7 +362,7 @@ def _cycle_components(
     Components are deduplicated and returned sorted by name so that any
     downstream selection is deterministic.
     """
-    seen: dict[uuid.UUID, DistributionBranchBase] = {}
+    seen: dict[int, DistributionBranchBase] = {}
     for i in range(len(cycle)):
         bus_1, bus_2 = cycle[i], cycle[(i + 1) % len(cycle)]
         if not graph.has_edge(bus_1, bus_2):
@@ -371,7 +371,7 @@ def _cycle_components(
             component_type = data["type"]
             if is_candidate(component_type):
                 component = system.get_component(component_type, data["name"])
-                seen.setdefault(component.uuid, component)
+                seen.setdefault(component.id, component)
     return sorted(seen.values(), key=lambda component: component.name)
 
 
@@ -410,7 +410,6 @@ def _convert_line_to_open_switch(
         name=name,
         is_closed=[False] * len(line.phases),
         equipment=_switch_equipment_from_branch(line),
-        uuid=uuid.uuid5(uuid.NAMESPACE_URL, f"gdm.radial_switch.{name}"),
     )
     system.remove_component(line)
     system.add_component(switch)

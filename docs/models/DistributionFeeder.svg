@@ -9,21 +9,21 @@
 <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 90)">
 <title>Entity Relationship Diagram created by erdantic</title>
 <polygon fill="white" stroke="none" points="-4,4 -4,-90 270.5,-90 270.5,4 -4,4"/>
-<text text-anchor="middle" x="133.25" y="-5.95" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="9.00" fill="#a8a8a8">Created by erdantic v1.0.5 &lt;https://github.com/drivendataorg/erdantic&gt;</text>
+<text text-anchor="middle" x="133.25" y="-5.95" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="9.00" fill="#a8a8a8">Created by erdantic v1.2.1 &lt;https://github.com/drivendataorg/erdantic&gt;</text>
 <!-- gdm.systems.distribution.components.distribution_feeder.DistributionFeeder -->
 <g id="node1" class="node">
 <title>gdm.systems.distribution.components.distribution_feeder.DistributionFeeder</title>
 <g id="a_node1"><a xlink:title="gdm.systems.distribution.components.distribution_feeder.DistributionFeeder&#10;&#10;Class interface for distribution feeder.&#10;">
 <polygon fill="none" stroke="black" points="75.12,-63.5 75.12,-86 191.38,-86 191.38,-63.5 75.12,-63.5"/>
 <text text-anchor="start" x="78.12" y="-70.7" font-family="Times New Roman,Times,Liberation Serif,serif" font-weight="bold" font-size="14.00">DistributionFeeder</text>
-<polygon fill="none" stroke="black" points="75.12,-41 75.12,-63.5 131.38,-63.5 131.38,-41 75.12,-41"/>
-<text text-anchor="start" x="91.25" y="-47.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">uuid</text>
-<polygon fill="none" stroke="black" points="131.38,-41 131.38,-63.5 191.38,-63.5 191.38,-41 131.38,-41"/>
-<text text-anchor="start" x="144.5" y="-47.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">UUID</text>
-<polygon fill="none" stroke="black" points="75.12,-18.5 75.12,-41 131.38,-41 131.38,-18.5 75.12,-18.5"/>
-<text text-anchor="start" x="88.25" y="-24.7" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">name</text>
-<polygon fill="none" stroke="black" points="131.38,-18.5 131.38,-41 191.38,-41 191.38,-18.5 131.38,-18.5"/>
-<text text-anchor="start" x="154.62" y="-24.7" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">str</text>
+<polygon fill="none" stroke="black" points="75.12,-41 75.12,-63.5 121.25,-63.5 121.25,-41 75.12,-41"/>
+<text text-anchor="start" x="92.94" y="-47.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">id</text>
+<polygon fill="none" stroke="black" points="121.25,-41 121.25,-63.5 191.38,-63.5 191.38,-41 121.25,-41"/>
+<text text-anchor="start" x="129.31" y="-47.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">int | None</text>
+<polygon fill="none" stroke="black" points="75.12,-18.5 75.12,-41 121.25,-41 121.25,-18.5 75.12,-18.5"/>
+<text text-anchor="start" x="83.19" y="-24.7" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">name</text>
+<polygon fill="none" stroke="black" points="121.25,-18.5 121.25,-41 191.38,-41 191.38,-18.5 121.25,-18.5"/>
+<text text-anchor="start" x="149.56" y="-24.7" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">str</text>
 </a>
 </g>
 </g>

@@ -9,21 +9,21 @@
 <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 220)">
 <title>Entity Relationship Diagram created by erdantic</title>
 <polygon fill="white" stroke="none" points="-4,4 -4,-220 727,-220 727,4 -4,4"/>
-<text text-anchor="middle" x="361.5" y="-5.95" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="9.00" fill="#a8a8a8">Created by erdantic v1.0.5 &lt;https://github.com/drivendataorg/erdantic&gt;</text>
+<text text-anchor="middle" x="361.5" y="-5.95" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="9.00" fill="#a8a8a8">Created by erdantic v1.2.1 &lt;https://github.com/drivendataorg/erdantic&gt;</text>
 <!-- gdm.systems.distribution.controllers.base.inverter_controller_base.ActivePowerInverterControllerBase -->
 <g id="node1" class="node">
 <title>gdm.systems.distribution.controllers.base.inverter_controller_base.ActivePowerInverterControllerBase</title>
 <g id="a_node1"><a xlink:title="gdm.systems.distribution.controllers.base.inverter_controller_base.ActivePowerInverterControllerBase&#10;&#10;Data model for Inverter controllers that control active power.&#10;">
 <polygon fill="none" stroke="black" points="501.38,-167.5 501.38,-190 716.62,-190 716.62,-167.5 501.38,-167.5"/>
 <text text-anchor="start" x="504.38" y="-174.7" font-family="Times New Roman,Times,Liberation Serif,serif" font-weight="bold" font-size="14.00">ActivePowerInverterControllerBase</text>
-<polygon fill="none" stroke="black" points="501.38,-145 501.38,-167.5 607.12,-167.5 607.12,-145 501.38,-145"/>
-<text text-anchor="start" x="542.25" y="-151.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">uuid</text>
-<polygon fill="none" stroke="black" points="607.12,-145 607.12,-167.5 716.62,-167.5 716.62,-145 607.12,-145"/>
-<text text-anchor="start" x="645" y="-151.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">UUID</text>
-<polygon fill="none" stroke="black" points="501.38,-122.5 501.38,-145 607.12,-145 607.12,-122.5 501.38,-122.5"/>
-<text text-anchor="start" x="539.25" y="-128.7" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">name</text>
-<polygon fill="none" stroke="black" points="607.12,-122.5 607.12,-145 716.62,-145 716.62,-122.5 607.12,-122.5"/>
-<text text-anchor="start" x="655.12" y="-128.7" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">str</text>
+<polygon fill="none" stroke="black" points="501.38,-145 501.38,-167.5 597,-167.5 597,-145 501.38,-145"/>
+<text text-anchor="start" x="543.94" y="-151.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">id</text>
+<polygon fill="none" stroke="black" points="597,-145 597,-167.5 716.62,-167.5 716.62,-145 597,-145"/>
+<text text-anchor="start" x="629.81" y="-151.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">int | None</text>
+<polygon fill="none" stroke="black" points="501.38,-122.5 501.38,-145 597,-145 597,-122.5 501.38,-122.5"/>
+<text text-anchor="start" x="534.19" y="-128.7" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">name</text>
+<polygon fill="none" stroke="black" points="597,-122.5 597,-145 716.62,-145 716.62,-122.5 597,-122.5"/>
+<text text-anchor="start" x="650.06" y="-128.7" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">str</text>
 </a>
 </g>
 </g>
@@ -33,14 +33,14 @@
 <g id="a_node2"><a xlink:title="gdm.systems.distribution.controllers.base.inverter_controller_base.ReactivePowerInverterControllerBase&#10;&#10;Data model for Inverter controllers that control reactive power.&#10;">
 <polygon fill="none" stroke="black" points="495,-63.5 495,-86 723,-86 723,-63.5 495,-63.5"/>
 <text text-anchor="start" x="498" y="-70.7" font-family="Times New Roman,Times,Liberation Serif,serif" font-weight="bold" font-size="14.00">ReactivePowerInverterControllerBase</text>
-<polygon fill="none" stroke="black" points="495,-41 495,-63.5 607.12,-63.5 607.12,-41 495,-41"/>
-<text text-anchor="start" x="539.06" y="-47.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">uuid</text>
-<polygon fill="none" stroke="black" points="607.12,-41 607.12,-63.5 723,-63.5 723,-41 607.12,-41"/>
-<text text-anchor="start" x="648.19" y="-47.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">UUID</text>
-<polygon fill="none" stroke="black" points="495,-18.5 495,-41 607.12,-41 607.12,-18.5 495,-18.5"/>
-<text text-anchor="start" x="536.06" y="-24.7" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">name</text>
-<polygon fill="none" stroke="black" points="607.12,-18.5 607.12,-41 723,-41 723,-18.5 607.12,-18.5"/>
-<text text-anchor="start" x="658.31" y="-24.7" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">str</text>
+<polygon fill="none" stroke="black" points="495,-41 495,-63.5 597,-63.5 597,-41 495,-41"/>
+<text text-anchor="start" x="540.75" y="-47.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">id</text>
+<polygon fill="none" stroke="black" points="597,-41 597,-63.5 723,-63.5 723,-41 597,-41"/>
+<text text-anchor="start" x="633" y="-47.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">int | None</text>
+<polygon fill="none" stroke="black" points="495,-18.5 495,-41 597,-41 597,-18.5 495,-18.5"/>
+<text text-anchor="start" x="531" y="-24.7" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">name</text>
+<polygon fill="none" stroke="black" points="597,-18.5 597,-41 723,-41 723,-18.5 597,-18.5"/>
+<text text-anchor="start" x="653.25" y="-24.7" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">str</text>
 </a>
 </g>
 </g>
@@ -51,9 +51,9 @@
 <polygon fill="none" stroke="black" points="0,-193.5 0,-216 387,-216 387,-193.5 0,-193.5"/>
 <text text-anchor="start" x="139.12" y="-200.7" font-family="Times New Roman,Times,Liberation Serif,serif" font-weight="bold" font-size="14.00">InverterController</text>
 <polygon fill="none" stroke="black" points="0,-171 0,-193.5 135,-193.5 135,-171 0,-171"/>
-<text text-anchor="start" x="55.5" y="-177.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">uuid</text>
+<text text-anchor="start" x="62.25" y="-177.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">id</text>
 <polygon fill="none" stroke="black" points="135,-171 135,-193.5 387,-193.5 387,-171 135,-171"/>
-<text text-anchor="start" x="244.12" y="-177.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">UUID</text>
+<text text-anchor="start" x="234" y="-177.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">int | None</text>
 <polygon fill="none" stroke="black" points="0,-148.5 0,-171 135,-171 135,-148.5 0,-148.5"/>
 <text text-anchor="start" x="52.5" y="-154.7" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">name</text>
 <polygon fill="none" stroke="black" points="135,-148.5 135,-171 387,-171 387,-148.5 135,-148.5"/>

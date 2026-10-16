@@ -9,29 +9,29 @@
 <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 359.5)">
 <title>Entity Relationship Diagram created by erdantic</title>
 <polygon fill="white" stroke="none" points="-4,4 -4,-359.5 559.75,-359.5 559.75,4 -4,4"/>
-<text text-anchor="middle" x="277.88" y="-5.95" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="9.00" fill="#a8a8a8">Created by erdantic v1.0.5 &lt;https://github.com/drivendataorg/erdantic&gt;</text>
+<text text-anchor="middle" x="277.88" y="-5.95" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="9.00" fill="#a8a8a8">Created by erdantic v1.2.1 &lt;https://github.com/drivendataorg/erdantic&gt;</text>
 <!-- gdm.systems.distribution.common.curve.TimeCurrentCurve -->
 <g id="node1" class="node">
 <title>gdm.systems.distribution.common.curve.TimeCurrentCurve</title>
 <g id="a_node1"><a xlink:title="gdm.systems.distribution.common.curve.TimeCurrentCurve&#10;&#10;An interface for time current curve.&#10;">
 <polygon fill="none" stroke="black" points="405,-216 405,-238.5 525,-238.5 525,-216 405,-216"/>
 <text text-anchor="start" x="408" y="-223.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-weight="bold" font-size="14.00">TimeCurrentCurve</text>
-<polygon fill="none" stroke="black" points="405,-193.5 405,-216 466.12,-216 466.12,-193.5 405,-193.5"/>
-<text text-anchor="start" x="423.56" y="-199.7" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">uuid</text>
-<polygon fill="none" stroke="black" points="466.12,-193.5 466.12,-216 525,-216 525,-193.5 466.12,-193.5"/>
-<text text-anchor="start" x="478.69" y="-199.7" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">UUID</text>
-<polygon fill="none" stroke="black" points="405,-171 405,-193.5 466.12,-193.5 466.12,-171 405,-171"/>
-<text text-anchor="start" x="420.56" y="-177.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">name</text>
-<polygon fill="none" stroke="black" points="466.12,-171 466.12,-193.5 525,-193.5 525,-171 466.12,-171"/>
-<text text-anchor="start" x="488.81" y="-177.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">str</text>
-<polygon fill="none" stroke="black" points="405,-148.5 405,-171 466.12,-171 466.12,-148.5 405,-148.5"/>
-<text text-anchor="start" x="413.81" y="-154.7" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">curve_x</text>
-<polygon fill="none" stroke="black" points="466.12,-148.5 466.12,-171 525,-171 525,-148.5 466.12,-148.5"/>
-<text text-anchor="start" x="474.94" y="-154.7" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">Current</text>
-<polygon fill="none" stroke="black" points="405,-126 405,-148.5 466.12,-148.5 466.12,-126 405,-126"/>
-<text text-anchor="start" x="413.81" y="-132.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">curve_y</text>
-<polygon fill="none" stroke="black" points="466.12,-126 466.12,-148.5 525,-148.5 525,-126 466.12,-126"/>
-<text text-anchor="start" x="480.94" y="-132.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">Time</text>
+<polygon fill="none" stroke="black" points="405,-193.5 405,-216 459.75,-216 459.75,-193.5 405,-193.5"/>
+<text text-anchor="start" x="427.12" y="-199.7" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">id</text>
+<polygon fill="none" stroke="black" points="459.75,-193.5 459.75,-216 525,-216 525,-193.5 459.75,-193.5"/>
+<text text-anchor="start" x="465.38" y="-199.7" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">int | None</text>
+<polygon fill="none" stroke="black" points="405,-171 405,-193.5 459.75,-193.5 459.75,-171 405,-171"/>
+<text text-anchor="start" x="417.38" y="-177.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">name</text>
+<polygon fill="none" stroke="black" points="459.75,-171 459.75,-193.5 525,-193.5 525,-171 459.75,-171"/>
+<text text-anchor="start" x="485.62" y="-177.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">str</text>
+<polygon fill="none" stroke="black" points="405,-148.5 405,-171 459.75,-171 459.75,-148.5 405,-148.5"/>
+<text text-anchor="start" x="410.62" y="-154.7" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">curve_x</text>
+<polygon fill="none" stroke="black" points="459.75,-148.5 459.75,-171 525,-171 525,-148.5 459.75,-148.5"/>
+<text text-anchor="start" x="471.75" y="-154.7" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">Current</text>
+<polygon fill="none" stroke="black" points="405,-126 405,-148.5 459.75,-148.5 459.75,-126 405,-126"/>
+<text text-anchor="start" x="410.62" y="-132.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">curve_y</text>
+<polygon fill="none" stroke="black" points="459.75,-126 459.75,-148.5 525,-148.5 525,-126 459.75,-126"/>
+<text text-anchor="start" x="477.75" y="-132.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">Time</text>
 </a>
 </g>
 </g>
@@ -42,9 +42,9 @@
 <polygon fill="none" stroke="black" points="0,-333 0,-355.5 266.25,-355.5 266.25,-333 0,-333"/>
 <text text-anchor="start" x="42.75" y="-340.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-weight="bold" font-size="14.00">DistributionRecloserController</text>
 <polygon fill="none" stroke="black" points="0,-310.5 0,-333 97.5,-333 97.5,-310.5 0,-310.5"/>
-<text text-anchor="start" x="36.75" y="-316.7" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">uuid</text>
+<text text-anchor="start" x="43.5" y="-316.7" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">id</text>
 <polygon fill="none" stroke="black" points="97.5,-310.5 97.5,-333 266.25,-333 266.25,-310.5 97.5,-310.5"/>
-<text text-anchor="start" x="165" y="-316.7" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">UUID</text>
+<text text-anchor="start" x="154.88" y="-316.7" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">int | None</text>
 <polygon fill="none" stroke="black" points="0,-288 0,-310.5 97.5,-310.5 97.5,-288 0,-288"/>
 <text text-anchor="start" x="33.75" y="-294.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">name</text>
 <polygon fill="none" stroke="black" points="97.5,-288 97.5,-310.5 266.25,-310.5 266.25,-288 97.5,-288"/>
@@ -146,14 +146,14 @@
 <g id="a_node3"><a xlink:title="gdm.systems.distribution.equipment.recloser_controller_equipment.RecloserControllerEquipment&#10;&#10;Class interface for recloser controller equipment.&#10;">
 <polygon fill="none" stroke="black" points="374.25,-63.5 374.25,-86 555.75,-86 555.75,-63.5 374.25,-63.5"/>
 <text text-anchor="start" x="377.25" y="-70.7" font-family="Times New Roman,Times,Liberation Serif,serif" font-weight="bold" font-size="14.00">RecloserControllerEquipment</text>
-<polygon fill="none" stroke="black" points="374.25,-41 374.25,-63.5 463.12,-63.5 463.12,-41 374.25,-41"/>
-<text text-anchor="start" x="406.69" y="-47.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">uuid</text>
-<polygon fill="none" stroke="black" points="463.12,-41 463.12,-63.5 555.75,-63.5 555.75,-41 463.12,-41"/>
-<text text-anchor="start" x="492.56" y="-47.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">UUID</text>
-<polygon fill="none" stroke="black" points="374.25,-18.5 374.25,-41 463.12,-41 463.12,-18.5 374.25,-18.5"/>
-<text text-anchor="start" x="403.69" y="-24.7" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">name</text>
-<polygon fill="none" stroke="black" points="463.12,-18.5 463.12,-41 555.75,-41 555.75,-18.5 463.12,-18.5"/>
-<text text-anchor="start" x="502.69" y="-24.7" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">str</text>
+<polygon fill="none" stroke="black" points="374.25,-41 374.25,-63.5 453,-63.5 453,-41 374.25,-41"/>
+<text text-anchor="start" x="408.38" y="-47.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">id</text>
+<polygon fill="none" stroke="black" points="453,-41 453,-63.5 555.75,-63.5 555.75,-41 453,-41"/>
+<text text-anchor="start" x="477.38" y="-47.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">int | None</text>
+<polygon fill="none" stroke="black" points="374.25,-18.5 374.25,-41 453,-41 453,-18.5 374.25,-18.5"/>
+<text text-anchor="start" x="398.62" y="-24.7" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">name</text>
+<polygon fill="none" stroke="black" points="453,-18.5 453,-41 555.75,-41 555.75,-18.5 453,-18.5"/>
+<text text-anchor="start" x="497.62" y="-24.7" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">str</text>
 </a>
 </g>
 </g>
