@@ -154,10 +154,18 @@ def test_list_tools_includes_reduce_system():
     """Tool list should expose model-reduction capability."""
     ctx = MagicMock()
     result = asyncio.run(mcp_server.list_tools(ctx, None))
-    tool_names = {tool.name for tool in result.tools}
+    tools = {tool.name: tool for tool in result.tools}
 
-    assert "reduce_system" in tool_names
-    assert "save_system" in tool_names
+    assert "reduce_system" in tools
+    assert "save_system" in tools
+    assert tools["get_component_details"].input_schema["properties"]["identifier"]["oneOf"] == [
+        {"type": "integer"},
+        {"type": "string"},
+    ]
+    assert (
+        tools["get_component_relationships"].input_schema["properties"]["component_id"]["type"]
+        == "integer"
+    )
 
 
 def test_reduce_system_creates_output_and_summary(simple_system, tmp_path):

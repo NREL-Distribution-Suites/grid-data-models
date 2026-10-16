@@ -2,7 +2,6 @@
 
 from collections import defaultdict
 from typing import Optional
-from uuid import UUID
 
 from gdm.systems.distribution import DistributionSystem
 
@@ -68,14 +67,12 @@ def list_components_with_timeseries(
         if not system.has_time_series(component):
             continue
 
-        component_uuid = (
-            component.uuid if isinstance(component.uuid, UUID) else UUID(component.uuid)
-        )
+        component_id = component.id
         component_type = component.__class__.__name__
         component_name = component.name
 
         for ts_metadata in system.list_time_series_metadata(component):
-            ts_type_name = ts_metadata.__class__.__name__
+            ts_type_name = ts_metadata.time_series_type.__name__
             var_name = ts_metadata.name
 
             # Apply filters
@@ -86,7 +83,7 @@ def list_components_with_timeseries(
 
             # Try to get additional info about the time series
             try:
-                ts_data = system.get_time_series(component, var_name, type(ts_metadata))
+                ts_data = system.get_time_series(component, var_name, ts_metadata.time_series_type)
                 length = len(ts_data.data) if hasattr(ts_data, "data") else None
                 start_time = None
                 end_time = None
@@ -105,7 +102,7 @@ def list_components_with_timeseries(
 
             results.append(
                 TimeSeriesInfo(
-                    component_uuid=component_uuid,
+                    component_id=component_id,
                     component_name=component_name,
                     component_type=component_type,
                     timeseries_type=ts_type_name,

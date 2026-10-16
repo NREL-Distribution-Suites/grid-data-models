@@ -23,6 +23,7 @@ from gdm.systems.distribution.components import (
     MatrixImpedanceBranch,
 )
 from gdm.systems.distribution.distribution_system import DistributionSystem
+from gdm.systems.component_utils import clone_components
 from gdm.systems.substation.automation import ProtocolEndpoint, ProtocolMapping, SCLConfiguration
 from gdm.systems.substation.equipment import InstrumentTransformer, SurgeArrester
 from gdm.systems.substation.metering import MeteringPoint, PowerQualityMonitor
@@ -234,11 +235,15 @@ def test_substation_combines_separate_feeder_systems_into_one_distribution_model
             name=f"{boundary.feeder_id}-system",
             auto_add_composed_components=True,
         )
+        source_components = []
         for component in distribution_system.iter_all_components():
             feeder = getattr(component, "feeder", None)
             if feeder is not None and feeder.name == boundary.feeder_id:
-                if not feeder_system.has_component(component):
-                    feeder_system.add_component(component)
+                source_components.append(component)
+        component_copies, _ = clone_components(source_components)
+        for component_copy in component_copies:
+            if not feeder_system.has_component(component_copy):
+                feeder_system.add_component(component_copy)
         feeder_systems.append(feeder_system)
 
     complete_system = substation_system.to_distribution_system(feeder_systems)

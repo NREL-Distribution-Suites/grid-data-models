@@ -1,5 +1,4 @@
 from datetime import datetime, timedelta
-from uuid import uuid4
 
 import pytest
 
@@ -58,26 +57,20 @@ from gdm.quantities import (
 
 
 def build_distribution_buses():
-    return [
-        DistributionBus.example().model_copy(update={"uuid": uuid4(), "name": f"bus_{i}"})
-        for i in range(10)
-    ]
+    return [DistributionBus.example().model_copy(update={"name": f"bus_{i}"}) for i in range(10)]
 
 
 def build_distribution_load(bus: DistributionBus, bus_number: int):
     return DistributionLoad.example().model_copy(
         update={
-            "uuid": uuid4(),
             "name": f"load_{bus_number}",
             "bus": bus,
             "equipment": LoadEquipment.example().model_copy(
                 update={
-                    "uuid": uuid4(),
                     "name": f"load_equipment_{bus_number}",
                     "phase_loads": [
                         PhaseLoadEquipment.example().model_copy(
                             update={
-                                "uuid": uuid4(),
                                 "name": f"phase_load_{i}_{bus_number}",
                                 "real_power": ActivePower(bus_number + 1, "kilowatt"),
                                 "reactive_power": ReactivePower(
@@ -96,19 +89,16 @@ def build_distribution_load(bus: DistributionBus, bus_number: int):
 def build_distribution_solar(bus: DistributionBus, bus_number: int):
     return DistributionSolar.example().model_copy(
         update={
-            "uuid": uuid4(),
             "name": f"solar_{bus_number}",
             "bus": bus,
             "inverter": InverterEquipment.example().model_copy(
                 update={
-                    "uuid": uuid4(),
                     "name": f"inverter_equipment_{bus_number}",
                     "rated_apparent_power": ApparentPower(bus_number + 1, "kilowatt"),
                 }
             ),
             "equipment": SolarEquipment.example().model_copy(
                 update={
-                    "uuid": uuid4(),
                     "name": f"solar_equipment_{bus_number}",
                     "rated_power": ActivePower(1000, "kilowatt"),
                     "resistance": 1,
@@ -117,7 +107,6 @@ def build_distribution_solar(bus: DistributionBus, bus_number: int):
             ),
             "controller": InverterController.example().model_copy(
                 update={
-                    "uuid": uuid4(),
                     "name": f"inverter_controller_{bus_number}",
                 }
             ),
@@ -133,7 +122,6 @@ def build_distribution_line(bus1: DistributionBus, bus2: DistributionBus):
     return MatrixImpedanceBranch.example().model_copy(
         update={
             "name": f"line_{bus1.name}_{bus2.name}",
-            "uuid": uuid4(),
             "buses": [bus1, bus2],
         }
     )
@@ -143,18 +131,15 @@ def build_distribution_capacitor(bus: DistributionBus, bus_number: int):
     return DistributionCapacitor.example().model_copy(
         update={
             "name": f"capacitor_{bus.name}",
-            "uuid": uuid4(),
             "bus": bus,
             "equipment": CapacitorEquipment.example().model_copy(
                 update={
-                    "uuid": uuid4(),
                     "name": f"capacitor_equipment_{bus_number}",
                     "rated_voltage": Voltage(120, "volt"),
                     "voltage_type": VoltageTypes.LINE_TO_GROUND,
                     "phase_capacitors": [
                         PhaseCapacitorEquipment.example().model_copy(
                             update={
-                                "uuid": uuid4(),
                                 "name": f"phase_capacitor_{i}_{bus_number}",
                                 "rated_reactive_power": ReactivePower(bus_number + 1, "kvar"),
                                 "resistance": Resistance(1, "ohm"),
@@ -173,7 +158,6 @@ def build_distribution_xfmr(bus1: DistributionBus, bus2: DistributionBus):
     return DistributionTransformer.example().model_copy(
         update={
             "name": "substation_xfmr",
-            "uuid": uuid4(),
             "buses": [bus1, bus2],
         }
     )
@@ -191,7 +175,6 @@ def build_source_bus():
     return DistributionBus.example().model_copy(
         update={
             "name": "src_bus",
-            "uuid": uuid4(),
             "rated_voltage": Voltage(12.47, "kilovolt"),
         }
     )
@@ -201,7 +184,6 @@ def build_split_phase_distribution_buses():
     return [
         DistributionBus.example().model_copy(
             update={
-                "uuid": uuid4(),
                 "name": f"split_phase_bus_{i}",
                 "phases": [Phase.S1, Phase.S2, Phase.N],
                 "rated_voltage": Voltage(120, "volt"),

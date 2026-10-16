@@ -21,6 +21,10 @@ You can install the latest version of `grid-data-models` from PyPi.
 pip install grid-data-models
 ```
 
+GDM 3 uses Infrasys 2. Component IDs are integers scoped to their owning System;
+resolve them through that System. `System.uuid` remains the system-level identifier.
+Installation currently requires Git because GDM pins Infrasys to a specific commit.
+
 ## Why Grid Data Models?
 
 In an effort to reduce code duplication and provide client packages a standard interface to interact with power system data, a group of research engineers at NREL is working on developing standard data models. Features:

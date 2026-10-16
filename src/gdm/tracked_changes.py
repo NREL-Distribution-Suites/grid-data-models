@@ -8,13 +8,12 @@ from rich.console import Console
 from infrasys import Component
 from infrasys.exceptions import ISNotStored
 from rich.table import Table
-from uuid import UUID
 
 
 class PropertyEdit(Component):
     name: str
     value: Any
-    component_uuid: UUID
+    component_id: int
 
 
 class TrackedChange(Component):
@@ -40,14 +39,12 @@ class TrackedChange(Component):
         ),
     ]
     additions: Annotated[
-        list[UUID], Field([], description="List of additions to the base distribution system")
+        list[int], Field([], description="Catalog System IDs of added components")
     ]
     edits: Annotated[
         list[PropertyEdit], Field([], description="List of edits for the base distribution system")
     ]
-    deletions: Annotated[
-        list[UUID], Field([], description="List of edits to the base distribution system")
-    ]
+    deletions: Annotated[list[int], Field([], description="System IDs of deleted components")]
 
 
 def filter_tracked_changes_by_name_and_date(
@@ -131,7 +128,7 @@ def _update_temporal_table(
     Updates a temporal table with change information.
 
     Appends a list of change details to the provided updates list. The details
-    include the update date, type of change, component UUID, component label,
+    include the update date, type of change, component ID, component label,
     component name, and bus names.
 
     Args:
@@ -146,7 +143,7 @@ def _update_temporal_table(
         [
             str(timestamp),
             change_type,
-            str(component.uuid),
+            str(component.id),
             component.label.split(".")[0],
             component.name,
             bus_names,
@@ -165,33 +162,84 @@ def _get_bus_names(component):
     return bus_names
 
 
-def _rebind_composed_components(component: Component, system: DistributionSystem) -> None:
+def _component_signature(component: Component) -> dict[str, Any]:
+    values = component.model_dump(mode="python")
+    values.pop("id", None)
+
     for field_name in type(component).model_fields:
         value = getattr(component, field_name)
         if isinstance(value, Component):
-            canonical = (
-                system.get_component_by_uuid(value.uuid) if system.has_component(value) else value
-            )
-            if canonical is not value:
-                setattr(component, field_name, canonical)
-            else:
-                _rebind_composed_components(value, system)
+            values[field_name] = _component_signature(value)
         elif isinstance(value, list):
+            values[field_name] = [
+                _component_signature(item) if isinstance(item, Component) else item
+                for item in value
+            ]
+
+    return values
+
+
+def _find_target_component(component: Component, system: DistributionSystem) -> Component | None:
+    matches = [
+        candidate
+        for candidate in system.iter_all_components()
+        if type(candidate) is type(component) and candidate.name == component.name
+    ]
+    if len(matches) > 1:
+        source_data = _component_signature(component)
+        exact_matches = [
+            candidate for candidate in matches if _component_signature(candidate) == source_data
+        ]
+        if exact_matches:
+            return exact_matches[0]
+        raise ValueError(f"Cannot uniquely rebind {component.label} into the target System.")
+    return matches[0] if matches else None
+
+
+def _rebind_composed_components(
+    component: Component,
+    system: DistributionSystem,
+    visited: set[int] | None = None,
+) -> None:
+    if visited is None:
+        visited = set()
+    component_identity = id(component)
+    if component_identity in visited:
+        return
+    visited.add(component_identity)
+    component.id = None
+
+    for field_name in type(component).model_fields:
+        value = getattr(component, field_name)
+        if isinstance(value, Component):
+            canonical = _find_target_component(value, system)
+            if canonical is None:
+                _rebind_composed_components(value, system, visited)
+            else:
+                setattr(component, field_name, canonical)
+        elif isinstance(value, list) and any(isinstance(item, Component) for item in value):
+            rebound = []
             for item in value:
-                if isinstance(item, Component):
-                    _rebind_composed_components(item, system)
+                if not isinstance(item, Component):
+                    rebound.append(item)
+                    continue
+                canonical = _find_target_component(item, system)
+                if canonical is None:
+                    _rebind_composed_components(item, system, visited)
+                    rebound.append(item)
+                else:
+                    rebound.append(canonical)
+            setattr(component, field_name, rebound)
 
 
 def _remove_component_with_unique_cascade(
     system: DistributionSystem, component: Component
 ) -> None:
-    child_uuids = list(
-        dict.fromkeys(child.uuid for child in system.list_child_components(component))
-    )
+    child_ids = list(dict.fromkeys(child.id for child in system.list_child_components(component)))
     system.remove_component(component, cascade_down=False)
-    for child_uuid in child_uuids:
+    for child_id in child_ids:
         try:
-            child = system.get_component_by_uuid(child_uuid)
+            child = system.get_component_by_id(child_id)
         except ISNotStored:
             continue
         if not system.list_parent_components(child):
@@ -219,7 +267,7 @@ def apply_updates_to_system(
     system : DistributionSystem
         The distribution system to which the changes will be applied.
     catalog : DistributionSystem
-        The catalog used to retrieve components by UUID for additions.
+        The catalog used to retrieve components by ID for additions.
     system_date : datetime, optional
         The cutoff date for applying changes. Only changes with an `timestamp` less than
         or equal to this date will be applied. If None, all changes are applied.
@@ -255,9 +303,14 @@ def apply_updates_to_system(
 
     log = []
     system_copy = system.deepcopy()
+    added_component_ids: dict[int, int] = {}
     for change in tracked_changes:
         system_copy = _apply_tracked_changes(
-            system=system_copy, tracked_change=change, catalog=catalog, log=log
+            system=system_copy,
+            tracked_change=change,
+            catalog=catalog,
+            log=log,
+            added_component_ids=added_component_ids,
         )
 
     # Log the system updates.
@@ -270,6 +323,7 @@ def _apply_tracked_changes(
     tracked_change: TrackedChange,
     catalog: DistributionSystem | CatalogSystem,
     log: list = [],
+    added_component_ids: dict[int, int] | None = None,
     show_table: bool = False,
 ):
     """
@@ -284,7 +338,7 @@ def _apply_tracked_changes(
     Args:
         system (DistributionSystem): The distribution system to which changes are applied.
         tracked_change (TrackedChange): The object containing lists of additions, deletions, and edits.
-        catalog (DistributionSystem | CatalogSystem): The catalog used to retrieve components by UUID.
+        catalog (DistributionSystem | CatalogSystem): The catalog used to retrieve components by ID.
         log (list, optional): A list to store logs of the changes applied. Defaults to an empty list.
         show_table (bool, optional): If True, displays a table of the changes applied. Defaults to False.
 
@@ -295,25 +349,29 @@ def _apply_tracked_changes(
         AttributeError: If an edit specifies a property that does not exist on a component.
     """
 
-    for model_uuid in tracked_change.additions:
-        component = catalog.get_component_by_uuid(model_uuid)
-        if not system.has_component(component):
-            component = component.model_copy(deep=True)
-            _rebind_composed_components(component, system)
-            system.add_component(component)
-            bus_names = _get_bus_names(component)
-            _update_temporal_table(
-                log,
-                tracked_change.timestamp,
-                "Addition",
-                component,
-                bus_names,
-                tracked_change.scenario_name,
-            )
+    if added_component_ids is None:
+        added_component_ids = {}
+
+    for catalog_component_id in tracked_change.additions:
+        if catalog_component_id in added_component_ids:
+            continue
+        component = catalog.get_component_by_id(catalog_component_id).model_copy(deep=True)
+        _rebind_composed_components(component, system)
+        system.add_component(component)
+        added_component_ids[catalog_component_id] = component.id
+        bus_names = _get_bus_names(component)
+        _update_temporal_table(
+            log,
+            tracked_change.timestamp,
+            "Addition",
+            component,
+            bus_names,
+            tracked_change.scenario_name,
+        )
 
     # Process deletions: Remove components from the system.
-    for model_uuid in tracked_change.deletions:
-        component = system.get_component_by_uuid(model_uuid)
+    for component_id in tracked_change.deletions:
+        component = system.get_component_by_id(component_id)
         if system.has_component(component):
             _remove_component_with_unique_cascade(system, component)
             bus_names = _get_bus_names(component)
@@ -328,13 +386,13 @@ def _apply_tracked_changes(
 
     # Process edits: Update component attributes.
     for edit_model in tracked_change.edits:
-        component = system.get_component_by_uuid(edit_model.component_uuid)
+        component = system.get_component_by_id(edit_model.component_id)
         if not hasattr(component, edit_model.name):
             raise AttributeError(
                 f"{component.label} does not have a property called {edit_model.name}"
             )
         setattr(component, edit_model.name, edit_model.value)
-        component = system.get_component_by_uuid(edit_model.component_uuid)
+        component = system.get_component_by_id(edit_model.component_id)
         bus_names = _get_bus_names(component)
 
         _update_temporal_table(
@@ -358,7 +416,7 @@ def _update_log(update_log: list[str]):
     Args:
         scenario_name (str): The name of the scenario from which updates are applied.
         update_log (list[str]): A list of update entries, where each entry is a list
-            containing details such as timestamp, operation, UUID, component type,
+            containing details such as timestamp, operation, component ID, component type,
             component name, and connected bus.
 
     Returns:
@@ -368,7 +426,7 @@ def _update_log(update_log: list[str]):
     table = Table(title="Updates applied to the system")
     table.add_column("Timestamp", justify="right", style="cyan", no_wrap=True)
     table.add_column("Operation", style="magenta")
-    table.add_column("UUID", justify="right", style="bright_magenta")
+    table.add_column("Component ID", justify="right", style="bright_magenta")
     table.add_column("Component Type", justify="right", style="cyan")
     table.add_column("Component Name", justify="right", style="green")
     table.add_column("Connected bus", justify="right", style="bright_red")

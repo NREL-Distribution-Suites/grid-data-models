@@ -76,7 +76,7 @@ class DistributionCapacitor(InServiceDistributionComponentBase):
         phase_caps = defaultdict(list)
         for cap in instances:
             if {Phase.S1, Phase.S2} & set(cap.phases):
-                parent_phase = split_phase_mapping[cap.uuid]
+                parent_phase = split_phase_mapping[cap.name]
                 split_cap = PhaseCapacitorEquipment.split(
                     PhaseCapacitorEquipment.aggregate(cap.equipment.phase_capacitors, name=""),
                     len(parent_phase),

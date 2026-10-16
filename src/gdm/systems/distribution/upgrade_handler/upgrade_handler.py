@@ -27,6 +27,7 @@ from gdm.systems.distribution.upgrade_handler.from__2_3_5__to__2_3_6 import from
 from gdm.systems.distribution.upgrade_handler.from__2_3_6__to__2_3_7 import from__2_3_6__to__2_3_7
 from gdm.systems.distribution.upgrade_handler.from__2_3_7__to__2_3_8 import from__2_3_7__to__2_3_8
 from gdm.systems.distribution.upgrade_handler.from__2_3_8__to__2_4_0 import from__2_3_8__to__2_4_0
+from gdm.systems.distribution.upgrade_handler.from__2_4_0__to__2_5_0 import from__2_4_0__to__2_5_0
 
 
 def fix_version(version):
@@ -154,6 +155,11 @@ class UpgradeHandler(BaseModel):
             from_version="2.3.8",
             to_version="2.4.0",
         ),
+        UpgradeSchema(
+            method=from__2_4_0__to__2_5_0,
+            from_version="2.4.0",
+            to_version="2.5.0",
+        ),
     ]
 
     @model_validator(mode="after")
@@ -180,6 +186,12 @@ class UpgradeHandler(BaseModel):
         final_upgrade_handlers = list(
             filter(lambda x: x.to_version <= to_version, filtered_upgrade_handlers)
         )
+        if not final_upgrade_handlers:
+            if from_version == to_version:
+                return []
+            raise ValueError(
+                f"No upgrade handlers registered from version {from_version} to {to_version}."
+            )
 
         old_handler = None
         for i, handler in enumerate(final_upgrade_handlers):

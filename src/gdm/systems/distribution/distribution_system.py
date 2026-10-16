@@ -10,6 +10,7 @@ import tempfile
 import random
 
 from gdm.systems.distribution.components.geometry_switch import GeometrySwitch
+from gdm.systems.component_utils import clone_components, rebind_component_references
 from infrasys.time_series_models import TimeSeriesData, SingleTimeSeries
 from shapely import Point, LineString, union_all
 from infrasys import Component, System
@@ -197,8 +198,7 @@ class DistributionSystem(System):
         transformer terminal buses.
         """
 
-        from gdm.systems.substation.components import PowerTransformer, TwoTerminalEquipment
-        from gdm.systems.substation.topology import FeederBoundary
+        from gdm.systems.substation.components import PowerTransformer
 
         if isinstance(transformer, PowerTransformer):
             raise ValueError("Only abstract DistributionTransformer instances can be expanded.")
@@ -206,6 +206,60 @@ class DistributionSystem(System):
             raise ValueError(f"Transformer '{transformer.name}' is not stored in this system.")
         if transformer.feeder is None:
             raise ValueError("Transformer expansion requires a DistributionFeeder.")
+
+        (
+            station_components,
+            replacement_power_transformer,
+        ) = self._validate_substation_replacement_topology(transformer, substation_system)
+        replacement_components, copies_by_source_id = clone_components(station_components)
+        terminal_bus_replacements = {}
+        copied_components = list(copies_by_source_id.values())
+        for bus in transformer.buses:
+            bus_copy = next(
+                (
+                    component
+                    for component in copied_components
+                    if isinstance(component, type(bus)) and component.name == bus.name
+                ),
+                None,
+            )
+            if bus_copy is not None:
+                terminal_bus_replacements[id(bus_copy)] = bus
+        rebind_component_references(replacement_components, terminal_bus_replacements)
+        replacement_transformer = copies_by_source_id[replacement_power_transformer.id]
+
+        existing_component_keys = {
+            (type(component), component.name)
+            for component in self.iter_all_components()
+            if component != transformer
+        }
+        replacement_keys = [
+            (type(component), component.name) for component in replacement_components
+        ]
+        if len(replacement_keys) != len(set(replacement_keys)):
+            raise ValueError("Replacement topology contains duplicate component names and types.")
+        if any(component_key in existing_component_keys for component_key in replacement_keys):
+            raise ValueError("Replacement topology conflicts with an existing component.")
+
+        auto_add_composed_components = self.auto_add_composed_components
+        self.auto_add_composed_components = True
+        try:
+            for component in replacement_components:
+                if not self.has_component(component):
+                    self.add_component(component)
+        finally:
+            self.auto_add_composed_components = auto_add_composed_components
+        self.remove_component(transformer, cascade_down=False)
+        return replacement_transformer
+
+    @staticmethod
+    def _validate_substation_replacement_topology(
+        transformer: DistributionTransformerBase,
+        substation_system: "SubstationSystem",
+    ) -> tuple[list[Component], Component]:
+        """Validate station topology and return its components and replacement transformer."""
+        from gdm.systems.substation.components import PowerTransformer, TwoTerminalEquipment
+        from gdm.systems.substation.topology import FeederBoundary
 
         matching_boundaries = [
             boundary
@@ -245,27 +299,7 @@ class DistributionSystem(System):
             raise ValueError(
                 "Replacement topology must connect both original transformer terminal buses."
             )
-
-        replacement_components = [
-            component for component in station_components if not self.has_component(component)
-        ]
-
-        existing_component_keys = {
-            (type(component), component.name)
-            for component in self.iter_all_components()
-            if component != transformer
-        }
-        replacement_keys = [
-            (type(component), component.name) for component in replacement_components
-        ]
-        if len(replacement_keys) != len(set(replacement_keys)):
-            raise ValueError("Replacement topology contains duplicate component names and types.")
-        if any(component_key in existing_component_keys for component_key in replacement_keys):
-            raise ValueError("Replacement topology conflicts with an existing component.")
-
-        self.add_components(*replacement_components)
-        self.remove_component(transformer, cascade_down=False)
-        return power_transformers[0]
+        return station_components, power_transformers[0]
 
     def get_substation_feeder_subsystem(
         self,
@@ -291,16 +325,31 @@ class DistributionSystem(System):
             name=f"{self.name}-substation-feeders",
             auto_add_composed_components=True,
         )
+        source_components = []
         for component in self.iter_all_components():
             feeder = getattr(component, "feeder", None)
             if feeder is None or feeder.name not in feeder_ids:
                 continue
-            if not subsystem.has_component(component):
-                subsystem.add_component(component)
-            if keep_time_series and self.has_time_series(component):
+            source_components.append(component)
+
+        component_copies, copies_by_source_id = clone_components(source_components)
+        for component_copy in component_copies:
+            if not subsystem.has_component(component_copy):
+                subsystem.add_component(component_copy)
+
+        if keep_time_series:
+            for component in source_components:
+                if not self.has_time_series(component):
+                    continue
                 for metadata in self.list_time_series_metadata(component):
-                    time_series = self.get_time_series(component, metadata.name, type(metadata))
-                    subsystem.add_time_series(time_series, component, **metadata.features)
+                    time_series = self.get_time_series(
+                        component, metadata.name, metadata.time_series_type
+                    )
+                    subsystem.add_time_series(
+                        time_series,
+                        copies_by_source_id[component.id],
+                        **metadata.features,
+                    )
 
         return subsystem
 
@@ -401,9 +450,9 @@ class DistributionSystem(System):
 
     def _add_to_subsystem(
         self,
-        subtree_system: "DistributionSystem",
+        selected_components: dict[int, Component],
         parent_components: list[Component],
-        bus_names: list[DistributionBus],
+        bus_names: list[str],
     ):
         from gdm.systems.substation.components import TwoTerminalEquipment
 
@@ -415,8 +464,7 @@ class DistributionSystem(System):
                 nodes = {bus.name for bus in component.buses}
                 if not nodes.issubset(set(bus_names)):
                     continue
-            if not subtree_system.has_component(component):
-                subtree_system.add_component(component)
+            selected_components[component.id] = component
 
     def get_subsystem(
         self,
@@ -454,21 +502,27 @@ class DistributionSystem(System):
         tree = directed_graph if directed_graph is not None else self.get_directed_graph()
         subtree = tree.subgraph(bus_names)
         subtree_system = DistributionSystem(auto_add_composed_components=True, name=name)
+        selected_components: dict[int, Component] = {}
         for u, v, _ in subtree.edges(data=True):
             parent_components = self.list_parent_components(
                 self.get_component(DistributionBus, u)
             ) + self.list_parent_components(self.get_component(DistributionBus, v))
-            self._add_to_subsystem(subtree_system, parent_components, bus_names)
+            self._add_to_subsystem(selected_components, parent_components, bus_names)
 
         for u in subtree.nodes():
             parent_components = self.list_parent_components(self.get_component(DistributionBus, u))
-            self._add_to_subsystem(subtree_system, parent_components, bus_names)
+            self._add_to_subsystem(selected_components, parent_components, bus_names)
+
+        source_components = list(selected_components.values())
+        component_copies, copies_by_source_id = clone_components(source_components)
+        for component_copy in component_copies:
+            if not subtree_system.has_component(component_copy):
+                subtree_system.add_component(component_copy)
 
         if keep_time_series:
-            for comp in subtree_system.get_components(
-                Component,
-                filter_func=lambda x: self.has_time_series(x, time_series_type=time_series_type),
-            ):
+            for comp in source_components:
+                if not self.has_time_series(comp, time_series_type=time_series_type):
+                    continue
                 ts_metadata = self.list_time_series_metadata(
                     comp, time_series_type=time_series_type
                 )
@@ -476,7 +530,11 @@ class DistributionSystem(System):
                     ts_data = self.get_time_series(
                         comp, metadata.name, time_series_type=time_series_type, **metadata.features
                     )
-                    subtree_system.add_time_series(ts_data, comp, **metadata.features)
+                    subtree_system.add_time_series(
+                        ts_data,
+                        copies_by_source_id[comp.id],
+                        **metadata.features,
+                    )
 
         return subtree_system
 

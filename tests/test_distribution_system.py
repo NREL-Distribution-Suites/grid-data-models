@@ -14,6 +14,7 @@ from gdm.distribution.equipment import (
     PowerTransformerEquipment,
 )
 from gdm.systems.distribution.components import DistributionTransformer
+from gdm.systems.component_utils import clone_components
 from gdm.systems.substation import (
     BusbarSection,
     CircuitBreaker,
@@ -80,6 +81,8 @@ def test_replace_transformer_with_substation_replaces_abstract_edge():
     system = DistributionSystem(name="expanded-station", auto_add_composed_components=True)
     transformer = DistributionTransformer.example()
     source_bus, feeder_bus = transformer.buses
+    station_terminal_buses, _ = clone_components([source_bus, feeder_bus])
+    station_source_bus, station_feeder_bus = station_terminal_buses
     station_high_bus = BusbarSection(
         name="station-high-bus",
         rated_voltage=source_bus.rated_voltage,
@@ -101,13 +104,13 @@ def test_replace_transformer_with_substation_replaces_abstract_edge():
     )
     high_side_breaker = CircuitBreaker(
         name="station-high-breaker",
-        buses=[source_bus, station_high_bus],
+        buses=[station_source_bus, station_high_bus],
         equipment=CircuitBreakerEquipment.example(),
         state=EquipmentState.CLOSED,
     )
     low_side_breaker = CircuitBreaker(
         name="station-low-breaker",
-        buses=[station_low_bus, feeder_bus],
+        buses=[station_low_bus, station_feeder_bus],
         equipment=CircuitBreakerEquipment.example(),
         state=EquipmentState.CLOSED,
     )
@@ -129,16 +132,17 @@ def test_replace_transformer_with_substation_replaces_abstract_edge():
     )
     result = system.replace_transformer_with_substation(transformer, substation_system)
 
-    assert result is power_transformer
+    assert isinstance(result, PowerTransformer)
+    assert result is not power_transformer
     assert not system.has_component(transformer)
-    assert system.has_component(power_transformer)
+    assert system.has_component(result)
     assert {data["name"] for _, _, data in system.get_undirected_graph().edges(data=True)} == {
         "station-high-breaker",
         "station-transformer",
         "station-low-breaker",
     }
 
-    low_side_breaker.state = EquipmentState.OPEN
+    system.get_component(CircuitBreaker, "station-low-breaker").state = EquipmentState.OPEN
     directed_graph = system.get_directed_graph()
 
     assert source_bus.name in directed_graph
@@ -191,3 +195,33 @@ def test_substation_feeder_subsystem_retains_only_matching_outfeeds():
         for component in feeder_subsystem.iter_all_components()
         if getattr(component, "feeder", None) is not None
     )
+
+
+def test_get_subsystem_copies_components_and_preserves_time_series(
+    distribution_system_with_single_time_series,
+):
+    system = distribution_system_with_single_time_series
+    source_components = list(system.iter_all_components())
+    bus_names = list(system.get_directed_graph().nodes)
+
+    subsystem = system.get_subsystem(bus_names, name="network-copy", keep_time_series=True)
+
+    subsystem_component_objects = {id(component) for component in subsystem.iter_all_components()}
+    source_component = next(
+        component
+        for component in source_components
+        if system.has_time_series(component)
+        and (type(component), component.name)
+        in {
+            (type(subsystem_component), subsystem_component.name)
+            for subsystem_component in subsystem.iter_all_components()
+        }
+    )
+    subsystem_component = subsystem.get_component(type(source_component), source_component.name)
+
+    assert id(source_component) not in subsystem_component_objects
+    assert system.has_component(source_component)
+    assert subsystem.has_time_series(subsystem_component)
+    assert [
+        metadata.name for metadata in subsystem.list_time_series_metadata(subsystem_component)
+    ] == [metadata.name for metadata in system.list_time_series_metadata(source_component)]

@@ -8,6 +8,8 @@ from typing import TYPE_CHECKING
 
 from infrasys import System
 
+from gdm.systems.component_utils import clone_components, rebind_component_references
+
 if TYPE_CHECKING:
     from gdm.systems.distribution import DistributionSystem
 
@@ -142,13 +144,17 @@ class SubstationSystem(System):
             for component in self.iter_all_components()
             if type(component).__module__.startswith("gdm.systems.substation")
         ]
-        for component in station_components:
-            if not result.has_component(component):
-                result.add_component(component)
+        station_component_copies, station_copies_by_source_id = clone_components(
+            station_components
+        )
+        for component_copy in station_component_copies:
+            if not result.has_component(component_copy):
+                result.add_component(component_copy)
+        result_source_bus = station_copies_by_source_id[source_bus.id]
         source = DistributionVoltageSource(
             name=f"{self.name}-source",
-            bus=source_bus,
-            phases=list(source_bus.phases),
+            bus=result_source_bus,
+            phases=list(result_source_bus.phases),
             equipment=VoltageSourceEquipment.example(),
         )
         result.add_component(source)
@@ -171,6 +177,7 @@ class SubstationSystem(System):
             boundary = boundary_by_feeder_id.get(feeder_id)
             if boundary is None:
                 raise ValueError(f"No FeederBoundary exists for feeder '{feeder_id}'.")
+            result_boundary = station_copies_by_source_id[boundary.id]
             if boundary.source_equivalent_id is None:
                 raise ValueError(
                     f"FeederBoundary '{boundary.name}' requires source_equivalent_id."
@@ -194,19 +201,23 @@ class SubstationSystem(System):
                     f"Feeder '{feeder_id}' phases are not supported by its boundary bus."
                 )
 
-            for component in feeder_system.iter_all_components():
+            feeder_components = list(feeder_system.iter_all_components())
+            feeder_component_copies, feeder_copies_by_source_id = clone_components(
+                feeder_components
+            )
+            copied_root_bus = feeder_copies_by_source_id[root_bus.id]
+            rebind_component_references(
+                feeder_component_copies,
+                {id(copied_root_bus): result_boundary.bus},
+            )
+
+            for component, component_copy in zip(feeder_components, feeder_component_copies):
                 if component is root_bus or isinstance(component, DistributionVoltageSource):
                     continue
                 if getattr(component, "feeder", None) is None:
                     continue
 
-                updates = {}
-                if getattr(component, "bus", None) is root_bus:
-                    updates["bus"] = boundary.bus
-                buses = getattr(component, "buses", None)
-                if buses is not None:
-                    updates["buses"] = [boundary.bus if bus is root_bus else bus for bus in buses]
-                replacement = component.model_copy(update=updates)
+                replacement = component_copy
                 if not result.has_component(replacement):
                     result.add_component(replacement)
                 component_map.append((feeder_system, component, replacement))
@@ -224,7 +235,7 @@ class SubstationSystem(System):
                     continue
                 for metadata in feeder_system.list_time_series_metadata(component):
                     time_series = feeder_system.get_time_series(
-                        component, metadata.name, type(metadata)
+                        component, metadata.name, metadata.time_series_type
                     )
                     result.add_time_series(time_series, replacement, **metadata.features)
 

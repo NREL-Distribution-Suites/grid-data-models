@@ -1,7 +1,6 @@
 from collections import Counter
 from datetime import timedelta, datetime
 from io import StringIO
-from uuid import uuid4
 
 import networkx as nx
 import pytest
@@ -501,7 +500,6 @@ def _build_phase_split_system() -> tuple[DistributionSystem, dict[str, Distribut
     }
 
 
-
 def test_three_phase_reduction_keeps_phase_split_intermediates():
     sys, buses = _build_phase_split_system()
 
@@ -518,6 +516,8 @@ def test_three_phase_reduction_keeps_phase_split_intermediates():
     }
     assert reduced_bus_names == expected_kept
     assert buses["lat_bus"].name not in reduced_bus_names
+
+
 def _add_loop_switch(system: DistributionSystem, bus_1: str, bus_2: str, name: str) -> None:
     """Add a closed switch between two buses, creating a loop."""
     switch = MatrixImpedanceSwitch.example()
@@ -526,7 +526,7 @@ def _add_loop_switch(system: DistributionSystem, bus_1: str, bus_2: str, name: s
         system.get_component(DistributionBus, bus_2),
     ]
     switch.is_closed = [True, True, True]
-    system.add_component(switch.model_copy(update={"uuid": uuid4(), "name": name}))
+    system.add_component(switch.model_copy(update={"name": name}))
 
 
 def _add_loop_line(
@@ -535,7 +535,6 @@ def _add_loop_line(
     """Add a line between two buses, creating a loop."""
     line = MatrixImpedanceBranch.example().model_copy(
         update={
-            "uuid": uuid4(),
             "name": f"line_{bus_1}_{bus_2}",
             "buses": [
                 system.get_component(DistributionBus, bus_1),
@@ -574,7 +573,7 @@ def _equipment_signature(equipment) -> dict:
     return {
         key: value
         for key, value in equipment.model_dump(mode="json").items()
-        if key not in {"name", "uuid", "controller"}
+        if key not in {"name", "controller"}
     }
 
 

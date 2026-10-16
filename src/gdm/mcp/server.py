@@ -188,7 +188,7 @@ async def list_tools(ctx: ServerRequestContext, params=None) -> ListToolsResult:
         # Validation tools
         Tool(
             name="diagnose_system",
-            description="Diagnose validation errors in a distribution system. Returns detailed error report with component UUIDs, error types, and affected fields.",
+            description="Diagnose validation errors in a distribution system. Returns detailed error report with System-scoped component IDs, error types, and affected fields.",
             inputSchema={
                 "type": "object",
                 "properties": {
@@ -439,7 +439,7 @@ async def list_tools(ctx: ServerRequestContext, params=None) -> ListToolsResult:
         ),
         Tool(
             name="get_component_details",
-            description="Get detailed information about a specific component by UUID or name.",
+            description="Get detailed information about a specific component by System-scoped ID or name.",
             inputSchema={
                 "type": "object",
                 "properties": {
@@ -452,8 +452,8 @@ async def list_tools(ctx: ServerRequestContext, params=None) -> ListToolsResult:
                         "description": "Model reference object with path or registry lookup metadata",
                     },
                     "identifier": {
-                        "type": "string",
-                        "description": "Component UUID or name",
+                        "oneOf": [{"type": "integer"}, {"type": "string"}],
+                        "description": "System-scoped component ID or name",
                     },
                 },
                 "required": ["identifier"],
@@ -493,8 +493,8 @@ async def list_tools(ctx: ServerRequestContext, params=None) -> ListToolsResult:
                         "description": "Model reference object with path or registry lookup metadata",
                     },
                     "component_id": {
-                        "type": "string",
-                        "description": "Component UUID or name",
+                        "type": "integer",
+                        "description": "System-scoped component ID",
                     },
                 },
                 "required": ["component_id"],

@@ -9,7 +9,7 @@
 <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 202.25)">
 <title>Entity Relationship Diagram created by erdantic</title>
 <polygon fill="white" stroke="none" points="-4,4 -4,-202.25 690.25,-202.25 690.25,4 -4,4"/>
-<text text-anchor="middle" x="343.12" y="-5.95" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="9.00" fill="#a8a8a8">Created by erdantic v1.0.5 &lt;https://github.com/drivendataorg/erdantic&gt;</text>
+<text text-anchor="middle" x="343.12" y="-5.95" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="9.00" fill="#a8a8a8">Created by erdantic v1.2.1 &lt;https://github.com/drivendataorg/erdantic&gt;</text>
 <!-- gdm.systems.distribution.common.curve.Curve -->
 <g id="node1" class="node">
 <title>gdm.systems.distribution.common.curve.Curve</title>
@@ -17,9 +17,9 @@
 <polygon fill="none" stroke="black" points="496.5,-108.5 496.5,-131 686.25,-131 686.25,-108.5 496.5,-108.5"/>
 <text text-anchor="start" x="573.38" y="-115.7" font-family="Times New Roman,Times,Liberation Serif,serif" font-weight="bold" font-size="14.00">Curve</text>
 <polygon fill="none" stroke="black" points="496.5,-86 496.5,-108.5 546,-108.5 546,-86 496.5,-86"/>
-<text text-anchor="start" x="509.25" y="-92.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">uuid</text>
+<text text-anchor="start" x="516" y="-92.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">id</text>
 <polygon fill="none" stroke="black" points="546,-86 546,-108.5 686.25,-108.5 686.25,-86 546,-86"/>
-<text text-anchor="start" x="599.25" y="-92.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">UUID</text>
+<text text-anchor="start" x="589.12" y="-92.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">int | None</text>
 <polygon fill="none" stroke="black" points="496.5,-63.5 496.5,-86 546,-86 546,-63.5 496.5,-63.5"/>
 <text text-anchor="start" x="506.25" y="-69.7" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">name</text>
 <polygon fill="none" stroke="black" points="546,-63.5 546,-86 686.25,-86 686.25,-63.5 546,-63.5"/>
@@ -42,9 +42,9 @@
 <polygon fill="none" stroke="black" points="0,-175.75 0,-198.25 388.5,-198.25 388.5,-175.75 0,-175.75"/>
 <text text-anchor="start" x="128.62" y="-182.95" font-family="Times New Roman,Times,Liberation Serif,serif" font-weight="bold" font-size="14.00">VoltVarControlSetting</text>
 <polygon fill="none" stroke="black" points="0,-153.25 0,-175.75 87.75,-175.75 87.75,-153.25 0,-153.25"/>
-<text text-anchor="start" x="31.88" y="-159.45" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">uuid</text>
+<text text-anchor="start" x="38.62" y="-159.45" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">id</text>
 <polygon fill="none" stroke="black" points="87.75,-153.25 87.75,-175.75 388.5,-175.75 388.5,-153.25 87.75,-153.25"/>
-<text text-anchor="start" x="221.25" y="-159.45" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">UUID</text>
+<text text-anchor="start" x="211.12" y="-159.45" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">int | None</text>
 <polygon fill="none" stroke="black" points="0,-130.75 0,-153.25 87.75,-153.25 87.75,-130.75 0,-130.75"/>
 <text text-anchor="start" x="28.88" y="-136.95" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">name</text>
 <polygon fill="none" stroke="black" points="87.75,-130.75 87.75,-153.25 388.5,-153.25 388.5,-130.75 87.75,-130.75"/>

@@ -9,7 +9,7 @@
 <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 337.25)">
 <title>Entity Relationship Diagram created by erdantic</title>
 <polygon fill="white" stroke="none" points="-4,4 -4,-337.25 617.5,-337.25 617.5,4 -4,4"/>
-<text text-anchor="middle" x="306.75" y="-5.95" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="9.00" fill="#a8a8a8">Created by erdantic v1.0.5 &lt;https://github.com/drivendataorg/erdantic&gt;</text>
+<text text-anchor="middle" x="306.75" y="-5.95" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="9.00" fill="#a8a8a8">Created by erdantic v1.2.1 &lt;https://github.com/drivendataorg/erdantic&gt;</text>
 <!-- gdm.systems.distribution.common.curve.Curve -->
 <g id="node1" class="node">
 <title>gdm.systems.distribution.common.curve.Curve</title>
@@ -17,9 +17,9 @@
 <polygon fill="none" stroke="black" points="423.75,-108.5 423.75,-131 613.5,-131 613.5,-108.5 423.75,-108.5"/>
 <text text-anchor="start" x="500.62" y="-115.7" font-family="Times New Roman,Times,Liberation Serif,serif" font-weight="bold" font-size="14.00">Curve</text>
 <polygon fill="none" stroke="black" points="423.75,-86 423.75,-108.5 473.25,-108.5 473.25,-86 423.75,-86"/>
-<text text-anchor="start" x="436.5" y="-92.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">uuid</text>
+<text text-anchor="start" x="443.25" y="-92.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">id</text>
 <polygon fill="none" stroke="black" points="473.25,-86 473.25,-108.5 613.5,-108.5 613.5,-86 473.25,-86"/>
-<text text-anchor="start" x="526.5" y="-92.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">UUID</text>
+<text text-anchor="start" x="516.38" y="-92.2" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">int | None</text>
 <polygon fill="none" stroke="black" points="423.75,-63.5 423.75,-86 473.25,-86 473.25,-63.5 423.75,-63.5"/>
 <text text-anchor="start" x="433.5" y="-69.7" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">name</text>
 <polygon fill="none" stroke="black" points="473.25,-63.5 473.25,-86 613.5,-86 613.5,-63.5 473.25,-63.5"/>
@@ -42,9 +42,9 @@
 <polygon fill="none" stroke="black" points="0,-310.75 0,-333.25 315.75,-333.25 315.75,-310.75 0,-310.75"/>
 <text text-anchor="start" x="101.25" y="-317.95" font-family="Times New Roman,Times,Liberation Serif,serif" font-weight="bold" font-size="14.00">InverterEquipment</text>
 <polygon fill="none" stroke="black" points="0,-288.25 0,-310.75 126.75,-310.75 126.75,-288.25 0,-288.25"/>
-<text text-anchor="start" x="51.38" y="-294.45" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">uuid</text>
+<text text-anchor="start" x="58.12" y="-294.45" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">id</text>
 <polygon fill="none" stroke="black" points="126.75,-288.25 126.75,-310.75 315.75,-310.75 315.75,-288.25 126.75,-288.25"/>
-<text text-anchor="start" x="204.38" y="-294.45" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">UUID</text>
+<text text-anchor="start" x="194.25" y="-294.45" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">int | None</text>
 <polygon fill="none" stroke="black" points="0,-265.75 0,-288.25 126.75,-288.25 126.75,-265.75 0,-265.75"/>
 <text text-anchor="start" x="48.38" y="-271.95" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">name</text>
 <polygon fill="none" stroke="black" points="126.75,-265.75 126.75,-288.25 315.75,-288.25 315.75,-265.75 126.75,-265.75"/>
@@ -52,7 +52,7 @@
 <polygon fill="none" stroke="black" points="0,-243.25 0,-265.75 126.75,-265.75 126.75,-243.25 0,-243.25"/>
 <text text-anchor="start" x="3" y="-249.45" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">rated_apparent_power</text>
 <polygon fill="none" stroke="black" points="126.75,-243.25 126.75,-265.75 315.75,-265.75 315.75,-243.25 126.75,-243.25"/>
-<text text-anchor="start" x="157.12" y="-249.45" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">PositiveApparentPower</text>
+<text text-anchor="start" x="178.88" y="-249.45" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">ApparentPower</text>
 <polygon fill="none" stroke="black" points="0,-220.75 0,-243.25 126.75,-243.25 126.75,-220.75 0,-220.75"/>
 <text text-anchor="start" x="37.12" y="-226.95" font-family="Times New Roman,Times,Liberation Serif,serif" font-size="14.00">rise_limit</text>
 <polygon fill="none" stroke="black" points="126.75,-220.75 126.75,-243.25 315.75,-243.25 315.75,-220.75 126.75,-220.75"/>

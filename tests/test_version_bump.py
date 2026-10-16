@@ -1,20 +1,36 @@
+import json
+from importlib.metadata import version
 from pathlib import Path
 
-
 from pydantic import ValidationError
-from gdm.distribution import DistributionSystem
-from gdm.distribution.upgrade_handler.upgrade_handler import UpgradeHandler, UpgradeSchema
-from gdm.distribution.upgrade_handler.from__2_3_2__to__2_3_3 import from__2_3_2__to__2_3_3
+from gdm.systems.distribution import DistributionSystem
+from gdm.systems.distribution.upgrade_handler.upgrade_handler import UpgradeHandler, UpgradeSchema
+from gdm.systems.distribution.upgrade_handler.from__2_3_2__to__2_3_3 import (
+    from__2_3_2__to__2_3_3,
+)
+from gdm.version import VERSION
 
 import pytest
 
-base_path = Path(__file__).parent
-model_path = base_path / "dataset" / "p5r" / "p5r.json"
+
+def test_p5r_dataset_upgrades_to_installed_version():
+    """Upgrade the checked-in P5R dataset through the registered version handlers."""
+    filename = Path(__file__).parent / "dataset" / "p5r" / "p5r.json"
+    data = json.loads(filename.read_text())
+    installed_version = version("grid-data-models")
+
+    UpgradeHandler().upgrade(data, data["data_format_version"], installed_version)
+
+    assert data["data_format_version"] == installed_version
 
 
-def test_version_bump():
-    upgrade_handler = UpgradeHandler()
-    DistributionSystem.from_json(filename=model_path, upgrade_handler=upgrade_handler.upgrade)
+def test_current_data_format_round_trips(tmp_path, simple_distribution_system):
+    filename = tmp_path / "system.json"
+    simple_distribution_system.to_json(filename)
+
+    restored_system = DistributionSystem.from_json(filename)
+
+    assert restored_system.data_format_version == VERSION
 
 
 def test_unique_from_version():
