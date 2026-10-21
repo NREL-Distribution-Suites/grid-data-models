@@ -36,6 +36,26 @@ In an effort to reduce code duplication and provide client packages a standard i
 
 ## How to get started?
 
+### Simulator-neutral distribution equipment
+
+Loads use `PhaseLoadEquipment` ZIP coefficients. Optional voltage bounds and a
+ZIP cutoff describe operating behavior; paired active/reactive voltage exponents
+represent exponential loads without storing simulator model numbers.
+Aggregation requires matching voltage behavior.
+Transformer equipment exposes `magnetizing_current_pct`.
+
+`SequenceImpedanceBranchEquipmentBase` shares typed sequence quantities between
+branch and switch equipment. `SequenceImpedanceSwitch` represents three-phase
+switches; its equipment can produce an equivalent ABC matrix through
+`to_matrix_equipment()` (negative sequence equals positive sequence).
+Matrix-defined switches continue to use `MatrixImpedanceSwitch`.
+Its optional `conductor_phases` maps each matrix row/conductor to a phase at
+both terminals, preserving parallel conductors on the same phase. `phases`
+remains unique; `is_closed` has one entry per conductor (`num_conductors`).
+
+Models containing generic equipment need only GDM to deserialize.
+Simulator-specific translation belongs in external readers and writers, not GDM.
+
 To get started, you can clone and pip install this library from [here](https://nrel-distribution-suites.github.io/grid-data-models/).
 
 ## Model Context Protocol (MCP) Integration

@@ -19,6 +19,7 @@ from gdm.systems.distribution.components import (
     DistributionVoltageSource,
     MatrixImpedanceBranch,
     MatrixImpedanceSwitch,
+    SequenceImpedanceSwitch,
     MatrixImpedanceFuse,
     MatrixImpedanceRecloser,
 )
@@ -43,6 +44,7 @@ COMPONENT_MAP = {
     "DistributionSubstation": DistributionSubstation,
     "DistributionFeeder": DistributionFeeder,
     "MatrixImpedanceSwitch": MatrixImpedanceSwitch,
+    "SequenceImpedanceSwitch": SequenceImpedanceSwitch,
     "MatrixImpedanceFuse": MatrixImpedanceFuse,
     "MatrixImpedanceRecloser": MatrixImpedanceRecloser,
     "DistributionRegulator": DistributionRegulator,

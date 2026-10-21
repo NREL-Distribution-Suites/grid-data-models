@@ -465,7 +465,7 @@ def reduce_to_radial_network(dist_system: DistributionSystem, name: str) -> Dist
         )
         if switches:
             switch = switches[0]
-            switch.is_closed = [False] * len(switch.phases)
+            switch.is_closed = [False] * switch.num_conductors
             bus_1, bus_2 = switch.buses[0].name, switch.buses[1].name
             for key in [
                 k for k, data in closed_graph[bus_1][bus_2].items() if data["name"] == switch.name

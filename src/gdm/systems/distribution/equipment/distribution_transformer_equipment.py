@@ -156,6 +156,10 @@ class DistributionTransformerEquipment(Component):
         ),
     ]
     is_center_tapped: Annotated[bool, Field(..., description="Is this transformer center tapped.")]
+    magnetizing_current_pct: Annotated[
+        float | None,
+        Field(None, ge=0, description="Magnetizing current as a percentage of rated current."),
+    ]
 
     @model_validator(mode="after")
     def validate_fields(self) -> "DistributionTransformerEquipment":

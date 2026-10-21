@@ -1,6 +1,12 @@
 from gdm.systems.distribution.equipment.base.matrix_impedance_branch_equipment_base import (
     MatrixImpedanceBranchEquipmentBase,
 )
+from gdm.systems.distribution.equipment.base.sequence_impedance_branch_equipment_base import (
+    SequenceImpedanceBranchEquipmentBase,
+)
+from gdm.systems.distribution.equipment.sequence_impedance_switch_equipment import (
+    SequenceImpedanceSwitchEquipment,
+)
 from gdm.systems.distribution.equipment.bare_conductor_equipment import (
     BareConductorEquipment,
 )
