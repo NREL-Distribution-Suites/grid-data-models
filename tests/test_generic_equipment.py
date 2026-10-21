@@ -8,6 +8,7 @@ from infrasys import serialization
 from gdm.systems.distribution import DistributionSystem
 from gdm.systems.distribution.components import (
     DistributionLoad,
+    DistributionTransformer,
     MatrixImpedanceSwitch,
     SequenceImpedanceSwitch,
 )
@@ -149,3 +150,9 @@ def test_parallel_switch_conductor_validation(updates):
     }
     with pytest.raises(ValueError):
         MatrixImpedanceSwitch(**(fields | updates))
+
+
+def test_matrix_switch_rejects_different_bus_voltages():
+    switch = MatrixImpedanceSwitch.example()
+    with pytest.raises(ValueError, match="rating should be same"):
+        switch.buses = DistributionTransformer.example().buses
