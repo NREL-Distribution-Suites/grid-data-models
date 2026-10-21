@@ -10,6 +10,9 @@ from gdm.systems.distribution.equipment.matrix_impedance_switch_equipment import
 from gdm.systems.distribution.components.base.distribution_switch_base import (
     DistributionSwitchBase,
 )
+from gdm.systems.distribution.components.base.distribution_branch_base import (
+    DistributionBranchBase,
+)
 from gdm.systems.distribution.components.distribution_bus import DistributionBus
 from gdm.systems.distribution.enums import Phase
 from gdm.quantities import Voltage, Distance
@@ -24,17 +27,37 @@ class MatrixImpedanceSwitch(DistributionSwitchBase):
         MatrixImpedanceSwitchEquipment,
         Field(..., description="Matrix impedance branch equipment."),
     ]
+    conductor_phases: Annotated[
+        list[Phase] | None,
+        Field(
+            None,
+            min_length=1,
+            description=(
+                "Phase connected to each conductor at both terminals, in matrix order. "
+                "May repeat phases for parallel conductors; defaults to phases."
+            ),
+        ),
+    ]
+
+    @property
+    def num_conductors(self) -> int:
+        return (
+            len(self.conductor_phases) if self.conductor_phases is not None else len(self.phases)
+        )
 
     @model_validator(mode="after")
     def validate_fields(self) -> "MatrixImpedanceSwitch":
         """Custom validator for matrix impedance branch."""
+        DistributionBranchBase.validate_fields_base(self)
+        if self.conductor_phases is not None and set(self.conductor_phases) != set(self.phases):
+            raise ValueError("Conductor phases must cover exactly the switch phases.")
         for mat in [
             self.equipment.r_matrix,
             self.equipment.x_matrix,
             self.equipment.c_matrix,
         ]:
-            if set(mat.shape) != {len(self.phases)}:
-                msg = f"Length of matrix {mat=} did not match number of phases {self.phases=}"
+            if set(mat.shape) != {self.num_conductors}:
+                msg = f"Shape of matrix {mat=} did not match conductor count {self.num_conductors}"
                 raise ValueError(msg)
 
         return self

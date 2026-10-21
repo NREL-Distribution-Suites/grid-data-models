@@ -11,12 +11,7 @@ from pydantic import Field
 
 
 class ReactorEquipment(Component):
-    """Series reactor impedance shared by a :class:`DistributionReactor`.
-
-    The scalar resistance/reactance form matches the OpenDSS ``Reactor``
-    object. Matrix/sequence extensions can be added later without changing
-    the component relationship or the scalar source-impedance use case.
-    """
+    """Scalar series reactor impedance shared by a :class:`DistributionReactor`."""
 
     resistance: Annotated[
         Resistance,

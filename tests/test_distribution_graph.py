@@ -9,7 +9,7 @@ from gdm.distribution.components import (
     DistributionLoad,
     DistributionBus,
     MatrixImpedanceSwitch,
-    DistributionTransformer,
+    MatrixImpedanceBranch,
 )
 from gdm.exceptions import NonuniqueCommponentsTypesInParallel
 from gdm.distribution import DistributionSystem
@@ -41,9 +41,9 @@ def test_distribution_graph_multiple_edges_different_types(
     system = simple_distribution_system.deepcopy()
     system.auto_add_composed_components = True
 
-    xfmr = next(system.get_components(DistributionTransformer))
+    branch = next(system.get_components(MatrixImpedanceBranch))
     switch = MatrixImpedanceSwitch.example()
-    switch.buses = xfmr.buses
+    switch.buses = branch.buses
     switch.is_closed = [False, False, False]
 
     switch_copy = switch.model_copy(update={"uuid": uuid4()})

@@ -69,6 +69,27 @@ class PhaseLoadEquipment(Component):
         Optional[PositiveInt],
         Field(None, description="Number of customers for this load"),
     ]
+    min_voltage_pu: Annotated[
+        float | None,
+        Field(None, ge=0, description="Voltage below which the load uses constant impedance."),
+    ]
+    max_voltage_pu: Annotated[
+        float | None,
+        Field(None, gt=0, description="Voltage above which the load uses constant impedance."),
+    ]
+    cutoff_voltage_pu: Annotated[
+        float, Field(0.0, ge=0, description="Voltage below which the ZIP load draws no power.")
+    ]
+    active_power_voltage_exponent: Annotated[
+        float | None,
+        Field(None, description="Exponent in P=P0*(V/V0)^exponent, overriding real ZIP terms."),
+    ]
+    reactive_power_voltage_exponent: Annotated[
+        float | None,
+        Field(
+            None, description="Exponent in Q=Q0*(V/V0)^exponent, overriding reactive ZIP terms."
+        ),
+    ]
 
     @classmethod
     def split(cls, instance: "PhaseLoadEquipment", num_splits: int) -> "PhaseLoadEquipment":
@@ -82,6 +103,19 @@ class PhaseLoadEquipment(Component):
 
     @classmethod
     def aggregate(cls, instances: list["PhaseLoadEquipment"], name: str) -> "PhaseLoadEquipment":
+        behavior = {}
+        for field in (
+            "min_voltage_pu",
+            "max_voltage_pu",
+            "cutoff_voltage_pu",
+            "active_power_voltage_exponent",
+            "reactive_power_voltage_exponent",
+        ):
+            values = {getattr(instance, field) for instance in instances}
+            if len(values) > 1:
+                raise ValueError(f"Cannot aggregate phase loads with different {field}.")
+            if values:
+                behavior[field] = values.pop()
         z_real_sum = sum([inst.real_power * inst.z_real for inst in instances]) or ActivePower(
             0, "watt"
         )
@@ -121,11 +155,24 @@ class PhaseLoadEquipment(Component):
             i_real=weighted_factor(i_real_sum, new_real, "watt"),
             i_imag=weighted_factor(i_imag_sum, new_react, "var"),
             num_customers=sum(filter(None, [inst.num_customers for inst in instances])) or None,
+            **behavior,
         )
 
     @model_validator(mode="after")
     def validate_fields(self) -> "PhaseLoadEquipment":
         """Sum of ZIP parameters should be 1 for both P and Q"""
+        if (
+            self.min_voltage_pu is not None
+            and self.max_voltage_pu is not None
+            and self.min_voltage_pu > self.max_voltage_pu
+        ):
+            raise ValueError("min_voltage_pu must not exceed max_voltage_pu.")
+        if (self.active_power_voltage_exponent is None) != (
+            self.reactive_power_voltage_exponent is None
+        ):
+            raise ValueError("Both voltage exponents must be specified together.")
+        if self.active_power_voltage_exponent is not None and self.cutoff_voltage_pu:
+            raise ValueError("Voltage cutoff is only supported for ZIP loads.")
         real_sum = self.z_real + self.i_real + self.p_real
         if self.real_power.magnitude and real_sum != 1:
             msg = f"Sum of ZIP parameters z_real: {self.z_real}, i_real: {self.i_real}, p_real: {self.p_real} is {real_sum} not 1"

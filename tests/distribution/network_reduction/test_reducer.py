@@ -121,6 +121,27 @@ def test_three_phase_reducer_rejects_closed_loop(simple_distribution_system):
         reduce_to_three_phase_system(system, name="reduced_system")
 
 
+def test_radial_reduction_opens_every_parallel_switch_conductor(simple_distribution_system):
+    system = simple_distribution_system.deepcopy()
+    system.auto_add_composed_components = True
+    _add_loop_switch(system, "bus_0", "bus_4", "parallel_switch")
+    original = system.get_component(MatrixImpedanceSwitch, "parallel_switch")
+    switch = MatrixImpedanceSwitch(
+        **(
+            dict(original)
+            | {"phases": [Phase.B, Phase.C], "conductor_phases": [Phase.B, Phase.B, Phase.C]}
+        )
+    )
+    system.remove_component(original)
+    system.add_component(switch)
+
+    radial = reduce_to_radial_network(system, name="radial_system")
+    opened = radial.get_component(MatrixImpedanceSwitch, "parallel_switch")
+    assert opened.is_closed == [False, False, False]
+    assert opened.conductor_phases == [Phase.B, Phase.B, Phase.C]
+    assert switch.is_closed == [True, True, True]
+
+
 def test_radial_then_three_phase_reduction_preserves_open_switch_and_load(
     simple_distribution_system,
 ):
@@ -501,7 +522,6 @@ def _build_phase_split_system() -> tuple[DistributionSystem, dict[str, Distribut
     }
 
 
-
 def test_three_phase_reduction_keeps_phase_split_intermediates():
     sys, buses = _build_phase_split_system()
 
@@ -518,6 +538,8 @@ def test_three_phase_reduction_keeps_phase_split_intermediates():
     }
     assert reduced_bus_names == expected_kept
     assert buses["lat_bus"].name not in reduced_bus_names
+
+
 def _add_loop_switch(system: DistributionSystem, bus_1: str, bus_2: str, name: str) -> None:
     """Add a closed switch between two buses, creating a loop."""
     switch = MatrixImpedanceSwitch.example()

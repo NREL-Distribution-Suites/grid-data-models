@@ -1,3 +1,5 @@
+from copy import deepcopy
+import json
 from pathlib import Path
 
 
@@ -5,6 +7,7 @@ from pydantic import ValidationError
 from gdm.distribution import DistributionSystem
 from gdm.distribution.upgrade_handler.upgrade_handler import UpgradeHandler, UpgradeSchema
 from gdm.distribution.upgrade_handler.from__2_3_2__to__2_3_3 import from__2_3_2__to__2_3_3
+from gdm.version import VERSION
 
 import pytest
 
@@ -15,6 +18,23 @@ model_path = base_path / "dataset" / "p5r" / "p5r.json"
 def test_version_bump():
     upgrade_handler = UpgradeHandler()
     DistributionSystem.from_json(filename=model_path, upgrade_handler=upgrade_handler.upgrade)
+
+
+def test_default_upgrade_chain_reaches_source_version():
+    upgrade_handler = UpgradeHandler()
+    assert str(max(schema.to_version for schema in upgrade_handler.upgrade_schemas)) == VERSION
+
+
+def test_upgrade_2_4_0_to_2_4_1_preserves_existing_data():
+    data = json.loads(model_path.read_text())
+    upgrade_handler = UpgradeHandler()
+    upgrade_handler.upgrade(data, data["data_format_version"], "2.4.0")
+    expected = deepcopy(data)
+    expected["data_format_version"] = "2.4.1"
+
+    upgrade_handler.upgrade(data, "2.4.0", "2.4.1")
+
+    assert data == expected
 
 
 def test_unique_from_version():
